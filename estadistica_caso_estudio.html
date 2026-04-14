@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estadística Aplicada · LPS204 · Proyecto Final</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f3ef;
+  --bg2: #ede9e2;
+  --surface: #ffffff;
+  --surface2: #f8f6f2;
+  --border: #ddd9d0;
+  --border2: #c8c3b8;
+  --ink: #1a1714;
+  --ink2: #4a4540;
+  --ink3: #8a8278;
+  --accent: #1d4ed8;
+  --accent-light: #dbeafe;
+  --accent2: #c2410c;
+  --accent2-light: #ffedd5;
+  --green: #15803d;
+  --green-light: #dcfce7;
+  --yellow: #a16207;
+  --yellow-light: #fef9c3;
+  --serif: 'Syne', sans-serif;
+  --sans: 'IBM Plex Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 52px 28px 44px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: 'σ μ r² χ² p<.05 M SD n r';
+  position: absolute;
+  bottom: 10px; right: 20px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: rgba(255,255,255,.08);
+  letter-spacing: .1em;
+  pointer-events: none;
+}
+.hero-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .15em;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 16px;
+  display: block;
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2rem,5vw,3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 14px;
+  letter-spacing: -.02em;
+}
+.hero h1 .hl { color: #60a5fa; }
+.hero-desc {
+  color: rgba(255,255,255,.6);
+  max-width: 580px;
+  font-size: 14.5px;
+  margin-bottom: 28px;
+}
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 10px;
+}
+.hmeta {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  background: rgba(255,255,255,.08);
+  color: rgba(255,255,255,.65);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+/* ── STICKY NAV ── */
+.sticky-nav {
+  background: var(--surface);
+  border-bottom: 2px solid var(--ink);
+  position: sticky; top: 0; z-index: 100;
+  padding: 0 20px;
+}
+.nav-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; align-items: stretch;
+  overflow-x: auto; scrollbar-width: none;
+  gap: 0;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+.nav-tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 18px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink3);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all .2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-tab:hover { color: var(--ink); background: var(--bg2); }
+.nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+.nav-tab.done { color: var(--green); }
+.nav-tab.done .ntnum { background: var(--green); color: white; }
+.nav-tab .ntnum {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--bg2); border: 1px solid var(--border2);
+  font-size: 10px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.nav-tab.active .ntnum { background: var(--accent); color: white; border-color: var(--accent); }
+.nav-progress {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 8px;
+  padding-left: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink3);
+  flex-shrink: 0;
+}
+.prog-bar { width: 70px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.prog-fill { height: 100%; background: var(--accent); transition: width .4s; }
+
+/* ── MAIN ── */
+.main { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
+
+/* ── SECTION ── */
+.section { display: none; }
+.section.active { display: block; animation: slideIn .3s ease; }
+@keyframes slideIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── PHASE HEADING ── */
+.phase-heading {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 20px;
+  align-items: start;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.phase-num-big {
+  font-family: var(--serif);
+  font-size: 5rem;
+  font-weight: 800;
+  color: var(--border2);
+  line-height: .9;
+  letter-spacing: -.04em;
+  grid-row: span 2;
+  align-self: center;
+}
+.phase-heading h2 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
+.phase-heading p { color: var(--ink3); font-size: 14px; margin-top: 4px; }
+.time-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--mono); font-size: 11px;
+  background: var(--accent-light); color: var(--accent);
+  border: 1px solid #bfdbfe;
+  border-radius: 3px; padding: 3px 9px;
+  margin-top: 8px;
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 18px;
+}
+.card-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.card h3 {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+
+/* ── DATASET TABLE ── */
+.dataset-table-wrap { overflow-x: auto; }
+.dataset-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-family: var(--mono);
+}
+.dataset-table th {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: .06em;
+}
+.dataset-table td {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink2);
+}
+.dataset-table tr:nth-child(even) td { background: var(--surface2); }
+.dataset-table tr:hover td { background: var(--accent-light); }
+.val-num { text-align: right; }
+
+/* ── EXCEL STEP ── */
+.excel-step {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+.excel-step .estep-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.excel-step h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.excel-step p, .excel-step li { font-size: 13.5px; color: var(--ink2); }
+.excel-step ul { padding-left: 18px; margin-top: 6px; }
+.formula-box {
+  background: var(--ink);
+  color: #86efac;
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 5px;
+  margin-top: 10px;
+  letter-spacing: .03em;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.formula-box .comment { color: #6b7280; font-style: italic; }
+
+/* ── CALLOUT ── */
+.callout {
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-size: 13.5px;
+  margin-bottom: 14px;
+  line-height: 1.65;
+}
+.callout.info { background: var(--accent-light); border: 1px solid #bfdbfe; color: #1e40af; }
+.callout.warn { background: var(--yellow-light); border: 1px solid #fde68a; color: var(--yellow); }
+.callout.success { background: var(--green-light); border: 1px solid #bbf7d0; color: var(--green); }
+.callout.danger { background: var(--accent2-light); border: 1px solid #fed7aa; color: var(--accent2); }
+.callout strong { font-weight: 600; }
+
+/* ── TEXTAREA ── */
+.answer-area {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 13px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.65;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color .2s, box-shadow .2s;
+  margin-top: 10px;
+}
+.answer-area:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(29,78,216,.1); }
+.answer-area::placeholder { color: var(--ink3); }
+.ans-label { font-size: 12.5px; color: var(--ink3); margin-top: 12px; font-style: italic; }
+
+/* ── TASK TAG ── */
+.ttag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: .08em;
+  padding: 2px 8px; border-radius: 3px;
+  font-weight: 500; margin-right: 6px;
+}
+.ttag.ind { background: var(--accent-light); color: var(--accent); border: 1px solid #bfdbfe; }
+.ttag.eq  { background: var(--accent2-light); color: var(--accent2); border: 1px solid #fed7aa; }
+.ttag.ref { background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; }
+
+/* ── RESOURCE LINKS ── */
+.res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 10px; margin-top: 12px; }
+.res-link {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 11px 14px;
+  text-decoration: none;
+  color: var(--ink2);
+  font-size: 13px;
+  transition: all .2s;
+}
+.res-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+.res-link .ricon {
+  width: 30px; height: 30px; border-radius: 5px;
+  background: var(--bg2); display: flex; align-items: center;
+  justify-content: center; font-size: 15px; flex-shrink: 0;
+}
+.res-link .rsub { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+
+/* ── AI PANEL ── */
+.ai-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent2);
+  border-radius: 8px;
+  padding: 22px;
+  margin-bottom: 18px;
+}
+.ai-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.ai-icon {
+  width: 38px; height: 38px; border-radius: 6px;
+  background: var(--ink); color: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.ai-header .title { font-weight: 600; font-size: 14px; }
+.ai-header .sub { font-size: 12px; color: var(--ink3); }
+.ai-warning {
+  background: var(--yellow-light);
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--yellow);
+  margin-bottom: 14px;
+}
+.ai-row { display: flex; gap: 8px; }
+.ai-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink);
+  transition: border-color .2s;
+}
+.ai-input:focus { outline: none; border-color: var(--accent); }
+.ai-input::placeholder { color: var(--ink3); }
+.ai-btn {
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 18px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .2s;
+  flex-shrink: 0;
+}
+.ai-btn:hover { opacity: .8; }
+.ai-btn:disabled { opacity: .4; cursor: not-allowed; }
+.ai-resp {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 15px;
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.7;
+  display: none;
+}
+.ai-resp.show { display: block; }
+.ai-reflect {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--green-light);
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--green);
+  display: none;
+}
+.ai-reflect.show { display: block; }
+.dots span { animation: blink 1.2s infinite; font-size: 1.3rem; color: var(--accent); }
+.dots span:nth-child(2){animation-delay:.2s} .dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+
+/* ── CHECKLIST ── */
+.checklist { list-style: none; }
+.checklist li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: 14px;
+  color: var(--ink2);
+  cursor: pointer;
+}
+.checklist li:last-child { border-bottom: none; }
+.chk {
+  width: 17px; height: 17px; border-radius: 4px;
+  border: 2px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px; font-size: 10px;
+  transition: all .2s;
+}
+.checklist li.done .chk { background: var(--green); border-color: var(--green); color: white; }
+
+/* ── SUGGESTED Qs ── */
+.sq-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--ink2);
+  cursor: pointer;
+  transition: all .2s;
+  margin-bottom: 7px;
+}
+.sq-item:hover { border-color: var(--accent2); color: var(--accent2); background: var(--accent2-light); }
+
+/* ── RUBRIC ── */
+.rub-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--bg2);
+  font-size: 14px;
+  gap: 12px;
+}
+.rub-row:last-child { border-bottom: none; }
+.rub-pts { font-family: var(--mono); color: var(--accent); font-size: 13px; white-space: nowrap; font-weight: 500; }
+
+/* ── TABLE STYLED ── */
+.styled-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.styled-table th { background: var(--surface2); color: var(--ink3); font-weight: 500; font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+.styled-table td { padding: 9px 12px; border-bottom: 1px solid var(--bg2); color: var(--ink2); }
+.styled-table tr:last-child td { border-bottom: none; }
+
+/* ── BUTTONS ── */
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  padding: 12px 26px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { background: var(--accent); }
+.btn-secondary {
+  background: transparent;
+  color: var(--ink2);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 12px 26px;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
+.nav-row { display: flex; gap: 10px; justify-content: space-between; margin-top: 28px; flex-wrap: wrap; }
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--border); margin: 22px 0; }
+
+/* ── FINAL ── */
+.final-wrap {
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 10px;
+  padding: 48px 32px;
+  text-align: center;
+}
+.final-wrap h2 { font-family: var(--serif); font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
+.final-wrap p { color: rgba(255,255,255,.6); max-width: 480px; margin: 0 auto 24px; font-size: 14.5px; }
+.final-wrap .btn-primary { background: white; color: var(--ink); margin: 4px; }
+.final-wrap .btn-secondary { border-color: rgba(255,255,255,.2); color: rgba(255,255,255,.6); margin: 4px; }
+.final-wrap .btn-secondary:hover { border-color: white; color: white; }
+
+/* ── STAT BADGE ── */
+.stat-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid #bfdbfe;
+  border-radius: 4px;
+  padding: 3px 9px;
+  margin: 2px;
+}
+
+/* ── HINT BOX ── */
+.hint {
+  background: var(--surface2);
+  border: 1px dashed var(--border2);
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--ink3);
+  margin-top: 10px;
+}
+.hint strong { color: var(--ink2); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px) {
+  .phase-num-big { font-size: 3rem; }
+  .phase-heading { gap: 12px; }
+  .res-grid { grid-template-columns: 1fr; }
+}
+
+/* ── INTERPRETATION SCALE ── */
+.scale-bar {
+  display: flex; border-radius: 6px; overflow: hidden;
+  height: 32px; margin: 10px 0; font-family: var(--mono); font-size: 11px;
+}
+.scale-seg {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  font-weight: 500; color: white; letter-spacing: .04em;
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-tag">LPS204 · ESTADÍSTICA APLICADA A LA PSICOLOGÍA · SEGUNDO CUATRIMESTRE · PROYECTO FINAL</span>
+  <h1>¿El estrés académico<br>afecta el <span class="hl">rendimiento</span>?</h1>
+  <p class="hero-desc">Caso de estudio cuantitativo: recolección, análisis estadístico en Excel e interpretación psicológica de datos reales de estudiantes universitarios.</p>
+  <div class="hero-meta">
+    <span class="hmeta">⏱ 3 horas</span>
+    <span class="hmeta">📊 6 fases</span>
+    <span class="hmeta">💻 Excel requerido</span>
+    <span class="hmeta">👤 Individual + Equipo</span>
+    <span class="hmeta">📋 LPS204</span>
+  </div>
+</div>
+
+<!-- STICKY NAV -->
+<div class="sticky-nav">
+  <div class="nav-inner">
+    <div class="nav-tab active" onclick="goTo(0)" id="tab0"><div class="ntnum">1</div>Contexto</div>
+    <div class="nav-tab" onclick="goTo(1)" id="tab1"><div class="ntnum">2</div>Dataset</div>
+    <div class="nav-tab" onclick="goTo(2)" id="tab2"><div class="ntnum">3</div>Estadística Descr.</div>
+    <div class="nav-tab" onclick="goTo(3)" id="tab3"><div class="ntnum">4</div>Pruebas & Corr.</div>
+    <div class="nav-tab" onclick="goTo(4)" id="tab4"><div class="ntnum">5</div>Consulta IA</div>
+    <div class="nav-tab" onclick="goTo(5)" id="tab5"><div class="ntnum">6</div>Informe Final</div>
+    <div class="nav-progress">
+      <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+      <span id="progLabel" style="font-family:var(--mono);font-size:11px;color:var(--ink3)">0%</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══ FASE 1: CONTEXTO ══ -->
+<div class="section active" id="sec0">
+  <div class="phase-heading">
+    <div class="phase-num-big">01</div>
+    <div>
+      <h2>Contexto del estudio y planteamiento</h2>
+      <p>Entiende qué vas a investigar y por qué. La estadística siempre responde una pregunta.</p>
+      <div class="time-badge">⏱ ~20 minutos</div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Escenario de investigación:</strong> Eres parte de un equipo de psicólogos del Centro UNE que estudia el bienestar estudiantil. Administraron a 30 estudiantes de segundo cuatrimestre una escala de estrés académico (SISCO) y registraron su promedio de calificaciones. Tu tarea: analizar estadísticamente si existe relación entre el estrés y el rendimiento, y comunicar conclusiones con respaldo empírico.
+  </div>
+
+  <div class="card">
+    <div class="card-label">Pregunta de investigación</div>
+    <h3>¿Existe relación estadísticamente significativa entre el nivel de estrés académico y el promedio de calificaciones en estudiantes de Licenciatura en Psicología?</h3>
+    <div class="divider"></div>
+    <p style="font-size:14px;color:var(--ink2)"><strong>Variables del estudio:</strong></p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+      <div style="background:var(--accent-light);border:1px solid #bfdbfe;border-radius:6px;padding:14px">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--accent);margin-bottom:6px">VARIABLE INDEPENDIENTE</div>
+        <div style="font-weight:600;font-size:14px">Estrés académico</div>
+        <div style="font-size:12.5px;color:var(--ink3);margin-top:4px">Escala 1–10 (puntaje SISCO simplificado)<br>Tipo: cuantitativa continua</div>
+      </div>
+      <div style="background:var(--accent2-light);border:1px solid #fed7aa;border-radius:6px;padding:14px">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--accent2);margin-bottom:6px">VARIABLE DEPENDIENTE</div>
+        <div style="font-weight:600;font-size:14px">Promedio de calificaciones</div>
+        <div style="font-size:12.5px;color:var(--ink3);margin-top:4px">Escala 0–10 (promedio cuatrimestral)<br>Tipo: cuantitativa continua</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Actividades previas — reflexión inicial</div>
+    <div class="callout warn" style="margin-bottom:14px"><strong>Antes de ver los datos:</strong> Formula tu hipótesis intuitiva. No busques respuesta en la IA ni en Internet todavía. Usa tu conocimiento como estudiante de psicología.</div>
+    <div class="ttag ind">INDIVIDUAL</div> <span style="font-size:14px;font-weight:600">Formula hipótesis nula e hipótesis alternativa</span>
+    <textarea class="answer-area" placeholder="H₀ (hipótesis nula): No existe relación entre el estrés académico y...&#10;H₁ (hipótesis alternativa): Existe una relación significativa entre...&#10;&#10;Dirección esperada de la relación (positiva/negativa) y por qué..."></textarea>
+    <div class="ttag ind" style="margin-top:14px">INDIVIDUAL</div> <span style="font-size:14px;font-weight:600">¿Qué tipo de diseño metodológico es este? ¿Por qué?</span>
+    <textarea class="answer-area" rows="3" style="min-height:75px" placeholder="Es un diseño de tipo ___ porque... El nivel de medición de las variables es..."></textarea>
+  </div>
+
+  <div class="nav-row">
+    <div></div>
+    <button class="btn-primary" onclick="goTo(1)">Ver el Dataset →</button>
+  </div>
+</div>
+
+<!-- ══ FASE 2: DATASET ══ -->
+<div class="section" id="sec1">
+  <div class="phase-heading">
+    <div class="phase-num-big">02</div>
+    <div>
+      <h2>El Dataset — Carga tus datos en Excel</h2>
+      <p>Transcribe o descarga los datos. Esta es la base de todo el análisis posterior.</p>
+      <div class="time-badge">⏱ ~20 minutos</div>
+    </div>
+  </div>
+
+  <div class="callout info"><strong>Instrucción:</strong> Abre Excel y crea un libro nuevo. Configura dos columnas: A1 = "ID_Estudiante", B1 = "Estres", C1 = "Promedio". Transcribe los 30 datos de la tabla siguiente exactamente como aparecen.</div>
+
+  <div class="card">
+    <div class="card-label">Dataset — 30 estudiantes · Centro UNE · Cuatrimestre 2024-II</div>
+    <div class="dataset-table-wrap">
+      <table class="dataset-table" id="dataTable">
+        <thead><tr><th>ID</th><th>Estrés (1-10)</th><th>Promedio (0-10)</th><th>Sexo</th><th>Turno</th></tr></thead>
+        <tbody id="dataBody"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+      <button onclick="copyData()" style="background:var(--ink);color:var(--bg);border:none;border-radius:5px;padding:8px 16px;font-family:var(--sans);font-size:13px;cursor:pointer;font-weight:500">📋 Copiar datos para Excel</button>
+      <div id="copyMsg" style="display:none;align-items:center;font-size:13px;color:var(--green);font-family:var(--mono)">✓ Copiado al portapapeles</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Instrucciones de configuración en Excel</div>
+    <div class="excel-step">
+      <div class="estep-num">PASO 01 — ESTRUCTURA DEL ARCHIVO</div>
+      <h4>Crea el libro y los encabezados</h4>
+      <ul>
+        <li>Abre Excel → Libro en blanco</li>
+        <li>Fila 1 (encabezados): <code style="background:var(--bg);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:12px">ID | Estres | Promedio | Sexo | Turno</code></li>
+        <li>Escribe o pega los 30 datos en filas 2–31</li>
+        <li>Guarda como: <code style="background:var(--bg);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:12px">Estadistica_TuNombre.xlsx</code></li>
+      </ul>
+    </div>
+    <div class="excel-step">
+      <div class="estep-num">PASO 02 — FORMATO</div>
+      <h4>Da formato a la tabla</h4>
+      <ul>
+        <li>Selecciona A1:E31 → Insertar → Tabla (con encabezados)</li>
+        <li>Esto permitirá filtrar y ordenar más fácilmente</li>
+        <li>Ajusta el ancho de columnas: clic derecho → Autoajuste</li>
+      </ul>
+    </div>
+    <div class="excel-step">
+      <div class="estep-num">PASO 03 — VERIFICACIÓN</div>
+      <h4>Comprueba tus datos antes de continuar</h4>
+      <ul>
+        <li>Cuenta cuántos registros tienes (debe ser 30)</li>
+        <li>Verifica que no haya celdas vacías en B o C</li>
+        <li>Los valores de Estrés deben estar entre 1 y 10</li>
+        <li>Los valores de Promedio deben estar entre 5.0 y 10.0</li>
+      </ul>
+      <div class="formula-box">=CONTARA(B2:B31)  <span class="comment">→ debe dar 30</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Reflexión sobre los datos</div>
+    <span class="ttag ind">INDIVIDUAL</span> <span style="font-size:14px;font-weight:600">¿Qué observas "a simple vista" en los datos antes de calcular nada?</span>
+    <textarea class="answer-area" placeholder="Al explorar visualmente la tabla, noto que... / Parece que los estudiantes con estrés alto tienden a... / Me llama la atención que..."></textarea>
+    <span class="ttag ind" style="display:inline-block;margin-top:12px">INDIVIDUAL</span> <span style="font-size:14px;font-weight:600">¿Qué tipo de muestreo crees que se usó y qué implicaciones tiene para la generalización?</span>
+    <textarea class="answer-area" rows="3" style="min-height:75px" placeholder="El tipo de muestreo parece ser ___ porque... Esto implica que las conclusiones..."></textarea>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-secondary" onclick="goTo(0)">← Contexto</button>
+    <button class="btn-primary" onclick="goTo(2)">Calcular Estadística Descriptiva →</button>
+  </div>
+</div>
+
+<!-- ══ FASE 3: DESCRIPTIVA ══ -->
+<div class="section" id="sec2">
+  <div class="phase-heading">
+    <div class="phase-num-big">03</div>
+    <div>
+      <h2>Estadística Descriptiva en Excel</h2>
+      <p>Calcula, interpreta y relaciona cada medida con el contexto psicológico del estudio.</p>
+      <div class="time-badge">⏱ ~35 minutos</div>
+    </div>
+  </div>
+
+  <div class="callout warn"><strong>Regla fundamental:</strong> Después de calcular cada valor en Excel, escribe aquí qué significa ese número para el estudio. Un psicólogo no solo calcula — interpreta en función del fenómeno humano que está midiendo.</div>
+
+  <div class="card">
+    <div class="card-label">Medidas de tendencia central</div>
+
+    <div class="excel-step">
+      <div class="estep-num">BLOQUE A — MEDIA, MEDIANA Y MODA</div>
+      <h4>Crea una hoja llamada "Descriptiva" y calcula para ambas variables:</h4>
+      <div class="formula-box">=PROMEDIO(B2:B31)  <span class="comment">→ Media del estrés</span>
+=PROMEDIO(C2:C31)  <span class="comment">→ Media del promedio académico</span>
+=MEDIANA(B2:B31)   <span class="comment">→ Mediana del estrés</span>
+=MEDIANA(C2:C31)   <span class="comment">→ Mediana del promedio</span>
+=MODA(B2:B31)      <span class="comment">→ Moda del estrés</span>
+=MODA(C2:C31)      <span class="comment">→ Moda del promedio</span></div>
+    </div>
+
+    <span class="ttag ind">INTERPRETA</span>
+    <div class="ans-label">¿Qué te dicen la media y la mediana del estrés? ¿Son similares o muy distintas? ¿Qué implica eso?</div>
+    <textarea class="answer-area" placeholder="La media del estrés fue ___ y la mediana fue ___. Que sean similares/distintas indica que la distribución... Desde una perspectiva psicológica, un promedio de ___ en estrés sugiere que los estudiantes..."></textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Medidas de dispersión</div>
+
+    <div class="excel-step">
+      <div class="estep-num">BLOQUE B — VARIANZA, DESVIACIÓN ESTÁNDAR Y RANGO</div>
+      <div class="formula-box">=VAR(B2:B31)         <span class="comment">→ Varianza del estrés</span>
+=DESVEST(B2:B31)    <span class="comment">→ Desviación estándar del estrés</span>
+=VAR(C2:C31)         <span class="comment">→ Varianza del promedio</span>
+=DESVEST(C2:C31)    <span class="comment">→ Desviación estándar del promedio</span>
+=MAX(B2:B31)-MIN(B2:B31)  <span class="comment">→ Rango del estrés</span></div>
+    </div>
+
+    <span class="ttag ind">INTERPRETA</span>
+    <div class="ans-label">¿Qué te dice la desviación estándar sobre la homogeneidad del grupo? ¿Hay mucha variabilidad?</div>
+    <textarea class="answer-area" placeholder="La desviación estándar del estrés fue ___. Esto significa que los valores típicos se alejan ___ puntos de la media, lo que indica que el grupo es... En comparación, la DE del promedio académico es ___, lo cual sugiere..."></textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Representación gráfica</div>
+    <div class="excel-step">
+      <div class="estep-num">BLOQUE C — HISTOGRAMAS Y DIAGRAMA DE DISPERSIÓN</div>
+      <h4>Gráfico 1: Histograma del estrés</h4>
+      <ul>
+        <li>Selecciona columna B (Estres) → Insertar → Gráficos recomendados → Histograma</li>
+        <li>Ajusta el título: "Distribución del Estrés Académico"</li>
+        <li>Observa la forma: ¿es simétrica, sesgada a la izquierda o derecha?</li>
+      </ul>
+      <h4 style="margin-top:12px">Gráfico 2: Diagrama de dispersión Estrés vs. Promedio</h4>
+      <ul>
+        <li>Selecciona columnas B y C juntas → Insertar → Dispersión (XY)</li>
+        <li>Eje X = Estrés, Eje Y = Promedio</li>
+        <li>Clic derecho en un punto → "Agregar línea de tendencia" → Marcar "Mostrar ecuación" y "R²"</li>
+      </ul>
+    </div>
+
+    <span class="ttag ind">INTERPRETA</span>
+    <div class="ans-label">Describe el diagrama de dispersión: ¿qué patrón ves? ¿Qué indica la línea de tendencia?</div>
+    <textarea class="answer-area" placeholder="En el diagrama de dispersión observo que los puntos tienden a... La línea de tendencia es de tipo ___ (positiva/negativa/sin patrón). El valor R² visible en la gráfica es ___, lo que significa que..."></textarea>
+
+    <span class="ttag ind" style="display:inline-block;margin-top:14px">INDIVIDUAL</span>
+    <div class="ans-label">¿La distribución del estrés parece normal? ¿Por qué importa eso para elegir la prueba estadística?</div>
+    <textarea class="answer-area" rows="3" style="min-height:75px" placeholder="El histograma muestra una forma ___ . Esto importa porque si la distribución no es normal..."></textarea>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-secondary" onclick="goTo(1)">← Dataset</button>
+    <button class="btn-primary" onclick="goTo(3)">Pruebas Estadísticas →</button>
+  </div>
+</div>
+
+<!-- ══ FASE 4: PRUEBAS Y CORRELACIÓN ══ -->
+<div class="section" id="sec3">
+  <div class="phase-heading">
+    <div class="phase-num-big">04</div>
+    <div>
+      <h2>Correlación y Pruebas de Significación</h2>
+      <p>Responde tu hipótesis con evidencia estadística. Calcula, decide y concluye.</p>
+      <div class="time-badge">⏱ ~40 minutos</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Correlación de Pearson</div>
+    <div class="callout info"><strong>¿Por qué Pearson?</strong> Porque ambas variables son cuantitativas continuas y (asumiremos) con distribución aproximadamente normal. Si encontraras distribución muy sesgada, usarías Spearman.</div>
+
+    <div class="excel-step">
+      <div class="estep-num">CÁLCULO — CORRELACIÓN DE PEARSON EN EXCEL</div>
+      <h4>En tu hoja "Inferencial", calcula:</h4>
+      <div class="formula-box">=COEF.DE.CORREL(B2:B31,C2:C31)  <span class="comment">→ Coeficiente r de Pearson</span>
+=COEF.DE.CORREL(B2:B31,C2:C31)^2  <span class="comment">→ R² (coeficiente de determinación)</span></div>
+      <p style="margin-top:10px;font-size:13px;color:var(--ink2)">El valor r oscila entre -1 y +1. Guíate con esta escala de interpretación (Cohen, 1988):</p>
+      <div class="scale-bar" style="margin-top:10px">
+        <div class="scale-seg" style="background:#dc2626;font-size:10px">r ≤ -0.5<br>Neg. fuerte</div>
+        <div class="scale-seg" style="background:#f97316;font-size:10px">-0.5 a -0.3<br>Neg. mod.</div>
+        <div class="scale-seg" style="background:#eab308;font-size:10px;color:#1a1714">-0.3 a -0.1<br>Neg. débil</div>
+        <div class="scale-seg" style="background:#6b7280;font-size:10px">-0.1 a 0.1<br>Ninguna</div>
+        <div class="scale-seg" style="background:#eab308;font-size:10px;color:#1a1714">0.1 a 0.3<br>Pos. débil</div>
+        <div class="scale-seg" style="background:#22c55e;font-size:10px">0.3 a 0.5<br>Pos. mod.</div>
+        <div class="scale-seg" style="background:#15803d;font-size:10px">r ≥ 0.5<br>Pos. fuerte</div>
+      </div>
+    </div>
+
+    <span class="ttag ind">INTERPRETA</span>
+    <div class="ans-label">¿Cuál fue el valor r? ¿Cuál es su dirección e intensidad? ¿Qué significa para tu hipótesis?</div>
+    <textarea class="answer-area" placeholder="El coeficiente de correlación de Pearson obtenido fue r = ___. Esto indica una correlación ___ (positiva/negativa) de intensidad ___ (débil/moderada/fuerte). El R² = ___, lo que significa que el ___ % de la varianza del promedio académico puede explicarse por...&#10;&#10;Respecto a mi hipótesis inicial: ___"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Prueba t para diferencia de grupos</div>
+    <div class="callout info"><strong>Nueva pregunta:</strong> ¿Los estudiantes con estrés ALTO (≥ 7) tienen un promedio significativamente diferente a los de estrés BAJO (≤ 4)?</div>
+
+    <div class="excel-step">
+      <div class="estep-num">PASO 1 — CREAR GRUPOS</div>
+      <h4>En columna F, clasifica a cada estudiante:</h4>
+      <div class="formula-box">=SI(B2>=7,"Alto",SI(B2<=4,"Bajo","Medio"))  <span class="comment">→ Copiar hasta F31</span></div>
+      <p style="margin-top:8px;font-size:13px;color:var(--ink2)">Luego filtra o copia los promedios de cada grupo en columnas separadas (ej. H para Alto, I para Bajo).</p>
+    </div>
+
+    <div class="excel-step">
+      <div class="estep-num">PASO 2 — PRUEBA T (MUESTRAS INDEPENDIENTES)</div>
+      <div class="formula-box">=PRUEBA.T(H2:H_n, I2:I_n, 2, 2)  <span class="comment">→ p bilateral, varianzas distintas</span></div>
+      <p style="margin-top:8px;font-size:13px;color:var(--ink2)">Donde H = promedios grupo Alto, I = promedios grupo Bajo. El resultado es el valor p.</p>
+      <div class="hint"><strong>Criterio de decisión:</strong> Si p &lt; 0.05 → rechazas H₀ (hay diferencia significativa). Si p ≥ 0.05 → no rechazas H₀.</div>
+    </div>
+
+    <span class="ttag ind">INTERPRETA</span>
+    <div class="ans-label">¿El resultado de la prueba t es significativo? ¿Qué concluyes psicológicamente?</div>
+    <textarea class="answer-area" placeholder="El valor p obtenido fue p = ___. Como p ___ 0.05, se ___ la hipótesis nula. Esto significa que los estudiantes con estrés alto tienen/no tienen un promedio significativamente diferente (M = ___ vs M = ___).&#10;&#10;Psicológicamente, esto sugiere que..."></textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Análisis adicional — Diferencias por sexo (equipo)</div>
+    <div class="excel-step">
+      <div class="estep-num">OPCIONAL / EQUIPO — ANÁLISIS POR SEXO</div>
+      <h4>¿El nivel de estrés promedio difiere entre hombres y mujeres?</h4>
+      <div class="formula-box">=PROMEDIO.SI(D2:D31,"F",B2:B31)  <span class="comment">→ Media estrés mujeres</span>
+=PROMEDIO.SI(D2:D31,"M",B2:B31)  <span class="comment">→ Media estrés hombres</span></div>
+      <p style="margin-top:8px;font-size:13px;color:var(--ink2)">Luego compara visualmente y, si el tiempo lo permite, aplica otra prueba t entre los grupos.</p>
+    </div>
+    <span class="ttag eq">EQUIPO</span>
+    <div class="ans-label">¿Encontraron diferencias por sexo? ¿Cómo lo interpretan desde la psicología?</div>
+    <textarea class="answer-area" placeholder="La media de estrés en mujeres fue ___ y en hombres fue ___. Esto ___ (sí/no) representa una diferencia relevante porque... Desde la perspectiva psicológica, esto puede relacionarse con..."></textarea>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-secondary" onclick="goTo(2)">← Estadística Descriptiva</button>
+    <button class="btn-primary" onclick="goTo(4)">Consulta al Asistente IA →</button>
+  </div>
+</div>
+
+<!-- ══ FASE 5: IA ══ -->
+<div class="section" id="sec4">
+  <div class="phase-heading">
+    <div class="phase-num-big">05</div>
+    <div>
+      <h2>Diálogo Crítico con Inteligencia Artificial</h2>
+      <p>Contrasta tus resultados, consulta dudas conceptuales y evalúa críticamente las respuestas.</p>
+      <div class="time-badge">⏱ ~25 minutos</div>
+    </div>
+  </div>
+
+  <div class="ai-panel">
+    <div class="ai-header">
+      <div class="ai-icon">📊</div>
+      <div>
+        <div class="title">Asistente de Estadística Aplicada a la Psicología</div>
+        <div class="sub">Modelo de IA · LPS204 · Centro Universitario UNE</div>
+      </div>
+    </div>
+    <div class="ai-warning">
+      ⚠️ <strong>Uso responsable:</strong> La IA es un recurso de contraste, no un oráculo. Puede cometer errores estadísticos, confundir pruebas o dar interpretaciones genéricas sin contexto. <strong>Tu tarea es formular preguntas precisas con tus propios resultados y evaluar críticamente la respuesta.</strong> Nunca copies una interpretación sin verificarla con lo que calculaste.
+    </div>
+    <div class="ai-row">
+      <input class="ai-input" id="aiInput" type="text" placeholder="Escribe tu pregunta estadística... (ej: ¿qué significa un r = -0.62 en este contexto?)">
+      <button class="ai-btn" id="aiBtn" onclick="askAI()">Preguntar</button>
+    </div>
+    <div class="ai-resp" id="aiResp"></div>
+    <div class="ai-reflect" id="aiReflect"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Preguntas sugeridas (haz clic para usar)</div>
+    <div class="sq-item" onclick="setSQ(this)" data-q="Obtuve un coeficiente de correlación de Pearson de -0.65 entre estrés académico y promedio en una muestra de 30 estudiantes de psicología. ¿Qué significa esto estadística y psicológicamente? ¿Puedo hablar de causalidad?">💬 Obtuve r = -0.65 entre estrés y promedio. ¿Qué significa? ¿Puedo hablar de causalidad?</div>
+    <div class="sq-item" onclick="setSQ(this)" data-q="En una prueba t para muestras independientes obtuve p = 0.03 comparando el promedio académico de estudiantes con estrés alto vs. bajo. ¿Qué puedo concluir y qué limitaciones tiene esta interpretación?">💬 Obtuve p = 0.03 en mi prueba t. ¿Qué puedo concluir y cuáles son las limitaciones?</div>
+    <div class="sq-item" onclick="setSQ(this)" data-q="¿Cuándo debería usar la correlación de Spearman en lugar de Pearson en una investigación psicológica? ¿Qué diferencia hace en los resultados?">💬 ¿Cuándo usar Spearman en lugar de Pearson en psicología?</div>
+    <div class="sq-item" onclick="setSQ(this)" data-q="En mi investigación sobre estrés académico encontré que la distribución del estrés tiene sesgo positivo. ¿Esto afecta la validez de la correlación de Pearson que calculé?">💬 Mi distribución de estrés tiene sesgo positivo. ¿Eso invalida mi correlación de Pearson?</div>
+    <div class="sq-item" onclick="setSQ(this)" data-q="¿Qué es el tamaño del efecto y por qué es importante reportarlo además del valor p en una investigación psicológica? ¿Cómo calcularía la d de Cohen para mi prueba t?">💬 ¿Qué es el tamaño del efecto y cómo lo calculo para mi prueba t?</div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Evaluación crítica de la IA</div>
+    <span class="ttag ref">REFLEXIÓN</span>
+    <div class="ans-label">¿En qué coincide la IA con tus resultados y análisis? Sé específico.</div>
+    <textarea class="answer-area" placeholder="La IA confirmó que... / Coincidió con mi interpretación cuando dijo... / Esto me genera más confianza en mi análisis porque..."></textarea>
+
+    <span class="ttag ref" style="display:inline-block;margin-top:14px">REFLEXIÓN</span>
+    <div class="ans-label">¿Qué omitió, generalizó incorrectamente o no supo contextualizar la IA?</div>
+    <textarea class="answer-area" placeholder="La IA no tomó en cuenta que... / Generalizó cuando en realidad con n=30... / Una cosa que calculé y la IA no mencionó fue..."></textarea>
+
+    <span class="ttag ref" style="display:inline-block;margin-top:14px">REFLEXIÓN</span>
+    <div class="ans-label">¿La IA te ayudó a entender mejor algún concepto o corregir algo en tu análisis?</div>
+    <textarea class="answer-area" rows="3" style="min-height:75px" placeholder="Gracias a la consulta con la IA, pude entender mejor... / Corregí..."></textarea>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-secondary" onclick="goTo(3)">← Pruebas</button>
+    <button class="btn-primary" onclick="goTo(5)">Redactar Informe Final →</button>
+  </div>
+</div>
+
+<!-- ══ FASE 6: INFORME FINAL ══ -->
+<div class="section" id="sec5">
+  <div class="phase-heading">
+    <div class="phase-num-big">06</div>
+    <div>
+      <h2>Informe Final e Integración</h2>
+      <p>Sintetiza todo en un informe estructurado como lo haría un psicólogo investigador.</p>
+      <div class="time-badge">⏱ ~20 minutos</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Estructura del informe (en Excel o Word)</div>
+    <div class="callout info">Tu informe debe tener las 5 secciones siguientes. Puedes escribirlo en una hoja adicional de Excel o en Word. El formato APA no es requerido completo, pero sí la claridad y el rigor.</div>
+
+    <div class="excel-step">
+      <div class="estep-num">SECCIÓN 1 — PLANTEAMIENTO</div>
+      <h4>Pregunta de investigación e hipótesis (reformuladas después del análisis)</h4>
+      <p style="font-size:13.5px;color:var(--ink2)">Escribe la H₀ y H₁ tal como las planteaste originalmente, y ahora cómo las ves después del análisis.</p>
+    </div>
+    <div class="excel-step">
+      <div class="estep-num">SECCIÓN 2 — MÉTODO</div>
+      <h4>Variables, muestra, instrumentos y tipo de análisis</h4>
+    </div>
+    <div class="excel-step">
+      <div class="estep-num">SECCIÓN 3 — RESULTADOS</div>
+      <h4>Tabla de estadísticos descriptivos + valor r + valor p</h4>
+      <p style="font-size:13.5px;color:var(--ink2)">Incluye tus gráficas (histograma y dispersión copiadas desde Excel).</p>
+    </div>
+    <div class="excel-step">
+      <div class="estep-num">SECCIÓN 4 — DISCUSIÓN</div>
+      <h4>Interpretación psicológica de los resultados</h4>
+      <p style="font-size:13.5px;color:var(--ink2)">¿Qué dicen tus números sobre los estudiantes reales? ¿Qué intervención propondrías?</p>
+    </div>
+    <div class="excel-step">
+      <div class="estep-num">SECCIÓN 5 — LIMITACIONES Y CONCLUSIONES</div>
+      <h4>¿Qué no puedes afirmar con estos datos? ¿Qué estudiarías a continuación?</h4>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Redacción guiada del informe</div>
+    <span class="ttag ind">INDIVIDUAL</span> <span style="font-size:14px;font-weight:600">Redacta la sección de Resultados aquí (mínimo 3 párrafos)</span>
+    <textarea class="answer-area" style="min-height:160px" placeholder="Párrafo 1 — Estadística descriptiva:&#10;Los 30 estudiantes presentaron una media de estrés de M = ___ (DE = ___). El promedio académico fue M = ___ (DE = ___). Se observó que...&#10;&#10;Párrafo 2 — Correlación:&#10;Se calculó el coeficiente de correlación de Pearson obteniendo r = ___, lo que indica una relación ___ entre las variables. El valor R² = ___ indica que...&#10;&#10;Párrafo 3 — Prueba t:&#10;Al comparar los grupos de estrés alto y bajo, la prueba t arrojó t(___)= ___, p = ___. Esto sugiere que..."></textarea>
+
+    <span class="ttag ind" style="display:inline-block;margin-top:14px">INDIVIDUAL</span> <span style="font-size:14px;font-weight:600">Discusión: ¿Qué propones como intervención psicológica con base en tus resultados?</span>
+    <textarea class="answer-area" placeholder="Con base en los resultados, se propone... / Una intervención viable sería... / Esto se fundamenta en que el estrés académico..."></textarea>
+
+    <span class="ttag ref" style="display:inline-block;margin-top:14px">CIERRE</span> <span style="font-size:14px;font-weight:600">Reflexión metacognitiva: ¿Qué cambió en tu forma de entender la estadística?</span>
+    <textarea class="answer-area" placeholder="Al inicio de esta actividad yo pensaba que la estadística era... / Lo que más me costó fue... / Ahora entiendo que los números en psicología..."></textarea>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Checklist de entregables</div>
+    <ul class="checklist">
+      <li onclick="tck(this)"><div class="chk"></div> <div>Archivo Excel con los 30 datos, tabla con formato, hoja "Descriptiva" y hoja "Inferencial"</div></li>
+      <li onclick="tck(this)"><div class="chk"></div> <div>Estadísticos descriptivos calculados (media, mediana, moda, DE, varianza, rango) para ambas variables</div></li>
+      <li onclick="tck(this)"><div class="chk"></div> <div>Histograma de distribución del estrés y diagrama de dispersión con línea de tendencia y R²</div></li>
+      <li onclick="tck(this)"><div class="chk"></div> <div>Coeficiente de correlación de Pearson calculado e interpretado</div></li>
+      <li onclick="tck(this)"><div class="chk"></div> <div>Prueba t entre grupos de estrés alto y bajo, con decisión sobre H₀</div></li>
+      <li onclick="tck(this)"><div class="chk"></div> <div>Evaluación crítica escrita de las respuestas del asistente IA</div></li>
+      <li onclick="tck(this)"><div class="chk"></div> <div>Informe escrito con 5 secciones: Planteamiento, Método, Resultados, Discusión, Conclusiones</div></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Rúbrica de evaluación</div>
+    <div class="rub-row"><div>Dataset correcto y bien estructurado en Excel</div><div class="rub-pts">10 pts</div></div>
+    <div class="rub-row"><div>Estadística descriptiva completa con fórmulas Excel y gráficas</div><div class="rub-pts">20 pts</div></div>
+    <div class="rub-row"><div>Correlación de Pearson y prueba t calculadas e interpretadas correctamente</div><div class="rub-pts">25 pts</div></div>
+    <div class="rub-row"><div>Evaluación crítica del asistente IA (qué confirmó, qué omitió)</div><div class="rub-pts">15 pts</div></div>
+    <div class="rub-row"><div>Informe escrito con interpretación psicológica fundamentada</div><div class="rub-pts">20 pts</div></div>
+    <div class="rub-row"><div>Reflexión metacognitiva y propuesta de intervención</div><div class="rub-pts">10 pts</div></div>
+    <div class="rub-row" style="border-top:1px solid var(--border);margin-top:4px;padding-top:12px"><div><strong>TOTAL</strong></div><div class="rub-pts" style="font-size:15px"><strong>100 pts</strong></div></div>
+  </div>
+
+  <div class="final-wrap">
+    <div style="font-size:2.5rem;margin-bottom:12px">📊</div>
+    <h2>Actividad completada</h2>
+    <p>Aplicaste estadística descriptiva e inferencial a datos reales, evaluaste críticamente la IA y redactaste un informe psicológico fundamentado. Eso es investigación aplicada.</p>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="btn-primary" onclick="window.print()">🖨️ Imprimir / Guardar</button>
+      <button class="btn-secondary" onclick="goTo(0)">↺ Revisar desde el inicio</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ── DATASET ──
+const data = [
+  [1,"F","Mat",7.2,7.8],[2,"M","Mat",5.1,8.9],[3,"F","Ves",8.4,6.5],
+  [4,"M","Mat",6.3,8.1],[5,"F","Mat",9.1,5.9],[6,"F","Ves",4.2,9.2],
+  [7,"M","Mat",7.8,7.0],[8,"F","Mat",3.5,9.5],[9,"M","Ves",8.9,6.1],
+  [10,"F","Mat",6.0,8.3],[11,"F","Ves",5.4,8.7],[12,"M","Mat",7.5,7.2],
+  [13,"F","Mat",9.3,5.7],[14,"M","Ves",4.8,9.0],[15,"F","Mat",8.1,6.8],
+  [16,"F","Ves",6.7,7.9],[17,"M","Mat",5.9,8.5],[18,"F","Mat",8.6,6.3],
+  [19,"M","Ves",3.9,9.3],[20,"F","Mat",7.1,7.5],[21,"F","Mat",9.5,5.5],
+  [22,"M","Ves",6.4,8.0],[23,"F","Mat",4.5,9.1],[24,"F","Ves",8.3,6.6],
+  [25,"M","Mat",7.0,7.7],[26,"F","Mat",5.6,8.6],[27,"M","Ves",9.0,6.0],
+  [28,"F","Mat",6.8,7.8],[29,"F","Ves",4.0,9.4],[30,"M","Mat",7.6,7.1]
+];
+
+const tbody = document.getElementById('dataBody');
+data.forEach(r => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td class="val-num">EST-${String(r[0]).padStart(2,'0')}</td><td class="val-num">${r[3]}</td><td class="val-num">${r[4]}</td><td>${r[1]}</td><td>${r[2]}</td>`;
+  tbody.appendChild(tr);
+});
+
+function copyData() {
+  let txt = "ID\tEstres\tPromedio\tSexo\tTurno\n";
+  data.forEach(r => { txt += `EST-${String(r[0]).padStart(2,'0')}\t${r[3]}\t${r[4]}\t${r[1]}\t${r[2]}\n`; });
+  navigator.clipboard.writeText(txt).then(() => {
+    const msg = document.getElementById('copyMsg');
+    msg.style.display = 'flex';
+    setTimeout(() => msg.style.display = 'none', 2500);
+  });
+}
+
+// ── NAV ──
+let cur = 0;
+function goTo(n) {
+  document.getElementById('sec'+cur).classList.remove('active');
+  document.getElementById('tab'+cur).classList.remove('active');
+  if(n > cur) document.getElementById('tab'+cur).classList.add('done');
+  cur = n;
+  document.getElementById('sec'+n).classList.add('active');
+  document.getElementById('tab'+n).classList.add('active');
+  document.getElementById('tab'+n).classList.remove('done');
+  window.scrollTo({top:0,behavior:'smooth'});
+  const pct = Math.round((n/5)*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progLabel').textContent = pct+'%';
+}
+
+function tck(el) {
+  el.classList.toggle('done');
+  el.querySelector('.chk').textContent = el.classList.contains('done') ? '✓' : '';
+}
+
+function setSQ(el) {
+  document.getElementById('aiInput').value = el.dataset.q;
+  document.getElementById('aiInput').focus();
+}
+
+// ── AI ──
+const history = [];
+
+const SYS = `Eres un asistente especializado en estadística aplicada a la psicología para un curso universitario en México (LPS204 — Estadística Aplicada a la Psicología, Licenciatura en Psicología, Centro Universitario UNE, segundo cuatrimestre).
+
+El estudio que los estudiantes están analizando es: 30 estudiantes de psicología, con datos de estrés académico (escala 1-10, SISCO simplificado) y promedio de calificaciones (0-10). Los estudiantes ya calcularon estadística descriptiva y correlación de Pearson en Excel.
+
+COMPORTAMIENTO:
+- Responde en español, con lenguaje accesible para estudiantes de segundo cuatrimestre
+- Explica conceptos estadísticos conectándolos siempre con el contexto psicológico del estudio
+- Cuando un estudiante te dé un valor numérico (r, p, DE, etc.), ayúdalo a interpretarlo en ese contexto específico
+- NUNCA des la interpretación completa ni el informe escrito — solo guías conceptuales y perspectivas
+- Si el estudiante pide que escribas su informe o sus conclusiones, explícale amablemente que el aprendizaje viene de su propio razonamiento y ofrece preguntas de andamiaje en cambio
+- Menciona limitaciones cuando corresponda: tamaño de muestra pequeño (n=30), posible ausencia de normalidad, correlación ≠ causalidad
+- Mantén respuestas entre 150-250 palabras
+- Finaliza siempre con la línea exacta: "---PREGUNTA---" seguida de una pregunta de 1-2 oraciones que lleve al estudiante a conectar la información con sus datos concretos.`;
+
+async function askAI() {
+  const inp = document.getElementById('aiInput');
+  const btn = document.getElementById('aiBtn');
+  const resp = document.getElementById('aiResp');
+  const refl = document.getElementById('aiReflect');
+  const q = inp.value.trim();
+  if(!q) return;
+  btn.disabled = true;
+  resp.className = 'ai-resp show';
+  resp.innerHTML = '<span class="dots"><span>●</span><span>●</span><span>●</span></span>';
+  refl.className = 'ai-reflect';
+  history.push({role:'user',content:q});
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:history})
+    });
+    const d = await r.json();
+    const full = d.content?.map(b=>b.text||'').join('') || 'Sin respuesta.';
+    const parts = full.split('---PREGUNTA---');
+    const main = parts[0].trim();
+    const preg = parts[1]?.trim() || '';
+    history.push({role:'assistant',content:full});
+    resp.innerHTML = '<p>' + main.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>') + '</p>';
+    if(preg){ refl.innerHTML = '🧠 <strong>Para que sigas reflexionando:</strong> ' + preg; refl.className = 'ai-reflect show'; }
+    inp.value = '';
+  } catch(e) {
+    resp.innerHTML = '<span style="color:var(--accent2)">Error de conexión. Verifica e intenta de nuevo.</span>';
+  }
+  btn.disabled = false;
+}
+
+document.getElementById('aiInput').addEventListener('keypress', e => { if(e.key==='Enter') askAI(); });
+</script>
+</body>
+</html>
