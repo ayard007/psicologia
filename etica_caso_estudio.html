@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ética y Ejercicio Profesional · Proyecto Final</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1f2436;
+    --border: #2a3050;
+    --accent: #c8a96e;
+    --accent2: #7b9cff;
+    --accent3: #f06e6e;
+    --text: #e8e4dc;
+    --text-muted: #8a8fa8;
+    --text-dim: #555e7a;
+    --success: #5ecfa0;
+    --warn: #f0a96e;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .hero {
+    background: linear-gradient(135deg, #0a0d14 0%, #131829 60%, #1a1030 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(200,169,110,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    color: var(--accent);
+    border: 1px solid rgba(200,169,110,.35);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 18px;
+    background: rgba(200,169,110,.07);
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: #f0ece4;
+  }
+  .hero h1 em { color: var(--accent); font-style: italic; }
+  .hero-sub {
+    color: var(--text-muted);
+    font-size: 14px;
+    max-width: 560px;
+    margin: 0 auto 28px;
+  }
+  .meta-row {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    justify-content: center;
+  }
+  .meta-chip {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-family: var(--mono);
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 5px 12px;
+  }
+  .meta-chip span { color: var(--accent); font-weight: 500; }
+
+  /* ── PROGRESS NAV ── */
+  .progress-bar-wrap {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .phase-steps {
+    display: flex; gap: 6px; align-items: center;
+    max-width: 900px; margin: 0 auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .phase-steps::-webkit-scrollbar { display: none; }
+  .step-dot {
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: all .2s;
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .step-dot.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(200,169,110,.08);
+  }
+  .step-dot.done {
+    color: var(--success);
+    border-color: rgba(94,207,160,.3);
+    background: rgba(94,207,160,.05);
+  }
+  .step-dot .num {
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .step-dot.active .num { background: var(--accent); color: #0f1117; border-color: var(--accent); }
+  .step-dot.done .num { background: var(--success); color: #0f1117; border-color: var(--success); }
+  .connector { flex: 1; min-width: 10px; height: 1px; background: var(--border); flex-shrink: 0; }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* ── SECTION ── */
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-title .icon { font-size: 1.2rem; }
+
+  /* ── CASE BOX ── */
+  .case-box {
+    background: linear-gradient(135deg, #1a1c2e, #1c1628);
+    border: 1px solid rgba(123,156,255,.25);
+    border-left: 3px solid var(--accent2);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .case-box::before {
+    content: 'CASO CLÍNICO';
+    position: absolute; top: -10px; left: 20px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+    color: var(--accent2);
+    background: #1a1c2e;
+    padding: 2px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(123,156,255,.3);
+  }
+  .case-name {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: #f0ece4;
+    margin-bottom: 8px;
+  }
+  .case-text {
+    color: var(--text-muted);
+    line-height: 1.8;
+    font-size: 14px;
+  }
+  .case-highlight {
+    background: rgba(240,169,110,.12);
+    border-left: 3px solid var(--warn);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-top: 14px;
+    font-size: 13.5px;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  /* ── PHASE HEADER ── */
+  .phase-header {
+    display: flex; align-items: flex-start; gap: 14px;
+    margin-bottom: 28px;
+  }
+  .phase-num {
+    font-family: var(--serif);
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    opacity: .4;
+    flex-shrink: 0;
+  }
+  .phase-header h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    color: #f0ece4;
+    margin-bottom: 4px;
+  }
+  .phase-header p { color: var(--text-muted); font-size: 13.5px; }
+  .time-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--accent);
+    background: rgba(200,169,110,.1);
+    border: 1px solid rgba(200,169,110,.25);
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-top: 6px;
+  }
+
+  /* ── RESOURCE LINKS ── */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .resource-link {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all .2s;
+    font-size: 13px;
+  }
+  .resource-link:hover {
+    border-color: var(--accent2);
+    background: rgba(123,156,255,.06);
+    color: var(--accent2);
+  }
+  .resource-link .rl-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+  .resource-link .rl-label { font-size: 11px; color: var(--text-dim); }
+
+  /* ── TASK BLOCKS ── */
+  .task-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .task-block .task-title {
+    font-weight: 600;
+    font-size: 13.5px;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+    color: var(--text);
+  }
+  .task-block .task-title .ttag {
+    font-family: var(--mono); font-size: 10px;
+    padding: 2px 8px; border-radius: 6px;
+    letter-spacing: .06em;
+  }
+  .ttag.individual { background: rgba(200,169,110,.15); color: var(--accent); border: 1px solid rgba(200,169,110,.25); }
+  .ttag.equipo     { background: rgba(123,156,255,.15); color: var(--accent2); border: 1px solid rgba(123,156,255,.25); }
+  .ttag.reflexion  { background: rgba(94,207,160,.12); color: var(--success); border: 1px solid rgba(94,207,160,.25); }
+
+  /* ── TEXTAREA ── */
+  .answer-area {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.7;
+    resize: vertical;
+    min-height: 110px;
+    transition: border-color .2s;
+    margin-top: 10px;
+  }
+  .answer-area:focus { outline: none; border-color: var(--accent); }
+  .answer-area::placeholder { color: var(--text-dim); font-style: italic; }
+
+  /* ── AI PANEL ── */
+  .ai-panel {
+    background: linear-gradient(135deg, #12131d, #1a1228);
+    border: 1px solid rgba(200,169,110,.2);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+  .ai-panel-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .ai-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .ai-panel-header .ai-name { font-weight: 600; font-size: 14px; }
+  .ai-panel-header .ai-desc { font-size: 12px; color: var(--text-muted); }
+  .ai-disclaimer {
+    font-size: 12.5px; color: var(--warn);
+    background: rgba(240,169,110,.07);
+    border: 1px solid rgba(240,169,110,.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+  .ai-input-row { display: flex; gap: 8px; }
+  .ai-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    transition: border-color .2s;
+  }
+  .ai-input:focus { outline: none; border-color: var(--accent); }
+  .ai-input::placeholder { color: var(--text-dim); }
+  .btn-send {
+    background: var(--accent);
+    color: #0f1117;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: opacity .2s;
+    flex-shrink: 0;
+  }
+  .btn-send:hover { opacity: .85; }
+  .btn-send:disabled { opacity: .4; cursor: not-allowed; }
+  .ai-response-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text);
+    min-height: 60px;
+    display: none;
+  }
+  .ai-response-box.visible { display: block; }
+  .ai-response-box .loading-dots span {
+    animation: blink 1.2s infinite;
+    font-size: 1.4rem;
+    color: var(--accent);
+  }
+  .ai-response-box .loading-dots span:nth-child(2) { animation-delay: .2s; }
+  .ai-response-box .loading-dots span:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%,80%,100%{opacity:0} 40%{opacity:1} }
+  .ai-reasoning-prompt {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: rgba(94,207,160,.07);
+    border: 1px solid rgba(94,207,160,.2);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--success);
+    display: none;
+  }
+  .ai-reasoning-prompt.visible { display: block; }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    font-size: 14px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color .2s;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li:hover { color: var(--text); }
+  .check-box {
+    width: 18px; height: 18px; border-radius: 5px;
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all .2s;
+  }
+  .checklist li.checked .check-box {
+    background: var(--success);
+    border-color: var(--success);
+    color: #0f1117;
+    font-size: 11px;
+  }
+  .checklist li.checked { color: var(--text); text-decoration: none; }
+
+  /* ── BUTTONS ── */
+  .btn-primary {
+    background: var(--accent);
+    color: #0f1117;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 28px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all .2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { opacity: .88; transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 28px;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all .2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-secondary:hover { border-color: var(--text-muted); color: var(--text); }
+  .nav-row {
+    display: flex; gap: 10px; justify-content: space-between;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  /* ── TABLE ── */
+  .styled-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .styled-table th {
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-weight: 500;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .styled-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    color: var(--text-muted);
+  }
+  .styled-table tr:last-child td { border-bottom: none; }
+
+  /* ── RUBRIC ── */
+  .rubric-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    font-size: 13.5px;
+  }
+  .rubric-row:last-child { border-bottom: none; }
+  .rubric-pts {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 24px 0;
+  }
+
+  /* ── FINAL CARD ── */
+  .final-card {
+    text-align: center;
+    padding: 48px 28px;
+    background: linear-gradient(135deg, #13151f, #1c1630);
+    border: 1px solid rgba(200,169,110,.2);
+    border-radius: 16px;
+  }
+  .final-icon { font-size: 3rem; margin-bottom: 14px; }
+  .final-card h2 { font-family: var(--serif); font-size: 1.8rem; color: var(--accent); margin-bottom: 10px; }
+  .final-card p { color: var(--text-muted); max-width: 480px; margin: 0 auto 24px; }
+
+  /* ── TOOLTIP ── */
+  .tooltip-wrap { position: relative; display: inline-block; }
+  .tooltip-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--surface2); border: 1px solid var(--border);
+    font-size: 10px; color: var(--text-muted); cursor: help;
+    vertical-align: middle; margin-left: 4px;
+  }
+  .tooltip-text {
+    display: none;
+    position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%);
+    background: #2a2f45;
+    color: var(--text);
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    width: 220px;
+    line-height: 1.5;
+    z-index: 10;
+  }
+  .tooltip-wrap:hover .tooltip-text { display: block; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:600px) {
+    .phase-header { flex-direction: column; gap: 6px; }
+    .resource-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── PROGRESS RING ── */
+  .progress-ring-wrap {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-family: var(--mono);
+    color: var(--text-muted);
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .progress-fill {
+    height: 6px; border-radius: 3px; background: var(--border);
+    width: 80px; overflow: hidden;
+  }
+  .progress-fill-inner {
+    height: 100%; background: var(--accent); border-radius: 3px;
+    transition: width .4s ease;
+  }
+
+  /* ── AI REFLECTION QUESTION ── */
+  .reflect-banner {
+    background: rgba(94,207,160,.06);
+    border: 1px solid rgba(94,207,160,.2);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-top: 16px;
+  }
+  .reflect-banner h4 { color: var(--success); font-size: 13px; margin-bottom: 8px; font-weight: 600; }
+  .reflect-banner p { color: var(--text-muted); font-size: 13.5px; line-height: 1.7; }
+
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">LPS207 · SEGUNDO CUATRIMESTRE · PROYECTO FINAL</div>
+  <h1>El Dilema de <em>Valentina</em></h1>
+  <p class="hero-sub">Caso de estudio sobre ética, responsabilidad profesional y normatividad en la práctica psicológica</p>
+  <div class="meta-row">
+    <div class="meta-chip">⏱ Duración <span>3 horas</span></div>
+    <div class="meta-chip">📋 Fases <span>6 etapas</span></div>
+    <div class="meta-chip">👤 Modalidad <span>Individual + Equipo</span></div>
+    <div class="meta-chip">📚 Clave <span>LPS207</span></div>
+  </div>
+</div>
+
+<!-- PROGRESS NAV -->
+<div class="progress-bar-wrap">
+  <div class="phase-steps" id="phaseSteps">
+    <div class="step-dot active" onclick="goTo(0)" id="dot0"><div class="num">1</div><span>Caso</span></div>
+    <div class="connector"></div>
+    <div class="step-dot" onclick="goTo(1)" id="dot1"><div class="num">2</div><span>Diagnóstico Ético</span></div>
+    <div class="connector"></div>
+    <div class="step-dot" onclick="goTo(2)" id="dot2"><div class="num">3</div><span>Marco Normativo</span></div>
+    <div class="connector"></div>
+    <div class="step-dot" onclick="goTo(3)" id="dot3"><div class="num">4</div><span>Análisis IA</span></div>
+    <div class="connector"></div>
+    <div class="step-dot" onclick="goTo(4)" id="dot4"><div class="num">5</div><span>Postura Profesional</span></div>
+    <div class="connector"></div>
+    <div class="step-dot" onclick="goTo(5)" id="dot5"><div class="num">6</div><span>Entregable</span></div>
+    <div class="progress-ring-wrap">
+      <div class="progress-fill"><div class="progress-fill-inner" id="progFill" style="width:0%"></div></div>
+      <span id="progLabel">0%</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ══ FASE 1: EL CASO ══ -->
+  <div class="section active" id="sec0">
+    <div class="phase-header">
+      <div class="phase-num">01</div>
+      <div>
+        <h2>Lectura y Contextualización del Caso</h2>
+        <p>Lee con atención. Todo el análisis posterior parte de tu comprensión profunda de este caso.</p>
+        <div class="time-badge">⏱ ~25 minutos</div>
+      </div>
+    </div>
+
+    <div class="case-box">
+      <div class="case-name">El caso de Valentina R.</div>
+      <div class="case-text">
+        <p><strong style="color:#e8e4dc">Contexto:</strong> Valentina, 32 años, acude a consulta con la Psic. Irene Salinas en una clínica privada de Guadalajara. Tras cuatro sesiones, Valentina revela que su esposo le ha sido infiel y que está considerando el divorcio. Durante el proceso terapéutico, expresa ideación suicida pasiva sin plan específico. La Psic. Salinas registra esto en el expediente clínico.</p>
+        <br>
+        <p><strong style="color:#e8e4dc">El giro:</strong> Tres semanas después, el esposo de Valentina —quien es médico general en la misma clínica— solicita informalmente a la Psic. Salinas información sobre el estado psicológico de su esposa, argumentando que tiene derecho a saberlo como "tutor de hecho" dado que Valentina "no está bien". La directora de la clínica, al enterarse de la situación, presiona a la Psic. Salinas para que entregue el expediente completo al esposo para "evitar problemas legales con el médico".</p>
+        <br>
+        <p><strong style="color:#e8e4dc">Elemento adicional:</strong> Valentina no ha dado ningún consentimiento para compartir su información. En la última sesión, expresó explícitamente que no quería que su esposo supiera nada de su proceso terapéutico. La ideación suicida no ha avanzado hacia un plan concreto ni hay riesgo inminente documentado.</p>
+      </div>
+      <div class="case-highlight">
+        ❝ "Si le dices algo a mi esposo, yo nunca más volvería a buscar ayuda. Prefiero sufrir sola que perder mi único espacio seguro." ❞ — Valentina, sesión 4.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔍</span> Personajes y roles en el caso</div>
+      <table class="styled-table">
+        <thead><tr><th>Persona</th><th>Rol</th><th>Interés en el caso</th></tr></thead>
+        <tbody>
+          <tr><td>Valentina R.</td><td>Paciente/usuaria</td><td>Confidencialidad, autonomía, seguridad</td></tr>
+          <tr><td>Psic. Irene Salinas</td><td>Psicóloga tratante</td><td>Obligación ética y legal; dilema de lealtades</td></tr>
+          <tr><td>Esposo (Dr.)</td><td>Familiar + colega institucional</td><td>Acceso a información por poder relacional</td></tr>
+          <tr><td>Directora de la clínica</td><td>Autoridad administrativa</td><td>Presión institucional; evitar conflicto</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📌</span> Preguntas previas a la lectura — antes de avanzar, reflexiona:</div>
+      <ul class="checklist" id="cl1">
+        <li onclick="toggleCheck(this)"><div class="check-box"></div> ¿Qué me genera este caso a nivel personal como futuro/a psicólogo/a?</li>
+        <li onclick="toggleCheck(this)"><div class="check-box"></div> ¿Qué sabía yo sobre la confidencialidad antes de leer este caso?</li>
+        <li onclick="toggleCheck(this)"><div class="check-box"></div> ¿Qué haría yo intuitivamente si fuera la Psic. Salinas?</li>
+      </ul>
+      <textarea class="answer-area" placeholder="Escribe aquí tu reflexión inicial antes de continuar... (no hay respuesta correcta, es para activar tu pensamiento previo)"></textarea>
+    </div>
+
+    <div class="nav-row">
+      <div></div>
+      <button class="btn-primary" onclick="goTo(1)">Continuar al Diagnóstico Ético →</button>
+    </div>
+  </div>
+
+  <!-- ══ FASE 2: DIAGNÓSTICO ÉTICO ══ -->
+  <div class="section" id="sec1">
+    <div class="phase-header">
+      <div class="phase-num">02</div>
+      <div>
+        <h2>Diagnóstico Ético del Caso</h2>
+        <p>Antes de buscar normatividad, identifica los elementos éticos con tus propias palabras y conocimientos.</p>
+        <div class="time-badge">⏱ ~30 minutos</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">⚖️</span> Tarea 1 — Identificación de principios en tensión</div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag individual">INDIVIDUAL</span> Identifica los principios bioéticos que están en conflicto en el caso</div>
+        <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:10px">Recuerda: Beneficencia, No maleficencia, Autonomía, Justicia. ¿Cuáles están presentes? ¿Cuáles chocan entre sí y por qué?</p>
+        <textarea class="answer-area" placeholder="Ejemplo: El principio de autonomía de Valentina colide con el de beneficencia que podría argumentar el esposo..."></textarea>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title"><span class="ttag individual">INDIVIDUAL</span> ¿Cuál es el dilema ético central de la Psic. Salinas?</div>
+        <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:10px">Formula el dilema en una sola oración: "La psicóloga debe elegir entre ____ y ____ porque ____"</p>
+        <textarea class="answer-area" rows="3" style="min-height:70px" placeholder="La psicóloga debe elegir entre..."></textarea>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title"><span class="ttag equipo">EQUIPO</span> Mapa de consecuencias</div>
+        <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:10px">En equipo, tracen dos caminos posibles y sus consecuencias para cada persona involucrada:</p>
+        <p style="font-size:13px;color:var(--accent);margin-bottom:6px">CAMINO A: La psicóloga entrega el expediente</p>
+        <textarea class="answer-area" rows="4" style="min-height:80px" placeholder="Consecuencias para Valentina / para la psicóloga / para la clínica / para la confianza en la psicología como profesión..."></textarea>
+        <p style="font-size:13px;color:var(--accent2);margin-bottom:6px;margin-top:12px">CAMINO B: La psicóloga se niega a entregar el expediente</p>
+        <textarea class="answer-area" rows="4" style="min-height:80px" placeholder="Consecuencias para Valentina / para la psicóloga / para la clínica..."></textarea>
+      </div>
+    </div>
+
+    <div class="reflect-banner">
+      <h4>🧠 Punto de reflexión metacognitiva</h4>
+      <p>Antes de buscar qué dice la ley o los códigos: ¿En qué te basaste para hacer este diagnóstico? ¿Fue intuición, valores personales, conocimientos previos? Anota mentalmente tu fuente de razonamiento — la compararás con la normatividad en la siguiente fase.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-secondary" onclick="goTo(0)">← Volver al Caso</button>
+      <button class="btn-primary" onclick="goTo(2)">Consultar Marco Normativo →</button>
+    </div>
+  </div>
+
+  <!-- ══ FASE 3: MARCO NORMATIVO ══ -->
+  <div class="section" id="sec2">
+    <div class="phase-header">
+      <div class="phase-num">03</div>
+      <div>
+        <h2>Marco Normativo y Legal</h2>
+        <p>Investiga qué dicen las normas reales. Usa los enlaces para consultar fuentes primarias.</p>
+        <div class="time-badge">⏱ ~35 minutos</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔗</span> Fuentes primarias a consultar</div>
+      <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:14px">Abre cada enlace, busca los artículos o secciones relevantes para el caso de Valentina, y regresa para registrar tus hallazgos.</p>
+      <div class="resource-grid">
+        <a class="resource-link" href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LGSS.pdf" target="_blank">
+          <div class="rl-icon">📜</div>
+          <div><div>Ley General de Salud</div><div class="rl-label">Arts. sobre secreto profesional y expediente clínico</div></div>
+        </a>
+        <a class="resource-link" href="https://www.gob.mx/cms/uploads/attachment/file/104533/NOM-004-SSA3-2012.pdf" target="_blank">
+          <div class="rl-icon">📋</div>
+          <div><div>NOM-004-SSA3-2012</div><div class="rl-label">Del expediente clínico (confidencialidad)</div></div>
+        </a>
+        <a class="resource-link" href="https://www.psicologia.unam.mx/documentos/pdf/comite_etica/Codigo_Etico_SMP.pdf" target="_blank">
+          <div class="rl-icon">🧠</div>
+          <div><div>Código Ético SMP</div><div class="rl-label">Sociedad Mexicana de Psicología</div></div>
+        </a>
+        <a class="resource-link" href="https://www.apa.org/ethics/code" target="_blank">
+          <div class="rl-icon">🌐</div>
+          <div><div>APA Ethics Code</div><div class="rl-label">American Psychological Association (en inglés)</div></div>
+        </a>
+        <a class="resource-link" href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPDPPP.pdf" target="_blank">
+          <div class="rl-icon">🔒</div>
+          <div><div>Ley de Datos Personales</div><div class="rl-label">LFPDPPP — protección de datos en salud</div></div>
+        </a>
+        <a class="resource-link" href="https://www.conamed.gob.mx/gobmx/armonizacion/pdf/carta_derechos_pacientes.pdf" target="_blank">
+          <div class="rl-icon">📄</div>
+          <div><div>Carta de Derechos del Paciente</div><div class="rl-label">CONAMED — derechos del usuario de salud</div></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📝</span> Registro de hallazgos normativos</div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag individual">INDIVIDUAL</span> ¿Qué dice la normatividad sobre la confidencialidad y el secreto profesional?</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">Cita la fuente (artículo/sección) y explica con tus palabras cómo aplica al caso de Valentina.</p>
+        <textarea class="answer-area" placeholder="Fuente: ___. El artículo/sección ___ establece que... En el caso de Valentina esto significa que..."></textarea>
+      </div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag individual">INDIVIDUAL</span> ¿Existen excepciones a la confidencialidad? ¿Aplican en este caso?</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">Investiga cuándo la ley o los códigos éticos permiten romper el secreto profesional. ¿Se cumple alguna de esas condiciones aquí?</p>
+        <textarea class="answer-area" placeholder="Las excepciones al secreto profesional incluyen... En el caso de Valentina, la ideación suicida pasiva sin plan concreto..."></textarea>
+      </div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag equipo">EQUIPO</span> Comparativa: SMP vs APA</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">¿Coinciden o difieren las normas mexicanas (SMP) con las internacionales (APA) sobre este dilema? ¿Qué implicaciones tiene esa diferencia?</p>
+        <textarea class="answer-area" placeholder="La SMP establece... mientras que la APA plantea... La diferencia principal es... Esto implica para la práctica en México que..."></textarea>
+      </div>
+    </div>
+
+    <div class="reflect-banner">
+      <h4>🔄 Conecta con tu fase anterior</h4>
+      <p>¿Tu diagnóstico ético intuitivo de la Fase 2 coincide con lo que encontraste en la normatividad? ¿Dónde fue correcto tu razonamiento? ¿Dónde fue diferente? Anota mentalmente esas coincidencias y divergencias — las usarás en tu postura final.</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-secondary" onclick="goTo(1)">← Diagnóstico Ético</button>
+      <button class="btn-primary" onclick="goTo(3)">Consultar con Asistente IA →</button>
+    </div>
+  </div>
+
+  <!-- ══ FASE 4: ANÁLISIS CON IA ══ -->
+  <div class="section" id="sec3">
+    <div class="phase-header">
+      <div class="phase-num">04</div>
+      <div>
+        <h2>Diálogo Crítico con Inteligencia Artificial</h2>
+        <p>Usa la IA como fuente de contraste, no como oráculo. Tu razonamiento es lo que importa.</p>
+        <div class="time-badge">⏱ ~30 minutos</div>
+      </div>
+    </div>
+
+    <div class="ai-panel">
+      <div class="ai-panel-header">
+        <div class="ai-avatar">🤖</div>
+        <div>
+          <div class="ai-name">Asistente de Análisis Ético</div>
+          <div class="ai-desc">Modelo de IA para consulta complementaria · Centro Universitario UNE</div>
+        </div>
+      </div>
+      <div class="ai-disclaimer">
+        ⚠️ <strong>Instrucción de uso responsable:</strong> La IA puede cometer errores, omitir contexto legal mexicano específico o dar respuestas genéricas. <strong>Tu tarea es formular preguntas precisas, evaluar críticamente las respuestas y contrastarlas con las fuentes que consultaste en la Fase 3.</strong> No copies respuestas — úsalas para enriquecer o rebatir tu propio análisis.
+      </div>
+      <div class="ai-input-row">
+        <input class="ai-input" id="aiInput" type="text" placeholder="Formula una pregunta específica sobre el caso de Valentina...">
+        <button class="btn-send" id="aiSend" onclick="askAI()">Preguntar</button>
+      </div>
+      <div class="ai-response-box" id="aiResponse"></div>
+      <div class="ai-reasoning-prompt" id="aiReasoning"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🎯</span> Preguntas sugeridas para consultar a la IA</div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px">Estas preguntas están diseñadas para que la IA te dé perspectivas que luego <strong>tú debes analizar y evaluar</strong>:</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;cursor:pointer;color:var(--text-muted);transition:color .2s" onclick="setQuestion(this)" data-q="¿Cuándo es éticamente justificable romper la confidencialidad en psicología clínica según los principios bioéticos?">
+          💬 "¿Cuándo es éticamente justificable romper la confidencialidad en psicología clínica?"
+        </div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;cursor:pointer;color:var(--text-muted);transition:color .2s" onclick="setQuestion(this)" data-q="Una psicóloga tiene una paciente con ideación suicida pasiva sin plan concreto, cuyo esposo (médico de la misma institución) solicita el expediente. La directora también presiona. ¿Qué debería hacer la psicóloga desde una perspectiva ética y legal?">
+          💬 "Una psicóloga tiene paciente con ideación suicida pasiva, el esposo pide el expediente... ¿qué debe hacer?"
+        </div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;cursor:pointer;color:var(--text-muted);transition:color .2s" onclick="setQuestion(this)" data-q="¿Qué diferencias existen entre el Código Ético de la Sociedad Mexicana de Psicología y el de la APA respecto a la confidencialidad y sus excepciones?">
+          💬 "¿Qué diferencias existen entre el Código Ético de la SMP y la APA en confidencialidad?"
+        </div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;cursor:pointer;color:var(--text-muted);transition:color .2s" onclick="setQuestion(this)" data-q="¿Qué es la presión institucional en el contexto de la ética psicológica y cómo debe manejarse cuando la autoridad solicita actuar en contra del código deontológico?">
+          💬 "¿Qué es la presión institucional en ética psicológica y cómo enfrentarla?"
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔬</span> Evaluación crítica de las respuestas de la IA</div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag reflexion">REFLEXIÓN</span> ¿Qué encontró la IA que coincide con tus hallazgos normativos?</div>
+        <textarea class="answer-area" placeholder="La IA mencionó... y esto coincide con lo que encontré en la fuente ___ porque..."></textarea>
+      </div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag reflexion">REFLEXIÓN</span> ¿Qué omitió, generalizó o se equivocó la IA? ¿Por qué importa eso?</div>
+        <textarea class="answer-area" placeholder="La IA no mencionó... / generalizó cuando en realidad la NOM-004 establece específicamente... / esto importa porque..."></textarea>
+      </div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag reflexion">REFLEXIÓN</span> ¿Cambió alguna de tus ideas después de consultar a la IA? ¿Por qué sí o no?</div>
+        <textarea class="answer-area" placeholder="Después de consultar a la IA, mi postura..."></textarea>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-secondary" onclick="goTo(2)">← Marco Normativo</button>
+      <button class="btn-primary" onclick="goTo(4)">Construir Postura Profesional →</button>
+    </div>
+  </div>
+
+  <!-- ══ FASE 5: POSTURA PROFESIONAL ══ -->
+  <div class="section" id="sec4">
+    <div class="phase-header">
+      <div class="phase-num">05</div>
+      <div>
+        <h2>Tu Postura Profesional Fundamentada</h2>
+        <p>Integra todo lo analizado y construye tu dictamen como psicólogo/a. Este es el núcleo de tu aprendizaje.</p>
+        <div class="time-badge">⏱ ~40 minutos</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🧩</span> Tarea 1 — Decisión fundamentada</div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag individual">INDIVIDUAL</span> ¿Qué debe hacer la Psic. Irene Salinas y por qué?</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Redacta tu dictamen en al menos 3 párrafos. Debe incluir: (1) tu postura clara, (2) fundamento normativo específico, (3) justificación ética.</p>
+        <textarea class="answer-area" style="min-height:160px" placeholder="En mi opinión fundamentada como futuro/a psicólogo/a, la Psic. Salinas debe...
+
+Esto se sustenta en el artículo/sección ___ de ___ que establece...
+
+Desde una perspectiva ética, el principio de ___ implica que..."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🗺️</span> Tarea 2 — Protocolo de acción</div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag equipo">EQUIPO</span> ¿Cómo debería actuar la psicóloga paso a paso?</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Elaboren un protocolo concreto de los pasos que debería seguir la Psic. Salinas (qué decir al esposo, cómo responder a la directora, cómo documentar, qué instancias consultar, etc.)</p>
+        <textarea class="answer-area" style="min-height:180px" placeholder="Paso 1: Ante la solicitud del esposo, la Psic. Salinas debe...
+Paso 2: Frente a la presión de la directora...
+Paso 3: En cuanto a la documentación del expediente...
+Paso 4: Si la presión institucional persiste...
+Paso 5: Respecto al seguimiento con Valentina..."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🌍</span> Tarea 3 — Reflexión sobre responsabilidad social</div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag reflexion">REFLEXIÓN</span> ¿Qué dice este caso sobre el rol del psicólogo como agente de cambio social?</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:10px">Conecta con la Unidad III del programa. ¿Cómo impacta la decisión de un solo profesional en la confianza social hacia la psicología como institución?</p>
+        <textarea class="answer-area" placeholder="El rol del psicólogo como agente de cambio social implica que en este caso..."></textarea>
+      </div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag reflexion">REFLEXIÓN</span> ¿Qué cambiarías tú en el sistema para que dilemas como este sean menos frecuentes?</div>
+        <textarea class="answer-area" placeholder="En términos de política institucional, formación profesional o cultura organizacional, yo propondría..."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🎭</span> Simulación de juego de roles (opcional en equipo)</div>
+      <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:14px">Si el grupo lo permite, asigna roles: un/a compañero/a como Psic. Salinas, otro/a como el esposo, otro/a como la directora. Improvisa el diálogo donde la psicóloga debe responder a ambas presiones. Luego registra:</p>
+      <textarea class="answer-area" placeholder="Lo que más me costó trabajo en el juego de roles fue... / Lo que aprendí de haberlo representado fue... / Mi postura cambió/no cambió porque..."></textarea>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-secondary" onclick="goTo(3)">← Análisis IA</button>
+      <button class="btn-primary" onclick="goTo(5)">Preparar Entregable Final →</button>
+    </div>
+  </div>
+
+  <!-- ══ FASE 6: ENTREGABLE ══ -->
+  <div class="section" id="sec5">
+    <div class="phase-header">
+      <div class="phase-num">06</div>
+      <div>
+        <h2>Entregable Final y Rúbrica</h2>
+        <p>Organiza tu trabajo y revisa los criterios de evaluación antes de entregar.</p>
+        <div class="time-badge">⏱ ~20 minutos</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📦</span> ¿Qué debes entregar?</div>
+      <ul class="checklist" id="deliverables">
+        <li onclick="toggleCheck(this)"><div class="check-box"></div> <div><strong>Diagnóstico ético escrito</strong> — Principios en tensión, dilema central y mapa de consecuencias (Fase 2)</div></li>
+        <li onclick="toggleCheck(this)"><div class="check-box"></div> <div><strong>Tabla normativa comparativa</strong> — Al menos 3 fuentes consultadas con artículos específicos y su aplicación al caso</div></li>
+        <li onclick="toggleCheck(this)"><div class="check-box"></div> <div><strong>Evaluación crítica de la IA</strong> — Qué encontró, qué omitió, qué cambió en tu análisis (Fase 4)</div></li>
+        <li onclick="toggleCheck(this)"><div class="check-box"></div> <div><strong>Dictamen profesional fundamentado</strong> — Tu decisión con justificación ética y legal (mín. 3 párrafos)</div></li>
+        <li onclick="toggleCheck(this)"><div class="check-box"></div> <div><strong>Protocolo de acción paso a paso</strong> — Cómo debe actuar la Psic. Salinas concretamente</div></li>
+        <li onclick="toggleCheck(this)"><div class="check-box"></div> <div><strong>Reflexión sobre responsabilidad social</strong> — Conexión con el rol del psicólogo como agente de cambio</div></li>
+        <li onclick="toggleCheck(this)"><div class="check-box"></div> <div><strong>Reflexión metacognitiva final</strong> — ¿Qué sabías antes vs. qué sabes ahora? ¿Cómo razonaste?</div></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span> Rúbrica de evaluación</div>
+      <div class="rubric-row"><div>Diagnóstico ético (identificación correcta de principios y dilema)</div><div class="rubric-pts">15 pts</div></div>
+      <div class="rubric-row"><div>Investigación normativa (fuentes primarias, artículos específicos citados)</div><div class="rubric-pts">20 pts</div></div>
+      <div class="rubric-row"><div>Análisis crítico de la IA (evaluación fundamentada, no copia)</div><div class="rubric-pts">15 pts</div></div>
+      <div class="rubric-row"><div>Dictamen profesional (postura clara, coherente, fundamentada)</div><div class="rubric-pts">20 pts</div></div>
+      <div class="rubric-row"><div>Protocolo de acción (concreto, viable, ético)</div><div class="rubric-pts">15 pts</div></div>
+      <div class="rubric-row"><div>Reflexión sobre responsabilidad social y metacognición</div><div class="rubric-pts">15 pts</div></div>
+      <div class="rubric-row" style="border-top:1px solid var(--border);margin-top:4px;padding-top:12px"><div><strong style="color:var(--text)">TOTAL</strong></div><div class="rubric-pts" style="font-size:15px;color:var(--accent)"><strong>100 pts</strong></div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">⚙️</span> Lineamientos de uso de IA en este proyecto</div>
+      <table class="styled-table">
+        <thead><tr><th>Acción</th><th>Permitido</th></tr></thead>
+        <tbody>
+          <tr><td>Consultar a la IA para ampliar conceptos</td><td style="color:var(--success)">✓ Sí, con evaluación crítica</td></tr>
+          <tr><td>Pedir a la IA que redacte tu dictamen</td><td style="color:var(--accent3)">✗ No — debe ser tu postura</td></tr>
+          <tr><td>Usar la IA para buscar artículos normativos</td><td style="color:var(--warn)">⚠ Solo si verificas en la fuente original</td></tr>
+          <tr><td>Copiar respuestas de la IA sin análisis</td><td style="color:var(--accent3)">✗ No — equivale a no aprendizaje</td></tr>
+          <tr><td>Contrastar lo que dijo la IA con lo que encontraste</td><td style="color:var(--success)">✓ Sí — esto es pensamiento crítico</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🪞</span> Reflexión metacognitiva final</div>
+      <div class="task-block">
+        <div class="task-title"><span class="ttag reflexion">CIERRE</span> ¿Qué cambió en ti después de esta actividad?</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">Compara con lo que escribiste al inicio. ¿Qué creías antes sobre la confidencialidad? ¿Cómo razonaste? ¿Qué le dirías a tu yo de hace 3 horas?</p>
+        <textarea class="answer-area" style="min-height:120px" placeholder="Al inicio de esta actividad yo pensaba que... / Lo que más me sorprendió fue... / Ahora entiendo que la ética profesional es... / El aprendizaje más significativo fue..."></textarea>
+      </div>
+    </div>
+
+    <div class="final-card">
+      <div class="final-icon">🎓</div>
+      <h2>Actividad completada</h2>
+      <p>Has construido un análisis ético fundamentado en normatividad real, razonamiento propio y evaluación crítica. Eso es lo que hace un psicólogo profesional ante un dilema real.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-primary" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+        <button class="btn-secondary" onclick="goTo(0)">↺ Revisar desde el inicio</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+  let currentSection = 0;
+  const totalSections = 6;
+
+  function goTo(n) {
+    document.getElementById('sec' + currentSection).classList.remove('active');
+    document.getElementById('dot' + currentSection).classList.remove('active');
+    if (n > currentSection) {
+      document.getElementById('dot' + currentSection).classList.add('done');
+    }
+    currentSection = n;
+    document.getElementById('sec' + n).classList.add('active');
+    document.getElementById('dot' + n).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const pct = Math.round((currentSection / (totalSections - 1)) * 100);
+    document.getElementById('progFill').style.width = pct + '%';
+    document.getElementById('progLabel').textContent = pct + '%';
+  }
+
+  function toggleCheck(el) {
+    el.classList.toggle('checked');
+    if (el.classList.contains('checked')) {
+      el.querySelector('.check-box').textContent = '✓';
+    } else {
+      el.querySelector('.check-box').textContent = '';
+    }
+  }
+
+  function setQuestion(el) {
+    document.getElementById('aiInput').value = el.dataset.q;
+    document.getElementById('aiInput').focus();
+  }
+
+  // ── AI INTEGRATION ──
+  const conversationHistory = [];
+
+  const SYSTEM_PROMPT = `Eres un asistente especializado en ética psicológica y bioética para un curso universitario de Licenciatura en Psicología en México (materia: Ética y Ejercicio Profesional, LPS207). 
+
+El caso que los estudiantes están analizando es: "La psicóloga Irene Salinas tiene como paciente a Valentina (32 años) quien ha expresado ideación suicida pasiva sin plan concreto y desea divorciarse. El esposo (médico de la misma clínica) solicita el expediente clínico. La directora presiona a la psicóloga para entregarlo. Valentina no ha dado consentimiento y en la última sesión expresó explícitamente que no quería que su esposo supiera nada."
+
+INSTRUCCIONES DE COMPORTAMIENTO:
+- Responde en español
+- Sé informativo pero NO des respuestas definitivas o dictámenes acabados — el estudiante debe razonar la conclusión
+- Cuando corresponda, menciona artículos específicos de la NOM-004-SSA3-2012, el Código Ético de la SMP, la Ley General de Salud, o el código APA
+- Después de cada respuesta, haz UNA pregunta que impulse al estudiante a seguir razonando por sí mismo
+- Si el estudiante pide que tomes una decisión por él/ella, indícale amablemente que el aprendizaje surge de su propio razonamiento y ofrece perspectivas en cambio
+- Sé preciso sobre el contexto legal mexicano cuando sea relevante
+- Mantén respuestas entre 150-280 palabras
+- Al final de cada respuesta añade esta línea exacta: "---REFLEXION---" seguida de una pregunta de 1-2 oraciones que invite al estudiante a conectar la información con su propio análisis del caso.`;
+
+  async function askAI() {
+    const input = document.getElementById('aiInput');
+    const sendBtn = document.getElementById('aiSend');
+    const responseBox = document.getElementById('aiResponse');
+    const reasoningBox = document.getElementById('aiReasoning');
+
+    const question = input.value.trim();
+    if (!question) return;
+
+    sendBtn.disabled = true;
+    responseBox.classList.add('visible');
+    responseBox.innerHTML = '<div class="loading-dots"><span>●</span><span>●</span><span>●</span></div>';
+    reasoningBox.classList.remove('visible');
+
+    conversationHistory.push({ role: 'user', content: question });
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: SYSTEM_PROMPT,
+          messages: conversationHistory
+        })
+      });
+
+      const data = await response.json();
+      const fullText = data.content?.map(b => b.text || '').join('') || 'No se pudo obtener respuesta.';
+
+      const parts = fullText.split('---REFLEXION---');
+      const mainText = parts[0].trim();
+      const reflectionQuestion = parts[1]?.trim() || '';
+
+      conversationHistory.push({ role: 'assistant', content: fullText });
+
+      // Format response
+      responseBox.innerHTML = mainText.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+      if (responseBox.innerHTML && !responseBox.innerHTML.startsWith('<p>')) {
+        responseBox.innerHTML = '<p>' + responseBox.innerHTML + '</p>';
+      }
+
+      if (reflectionQuestion) {
+        reasoningBox.innerHTML = '🧠 <strong>Para que sigas razonando:</strong> ' + reflectionQuestion;
+        reasoningBox.classList.add('visible');
+      }
+
+      input.value = '';
+    } catch (err) {
+      responseBox.innerHTML = '<span style="color:var(--accent3)">Error al conectar con el asistente. Verifica tu conexión e intenta de nuevo.</span>';
+    }
+
+    sendBtn.disabled = false;
+  }
+
+  document.getElementById('aiInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') askAI();
+  });
+
+  // Hover styles for suggested questions
+  document.querySelectorAll('[data-q]').forEach(el => {
+    el.addEventListener('mouseenter', () => el.style.color = 'var(--text)');
+    el.addEventListener('mouseleave', () => el.style.color = 'var(--text-muted)');
+  });
+</script>
+</body>
+</html>
