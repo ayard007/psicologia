@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Parcial - Estadística Aplicada a la Psicología - UNE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .question-card { transition: all 0.3s ease; }
+        .question-card:hover { border-left: 4px solid #1e40af; }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div id="app" class="max-w-4xl mx-auto py-10 px-4">
+        <!-- HEADER -->
+        <header class="bg-white p-6 rounded-t-xl shadow-md border-b-4 border-blue-900 text-center">
+            <img src="UNE_30.B0a6HcIb.webp" alt="Logo UNE" class="h-20 mx-auto mb-4" onerror="this.src='https://via.placeholder.com/150?text=UNE+LOGO'">
+            <h1 class="text-2xl font-bold text-blue-900 uppercase tracking-wider">Universidad de Especialidades</h1>
+            <h2 class="text-lg font-semibold text-gray-600">Licenciatura en Psicología</h2>
+            <p class="text-sm text-gray-500 mt-1">Asignatura: Estadística Aplicada a la Psicología (LPS204)</p>
+        </header>
+
+        <!-- REGISTRO DEL ALUMNO -->
+        <section id="registration" class="bg-white p-8 shadow-md rounded-b-xl mb-8">
+            <h3 class="text-xl font-bold mb-6 border-b pb-2 text-blue-800">Datos de Identificación</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Nombre Completo</label>
+                    <input type="text" id="studentName" placeholder="Ej. Juan Pérez" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Correo Institucional</label>
+                    <input type="email" id="studentEmail" placeholder="usuario@une.edu.mx" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Matrícula</label>
+                    <input type="text" id="studentId" placeholder="ID-00000" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <button onclick="startExam()" class="bg-blue-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-800 transition shadow-lg">Iniciar Evaluación</button>
+            </div>
+        </section>
+
+        <!-- EXAMEN (OCULTO INICIALMENTE) -->
+        <section id="examContainer" class="hidden">
+            <div id="questions" class="space-y-6">
+                <!-- Preguntas cargadas dinámicamente -->
+            </div>
+            <div class="mt-10 mb-20 text-center">
+                <button onclick="calculateResults()" class="bg-green-700 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-green-800 transition shadow-xl">Finalizar y Calificar</button>
+            </div>
+        </section>
+
+        <!-- RESULTADOS -->
+        <section id="results" class="hidden bg-white p-10 rounded-xl shadow-2xl text-center border-2 border-blue-900">
+            <h2 class="text-3xl font-bold text-blue-900 mb-4">Evaluación Finalizada</h2>
+            <div class="text-6xl font-black text-blue-600 mb-6" id="finalScoreDisplay">0/40</div>
+            <p class="text-xl text-gray-700 mb-8" id="feedbackMsg"></p>
+            <div class="flex justify-center gap-4 no-print">
+                <button onclick="generatePDF()" class="bg-red-600 text-white px-6 py-2 rounded flex items-center gap-2 hover:bg-red-700">
+                    Descargar Acta en PDF
+                </button>
+                <button onclick="location.reload()" class="bg-gray-200 text-gray-800 px-6 py-2 rounded hover:bg-gray-300">
+                    Reiniciar
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        const questionsData = [
+            // ESTADÍSTICA PSICOLOGÍA
+            { q: "¿Cuál es el objetivo principal de la estadística aplicada a la psicología?", a: ["Manipular conductas", "Interpretar resultados de investigación científica", "Eliminar variables", "Solo hacer gráficas"], c: 1 },
+            { q: "La escala de medición que permite clasificar por categorías sin orden jerárquico es:", a: ["Ordinal", "Razón", "Nominal", "Intervalo"], c: 2 },
+            { q: "En psicología, la variable 'Nivel de Ansiedad' (Bajo, Medio, Alto) pertenece a la escala:", a: ["Nominal", "Intervalo", "Ordinal", "Razón"], c: 2 },
+            { q: "La medida de tendencia central que representa el valor con mayor frecuencia es:", a: ["Media", "Mediana", "Rango", "Moda"], c: 3 },
+            { q: "¿Qué indica una desviación estándar elevada?", a: ["Datos muy agrupados", "Gran dispersión de los datos", "Error en el cálculo", "Que la media es cero"], c: 1 },
+            { q: "En una distribución normal, ¿qué porcentaje aproximado de datos cae a una desviación estándar de la media?", a: ["50%", "95%", "68%", "99%"], c: 2 },
+            { q: "¿Qué es una hipótesis nula (H0)?", a: ["La que el investigador quiere probar", "La que afirma que no hay efecto o diferencia", "Un error estadístico", "Una variable extraña"], c: 1 },
+            { q: "El valor 'p' menor a 0.05 generalmente significa:", a: ["Resultado no significativo", "Error en la muestra", "Significancia estadística", "Muestra insuficiente"], c: 2 },
+            { q: "¿Para qué sirve el coeficiente de correlación de Pearson?", a: ["Medir causalidad", "Medir la relación lineal entre dos variables", "Calcular el promedio", "Dividir la muestra"], c: 1 },
+            { q: "¿Cuál es una técnica de muestreo probabilístico?", a: ["Muestreo por conveniencia", "Muestreo aleatorio simple", "Muestreo por cuotas", "Muestreo bola de nieve"], c: 1 },
+            // EXCEL BÁSICO
+            { q: "¿Con qué símbolo debe iniciar siempre una fórmula en Excel?", a: ["+", "-", "=", "*"], c: 2 },
+            { q: "¿Qué función de Excel permite sumar un rango de celdas?", a: ["=TOTAL()", "=SUMA()", "=ADICION()", "=COUNT()"], c: 1 },
+            { q: "En Excel, ¿qué representa una celda con la dirección $A$1?", a: ["Referencia relativa", "Referencia absoluta", "Error de sintaxis", "Referencia de hoja"], c: 1 },
+            { q: "¿Cuál es la función correcta para obtener el promedio en Excel?", a: ["=MEDIA()", "=MEDIAN()", "=PROMEDIO()", "=AVG()"], c: 2 },
+            { q: "Si quiero contar cuántas celdas tienen números en un rango, uso:", a: ["=CONTAR()", "=CONTARA()", "=SUMAR.SI()", "=BUSCARV()"], c: 0 },
+            { q: "¿Qué combinación de teclas se usa habitualmente para 'Copiar' en Windows/Excel?", a: ["Ctrl + X", "Ctrl + V", "Ctrl + C", "Ctrl + Z"], c: 2 },
+            { q: "¿Cómo se llama la intersección entre una fila y una columna?", a: ["Bloque", "Celda", "Rango", "Filtro"], c: 1 },
+            { q: "¿Para qué sirve la herramienta 'Filtro'?", a: ["Para borrar datos", "Para ocultar filas que no cumplen criterios", "Para sumar automáticamente", "Para cambiar el color"], c: 1 },
+            { q: "¿Qué error muestra Excel cuando una columna es demasiado estrecha?", a: ["#VALUE!", "#REF!", "#######", "#DIV/0!"], c: 2 },
+            { q: "¿Qué función usaría para encontrar el valor máximo en un rango?", a: ["=GRANDE()", "=ALTO()", "=MAX()", "=TOP()"], c: 2 },
+            // MÁS ESTADÍSTICA Y PSICOMETRÍA
+            { q: "La validez de un instrumento psicológico se refiere a:", a: ["Que sea constante", "Que mida lo que pretende medir", "Que sea fácil de aplicar", "Que tenga muchas preguntas"], c: 1 },
+            { q: "La confiabilidad (o fiabilidad) de una prueba indica:", a: ["La veracidad del paciente", "La consistencia de los resultados", "El costo de la prueba", "La utilidad clínica"], c: 1 },
+            { q: "¿Qué tipo de variable es la 'Edad' medida en años cumplidos?", a: ["Cualitativa", "Cuantitativa discreta", "Cuantitativa continua", "Dicotómica"], c: 1 },
+            { q: "El 'Rango' estadístico se calcula como:", a: ["Suma de datos / n", "Valor máximo menos valor mínimo", "Punto medio de los datos", "Frecuencia acumulada"], c: 1 },
+            { q: "¿Qué gráfico es ideal para mostrar la distribución de una variable continua?", a: ["Gráfico de sectores", "Histograma", "Gráfico de barras simples", "Pictograma"], c: 1 },
+            { q: "Una correlación de -0.90 indica:", a: ["Ausencia de relación", "Relación fuerte y negativa", "Relación débil y positiva", "Error de cálculo"], c: 1 },
+            { q: "¿Cuál de estos es un software común para análisis estadístico en psicología?", a: ["Photoshop", "SPSS", "AutoCAD", "Premiere"], c: 1 },
+            { q: "En una investigación, la variable que se manipula se llama:", a: ["Variable Dependiente", "Variable Independiente", "Variable Extraña", "Variable Control"], c: 1 },
+            { q: "¿Qué es la muestra en una investigación?", a: ["El total de la población", "Un subconjunto representativo de la población", "Los investigadores", "Los resultados finales"], c: 1 },
+            { q: "La mediana es el valor que deja por debajo al:", a: ["25% de los datos", "75% de los datos", "50% de los datos", "10% de los datos"], c: 2 },
+            // MIXTO / GENERAL
+            { q: "¿Qué extensión tienen usualmente los archivos de Excel modernos?", a: [".docx", ".xlsx", ".pptx", ".pdf"], c: 1 },
+            { q: "En estadística, ¿qué es la población?", a: ["Solo las personas de una ciudad", "Conjunto total de elementos a estudiar", "Los datos atípicos", "La media de la muestra"], c: 1 },
+            { q: "¿Qué función lógica de Excel evalúa si una condición es verdadera o falsa?", a: ["=SI()", "=O()", "=Y()", "=BUSCAR()"], c: 0 },
+            { q: "¿Para qué sirve un diagrama de caja (Boxplot)?", a: ["Ver promedios", "Visualizar la dispersión y outliers", "Hacer presentaciones bonitas", "Sumar datos"], c: 1 },
+            { q: "Un instrumento con Alfa de Cronbach de 0.85 se considera:", a: ["Poco confiable", "Altamente confiable", "Inválido", "Incompleto"], c: 1 },
+            { q: "¿Qué significa que dos variables sean independientes?", a: ["Que una causa a la otra", "Que el valor de una no afecta la probabilidad de la otra", "Que son iguales", "Que no se pueden medir"], c: 1 },
+            { q: "¿Qué es la frecuencia absoluta?", a: ["El porcentaje de casos", "El número de veces que se repite un dato", "La suma total de los datos", "La resta de la media"], c: 1 },
+            { q: "En Excel, ¿cómo se selecciona toda una columna?", a: ["Clic en el número de fila", "Clic en la letra de la columna", "Ctrl + Alt", "Doble clic en una celda"], c: 1 },
+            { q: "El Teorema del Límite Central es fundamental para:", a: ["La estadística descriptiva", "La estadística inferencial", "Crear bases de datos", "Diseñar encuestas"], c: 1 },
+            { q: "¿Qué representa el eje Y en un histograma de frecuencias?", a: ["Los valores de la variable", "La frecuencia o conteo", "El nombre de los sujetos", "El tiempo"], c: 1 }
+        ];
+
+        function startExam() {
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('studentEmail').value;
+            const id = document.getElementById('studentId').value;
+
+            if (!name || !email || !id) {
+                alert("Por favor, complete todos los datos de identificación.");
+                return;
+            }
+
+            document.getElementById('registration').classList.add('hidden');
+            document.getElementById('examContainer').classList.remove('hidden');
+            renderQuestions();
+            window.scrollTo(0, 0);
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions');
+            questionsData.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "question-card bg-white p-6 rounded-lg shadow-sm border-l-4 border-gray-200";
+                
+                let optionsHtml = '';
+                item.a.forEach((opt, optIndex) => {
+                    optionsHtml += `
+                        <label class="flex items-center space-x-3 p-2 rounded hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="q${index}" value="${optIndex}" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                            <span class="text-gray-700">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <p class="font-semibold text-lg mb-4 text-gray-800">${index + 1}. ${item.q}</p>
+                    <div class="space-y-2">${optionsHtml}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        let finalGrade = 0;
+
+        function calculateResults() {
+            let score = 0;
+            questionsData.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected && parseInt(selected.value) === item.c) {
+                    score++;
+                }
+            });
+
+            finalGrade = ((score / 40) * 10).toFixed(1);
+            
+            document.getElementById('examContainer').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('finalScoreDisplay').innerText = `${score} / 40`;
+            
+            let feedback = "";
+            if (finalGrade >= 9) feedback = "Excelente desempeño. Dominas los conceptos básicos de estadística y herramientas digitales.";
+            else if (finalGrade >= 7) feedback = "Buen trabajo. Tienes bases sólidas, pero podrías reforzar algunos temas específicos.";
+            else feedback = "Se recomienda revisar nuevamente los contenidos del programa y practicar funciones de Excel.";
+            
+            document.getElementById('feedbackMsg').innerText = `Calificación final: ${finalGrade} - ${feedback}`;
+            window.scrollTo(0, 0);
+        }
+
+        function generatePDF() {
+            const doc = new jsPDF();
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('studentEmail').value;
+            const id = document.getElementById('studentId').value;
+            const scoreText = document.getElementById('finalScoreDisplay').innerText;
+
+            // Diseño del PDF
+            doc.setFillColor(30, 64, 175); // Azul UNE
+            doc.rect(0, 0, 210, 40, 'F');
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(18);
+            doc.text("UNIVERSIDAD DE ESPECIALIDADES", 105, 15, { align: "center" });
+            doc.setFontSize(12);
+            doc.text("ACTA DE EVALUACIÓN DIGITAL", 105, 25, { align: "center" });
+
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text("Datos del Estudiante", 20, 60);
+            doc.setFont(undefined, 'normal');
+            doc.setFontSize(11);
+            doc.text(`Nombre: ${name}`, 20, 70);
+            doc.text(`Matrícula: ${id}`, 20, 77);
+            doc.text(`Correo: ${email}`, 20, 84);
+            doc.text(`Carrera: Licenciatura en Psicología`, 20, 91);
+            
+            doc.setDrawColor(200, 200, 200);
+            doc.line(20, 100, 190, 100);
+
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text("Resultados de la Evaluación", 20, 115);
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Materia: Estadística Aplicada a la Psicología`, 20, 125);
+            doc.text(`Aciertos: ${scoreText}`, 20, 132);
+            
+            doc.setFontSize(22);
+            doc.setTextColor(30, 64, 175);
+            doc.text(`NOTA FINAL: ${finalGrade}`, 105, 155, { align: "center" });
+
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            const fecha = new Date().toLocaleString();
+            doc.text(`Generado el: ${fecha}`, 105, 280, { align: "center" });
+
+            doc.save(`Resultado_Examen_UNE_${id}.pdf`);
+        }
+    </script>
+</body>
+</html>
