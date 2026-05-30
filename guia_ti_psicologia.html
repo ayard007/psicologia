@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infraestructura Moderna y Ecosistema Digital en Psicología | TI Aplicadas a la Psicología</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul-marino:   #0D1B3E;
+    --azul-medio:    #1A3A72;
+    --rojo-une:      #C0282C;
+    --rojo-claro:    #E63946;
+    --gris-fondo:    #F4F6FA;
+    --gris-claro:    #E8ECF4;
+    --gris-texto:    #4A5568;
+    --blanco:        #FFFFFF;
+    --dorado:        #B8892A;
+    --borde:         #D1D9E6;
+    --sombra:        0 4px 24px rgba(13,27,62,0.10);
+    --sombra-hover:  0 8px 32px rgba(13,27,62,0.18);
+    --radio:         10px;
+    --fuente-head:   'Playfair Display', Georgia, serif;
+    --fuente-body:   'Source Sans 3', 'Segoe UI', sans-serif;
+    --fuente-mono:   'JetBrains Mono', 'Courier New', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--fuente-body);
+    background: var(--gris-fondo);
+    color: var(--azul-marino);
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  /* ── BARRA DE PROGRESO ── */
+  #progreso-barra {
+    position: fixed; top: 0; left: 0; height: 4px; width: 0%;
+    background: linear-gradient(90deg, var(--rojo-une), var(--dorado));
+    z-index: 9999; transition: width 0.2s ease;
+  }
+
+  /* ── NAVEGACIÓN ── */
+  nav {
+    position: sticky; top: 0; z-index: 900;
+    background: var(--azul-marino);
+    border-bottom: 3px solid var(--rojo-une);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; min-height: 56px;
+  }
+  nav .nav-marca {
+    font-family: var(--fuente-head);
+    color: var(--blanco); font-size: 0.88rem;
+    font-weight: 700; letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  nav ul {
+    list-style: none; display: flex; flex-wrap: wrap; gap: 0.1rem;
+  }
+  nav ul li a {
+    display: block; padding: 0.5rem 0.75rem;
+    color: rgba(255,255,255,0.78);
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.03em;
+    text-decoration: none; border-radius: 5px;
+    transition: background 0.2s, color 0.2s;
+  }
+  nav ul li a:hover, nav ul li a.activo {
+    background: var(--rojo-une); color: var(--blanco);
+  }
+
+  /* ── ENCABEZADO PRINCIPAL ── */
+  header {
+    background: linear-gradient(135deg, var(--azul-marino) 0%, var(--azul-medio) 60%, #243A6E 100%);
+    color: var(--blanco);
+    padding: 3.5rem 2rem 3rem;
+    position: relative; overflow: hidden;
+  }
+  header::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent, transparent 40px,
+      rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 80px
+    );
+  }
+  header::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--rojo-une) 0%, var(--dorado) 50%, var(--rojo-une) 100%);
+  }
+  .header-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: flex-start; gap: 2.5rem;
+    position: relative; z-index: 1;
+  }
+  .header-logo {
+    flex-shrink: 0;
+    background: var(--blanco);
+    border-radius: 12px;
+    padding: 0.7rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  }
+  .header-logo img { display: block; width: 90px; height: auto; }
+  .header-texto { flex: 1; }
+  .header-etiqueta {
+    display: inline-block;
+    background: var(--rojo-une);
+    color: var(--blanco);
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.25rem 0.8rem; border-radius: 3px; margin-bottom: 0.8rem;
+  }
+  .header-subtitulo-inst {
+    font-size: 0.82rem; font-weight: 600;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  header h1 {
+    font-family: var(--fuente-head);
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    font-weight: 900; line-height: 1.2;
+    margin-bottom: 0.8rem;
+  }
+  header h1 span { color: #F0B942; }
+  .header-meta {
+    display: flex; flex-wrap: wrap; gap: 1.2rem;
+    font-size: 0.82rem; color: rgba(255,255,255,0.72);
+    margin-top: 1.2rem;
+  }
+  .header-meta span { display: flex; align-items: center; gap: 0.4rem; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dorado); display: inline-block; }
+
+  /* ── CONTENEDOR PRINCIPAL ── */
+  main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+  /* ── TARJETA BASE ── */
+  .tarjeta {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    padding: 2.2rem 2.5rem;
+    margin-bottom: 2.5rem;
+    border-top: 4px solid transparent;
+    transition: box-shadow 0.3s;
+  }
+  .tarjeta:hover { box-shadow: var(--sombra-hover); }
+  .tarjeta.borde-azul  { border-top-color: var(--azul-medio); }
+  .tarjeta.borde-rojo  { border-top-color: var(--rojo-une); }
+  .tarjeta.borde-dorado { border-top-color: var(--dorado); }
+
+  /* ── TÍTULOS DE SECCIÓN ── */
+  .seccion-titulo {
+    font-family: var(--fuente-head);
+    font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+    color: var(--azul-marino);
+    font-weight: 900;
+    margin-bottom: 0.4rem;
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  .seccion-titulo .num {
+    font-family: var(--fuente-mono);
+    font-size: 0.75rem; font-weight: 600;
+    background: var(--azul-marino); color: var(--blanco);
+    padding: 0.2rem 0.55rem; border-radius: 4px;
+    letter-spacing: 0.06em;
+  }
+  .seccion-desc {
+    font-size: 0.92rem; color: var(--gris-texto);
+    margin-bottom: 1.6rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--borde);
+  }
+
+  h2 {
+    font-family: var(--fuente-head);
+    font-size: 1.35rem; font-weight: 700;
+    color: var(--azul-marino);
+    margin: 1.8rem 0 0.8rem;
+  }
+  h3 {
+    font-family: var(--fuente-head);
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--azul-medio);
+    margin: 1.4rem 0 0.5rem;
+  }
+  p { margin-bottom: 0.9rem; color: var(--gris-texto); font-size: 0.96rem; }
+  strong { color: var(--azul-marino); font-weight: 700; }
+
+  /* ── ACORDEÓN ── */
+  .acordeon { margin: 1rem 0; }
+  .acord-item {
+    border: 1px solid var(--borde);
+    border-radius: 8px; margin-bottom: 0.6rem;
+    overflow: hidden;
+  }
+  .acord-btn {
+    width: 100%; background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.3rem;
+    font-family: var(--fuente-body); font-size: 0.95rem;
+    font-weight: 700; color: var(--azul-marino);
+    text-align: left;
+    background: linear-gradient(90deg, #F8FAFF, #FFFFFF);
+    transition: background 0.2s;
+  }
+  .acord-btn:hover { background: var(--gris-claro); }
+  .acord-btn.abierto { background: var(--azul-marino); color: var(--blanco); }
+  .acord-icono {
+    font-size: 1.1rem; font-weight: 900;
+    transition: transform 0.3s;
+    flex-shrink: 0; margin-left: 1rem;
+  }
+  .acord-btn.abierto .acord-icono { transform: rotate(45deg); }
+  .acord-body {
+    display: none; padding: 1.3rem 1.5rem;
+    background: var(--blanco);
+    font-size: 0.93rem; color: var(--gris-texto);
+    border-top: 1px solid var(--borde);
+    animation: fadeIn 0.25s ease;
+  }
+  .acord-body.visible { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+
+  /* ── PESTAÑAS ── */
+  .pestanas { margin: 1.5rem 0; }
+  .pest-nav {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+    border-bottom: 2px solid var(--borde); margin-bottom: 0;
+  }
+  .pest-btn {
+    padding: 0.6rem 1.2rem;
+    border: none; background: none; cursor: pointer;
+    font-family: var(--fuente-body); font-size: 0.87rem; font-weight: 700;
+    color: var(--gris-texto); border-radius: 6px 6px 0 0;
+    border-bottom: 2px solid transparent; margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .pest-btn.activo {
+    color: var(--azul-marino); border-bottom-color: var(--rojo-une);
+    background: var(--blanco);
+  }
+  .pest-panel {
+    display: none; padding: 1.5rem 0.5rem;
+    animation: fadeIn 0.25s ease;
+  }
+  .pest-panel.visible { display: block; }
+
+  /* ── CONCEPTOS / GLOSARIO ── */
+  .concepto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem; margin: 1rem 0;
+  }
+  .concepto-card {
+    background: var(--gris-fondo);
+    border-left: 4px solid var(--azul-medio);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.2rem;
+  }
+  .concepto-card.rojo { border-left-color: var(--rojo-une); }
+  .concepto-card.dorado { border-left-color: var(--dorado); }
+  .concepto-titulo {
+    font-family: var(--fuente-mono);
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--azul-marino);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+  }
+  .concepto-def { font-size: 0.88rem; color: var(--gris-texto); margin: 0; }
+
+  /* ── TABLA COMPARATIVA ── */
+  .tabla-wrap { overflow-x: auto; margin: 1rem 0; }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  thead tr { background: var(--azul-marino); color: var(--blanco); }
+  thead th { padding: 0.8rem 1rem; text-align: left; font-weight: 700; }
+  tbody tr:nth-child(odd) { background: var(--gris-fondo); }
+  tbody tr:nth-child(even) { background: var(--blanco); }
+  tbody td { padding: 0.75rem 1rem; color: var(--gris-texto); vertical-align: top; }
+  tbody tr:hover { background: var(--gris-claro); }
+
+  /* ── CAJAS ESPECIALES ── */
+  .caja {
+    border-radius: 8px; padding: 1.1rem 1.4rem;
+    margin: 1.1rem 0; font-size: 0.92rem;
+  }
+  .caja-info    { background: #EBF2FF; border-left: 4px solid var(--azul-medio); }
+  .caja-alerta  { background: #FFF3E0; border-left: 4px solid var(--dorado); }
+  .caja-logro   { background: #E8F5E9; border-left: 4px solid #2E7D32; }
+  .caja-etica   { background: #F3E5F5; border-left: 4px solid #7B1FA2; }
+  .caja p, .caja ul { margin-bottom: 0.4rem; color: inherit; }
+  .caja strong { color: inherit; }
+  .caja-titulo {
+    font-weight: 700; font-size: 0.82rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 0.5rem; display: block;
+  }
+  .caja-info .caja-titulo    { color: var(--azul-medio); }
+  .caja-alerta .caja-titulo  { color: #8B5E00; }
+  .caja-logro .caja-titulo   { color: #2E7D32; }
+  .caja-etica .caja-titulo   { color: #7B1FA2; }
+  ul.lista, ol.lista { padding-left: 1.5rem; margin: 0.6rem 0; }
+  ul.lista li, ol.lista li { margin-bottom: 0.4rem; font-size: 0.92rem; color: var(--gris-texto); }
+
+  /* ── DIAGRAMA URL ── */
+  .diagrama-url {
+    background: var(--azul-marino); border-radius: 10px;
+    padding: 1.5rem 2rem; margin: 1rem 0;
+    font-family: var(--fuente-mono); font-size: 0.85rem;
+    overflow-x: auto;
+  }
+  .url-partes { display: flex; flex-wrap: wrap; gap: 0; align-items: stretch; }
+  .url-seg {
+    display: flex; flex-direction: column; align-items: center;
+    min-width: 60px;
+  }
+  .url-texto {
+    padding: 0.5rem 0.6rem;
+    font-weight: 600; white-space: nowrap;
+    border-radius: 4px 4px 0 0;
+  }
+  .url-etiq {
+    font-size: 0.68rem; color: rgba(255,255,255,0.55);
+    text-align: center; padding: 0.3rem 0.4rem;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .seg-protocolo .url-texto { background: #2E7D32; color: #fff; }
+  .seg-dominio   .url-texto { background: #1565C0; color: #fff; }
+  .seg-tld       .url-texto { background: #6A1B9A; color: #fff; }
+  .seg-ruta      .url-texto { background: #E65100; color: #fff; }
+  .seg-recurso   .url-texto { background: #B71C1C; color: #fff; }
+
+  /* ── ACTIVIDADES ── */
+  .actividad-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem; border-bottom: 1px solid var(--borde);
+  }
+  .act-num {
+    font-family: var(--fuente-head);
+    font-size: 2rem; font-weight: 900;
+    color: var(--rojo-une); line-height: 1;
+    flex-shrink: 0; min-width: 2rem;
+  }
+  .act-tipo {
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--rojo-une); display: block; margin-bottom: 0.1rem;
+  }
+  .act-nombre {
+    font-family: var(--fuente-head);
+    font-size: 1.15rem; font-weight: 900;
+    color: var(--azul-marino);
+  }
+
+  .pasos-lista { counter-reset: paso; margin: 1rem 0; }
+  .paso {
+    counter-increment: paso;
+    display: flex; gap: 1rem;
+    padding: 0.9rem 1rem; margin-bottom: 0.6rem;
+    background: var(--gris-fondo); border-radius: 8px;
+    align-items: flex-start;
+  }
+  .paso::before {
+    content: counter(paso);
+    font-family: var(--fuente-mono); font-size: 0.75rem; font-weight: 700;
+    color: var(--blanco); background: var(--azul-medio);
+    min-width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 0.05rem;
+  }
+  .paso p { margin: 0; font-size: 0.92rem; }
+
+  /* ── PREGUNTA DETONADORA ── */
+  .pregunta-detonadora {
+    background: linear-gradient(135deg, var(--azul-marino), var(--azul-medio));
+    color: var(--blanco);
+    border-radius: 10px; padding: 1.8rem 2rem;
+    margin: 1.2rem 0; position: relative; overflow: hidden;
+  }
+  .pregunta-detonadora::before {
+    content: '?'; position: absolute; right: 1.5rem; top: 0.5rem;
+    font-family: var(--fuente-head); font-size: 8rem; font-weight: 900;
+    color: rgba(255,255,255,0.06); line-height: 1;
+  }
+  .pregunta-detonadora .pd-etiq {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #F0B942;
+    margin-bottom: 0.7rem; display: block;
+  }
+  .pregunta-detonadora p {
+    font-family: var(--fuente-head); font-size: 1.1rem;
+    font-weight: 700; color: var(--blanco); line-height: 1.5;
+    position: relative; z-index: 1;
+  }
+
+  /* ── RUBRICA ── */
+  .rubrica {
+    margin: 1.2rem 0;
+  }
+  .rubrica-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--borde);
+    align-items: center;
+    font-size: 0.88rem;
+  }
+  .rubrica-item:last-child { border-bottom: none; }
+  .rubrica-item:nth-child(odd) { background: var(--gris-fondo); }
+  .rubrica-header {
+    background: var(--azul-marino) !important;
+    color: var(--blanco); font-weight: 700;
+    border-radius: 6px 6px 0 0;
+  }
+  .puntos {
+    font-family: var(--fuente-mono); font-weight: 700;
+    color: var(--azul-medio); text-align: right;
+  }
+  .rubrica-header .puntos { color: #F0B942; }
+
+  /* ── ACTIVIDAD 2: MAPA DIGITAL ── */
+  .red-card {
+    background: var(--gris-fondo);
+    border: 1px solid var(--borde); border-radius: 8px;
+    padding: 1rem 1.2rem; margin-bottom: 0.6rem;
+    display: flex; align-items: flex-start; gap: 0.9rem;
+  }
+  .red-icon {
+    width: 38px; height: 38px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+    font-weight: 900; color: var(--blanco);
+  }
+  .red-icon.azul  { background: var(--azul-medio); }
+  .red-icon.rojo  { background: var(--rojo-une); }
+  .red-icon.verde { background: #2E7D32; }
+  .red-icon.mora  { background: #7B1FA2; }
+  .red-nombre { font-weight: 700; font-size: 0.92rem; color: var(--azul-marino); }
+  .red-desc   { font-size: 0.84rem; color: var(--gris-texto); margin: 0; }
+
+  /* ── QUIZ ── */
+  #quiz { counter-reset: pregunta; }
+  .quiz-pregunta {
+    counter-increment: pregunta;
+    background: var(--gris-fondo); border-radius: 8px;
+    padding: 1.3rem 1.5rem; margin-bottom: 1rem;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .quiz-pregunta.correcta  { border-color: #2E7D32; background: #E8F5E9; }
+  .quiz-pregunta.incorrecta { border-color: var(--rojo-une); background: #FFEBEE; }
+  .quiz-enun {
+    font-weight: 700; font-size: 0.95rem; color: var(--azul-marino);
+    margin-bottom: 0.9rem;
+  }
+  .quiz-enun::before {
+    content: counter(pregunta) '. ';
+    font-family: var(--fuente-mono); color: var(--rojo-une);
+  }
+  .quiz-opciones { display: flex; flex-direction: column; gap: 0.5rem; }
+  .quiz-opcion {
+    display: flex; align-items: center; gap: 0.7rem;
+    padding: 0.6rem 0.9rem;
+    background: var(--blanco); border-radius: 6px;
+    cursor: pointer; border: 1.5px solid var(--borde);
+    font-size: 0.9rem; color: var(--gris-texto);
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+  .quiz-opcion:hover { border-color: var(--azul-medio); background: #F0F4FF; }
+  .quiz-opcion input[type=radio] { accent-color: var(--azul-medio); }
+  .quiz-feedback {
+    margin-top: 0.7rem; padding: 0.6rem 0.9rem;
+    border-radius: 6px; font-size: 0.85rem; font-weight: 600;
+    display: none;
+  }
+  .feedback-bien  { background: #E8F5E9; color: #2E7D32; }
+  .feedback-mal   { background: #FFEBEE; color: #C62828; }
+  .quiz-controles { text-align: center; margin-top: 1.5rem; }
+  .btn {
+    display: inline-block; padding: 0.75rem 2rem;
+    border: none; border-radius: 7px; cursor: pointer;
+    font-family: var(--fuente-body); font-size: 0.9rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .btn-primario { background: var(--azul-marino); color: var(--blanco); }
+  .btn-rojo     { background: var(--rojo-une);    color: var(--blanco); }
+  .btn-dorado   { background: var(--dorado);      color: var(--blanco); }
+  #resultado-quiz {
+    display: none; margin-top: 1.5rem;
+    border-radius: 10px; padding: 1.8rem 2rem;
+    text-align: center;
+  }
+  #resultado-quiz.alto   { background: #E8F5E9; border: 2px solid #2E7D32; }
+  #resultado-quiz.medio  { background: #FFF3E0; border: 2px solid var(--dorado); }
+  #resultado-quiz.bajo   { background: #FFEBEE; border: 2px solid var(--rojo-une); }
+  .resultado-puntaje {
+    font-family: var(--fuente-head); font-size: 3.5rem; font-weight: 900;
+    line-height: 1; margin-bottom: 0.3rem;
+  }
+  .alto  .resultado-puntaje { color: #2E7D32; }
+  .medio .resultado-puntaje { color: #8B5E00; }
+  .bajo  .resultado-puntaje { color: #C62828; }
+  .resultado-msg { font-size: 1rem; font-weight: 600; }
+
+  /* ── PLANIFICADOR ── */
+  .plan-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem; margin: 1rem 0;
+  }
+  .plan-area {
+    background: var(--gris-fondo); border: 1px solid var(--borde);
+    border-radius: 8px; padding: 1rem;
+  }
+  .plan-area label {
+    display: block; font-size: 0.8rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--azul-medio); margin-bottom: 0.5rem;
+  }
+  .plan-area textarea, .plan-area input {
+    width: 100%; border: 1px solid var(--borde); border-radius: 6px;
+    padding: 0.6rem 0.8rem; font-family: var(--fuente-body);
+    font-size: 0.88rem; color: var(--azul-marino);
+    background: var(--blanco); resize: vertical;
+    transition: border-color 0.2s;
+  }
+  .plan-area textarea:focus, .plan-area input:focus {
+    outline: none; border-color: var(--azul-medio);
+  }
+  #plan-guardado {
+    display: none; margin-top: 1rem;
+    background: #E8F5E9; border: 1px solid #2E7D32;
+    border-radius: 8px; padding: 1rem 1.2rem;
+    font-size: 0.9rem; color: #2E7D32; font-weight: 600;
+  }
+
+  /* ── PIE DE PÁGINA ── */
+  footer {
+    background: var(--azul-marino);
+    color: rgba(255,255,255,0.65);
+    text-align: center; padding: 2rem 1.5rem;
+    font-size: 0.82rem;
+  }
+  footer strong { color: rgba(255,255,255,0.9); }
+  footer .footer-linea { margin-bottom: 0.3rem; }
+
+  /* ── UTILIDADES ── */
+  .chip {
+    display: inline-block; padding: 0.2rem 0.65rem;
+    border-radius: 50px; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .chip-azul  { background: #D6E4FF; color: var(--azul-medio); }
+  .chip-rojo  { background: #FFE0E0; color: #B71C1C; }
+  .chip-verde { background: #E0F2E9; color: #2E7D32; }
+  .chip-mora  { background: #F3E5F5; color: #7B1FA2; }
+  .mt-1 { margin-top: 0.5rem; }
+  .mt-2 { margin-top: 1rem; }
+  .mb-1 { margin-bottom: 0.5rem; }
+  .divider { border: none; border-top: 1px solid var(--borde); margin: 1.5rem 0; }
+
+  @media (max-width: 680px) {
+    nav ul { gap: 0; }
+    nav ul li a { font-size: 0.72rem; padding: 0.4rem 0.5rem; }
+    .header-inner { flex-direction: column; gap: 1.2rem; }
+    .tarjeta { padding: 1.5rem 1.2rem; }
+    .plan-grid { grid-template-columns: 1fr; }
+    .concepto-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progreso-barra"></div>
+
+<!-- NAVEGACIÓN -->
+<nav>
+  <span class="nav-marca">TI Aplicadas a la Psicología</span>
+  <ul>
+    <li><a href="#objetivos"   onclick="marcarActivo(this)">Objetivos</a></li>
+    <li><a href="#unidad-1-1" onclick="marcarActivo(this)">1.1 Internet</a></li>
+    <li><a href="#unidad-1-2" onclick="marcarActivo(this)">1.2 Servicios</a></li>
+    <li><a href="#actividad-1" onclick="marcarActivo(this)">Act. 1</a></li>
+    <li><a href="#actividad-2" onclick="marcarActivo(this)">Act. 2</a></li>
+    <li><a href="#actividad-3" onclick="marcarActivo(this)">Quiz</a></li>
+    <li><a href="#reflexion"   onclick="marcarActivo(this)">Reflexión</a></li>
+  </ul>
+</nav>
+
+<!-- ENCABEZADO -->
+<header>
+  <div class="header-inner">
+    <div class="header-logo">
+      <img src="data:image/jpeg;base64,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" alt="Logo Universidad" style="width:90px;height:auto;">
+    </div>
+    <div class="header-texto">
+      <span class="header-subtitulo-inst">Universidad de la Ciénega del Estado de Michoacán de Ocampo</span>
+      <span class="header-etiqueta">Licenciatura en Psicología</span>
+      <h1>Infraestructura Moderna, Servicios y<br><span>Ecosistema Digital en Psicología</span></h1>
+      <p style="color:rgba(255,255,255,0.75);font-size:0.92rem;margin:0.5rem 0 0;">Guía de aprendizaje interactiva &mdash; Tecnologías de la Información Aplicadas a la Psicología</p>
+      <div class="header-meta">
+        <span><span class="dot"></span> Unidad 1 &mdash; Temas 1.1 y 1.2</span>
+        <span><span class="dot"></span> Nivel: Licenciatura</span>
+        <span><span class="dot"></span> Metodología: Constructivista / ABP</span>
+        <span><span class="dot"></span> 3 Actividades evaluables</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════════════════════════════════════
+     SECCIÓN: OBJETIVOS Y ENCUADRE
+     ═══════════════════════════════════════════ -->
+<section id="objetivos">
+  <div class="tarjeta borde-azul">
+    <div class="seccion-titulo">
+      <span class="num">GUÍA</span> Propósito y Competencias
+    </div>
+    <p class="seccion-desc">Encuadre pedagógico, objetivos de aprendizaje y estructura de la guía.</p>
+
+    <div class="pestanas">
+      <div class="pest-nav">
+        <button class="pest-btn activo" onclick="mostrarPestana(this,'obj-proposito')">Propósito</button>
+        <button class="pest-btn" onclick="mostrarPestana(this,'obj-competencias')">Competencias</button>
+        <button class="pest-btn" onclick="mostrarPestana(this,'obj-metodologia')">Metodología</button>
+        <button class="pest-btn" onclick="mostrarPestana(this,'obj-estructura')">Estructura</button>
+      </div>
+
+      <div id="obj-proposito" class="pest-panel visible">
+        <p>Esta guía de aprendizaje ha sido diseñada para que los estudiantes de la <strong>Licenciatura en Psicología</strong> comprendan cómo funciona la infraestructura de Internet en la actualidad, distingan las plataformas y servicios digitales relevantes para el ejercicio profesional de la psicología, y desarrollen competencias críticas para migrar de herramientas obsoletas hacia entornos digitales especializados.</p>
+        <p>El enfoque no es meramente técnico: el propósito central es que cada estudiante sea capaz de <strong>tomar decisiones informadas</strong> sobre el uso de tecnología en contextos clínicos, educativos, de investigación y de divulgación psicológica.</p>
+        <div class="caja caja-info">
+          <span class="caja-titulo">Foco del aprendizaje</span>
+          <p>Comprender cómo funciona Internet hoy, migrar de herramientas obsoletas a las plataformas actuales y explorar el entorno digital especializado para psicólogos.</p>
+        </div>
+      </div>
+
+      <div id="obj-competencias" class="pest-panel">
+        <p>Al concluir el estudio de esta guía, el estudiante sera capaz de:</p>
+        <ul class="lista">
+          <li>Explicar la estructura actual de Internet, distinguiendo el modelo cliente-servidor de la computación en la nube.</li>
+          <li>Identificar los elementos de una URL segura y reconocer la importancia del protocolo HTTPS en contextos de salud mental.</li>
+          <li>Diferenciar Internet, Intranet y Extranet en función de sus características operativas y de seguridad.</li>
+          <li>Evaluar críticamente plataformas de comunicación, divulgación y comunidades profesionales relevantes para la psicología.</li>
+          <li>Seleccionar y utilizar de manera ética herramientas digitales para el aprendizaje, la investigación y la práctica profesional.</li>
+          <li>Diseñar una estrategia personal de presencia digital como futuro profesional de la psicología.</li>
+        </ul>
+      </div>
+
+      <div id="obj-metodologia" class="pest-panel">
+        <p>Esta guía adopta los principios del <strong>aprendizaje constructivista</strong> y el <strong>Aprendizaje Basado en Problemas (ABP)</strong>:</p>
+        <div class="concepto-grid">
+          <div class="concepto-card">
+            <div class="concepto-titulo">Construccion del conocimiento</div>
+            <p class="concepto-def">El estudiante no recibe información pasivamente: la construye a partir de la exploración activa, la comparación y la reflexión crítica sobre sus propias experiencias digitales.</p>
+          </div>
+          <div class="concepto-card rojo">
+            <div class="concepto-titulo">Aprendizaje situado</div>
+            <p class="concepto-def">Los contenidos se contextualizan en situaciones reales de la práctica psicológica: consulta en línea, comunidades científicas, plataformas de formación continua.</p>
+          </div>
+          <div class="concepto-card dorado">
+            <div class="concepto-titulo">Reflexion critica</div>
+            <p class="concepto-def">Se promueve el análisis de implicaciones éticas, de seguridad y de privacidad en cada herramienta digital, especialmente en el ámbito de la salud mental.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="obj-estructura" class="pest-panel">
+        <p>La guía se organiza en dos grandes bloques de contenido y tres actividades evaluables:</p>
+        <div class="tabla-wrap">
+          <table>
+            <thead><tr><th>Sección</th><th>Contenido</th><th>Actividad</th></tr></thead>
+            <tbody>
+              <tr><td><strong>1.1</strong></td><td>Antecedentes y funcionamiento moderno de Internet</td><td>&mdash;</td></tr>
+              <tr><td><strong>1.2</strong></td><td>Servicios web, comunicación y plataformas de salud mental</td><td>&mdash;</td></tr>
+              <tr><td><strong>Act. 1</strong></td><td>Foro de mediación con pregunta detonadora</td><td>Classroom: Foro</td></tr>
+              <tr><td><strong>Act. 2</strong></td><td>Mapa del ecosistema digital del psicólogo</td><td>Classroom: Documento</td></tr>
+              <tr><td><strong>Act. 3</strong></td><td>Quiz interactivo de 5 preguntas</td><td>Classroom: Captura de pantalla</td></tr>
+              <tr><td><strong>Reflexión</strong></td><td>Planificación de incorporación a la vida académica y profesional</td><td>Classroom: Reflexión escrita</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECCIÓN 1.1 — INTERNET MODERNO
+     ═══════════════════════════════════════════ -->
+<section id="unidad-1-1">
+  <div class="tarjeta borde-azul">
+    <div class="seccion-titulo">
+      <span class="num">1.1</span> Antecedentes y Funcionamiento Moderno de Internet
+    </div>
+    <p class="seccion-desc">Estructura actual de Internet, arquitectura web y entornos de red. Comprende cómo viaja la información en la era digital.</p>
+
+    <!-- 1.1.1 -->
+    <h2>1.1.1 Estructura actual de Internet: del modelo cliente-servidor a la computación en la nube</h2>
+    <p>Internet no es un único sistema, sino una <strong>red de redes</strong> interconectadas a escala global. Para comprender cómo funciona hoy, es necesario partir del modelo que lo sostuvo durante décadas y entender hacia dónde ha evolucionado.</p>
+
+    <div class="acordeon">
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          El modelo cliente-servidor
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>En el modelo cliente-servidor, cada intercambio de información involucra dos roles claramente definidos:</p>
+          <ul class="lista">
+            <li><strong>Cliente:</strong> dispositivo o software que solicita un recurso (navegador web, aplicación móvil).</li>
+            <li><strong>Servidor:</strong> máquina o sistema que almacena y entrega ese recurso en respuesta a la solicitud.</li>
+          </ul>
+          <p>Este modelo sigue siendo la base de muchas interacciones en Internet. Cuando accedes a la plataforma Moodle de tu universidad, tu navegador actúa como cliente y el servidor de la institución responde con el contenido solicitado.</p>
+          <div class="caja caja-info">
+            <span class="caja-titulo">Relevancia para la psicología</span>
+            <p>Las plataformas de telepsicología y los sistemas de gestión de historiales clínicos en línea operan bajo este modelo. Comprender su funcionamiento permite evaluar con mayor rigor la seguridad y la confidencialidad de los datos de los pacientes.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Computacion en la nube (Cloud Computing)
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>La computación en la nube representa el paso de infraestructuras físicas locales a servicios de procesamiento, almacenamiento y software accesibles a través de Internet. Sus características esenciales son:</p>
+          <div class="concepto-grid">
+            <div class="concepto-card">
+              <div class="concepto-titulo">Escalabilidad</div>
+              <p class="concepto-def">Los recursos se amplían o reducen según la demanda, sin necesidad de adquirir hardware adicional.</p>
+            </div>
+            <div class="concepto-card rojo">
+              <div class="concepto-titulo">Acceso ubicuo</div>
+              <p class="concepto-def">Los datos y aplicaciones están disponibles desde cualquier dispositivo con conexión a Internet.</p>
+            </div>
+            <div class="concepto-card dorado">
+              <div class="concepto-titulo">Servicios gestionados</div>
+              <p class="concepto-def">El proveedor se encarga del mantenimiento, actualizaciones de seguridad y disponibilidad del sistema.</p>
+            </div>
+          </div>
+          <div class="tabla-wrap mt-2">
+            <table>
+              <thead><tr><th>Tipo de nube</th><th>Descripción</th><th>Ejemplo en psicología</th></tr></thead>
+              <tbody>
+                <tr><td><strong>SaaS</strong> (Software como servicio)</td><td>Aplicaciones completas accesibles vía navegador</td><td>Google Workspace, plataformas de telepsicología</td></tr>
+                <tr><td><strong>PaaS</strong> (Plataforma como servicio)</td><td>Entornos para desarrollar y desplegar aplicaciones</td><td>Servidores para apps de bienestar mental</td></tr>
+                <tr><td><strong>IaaS</strong> (Infraestructura como servicio)</td><td>Servidores virtuales, almacenamiento y redes</td><td>Almacenamiento de bases de datos de investigación</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="caja caja-alerta mt-2">
+            <span class="caja-titulo">Consideracion etica</span>
+            <p>Cuando un psicólogo utiliza servicios en la nube para almacenar información clínica, debe asegurarse de que el proveedor cumpla con normativas de protección de datos de salud. En México, esto implica verificar el cumplimiento de la <strong>Ley Federal de Protección de Datos Personales en Posesión de los Particulares</strong> (LFPDPPP).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 1.1.2 -->
+    <h2>1.1.2 Arquitectura web: hipertexto, hipervínculos, protocolos y anatomía de una URL segura</h2>
+    <p>La World Wide Web (WWW) es una de las aplicaciones más importantes que se ejecuta sobre Internet, aunque no es Internet en sí misma. Su arquitectura se sustenta en tres conceptos fundamentales:</p>
+
+    <div class="acordeon">
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Hipertexto e hipervinculos
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>El <strong>hipertexto</strong> es un sistema de organización de la información en el que documentos digitales se conectan entre sí mediante <strong>hipervínculos</strong> (enlaces). A diferencia de la lectura lineal de un libro, el hipertexto permite navegar de forma no secuencial entre contenidos relacionados.</p>
+          <p>En el contexto de la divulgación psicológica, los hipervínculos permiten conectar artículos de investigación con sus referencias bibliográficas, relacionar entradas de un blog con recursos de apoyo, y vincular perfiles profesionales con publicaciones académicas.</p>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          HTTP vs HTTPS: importancia en contextos de salud mental
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>El <strong>HTTP</strong> (Protocolo de Transferencia de Hipertexto) es el protocolo que regula cómo se solicitan y transmiten los recursos web. El <strong>HTTPS</strong> es su versión segura, que cifra la comunicación mediante el protocolo <strong>TLS/SSL</strong>.</p>
+          <div class="tabla-wrap">
+            <table>
+              <thead><tr><th>Característica</th><th>HTTP</th><th>HTTPS</th></tr></thead>
+              <tbody>
+                <tr><td>Cifrado</td><td>No</td><td>Sí (TLS/SSL)</td></tr>
+                <tr><td>Seguridad de datos</td><td>Vulnerable a interceptación</td><td>Datos cifrados en tránsito</td></tr>
+                <tr><td>Indicador en navegador</td><td>Sin candado / "No seguro"</td><td>Candado cerrado</td></tr>
+                <tr><td>Uso recomendado en psicología</td><td>Nunca para datos sensibles</td><td>Obligatorio para cualquier plataforma clínica</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="caja caja-etica mt-2">
+            <span class="caja-titulo">Principio deontologico</span>
+            <p>Un psicólogo que recomienda a sus pacientes plataformas para llenar cuestionarios o acceder a recursos de apoyo tiene la responsabilidad ética de verificar que dichas plataformas utilicen HTTPS. El uso de HTTP en contextos clínicos puede comprometer la confidencialidad de la información del paciente.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Anatomia de una URL segura
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>Una URL (Localizador Uniforme de Recursos) es la dirección única que identifica un recurso en la web. Conocer su estructura permite verificar la legitimidad y seguridad de un sitio.</p>
+
+          <div class="diagrama-url mt-2">
+            <div class="url-partes">
+              <div class="url-seg seg-protocolo">
+                <span class="url-texto">https://</span>
+                <span class="url-etiq">Protocolo seguro</span>
+              </div>
+              <div class="url-seg seg-dominio">
+                <span class="url-texto">www.ucienegam</span>
+                <span class="url-etiq">Subdominio + dominio</span>
+              </div>
+              <div class="url-seg seg-tld">
+                <span class="url-texto">.edu.mx</span>
+                <span class="url-etiq">Dominio de nivel superior</span>
+              </div>
+              <div class="url-seg seg-ruta">
+                <span class="url-texto">/psicologia/</span>
+                <span class="url-etiq">Ruta</span>
+              </div>
+              <div class="url-seg seg-recurso">
+                <span class="url-texto">recursos</span>
+                <span class="url-etiq">Recurso</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="concepto-grid mt-2">
+            <div class="concepto-card">
+              <div class="concepto-titulo">Protocolo (https://)</div>
+              <p class="concepto-def">Indica el método de comunicación. "https" garantiza cifrado; la ausencia de la "s" debe generar alerta.</p>
+            </div>
+            <div class="concepto-card rojo">
+              <div class="concepto-titulo">Dominio (.edu.mx)</div>
+              <p class="concepto-def">Identifica al propietario del sitio. ".edu" indica institución educativa; ".mx" indica origen en México.</p>
+            </div>
+            <div class="concepto-card dorado">
+              <div class="concepto-titulo">Ruta y recurso</div>
+              <p class="concepto-def">Especifican la ubicación exacta del contenido dentro del servidor. Rutas sospechosas o incoherentes pueden indicar sitios de phishing.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 1.1.3 -->
+    <h2>1.1.3 Entornos de red: diferencias entre Internet, Intranet y Extranet</h2>
+    <p>No toda la infraestructura de red es pública. Las organizaciones de salud, instituciones educativas y clínicas psicológicas operan con diferentes tipos de redes según sus necesidades de acceso y seguridad.</p>
+
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Entorno</th>
+            <th>Acceso</th>
+            <th>Seguridad</th>
+            <th>Aplicación en psicología</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Internet</strong></td>
+            <td>Público y global</td>
+            <td>Variable; requiere medidas adicionales (VPN, HTTPS)</td>
+            <td>Divulgación, telepsicología pública, acceso a bases de datos abiertas</td>
+          </tr>
+          <tr>
+            <td><strong>Intranet</strong></td>
+            <td>Privado; solo usuarios autorizados dentro de la organización</td>
+            <td>Alta; controlada por la institución</td>
+            <td>Sistemas de expedientes clínicos de hospitales, plataformas internas de universidades</td>
+          </tr>
+          <tr>
+            <td><strong>Extranet</strong></td>
+            <td>Privado controlado; acceso externo limitado con credenciales</td>
+            <td>Media-alta; requiere autenticación</td>
+            <td>Plataformas colaborativas entre clínicas, acceso de supervisores externos a historiales autorizados</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="caja caja-logro mt-2">
+      <span class="caja-titulo">Para reflexionar</span>
+      <p>El sistema de expediente clínico electrónico de un hospital opera en Intranet para proteger la confidencialidad de los pacientes. Sin embargo, cuando un especialista externo necesita consultar un caso, se requiere una Extranet con autenticación. Identificar en qué tipo de red se encuentran los datos de un paciente es una competencia deontológica fundamental para el psicólogo del siglo XXI.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECCIÓN 1.2 — SERVICIOS WEB Y PLATAFORMAS
+     ═══════════════════════════════════════════ -->
+<section id="unidad-1-2">
+  <div class="tarjeta borde-rojo">
+    <div class="seccion-titulo">
+      <span class="num">1.2</span> Servicios Web, Comunicación y Plataformas de Salud Mental
+    </div>
+    <p class="seccion-desc">Evolución de los servicios digitales, divulgación especializada, comunidades profesionales y plataformas de aprendizaje en el ámbito de la psicología.</p>
+
+    <!-- 1.2.1 -->
+    <h2>1.2.1 Evolución del acceso y la comunicación: de tecnologías tradicionales a plataformas modernas</h2>
+    <p>La forma en que las personas se conectan y comunican a través de Internet ha experimentado transformaciones profundas en las últimas dos décadas. Comprender esta evolución permite al psicólogo ubicarse críticamente en el entorno tecnológico actual.</p>
+
+    <div class="acordeon">
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Tecnologias de acceso: fibra optica y redes moviles 5G
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>La <strong>fibra óptica</strong> transmite datos mediante pulsos de luz a través de cables de vidrio o plástico, ofreciendo velocidades simétricas de hasta varios gigabits por segundo con latencia muy baja. Esto hace posible la videoterapia en alta definición, las evaluaciones psicológicas en línea y el acceso sin interrupciones a bases de datos científicas.</p>
+          <p>Las redes <strong>móviles 5G</strong> amplían estas capacidades al entorno inalámbrico, reduciendo la latencia a milisegundos. Esto tiene implicaciones directas para la psicología en contextos como:</p>
+          <ul class="lista">
+            <li>Aplicaciones de realidad virtual para el tratamiento de fobias y TEPT en tiempo real.</li>
+            <li>Monitoreo continuo de señales biométricas vinculadas al estado emocional del paciente.</li>
+            <li>Acceso a servicios de salud mental en zonas rurales o de difícil acceso físico.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Obsolescencia de protocolos antiguos: del IRC a las plataformas modernas
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>El <strong>IRC</strong> (Internet Relay Chat), desarrollado en 1988, fue durante décadas el principal sistema de mensajería y comunidades en línea. Aunque técnicamente sigue operativo, ha sido desplazado por plataformas que integran texto, voz, video, bots y moderación avanzada de contenidos.</p>
+          <div class="tabla-wrap">
+            <table>
+              <thead><tr><th>Plataforma</th><th>Orientación</th><th>Uso relevante en psicología</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Discord</strong></td><td>Comunidades, gamers, grupos de interés</td><td>Grupos de apoyo entre pares, comunidades de estudio en psicología</td></tr>
+                <tr><td><strong>Slack</strong></td><td>Equipos de trabajo y organizaciones</td><td>Coordinación de equipos de salud mental, comunicación clínica interna</td></tr>
+                <tr><td><strong>Microsoft Teams</strong></td><td>Entornos corporativos y educativos</td><td>Supervisión clínica, sesiones de intervención grupal en instituciones</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="caja caja-alerta mt-2">
+            <span class="caja-titulo">Advertencia sobre privacidad</span>
+            <p>Las plataformas de mensajería de uso general no están diseñadas para manejar información clínica sensible. El uso de Discord o Slack para compartir datos de pacientes puede constituir una violación a la confidencialidad, independientemente de los permisos de privacidad configurados.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 1.2.2 -->
+    <h2>1.2.2 Divulgación y curación de contenidos en Psicología</h2>
+    <p>La divulgación científica responsable es una competencia emergente en la formación del psicólogo contemporáneo. El entorno digital ofrece múltiples canales para construir, compartir y curar conocimiento psicológico.</p>
+
+    <div class="acordeon">
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Blogs cientificos y newsletters especializadas
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>Los <strong>blogs científicos</strong> permiten a profesionales de la psicología comunicar hallazgos de investigación, reflexiones clínicas y análisis de fenómenos psicosociales en un formato accesible y actualizado. A diferencia de las revistas académicas, ofrecen inmediatez y la posibilidad de interacción directa con lectores.</p>
+          <p>Las <strong>newsletters o boletines especializados</strong> son publicaciones periódicas enviadas por correo electrónico a una lista de suscriptores. En psicología, constituyen herramientas valiosas para:</p>
+          <ul class="lista">
+            <li>Difundir síntesis de investigación reciente en áreas específicas (neuropsicología, psicología clínica, psicología organizacional).</li>
+            <li>Compartir actualizaciones sobre cambios en clasificaciones diagnósticas (DSM, CIE).</li>
+            <li>Mantener actualizada a una comunidad de profesionales o estudiantes.</li>
+          </ul>
+          <div class="caja caja-info">
+            <span class="caja-titulo">Ejemplos de referencia</span>
+            <p>Plataformas como <strong>Substack</strong> o <strong>Mailchimp</strong> permiten crear y gestionar newsletters profesionales. Publicaciones como <em>APA Monitor on Psychology</em> o <em>Psicología y Mente</em> son referentes de divulgación de calidad en el campo.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Uso profesional de redes de microblogging: X/Twitter y Threads
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>Las redes de <strong>microblogging</strong> permiten publicar mensajes breves de alto impacto. Su uso en psicología tiene potencial divulgativo significativo, pero también conlleva riesgos éticos específicos.</p>
+          <div class="tabla-wrap">
+            <table>
+              <thead><tr><th>Uso apropiado</th><th>Uso inapropiado</th></tr></thead>
+              <tbody>
+                <tr><td>Difundir hallazgos de investigación con enlace a la fuente primaria</td><td>Presentar información clínica sin citar evidencia</td></tr>
+                <tr><td>Comentar noticias de salud mental con perspectiva crítica y fundamentada</td><td>Diagnosticar o hacer inferencias clínicas sobre personas públicas</td></tr>
+                <tr><td>Conectar con investigadores y profesionales del campo a nivel mundial</td><td>Compartir datos o casos de pacientes, aunque sea de forma "anónima"</td></tr>
+                <tr><td>Alertar sobre pseudociencia o prácticas psicológicas no fundamentadas</td><td>Promover servicios propios de forma que pueda percibirse como publicidad engañosa</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 1.2.3 -->
+    <h2>1.2.3 Redes sociales y comunidades profesionales</h2>
+    <p>El psicólogo del siglo XXI opera en dos dimensiones digitales paralelas: las redes sociales de uso general y las comunidades científicas especializadas. Cada una cumple funciones distintas y exige criterios éticos específicos.</p>
+
+    <div class="pestanas">
+      <div class="pest-nav">
+        <button class="pest-btn activo" onclick="mostrarPestana(this,'red-general')">Redes generales</button>
+        <button class="pest-btn" onclick="mostrarPestana(this,'red-cientifica')">Comunidades cientificas</button>
+        <button class="pest-btn" onclick="mostrarPestana(this,'red-etica')">Etica digital</button>
+      </div>
+
+      <div id="red-general" class="pest-panel visible">
+        <div class="red-card">
+          <div class="red-icon azul">Li</div>
+          <div>
+            <div class="red-nombre">LinkedIn</div>
+            <p class="red-desc">Red profesional orientada al mercado laboral y la construcción de reputación profesional. Para el psicólogo, es útil para publicar artículos de divulgación, conectar con colegas y empleadores, y mostrar formación y certificaciones. Es importante mantener un perfil coherente con los principios deontológicos de la profesión.</p>
+          </div>
+        </div>
+        <div class="red-card">
+          <div class="red-icon rojo">Ig</div>
+          <div>
+            <div class="red-nombre">Instagram</div>
+            <p class="red-desc">Plataforma visual con alto alcance entre el público general. Utilizada por psicólogos para psicoeducación en formato accesible (infografías, reels explicativos). Requiere especial cuidado en la calidad de la información compartida, dado el riesgo de simplificación excesiva de conceptos clínicos complejos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="red-cientifica" class="pest-panel">
+        <div class="red-card">
+          <div class="red-icon verde">Rg</div>
+          <div>
+            <div class="red-nombre">ResearchGate</div>
+            <p class="red-desc">Plataforma de red social académica orientada a la investigación científica. Permite compartir publicaciones completas (incluyendo artículos de acceso restringido), seguir el trabajo de otros investigadores, hacer y responder preguntas técnicas, y recibir métricas de impacto de las propias investigaciones. Esencial para psicólogos con perfil investigador.</p>
+          </div>
+        </div>
+        <div class="red-card">
+          <div class="red-icon mora">Ac</div>
+          <div>
+            <div class="red-nombre">Academia.edu</div>
+            <p class="red-desc">Plataforma para compartir trabajos académicos con investigadores de todo el mundo. A diferencia de ResearchGate, tiene un enfoque más amplio que incluye humanidades y ciencias sociales, lo que la hace relevante para subdisciplinas como la psicología social, la psicología histórica y la psicología transcultural. Permite monitorear quién lee y descarga los propios trabajos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="red-etica" class="pest-panel">
+        <div class="caja caja-etica">
+          <span class="caja-titulo">Principios eticos para la presencia digital del psicologo</span>
+          <ul class="lista" style="color:#4a2060;">
+            <li><strong>Competencia delimitada:</strong> solo divulgar contenido dentro del área de formación y experiencia del profesional.</li>
+            <li><strong>Respaldo en evidencia:</strong> toda afirmación de naturaleza clínica debe estar fundamentada en investigación con respaldo científico.</li>
+            <li><strong>Confidencialidad absoluta:</strong> ningún dato que permita identificar a un paciente debe aparecer en redes sociales, ni de forma directa ni indirecta.</li>
+            <li><strong>Claridad de rol:</strong> distinguir explícitamente entre contenido educativo y recomendaciones clínicas individualizadas.</li>
+            <li><strong>Cuidado del lenguaje:</strong> evitar la patologización, la estigmatización de trastornos mentales y el sensacionalismo en torno a crisis psicológicas.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 1.2.4 -->
+    <h2>1.2.4 Plataformas de aprendizaje y entornos virtuales</h2>
+    <p>Los Sistemas de Gestión del Aprendizaje (LMS, por sus siglas en inglés) han transformado la educación universitaria. Conocer su funcionamiento no solo es relevante como estudiante, sino como futuro profesional que diseñará e implementará procesos formativos.</p>
+
+    <div class="acordeon">
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Moodle: plataforma institucional de codigo abierto
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>Moodle (Modular Object-Oriented Dynamic Learning Environment) es uno de los LMS de código abierto más utilizados en instituciones de educación superior. Sus características principales incluyen:</p>
+          <ul class="lista">
+            <li>Gestión de cursos con módulos de contenido, foros, tareas, cuestionarios y calificaciones.</li>
+            <li>Seguimiento del progreso del estudiante mediante registros de actividad detallados.</li>
+            <li>Integración con herramientas externas mediante protocolos LTI (Learning Tools Interoperability).</li>
+            <li>Soporte para actividades asincrónicas y materiales multimedia.</li>
+          </ul>
+          <div class="pasos-lista mt-2">
+            <div class="paso"><p><strong>Ingresa a la plataforma</strong> con las credenciales institucionales proporcionadas por tu universidad.</p></div>
+            <div class="paso"><p><strong>Navega al curso</strong> de Tecnologías de la Información Aplicadas a la Psicología en el panel de "Mis cursos".</p></div>
+            <div class="paso"><p><strong>Explora la estructura</strong> del curso: identifica los bloques de contenido, los foros de discusión, las tareas y las evaluaciones disponibles.</p></div>
+            <div class="paso"><p><strong>Participa en al menos un foro</strong> existente antes de comenzar las actividades de esta guía, para familiarizarte con el entorno de interacción.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Google Classroom: entorno de aprendizaje integrado
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>Google Classroom es un LMS ligero que se integra con el ecosistema de Google Workspace (Drive, Docs, Meet, Forms). Es ampliamente utilizado en instituciones que priorizan la colaboración en tiempo real y el trabajo basado en la nube.</p>
+          <p>Para el psicólogo en formación, ofrece ventajas específicas:</p>
+          <ul class="lista">
+            <li>Creación de formularios (Google Forms) para aplicar instrumentos de evaluación psicológica en investigación.</li>
+            <li>Colaboración en documentos compartidos para construir conocimiento colectivo.</li>
+            <li>Organización de materiales de apoyo mediante Google Drive.</li>
+            <li>Comunicación directa entre docentes y estudiantes mediante comentarios y notificaciones.</li>
+          </ul>
+          <div class="pasos-lista mt-2">
+            <div class="paso"><p><strong>Accede a classroom.google.com</strong> con tu cuenta institucional o personal de Google.</p></div>
+            <div class="paso"><p><strong>Únete al curso</strong> mediante el código proporcionado por tu docente o acepta la invitación recibida por correo.</p></div>
+            <div class="paso"><p><strong>Revisa las tareas pendientes</strong> en la sección "Trabajo de clase" para identificar las actividades de esta guía que deberás entregar.</p></div>
+            <div class="paso"><p><strong>Activa las notificaciones</strong> para recibir alertas sobre nuevas publicaciones, comentarios de retroalimentación y fechas límite.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Aplicaciones interactivas para el desarrollo de habilidades
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>Más allá de los LMS institucionales, el ecosistema de aprendizaje digital incluye plataformas especializadas que complementan la formación en psicología:</p>
+          <div class="tabla-wrap">
+            <table>
+              <thead><tr><th>Plataforma</th><th>Uso en psicología</th><th>Tipo de acceso</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Coursera / edX</strong></td><td>Cursos de universidades de prestigio en neurociencia, psicología positiva, terapia cognitivo-conductual</td><td>Freemium</td></tr>
+                <tr><td><strong>Duolingo (modelo gamificado)</strong></td><td>Referente del diseño de aprendizaje adaptativo; útil para comprender principios de reforzamiento en entornos digitales</td><td>Gratuito</td></tr>
+                <tr><td><strong>PsychSim</strong></td><td>Simulaciones de experimentos clásicos de psicología para entornos universitarios</td><td>Institucional</td></tr>
+                <tr><td><strong>Zotero</strong></td><td>Gestión de referencias bibliográficas para trabajos de investigación</td><td>Gratuito</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     ACTIVIDAD 1 — FORO DE MEDIACIÓN
+     ═══════════════════════════════════════════ -->
+<section id="actividad-1">
+  <div class="tarjeta borde-dorado">
+    <div class="actividad-header">
+      <div class="act-num">01</div>
+      <div>
+        <span class="act-tipo">Actividad 1 &mdash; Entrega en Google Classroom</span>
+        <div class="act-nombre">Foro de Mediación: Reflexión Crítica y Construcción Colaborativa</div>
+      </div>
+    </div>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Datos generales</span>
+      <p>
+        <span class="chip chip-azul">Tipo: Foro de discusión</span>&nbsp;
+        <span class="chip chip-rojo">Entrega: Google Classroom / Moodle</span>&nbsp;
+        <span class="chip chip-verde">Modalidad: Colaborativa</span>
+      </p>
+      <p style="margin-top:0.5rem;margin-bottom:0;"><strong>Propósito:</strong> Promover la reflexión crítica sobre el impacto de la infraestructura digital en la práctica psicológica, estimular el intercambio de perspectivas entre pares y desarrollar la capacidad argumentativa en entornos digitales.</p>
+    </div>
+
+    <h3>Pregunta detonadora</h3>
+    <div class="pregunta-detonadora">
+      <span class="pd-etiq">Pregunta central del foro</span>
+      <p>La telepsicología y los registros clínicos en la nube prometen democratizar el acceso a la salud mental. Sin embargo, el funcionamiento de Internet sobre redes con niveles de seguridad radicalmente distintos (Internet público, Intranet hospitalaria, Extranet colaborativa) plantea una tensión entre accesibilidad y confidencialidad. ¿Puede la infraestructura digital actual garantizar realmente el secreto profesional del psicólogo? ¿Cuáles son las condiciones mínimas que debería exigir un psicólogo a cualquier plataforma digital antes de utilizarla con sus pacientes?</p>
+    </div>
+
+    <h3>Instrucciones paso a paso</h3>
+    <div class="pasos-lista">
+      <div class="paso"><p><strong>Revisa los contenidos</strong> de las secciones 1.1.1, 1.1.2 y 1.1.3 de esta guía antes de participar en el foro. Tu argumento debe estar fundamentado en los conceptos trabajados.</p></div>
+      <div class="paso"><p><strong>Elabora tu aportación inicial</strong> en un procesador de texto (mínimo 250 palabras). Debe incluir: tu postura clara frente a la pregunta, al menos dos argumentos que la sustenten, y una referencia a algún concepto técnico de la unidad (HTTP/HTTPS, Intranet, computación en la nube).</p></div>
+      <div class="paso"><p><strong>Publica tu aportación</strong> en el foro habilitado en Google Classroom (o Moodle según indique tu docente) dentro del plazo establecido.</p></div>
+      <div class="paso"><p><strong>Lee las aportaciones</strong> de al menos dos compañeros. Identifica puntos de acuerdo, diferencias argumentales y aspectos que no habías considerado.</p></div>
+      <div class="paso"><p><strong>Escribe una respuesta</strong> a cada compañero seleccionado (mínimo 100 palabras por respuesta). La respuesta debe aportar una perspectiva nueva, matizar el argumento del compañero o proponer una solución práctica al problema planteado. No se aceptan respuestas de mero acuerdo sin argumentación.</p></div>
+      <div class="paso"><p><strong>Realiza una aportación de cierre</strong> (opcional pero recomendada): después de haber leído al menos cinco participaciones, escribe una breve síntesis de los puntos más relevantes del debate (100-150 palabras) y publícala en el foro.</p></div>
+    </div>
+
+    <h3>Ejemplo de aportacion inicial</h3>
+    <div class="caja caja-info">
+      <span class="caja-titulo">Ejemplo orientativo (no copiar)</span>
+      <p>
+        "Considero que la infraestructura digital actual puede garantizar el secreto profesional del psicólogo, pero únicamente si se cumplen condiciones técnicas y éticas específicas. El protocolo HTTPS, por ejemplo, cifra la comunicación entre el cliente y el servidor, lo que reduce significativamente el riesgo de interceptación. Sin embargo, la seguridad no termina en el protocolo de transmisión: si los datos se almacenan en una nube pública sin cifrado adicional, el riesgo persiste.
+        <br><br>
+        En mi opinión, las condiciones mínimas que un psicólogo debería exigir son: uso obligatorio de HTTPS, almacenamiento cifrado, ubicación de los servidores en jurisdicciones con legislación de protección de datos robusta, y contratos de confidencialidad con el proveedor del servicio..."
+      </p>
+    </div>
+
+    <h3>Rúbrica de evaluación</h3>
+    <div class="rubrica">
+      <div class="rubrica-item rubrica-header">
+        <span>Criterio</span>
+        <span class="puntos">Puntos</span>
+      </div>
+      <div class="rubrica-item">
+        <span>Aportación inicial: postura clara y fundamentada en conceptos de la unidad</span>
+        <span class="puntos">25 pts</span>
+      </div>
+      <div class="rubrica-item">
+        <span>Extensión y desarrollo argumental de la aportación inicial (mín. 250 palabras)</span>
+        <span class="puntos">15 pts</span>
+      </div>
+      <div class="rubrica-item">
+        <span>Calidad de las respuestas a compañeros: aportación de perspectiva nueva o matiz argumentado</span>
+        <span class="puntos">30 pts</span>
+      </div>
+      <div class="rubrica-item">
+        <span>Uso correcto de terminología técnica de la unidad</span>
+        <span class="puntos">15 pts</span>
+      </div>
+      <div class="rubrica-item">
+        <span>Respeto en el intercambio, claridad de expresión y ortografía</span>
+        <span class="puntos">15 pts</span>
+      </div>
+      <div class="rubrica-item rubrica-header">
+        <span><strong>Total</strong></span>
+        <span class="puntos">100 pts</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     ACTIVIDAD 2 — MAPA DEL ECOSISTEMA DIGITAL
+     ═══════════════════════════════════════════ -->
+<section id="actividad-2">
+  <div class="tarjeta borde-azul">
+    <div class="actividad-header">
+      <div class="act-num">02</div>
+      <div>
+        <span class="act-tipo">Actividad 2 &mdash; Entrega en Google Classroom</span>
+        <div class="act-nombre">Mapa del Ecosistema Digital del Psicólogo en Formación</div>
+      </div>
+    </div>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Datos generales</span>
+      <p>
+        <span class="chip chip-azul">Tipo: Documento individual o en pares</span>&nbsp;
+        <span class="chip chip-rojo">Entrega: Classroom (PDF o Google Slides)</span>&nbsp;
+        <span class="chip chip-verde">Aprendizaje: Significativo y aplicable</span>
+      </p>
+      <p style="margin-top:0.5rem;margin-bottom:0;"><strong>Propósito:</strong> Que el estudiante construya activamente un mapa personalizado de las plataformas y herramientas digitales que usará como universitario y como futuro profesional de la psicología, distinguiendo usos apropiados de usos inapropiados desde una perspectiva ética.</p>
+    </div>
+
+    <h3>Descripción de la actividad</h3>
+    <p>Elaborarás un <strong>Mapa del Ecosistema Digital Personal</strong>: un documento visual organizado (puede ser una infografía, una tabla enriquecida, un mapa mental o una presentación de diapositivas) que categorice y describa las plataformas y herramientas digitales que utilizarás en tres dimensiones de tu vida como psicólogo:</p>
+
+    <div class="concepto-grid">
+      <div class="concepto-card">
+        <div class="concepto-titulo">Dimension 1: Formacion academica</div>
+        <p class="concepto-def">Plataformas LMS, bases de datos bibliográficas, gestores de referencias, herramientas de colaboración para trabajos académicos.</p>
+      </div>
+      <div class="concepto-card rojo">
+        <div class="concepto-titulo">Dimension 2: Investigacion y divulgacion</div>
+        <p class="concepto-def">Comunidades científicas, redes de microblogging, blogs, newsletters. Incluir criterios de uso ético.</p>
+      </div>
+      <div class="concepto-card dorado">
+        <div class="concepto-titulo">Dimension 3: Practica profesional futura</div>
+        <p class="concepto-def">Plataformas para telepsicología, sistemas de gestión clínica, comunicación con colegas. Incluir análisis de seguridad.</p>
+      </div>
+    </div>
+
+    <h3>Instrucciones paso a paso</h3>
+    <div class="pasos-lista">
+      <div class="paso"><p><strong>Selecciona el formato</strong> de tu mapa: puede ser Google Slides (recomendado), Canva, una tabla en Google Docs, o un mapa mental en MindMeister/Coggle. Lo importante es que el resultado sea visual, claro y organizado.</p></div>
+      <div class="paso"><p><strong>Identifica un mínimo de 10 plataformas o herramientas</strong> digitales, distribuidas entre las tres dimensiones (al menos 3 por dimensión). Para cada plataforma, deberás incluir: nombre, categoría (LMS, red social, comunidad científica, mensajería, etc.), uso específico que harás de ella y al menos una consideración ética o de seguridad.</p></div>
+      <div class="paso"><p><strong>Analiza dos plataformas en profundidad</strong> (una de formación académica y una de práctica profesional). Para cada una, responde: ¿qué tipo de red utiliza (Internet, Intranet, Extranet)? ¿Utiliza HTTPS? ¿Dónde se almacenan los datos? ¿Qué sucedería con la confidencialidad de un paciente si usaras esta plataforma de forma inadecuada?</p></div>
+      <div class="paso"><p><strong>Incluye una sección de "Plataformas que evitaré para fines clínicos"</strong>: lista al menos 3 plataformas de uso común que NO son apropiadas para manejar información de pacientes, con una breve justificación técnica y ética para cada una.</p></div>
+      <div class="paso"><p><strong>Exporta tu mapa como PDF</strong> y súbelo a la tarea correspondiente en Google Classroom. Si usas Google Slides, puedes compartir el enlace de visualización directamente.</p></div>
+    </div>
+
+    <h3>Referencia de plataformas a explorar</h3>
+    <p>Las siguientes plataformas deben estar consideradas en tu mapa (pueden pertenecer a distintas dimensiones según tu criterio argumentado):</p>
+
+    <div class="red-card">
+      <div class="red-icon azul">Mc</div>
+      <div>
+        <div class="red-nombre">Moodle y Google Classroom</div>
+        <p class="red-desc">LMS institucionales. Analiza sus políticas de almacenamiento de datos y los permisos que otorgas al usarlos.</p>
+      </div>
+    </div>
+    <div class="red-card">
+      <div class="red-icon verde">Rg</div>
+      <div>
+        <div class="red-nombre">ResearchGate y Academia.edu</div>
+        <p class="red-desc">Comunidades científicas. Compara sus modelos de negocio y las implicaciones para la propiedad intelectual de tus investigaciones.</p>
+      </div>
+    </div>
+    <div class="red-card">
+      <div class="red-icon mora">Li</div>
+      <div>
+        <div class="red-nombre">LinkedIn y X/Twitter (Threads)</div>
+        <p class="red-desc">Redes profesionales y de divulgación. Define qué tipo de contenido publicarías en cada una como psicólogo y qué nunca publicarías.</p>
+      </div>
+    </div>
+    <div class="red-card">
+      <div class="red-icon rojo">Ds</div>
+      <div>
+        <div class="red-nombre">Discord y Slack</div>
+        <p class="red-desc">Plataformas de mensajería y comunidades. Evalúa para qué usos son apropiadas y para cuáles representan un riesgo en el contexto de la psicología.</p>
+      </div>
+    </div>
+
+    <h3>Rúbrica de evaluación</h3>
+    <div class="rubrica">
+      <div class="rubrica-item rubrica-header">
+        <span>Criterio</span>
+        <span class="puntos">Puntos</span>
+      </div>
+      <div class="rubrica-item">
+        <span>Cobertura: mínimo 10 plataformas distribuidas en las 3 dimensiones</span>
+        <span class="puntos">20 pts</span>
+      </div>
+      <div class="rubrica-item">
+        <span>Análisis en profundidad de 2 plataformas (red, HTTPS, almacenamiento, confidencialidad)</span>
+        <span class="puntos">30 pts</span>
+      </div>
+      <div class="rubrica-item">
+        <span>Sección "Plataformas a evitar": justificación técnica y ética</span>
+        <span class="puntos">20 pts</span>
+      </div>
+      <div class="rubrica-item">
+        <span>Calidad visual, organización y claridad del mapa</span>
+        <span class="puntos">15 pts</span>
+      </div>
+      <div class="rubrica-item">
+        <span>Originalidad del análisis y pensamiento crítico demostrado</span>
+        <span class="puntos">15 pts</span>
+      </div>
+      <div class="rubrica-item rubrica-header">
+        <span><strong>Total</strong></span>
+        <span class="puntos">100 pts</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     ACTIVIDAD 3 — QUIZ INTERACTIVO
+     ═══════════════════════════════════════════ -->
+<section id="actividad-3">
+  <div class="tarjeta borde-rojo">
+    <div class="actividad-header">
+      <div class="act-num">03</div>
+      <div>
+        <span class="act-tipo">Actividad 3 &mdash; Entrega en Google Classroom</span>
+        <div class="act-nombre">Quiz Interactivo: Infraestructura y Ecosistema Digital en Psicología</div>
+      </div>
+    </div>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Instrucciones</span>
+      <p>Responde las 5 preguntas seleccionando la opción que consideres correcta. Al finalizar, haz clic en "Revisar respuestas" para obtener tu puntuación y retroalimentación. <strong>Toma una captura de pantalla de tu resultado y súbela a la tarea correspondiente en Google Classroom.</strong> Se acepta un máximo de dos intentos.</p>
+    </div>
+
+    <div id="quiz">
+
+      <div class="quiz-pregunta" id="q1">
+        <div class="quiz-enun">Un psicólogo utiliza una plataforma de telepsicología para realizar sesiones con sus pacientes. Al revisar la URL en el navegador, observa que comienza con "http://" en lugar de "https://". ¿Cuál es la implicación más grave de esta situación?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q1" value="a"> La sesión se cargará más lentamente que con HTTPS.</label>
+          <label class="quiz-opcion"><input type="radio" name="q1" value="b"> La comunicación entre el navegador y el servidor no está cifrada, por lo que terceros podrían interceptar el contenido de la sesión.</label>
+          <label class="quiz-opcion"><input type="radio" name="q1" value="c"> El navegador mostrará una advertencia estética, pero la seguridad no se ve comprometida.</label>
+          <label class="quiz-opcion"><input type="radio" name="q1" value="d"> La plataforma no podrá almacenar datos en la nube.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb1-bien">Correcto. HTTP no cifra los datos en tránsito, lo que expone la información clínica a potenciales interceptaciones. Esto constituye una violación de la confidencialidad y un riesgo deontológico grave.</div>
+        <div class="quiz-feedback feedback-mal" id="fb1-mal">Incorrecto. La respuesta correcta es la segunda opción. HTTP no cifra la comunicación: los datos viajan en texto plano y pueden ser interceptados. En un contexto clínico, esto compromete directamente la confidencialidad del paciente.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q2">
+        <div class="quiz-enun">Un hospital psiquiátrico utiliza un sistema de expedientes clínicos electrónicos al que solo puede acceder el personal con credenciales institucionales desde las instalaciones del hospital. Este sistema opera bajo el modelo de:</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q2" value="a"> Internet público con autenticación de dos factores.</label>
+          <label class="quiz-opcion"><input type="radio" name="q2" value="b"> Extranet con acceso controlado para colaboradores externos.</label>
+          <label class="quiz-opcion"><input type="radio" name="q2" value="c"> Intranet institucional, accesible únicamente dentro de la organización.</label>
+          <label class="quiz-opcion"><input type="radio" name="q2" value="d"> Computación en la nube pública (SaaS).</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb2-bien">Correcto. Una red de acceso exclusivo para el personal interno de una organización, sin exposición al exterior, es precisamente la definición de Intranet.</div>
+        <div class="quiz-feedback feedback-mal" id="fb2-mal">Incorrecto. La respuesta correcta es la tercera opción. La Intranet es una red privada accesible únicamente para los usuarios autorizados dentro de la propia organización, sin acceso externo.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q3">
+        <div class="quiz-enun">Una estudiante de psicología desea compartir los resultados parciales de su tesis de licenciatura con su directora, quien trabaja en otra universidad. ¿Qué herramienta o entorno sería el más adecuado para este intercambio, considerando seguridad y acceso controlado?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q3" value="a"> Publicar el documento en Instagram con la cuenta en modo privado.</label>
+          <label class="quiz-opcion"><input type="radio" name="q3" value="b"> Compartir mediante una Extranet o una plataforma de almacenamiento en la nube con acceso mediante enlace con contraseña y cifrado.</label>
+          <label class="quiz-opcion"><input type="radio" name="q3" value="c"> Enviar el documento por IRC al usuario de la directora.</label>
+          <label class="quiz-opcion"><input type="radio" name="q3" value="d"> Publicarlo en ResearchGate como artículo de acceso abierto para facilitar el acceso.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb3-bien">Correcto. La Extranet o una plataforma en la nube con acceso controlado (enlace con contraseña, cifrado) es el entorno adecuado para compartir información sensible o en proceso con colaboradores externos de confianza.</div>
+        <div class="quiz-feedback feedback-mal" id="fb3-mal">Incorrecto. La respuesta correcta es la segunda opción. Una Extranet o plataforma en la nube con acceso controlado ofrece seguridad, trazabilidad y control sobre quién puede acceder al documento en proceso.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q4">
+        <div class="quiz-enun">Un psicólogo publica regularmente en X/Twitter síntesis de investigación sobre el tratamiento cognitivo-conductual del trastorno de pánico. En una de sus publicaciones, describe con detalle el caso clínico de un paciente real, cambiando únicamente el nombre. Desde la perspectiva deontológica y de seguridad digital, esta conducta:</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q4" value="a"> Es aceptable, ya que el nombre fue modificado y la intención es divulgativa.</label>
+          <label class="quiz-opcion"><input type="radio" name="q4" value="b"> Es aceptable únicamente si el paciente sigue actualmente en tratamiento con el profesional.</label>
+          <label class="quiz-opcion"><input type="radio" name="q4" value="c"> Constituye una violación de la confidencialidad, ya que otros datos identificadores pueden permitir la identificación indirecta del paciente.</label>
+          <label class="quiz-opcion"><input type="radio" name="q4" value="d"> Es aceptable si la plataforma utiliza HTTPS, ya que los datos están cifrados en tránsito.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb4-bien">Correcto. La confidencialidad no se garantiza solo cambiando el nombre: la combinación de otros datos (edad, diagnóstico, circunstancias) puede permitir la identificación indirecta, lo que constituye una violación ética y potencialmente legal.</div>
+        <div class="quiz-feedback feedback-mal" id="fb4-mal">Incorrecto. La respuesta correcta es la tercera opción. El cambio de nombre no garantiza el anonimato: la combinación de otros datos puede identificar al paciente de manera indirecta. Además, publicar en redes sociales información clínica viola el deber de confidencialidad independientemente de la intención divulgativa.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q5">
+        <div class="quiz-enun">¿Cuál de las siguientes afirmaciones describe correctamente la diferencia entre el modelo cliente-servidor tradicional y la computación en la nube en el contexto de la gestión de información psicológica?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q5" value="a"> En el modelo cliente-servidor, los datos se almacenan en servidores físicos gestionados por la propia institución; en la nube, el almacenamiento y mantenimiento son responsabilidad de un proveedor externo.</label>
+          <label class="quiz-opcion"><input type="radio" name="q5" value="b"> La computación en la nube es sinónimo de Internet; el modelo cliente-servidor es un concepto obsoleto que ya no se utiliza.</label>
+          <label class="quiz-opcion"><input type="radio" name="q5" value="c"> En ambos modelos, el psicólogo tiene el mismo nivel de control sobre la seguridad y privacidad de los datos clínicos.</label>
+          <label class="quiz-opcion"><input type="radio" name="q5" value="d"> La computación en la nube elimina completamente el riesgo de acceso no autorizado a datos clínicos.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb5-bien">Correcto. Esta distinción es fundamental: en el modelo cliente-servidor tradicional, la institución controla directamente el hardware y el software; en la nube, se delega esta responsabilidad a un proveedor, lo que implica verificar sus políticas de seguridad y cumplimiento normativo.</div>
+        <div class="quiz-feedback feedback-mal" id="fb5-mal">Incorrecto. La respuesta correcta es la primera opción. La diferencia central radica en quién gestiona la infraestructura: en el modelo cliente-servidor, la institución; en la nube, un proveedor externo. Esto tiene implicaciones directas para el control sobre la seguridad de los datos clínicos.</div>
+      </div>
+
+    </div>
+
+    <div class="quiz-controles">
+      <button class="btn btn-primario" onclick="revisarQuiz()">Revisar respuestas y ver puntuación</button>
+      <button class="btn btn-dorado" onclick="reiniciarQuiz()" style="margin-left:0.8rem;">Reiniciar quiz</button>
+    </div>
+
+    <div id="resultado-quiz">
+      <div class="resultado-puntaje" id="puntaje-texto"></div>
+      <div class="resultado-msg" id="resultado-msg-texto"></div>
+      <p id="resultado-detalle" style="margin-top:0.8rem;font-size:0.88rem;color:var(--gris-texto);"></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     REFLEXIÓN Y APLICACIÓN
+     ═══════════════════════════════════════════ -->
+<section id="reflexion">
+  <div class="tarjeta borde-dorado">
+    <div class="seccion-titulo">
+      <span class="num">REF</span> Reflexión y Aplicación
+    </div>
+    <p class="seccion-desc">Planificación de la incorporación de los aprendizajes a la vida académica y profesional. Esta sección concluye la guía con una mirada propositiva hacia el futuro.</p>
+
+    <p>El conocimiento adquirido en esta unidad no tiene valor si permanece como información abstracta. El propósito de esta sección es que articules, de manera concreta y personal, cómo incorporarás estos aprendizajes a tu trayectoria como estudiante de psicología y como futuro profesional.</p>
+
+    <h3>Planificador de incorporacion del aprendizaje</h3>
+    <p>Completa los campos del planificador y guarda tu reflexión. Puedes copiar el texto generado y pegarlo en la tarea de reflexión en Google Classroom.</p>
+
+    <div class="plan-grid">
+      <div class="plan-area">
+        <label>¿Qué concepto o herramienta de esta guía te resultó más relevante para tu formación académica actual?</label>
+        <textarea rows="4" id="plan-academico" placeholder="Por ejemplo: ResearchGate para acceder a artículos de investigación en psicología clínica, o el uso de Moodle para..."></textarea>
+      </div>
+      <div class="plan-area">
+        <label>¿Cómo modificarás o ajustarás tu presencia digital a partir de lo aprendido?</label>
+        <textarea rows="4" id="plan-presencia" placeholder="Por ejemplo: voy a crear un perfil en LinkedIn orientado a psicología, con cuidado de..."></textarea>
+      </div>
+      <div class="plan-area">
+        <label>Identifica una práctica digital que realizabas antes de esta guía y que reconoces como inadecuada o mejorable. ¿Cómo la cambiarías?</label>
+        <textarea rows="4" id="plan-cambio" placeholder="Por ejemplo: enviaba información de trabajos académicos por WhatsApp sin considerar que..."></textarea>
+      </div>
+      <div class="plan-area">
+        <label>¿Qué condiciones técnicas y éticas mínimas exigirás en tu futura práctica profesional a cualquier plataforma digital que uses con pacientes?</label>
+        <textarea rows="4" id="plan-profesional" placeholder="Por ejemplo: protocolo HTTPS obligatorio, servidor en jurisdicción con ley de protección de datos, contrato de confidencialidad con el proveedor..."></textarea>
+      </div>
+    </div>
+
+    <div class="quiz-controles mt-2">
+      <button class="btn btn-primario" onclick="guardarPlan()">Guardar mi planificación</button>
+      <button class="btn btn-dorado" onclick="copiarPlan()" style="margin-left:0.8rem;">Copiar texto para Classroom</button>
+    </div>
+    <div id="plan-guardado">
+      Tu planificación ha sido guardada. Puedes copiarla y pegarla en la tarea de reflexión de Google Classroom.
+    </div>
+
+    <hr class="divider">
+
+    <h3>Síntesis conceptual de la unidad</h3>
+    <div class="concepto-grid">
+      <div class="concepto-card">
+        <div class="concepto-titulo">Infraestructura critica</div>
+        <p class="concepto-def">Internet, Intranet y Extranet no son intercambiables: cada una tiene implicaciones de seguridad específicas para el manejo de datos clínicos.</p>
+      </div>
+      <div class="concepto-card rojo">
+        <div class="concepto-titulo">Protocolo como etica</div>
+        <p class="concepto-def">Verificar el uso de HTTPS no es un detalle técnico menor: es una responsabilidad deontológica del psicólogo que usa tecnología.</p>
+      </div>
+      <div class="concepto-card dorado">
+        <div class="concepto-titulo">Presencia digital estrategica</div>
+        <p class="concepto-def">Las plataformas de divulgación y las comunidades científicas son herramientas profesionales que requieren criterio y gestión deliberada.</p>
+      </div>
+      <div class="concepto-card">
+        <div class="concepto-titulo">Aprendizaje continuo</div>
+        <p class="concepto-def">El ecosistema digital evoluciona permanentemente. La competencia digital del psicólogo requiere actualización constante y pensamiento crítico.</p>
+      </div>
+    </div>
+
+    <div class="caja caja-logro mt-2">
+      <span class="caja-titulo">Cierre de la guia</span>
+      <p>Has concluido el estudio de los temas 1.1 y 1.2 de la materia de Tecnologías de la Información Aplicadas a la Psicología. Los conceptos abordados en esta guía no son herramientas técnicas aisladas: son la base sobre la cual construirás una práctica profesional responsable, segura y actualizada en el entorno digital del siglo XXI.</p>
+      <p style="margin-bottom:0;">Recuerda entregar las tres actividades en Google Classroom dentro de los plazos establecidos por tu docente. El foro (Actividad 1), el mapa del ecosistema digital (Actividad 2) y la captura del quiz (Actividad 3) son evidencias de aprendizaje complementarias que, en conjunto, demuestran tu capacidad de aplicar los contenidos de la unidad.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- PIE DE PÁGINA -->
+<footer>
+  <div class="footer-linea"><strong>Universidad de la Ciénega del Estado de Michoacán de Ocampo</strong></div>
+  <div class="footer-linea">Licenciatura en Psicología &nbsp;|&nbsp; Tecnologías de la Información Aplicadas a la Psicología</div>
+  <div class="footer-linea">Unidad 1 &mdash; Temas 1.1 y 1.2 &nbsp;|&nbsp; Guía de aprendizaje interactiva</div>
+  <div class="footer-linea" style="margin-top:0.8rem;font-size:0.75rem;">Diseñada con metodología constructivista y Aprendizaje Basado en Problemas (ABP)</div>
+</footer>
+
+
+<script>
+  // ── BARRA DE PROGRESO ──
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    document.getElementById('progreso-barra').style.width = pct + '%';
+  });
+
+  // ── NAV ACTIVO ──
+  function marcarActivo(el) {
+    document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('activo'));
+    el.classList.add('activo');
+  }
+
+  // ── ACORDEÓN ──
+  function toggleAcord(btn) {
+    const body = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('abierto');
+    // Cierra todos en el mismo contenedor
+    const parent = btn.closest('.acordeon');
+    parent.querySelectorAll('.acord-btn.abierto').forEach(b => {
+      b.classList.remove('abierto');
+      b.nextElementSibling.classList.remove('visible');
+    });
+    if (!isOpen) {
+      btn.classList.add('abierto');
+      body.classList.add('visible');
+    }
+  }
+
+  // ── PESTAÑAS ──
+  function mostrarPestana(btn, idPanel) {
+    const contenedor = btn.closest('.pestanas');
+    contenedor.querySelectorAll('.pest-btn').forEach(b => b.classList.remove('activo'));
+    contenedor.querySelectorAll('.pest-panel').forEach(p => p.classList.remove('visible'));
+    btn.classList.add('activo');
+    document.getElementById(idPanel).classList.add('visible');
+  }
+
+  // ── QUIZ ──
+  const respuestas = { q1: 'b', q2: 'c', q3: 'b', q4: 'c', q5: 'a' };
+
+  function revisarQuiz() {
+    let correctas = 0;
+    for (const [num, correcta] of Object.entries(respuestas)) {
+      const sel = document.querySelector(`input[name="${num}"]:checked`);
+      const qDiv = document.getElementById(num);
+      const fbBien = document.getElementById('fb' + num.replace('q','') + '-bien');
+      const fbMal  = document.getElementById('fb' + num.replace('q','') + '-mal');
+
+      // Ocultar feedbacks anteriores
+      fbBien.style.display = 'none';
+      fbMal.style.display  = 'none';
+      qDiv.classList.remove('correcta', 'incorrecta');
+
+      if (!sel) {
+        qDiv.classList.add('incorrecta');
+        fbMal.style.display = 'block';
+        continue;
+      }
+      if (sel.value === correcta) {
+        correctas++;
+        qDiv.classList.add('correcta');
+        fbBien.style.display = 'block';
+      } else {
+        qDiv.classList.add('incorrecta');
+        fbMal.style.display = 'block';
+      }
+    }
+
+    const pct = (correctas / 5) * 100;
+    const divRes = document.getElementById('resultado-quiz');
+    const puntajeEl = document.getElementById('puntaje-texto');
+    const msgEl = document.getElementById('resultado-msg-texto');
+    const detEl = document.getElementById('resultado-detalle');
+
+    divRes.classList.remove('alto','medio','bajo');
+    divRes.style.display = 'block';
+    puntajeEl.textContent = correctas + ' / 5';
+    detEl.textContent = 'Porcentaje de aciertos: ' + pct + '%. Recuerda tomar una captura de pantalla de este resultado para subirla a Google Classroom.';
+
+    if (pct >= 80) {
+      divRes.classList.add('alto');
+      msgEl.textContent = 'Excelente desempeño. Demuestras una comprensión sólida de los contenidos de la unidad.';
+    } else if (pct >= 60) {
+      divRes.classList.add('medio');
+      msgEl.textContent = 'Desempeño aceptable. Revisa las preguntas incorrectas y los conceptos asociados antes de tu segundo intento.';
+    } else {
+      divRes.classList.add('bajo');
+      msgEl.textContent = 'Es necesario reforzar los contenidos. Revisa las secciones 1.1 y 1.2 de la guía y vuelve a intentarlo.';
+    }
+
+    divRes.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function reiniciarQuiz() {
+    document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+    document.querySelectorAll('.quiz-pregunta').forEach(q => q.classList.remove('correcta','incorrecta'));
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.style.display = 'none');
+    const divRes = document.getElementById('resultado-quiz');
+    divRes.style.display = 'none';
+    divRes.classList.remove('alto','medio','bajo');
+  }
+
+  // ── PLANIFICADOR ──
+  function guardarPlan() {
+    const campos = ['plan-academico','plan-presencia','plan-cambio','plan-profesional'];
+    const lleno = campos.some(id => document.getElementById(id).value.trim() !== '');
+    const aviso = document.getElementById('plan-guardado');
+    if (lleno) {
+      aviso.style.display = 'block';
+      setTimeout(() => aviso.style.display = 'none', 5000);
+    } else {
+      alert('Por favor, completa al menos uno de los campos del planificador antes de guardar.');
+    }
+  }
+
+  function copiarPlan() {
+    const etiquetas = [
+      'Aprendizaje académico relevante',
+      'Ajuste a mi presencia digital',
+      'Práctica digital que modificaré',
+      'Condiciones éticas y técnicas para mi práctica profesional'
+    ];
+    const ids = ['plan-academico','plan-presencia','plan-cambio','plan-profesional'];
+    let texto = 'PLANIFICACIÓN DE INCORPORACIÓN DEL APRENDIZAJE\nTecnologías de la Información Aplicadas a la Psicología — Unidad 1\n\n';
+    ids.forEach((id, i) => {
+      const val = document.getElementById(id).value.trim();
+      if (val) texto += etiquetas[i] + ':\n' + val + '\n\n';
+    });
+    if (texto.length < 120) {
+      alert('Por favor completa al menos un campo antes de copiar.'); return;
+    }
+    navigator.clipboard.writeText(texto)
+      .then(() => alert('Texto copiado al portapapeles. Pégalo en Google Classroom.'))
+      .catch(() => alert('No se pudo copiar automáticamente. Selecciona el texto manualmente.'));
+  }
+</script>
+</body>
+</html>
