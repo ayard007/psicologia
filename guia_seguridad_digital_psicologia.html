@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Interactiva: Seguridad, Privacidad y Ética Digital | TIAP</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde-uc: #1B5E20;
+    --verde-medio: #2E7D32;
+    --verde-claro: #4CAF50;
+    --verde-pálido: #E8F5E9;
+    --dorado: #C9A84C;
+    --dorado-claro: #F5E6C0;
+    --gris-oscuro: #1A1A1A;
+    --gris-texto: #2D2D2D;
+    --gris-medio: #555;
+    --gris-claro: #F0F0F0;
+    --blanco: #FAFAFA;
+    --sombra: 0 4px 24px rgba(27,94,32,0.10);
+    --sombra-fuerte: 0 8px 40px rgba(27,94,32,0.18);
+    --radio: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #F7F9F7;
+    color: var(--gris-texto);
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, var(--verde-uc) 0%, #134B17 60%, #0D3510 100%);
+    color: white;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.12);
+    pointer-events: none;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 10%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
+
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 32px 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(201,168,76,0.35);
+  }
+
+  .logo-placeholder {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(201,168,76,0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .logo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+  }
+
+  .logo-text-fallback {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dorado);
+    text-align: center;
+    line-height: 1.2;
+    padding: 8px;
+    letter-spacing: 0.03em;
+  }
+
+  .inst-info { flex: 1; }
+
+  .inst-nombre {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--dorado);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  .inst-sub {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.72);
+    margin-top: 3px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: rgba(201,168,76,0.18);
+    border: 1px solid rgba(201,168,76,0.5);
+    color: var(--dorado-claro);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .header-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: white;
+    margin-bottom: 12px;
+  }
+
+  .header-subtitulo {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.78);
+    font-weight: 300;
+    max-width: 560px;
+  }
+
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 28px;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+  }
+
+  .meta-valor {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: white;
+    border-bottom: 2px solid var(--verde-pálido);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-inner a {
+    display: block;
+    padding: 14px 16px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--gris-medio);
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .nav-inner a:hover {
+    color: var(--verde-medio);
+    border-bottom-color: var(--verde-claro);
+  }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+  }
+
+  /* ── SECTIONS ── */
+  section { margin-bottom: 56px; }
+
+  .section-encabezado {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .section-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--verde-uc);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--verde-uc);
+    line-height: 1.2;
+  }
+
+  .section-linea {
+    height: 3px;
+    background: linear-gradient(90deg, var(--verde-uc), var(--dorado), transparent);
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: white;
+    border-radius: var(--radio);
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    box-shadow: var(--sombra);
+    border-left: 4px solid var(--verde-claro);
+  }
+
+  .card-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--verde-uc);
+    margin-bottom: 10px;
+  }
+
+  .card p { font-size: 0.93rem; color: var(--gris-medio); margin-bottom: 8px; }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* ── OBJETIVOS GRID ── */
+  .objetivos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .objetivo-item {
+    background: white;
+    border-radius: var(--radio);
+    padding: 22px 20px;
+    box-shadow: var(--sombra);
+    border-top: 3px solid var(--dorado);
+    font-size: 0.88rem;
+    color: var(--gris-texto);
+    line-height: 1.55;
+  }
+
+  .objetivo-item strong {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--dorado);
+    margin-bottom: 6px;
+  }
+
+  /* ── CONCEPTOS ── */
+  .concepto {
+    background: white;
+    border-radius: var(--radio);
+    padding: 0;
+    margin-bottom: 12px;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+    border: 1px solid rgba(27,94,32,0.08);
+  }
+
+  .concepto-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 24px;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+  }
+
+  .concepto-header:hover { background: var(--verde-pálido); }
+
+  .concepto-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--verde-pálido);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .concepto-nombre {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--verde-uc);
+    flex: 1;
+  }
+
+  .concepto-arrow {
+    font-size: 0.8rem;
+    color: var(--verde-medio);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .concepto-body {
+    display: none;
+    padding: 0 24px 20px 74px;
+    font-size: 0.9rem;
+    color: var(--gris-medio);
+    line-height: 1.7;
+    border-top: 1px solid var(--verde-pálido);
+  }
+
+  .concepto-body.abierto { display: block; }
+  .concepto-arrow.girado { transform: rotate(90deg); }
+
+  /* ── PASOS ── */
+  .pasos-lista { counter-reset: paso; }
+
+  .paso {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    background: white;
+    border-radius: var(--radio);
+    padding: 22px 24px;
+    box-shadow: var(--sombra);
+    border: 1px solid rgba(27,94,32,0.06);
+    align-items: flex-start;
+  }
+
+  .paso-num {
+    counter-increment: paso;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--verde-uc), var(--verde-medio));
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(27,94,32,0.28);
+  }
+
+  .paso-contenido { flex: 1; }
+
+  .paso-titulo {
+    font-weight: 600;
+    color: var(--gris-oscuro);
+    font-size: 0.92rem;
+    margin-bottom: 5px;
+  }
+
+  .paso-desc {
+    font-size: 0.87rem;
+    color: var(--gris-medio);
+    line-height: 1.6;
+  }
+
+  .paso-ruta {
+    display: inline-block;
+    background: var(--gris-claro);
+    border: 1px solid #DDD;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 0.78rem;
+    font-family: 'Courier New', monospace;
+    color: var(--verde-uc);
+    margin-top: 6px;
+    word-break: break-all;
+  }
+
+  /* ── ACTIVIDADES ── */
+  .actividad-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--sombra-fuerte);
+    margin-bottom: 32px;
+  }
+
+  .actividad-header {
+    background: linear-gradient(135deg, var(--verde-uc), #1A6B1E);
+    padding: 26px 32px;
+    color: white;
+  }
+
+  .actividad-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dorado-claro);
+    margin-bottom: 8px;
+  }
+
+  .actividad-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .actividad-meta {
+    display: flex;
+    gap: 20px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+
+  .actividad-meta-item {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.75);
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .actividad-cuerpo {
+    padding: 28px 32px;
+  }
+
+  .actividad-instrucciones {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.96rem;
+    color: var(--gris-texto);
+    line-height: 1.8;
+    margin-bottom: 24px;
+    font-style: italic;
+    border-left: 3px solid var(--dorado);
+    padding-left: 16px;
+  }
+
+  .classroom-box {
+    background: var(--verde-pálido);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 20px;
+    border: 1px solid rgba(27,94,32,0.15);
+    font-size: 0.85rem;
+  }
+
+  .classroom-box strong {
+    display: block;
+    color: var(--verde-uc);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  /* ── FORO ── */
+  .foro-pregunta {
+    background: linear-gradient(135deg, #FFF8E6, var(--dorado-claro));
+    border-radius: 12px;
+    padding: 24px 28px;
+    border: 1px solid rgba(201,168,76,0.35);
+    margin: 20px 0;
+  }
+
+  .foro-pregunta-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a6a00;
+    margin-bottom: 10px;
+  }
+
+  .foro-pregunta p {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.05rem;
+    color: var(--gris-oscuro);
+    line-height: 1.65;
+  }
+
+  .respuesta-area {
+    width: 100%;
+    min-height: 130px;
+    border: 2px solid rgba(27,94,32,0.18);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.9rem;
+    color: var(--gris-texto);
+    resize: vertical;
+    background: white;
+    transition: border-color 0.2s;
+    line-height: 1.6;
+    outline: none;
+  }
+
+  .respuesta-area:focus { border-color: var(--verde-medio); }
+
+  .contador-chars {
+    text-align: right;
+    font-size: 0.75rem;
+    color: #AAA;
+    margin-top: 4px;
+  }
+
+  .btn-primario {
+    display: inline-block;
+    background: var(--verde-uc);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 0.04em;
+    transition: background 0.2s, transform 0.15s;
+    margin-top: 10px;
+  }
+
+  .btn-primario:hover {
+    background: var(--verde-medio);
+    transform: translateY(-1px);
+  }
+
+  .respuestas-previas {
+    margin-top: 24px;
+    border-top: 1px solid var(--gris-claro);
+    padding-top: 20px;
+  }
+
+  .respuestas-titulo {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gris-medio);
+    margin-bottom: 14px;
+  }
+
+  .respuesta-burbuja {
+    background: var(--verde-pálido);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    font-size: 0.87rem;
+    color: var(--gris-texto);
+    line-height: 1.6;
+    border-left: 3px solid var(--verde-claro);
+    animation: fadeIn 0.4s ease;
+  }
+
+  .respuesta-autor {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--verde-uc);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ── CHECKLIST ACTIVIDAD 2 ── */
+  .checklist {
+    list-style: none;
+    margin: 16px 0;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gris-claro);
+    font-size: 0.9rem;
+    color: var(--gris-texto);
+  }
+
+  .checklist li:last-child { border-bottom: none; }
+
+  .check-box {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--verde-medio);
+    border-radius: 5px;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: white;
+    background: white;
+    transition: background 0.2s, border-color 0.2s;
+    margin-top: 1px;
+  }
+
+  .check-box.marcado {
+    background: var(--verde-medio);
+    border-color: var(--verde-medio);
+  }
+
+  .check-text.tachado { text-decoration: line-through; color: #AAA; }
+
+  .progreso-barra-wrap {
+    height: 8px;
+    background: var(--gris-claro);
+    border-radius: 4px;
+    margin-top: 16px;
+    overflow: hidden;
+  }
+
+  .progreso-barra {
+    height: 100%;
+    background: linear-gradient(90deg, var(--verde-uc), var(--verde-claro));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  .progreso-texto {
+    font-size: 0.78rem;
+    color: var(--verde-uc);
+    font-weight: 600;
+    margin-top: 6px;
+  }
+
+  /* ── QUIZ ── */
+  .quiz-pregunta {
+    background: white;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--sombra);
+    border: 1px solid rgba(27,94,32,0.07);
+    display: none;
+  }
+
+  .quiz-pregunta.activa { display: block; animation: fadeIn 0.4s ease; }
+
+  .quiz-num {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dorado);
+    margin-bottom: 10px;
+  }
+
+  .quiz-texto {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1rem;
+    color: var(--gris-oscuro);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .quiz-opciones { display: flex; flex-direction: column; gap: 10px; }
+
+  .quiz-opcion {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 2px solid rgba(27,94,32,0.14);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    font-size: 0.9rem;
+    color: var(--gris-texto);
+    line-height: 1.5;
+    background: white;
+  }
+
+  .quiz-opcion:hover { background: var(--verde-pálido); border-color: var(--verde-claro); }
+
+  .quiz-opcion.correcta {
+    background: #E8F5E9;
+    border-color: var(--verde-claro);
+    color: var(--verde-uc);
+    font-weight: 600;
+  }
+
+  .quiz-opcion.incorrecta {
+    background: #FFEBEE;
+    border-color: #E57373;
+    color: #C62828;
+  }
+
+  .quiz-opcion.deshabilitada { cursor: default; pointer-events: none; }
+
+  .opcion-letra {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--verde-pálido);
+    color: var(--verde-uc);
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: background 0.2s;
+  }
+
+  .quiz-feedback {
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .quiz-feedback.correcto {
+    background: #E8F5E9;
+    color: #1B5E20;
+    border: 1px solid #A5D6A7;
+    display: block;
+  }
+
+  .quiz-feedback.incorrecto {
+    background: #FFEBEE;
+    color: #B71C1C;
+    border: 1px solid #EF9A9A;
+    display: block;
+  }
+
+  .quiz-navegacion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+  }
+
+  .btn-quiz {
+    display: inline-block;
+    padding: 9px 22px;
+    border-radius: 7px;
+    font-size: 0.83rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 0.03em;
+    transition: background 0.2s;
+  }
+
+  .btn-quiz-siguiente { background: var(--verde-uc); color: white; }
+  .btn-quiz-siguiente:hover { background: var(--verde-medio); }
+  .btn-quiz-ant { background: var(--gris-claro); color: var(--gris-medio); }
+  .btn-quiz-ant:hover { background: #E0E0E0; }
+  .btn-quiz:disabled { opacity: 0.4; cursor: default; }
+
+  .quiz-indicador {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+
+  .quiz-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gris-claro);
+    transition: background 0.3s;
+  }
+
+  .quiz-dot.respondida { background: var(--dorado); }
+  .quiz-dot.correcta-dot { background: var(--verde-claro); }
+  .quiz-dot.activa { background: var(--verde-uc); }
+
+  /* ── RESULTADO QUIZ ── */
+  .quiz-resultado {
+    display: none;
+    text-align: center;
+    padding: 40px 32px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--sombra-fuerte);
+    animation: fadeIn 0.6s ease;
+  }
+
+  .resultado-circulo {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 6px 24px rgba(27,94,32,0.25);
+  }
+
+  .resultado-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gris-oscuro);
+    margin-bottom: 8px;
+  }
+
+  .resultado-desc {
+    font-size: 0.9rem;
+    color: var(--gris-medio);
+    max-width: 400px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+  }
+
+  .resultado-desglose {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .desglose-item {
+    text-align: center;
+    padding: 12px 20px;
+    border-radius: 10px;
+    background: var(--gris-claro);
+    min-width: 80px;
+  }
+
+  .desglose-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    display: block;
+  }
+
+  .desglose-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--gris-medio);
+  }
+
+  .btn-reintentar {
+    background: var(--verde-uc);
+    color: white;
+    padding: 11px 28px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+  }
+
+  .btn-reintentar:hover { background: var(--verde-medio); }
+
+  /* ── INFO BOXES ── */
+  .info-box {
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 18px 0;
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
+  .info-box.advertencia {
+    background: #FFF8E6;
+    border-left: 4px solid var(--dorado);
+    color: #5a3e00;
+  }
+
+  .info-box.informacion {
+    background: #E3F2FD;
+    border-left: 4px solid #1976D2;
+    color: #0D47A1;
+  }
+
+  .info-box.tip {
+    background: var(--verde-pálido);
+    border-left: 4px solid var(--verde-claro);
+    color: #1B5E20;
+  }
+
+  .info-box strong {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+
+  /* ── TABLA ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin: 16px 0;
+    box-shadow: var(--sombra);
+    border-radius: var(--radio);
+    overflow: hidden;
+  }
+
+  th {
+    background: var(--verde-uc);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--verde-pálido);
+    color: var(--gris-texto);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: rgba(232,245,233,0.4); }
+
+  /* ── REFLEXIÓN ── */
+  .reflexion-form {
+    background: white;
+    border-radius: 14px;
+    padding: 28px 32px;
+    box-shadow: var(--sombra);
+    border: 1px solid rgba(27,94,32,0.07);
+  }
+
+  .reflexion-campo {
+    margin-bottom: 22px;
+  }
+
+  .reflexion-campo label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--verde-uc);
+    margin-bottom: 8px;
+  }
+
+  .reflexion-campo textarea {
+    width: 100%;
+    min-height: 100px;
+    border: 2px solid rgba(27,94,32,0.18);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.9rem;
+    color: var(--gris-texto);
+    resize: vertical;
+    line-height: 1.6;
+    outline: none;
+    background: #FAFAFA;
+    transition: border-color 0.2s;
+  }
+
+  .reflexion-campo textarea:focus { border-color: var(--verde-medio); background: white; }
+
+  .reflexion-guardado {
+    display: none;
+    background: var(--verde-pálido);
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 0.85rem;
+    color: var(--verde-uc);
+    font-weight: 600;
+    margin-top: 8px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--verde-uc);
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    padding: 28px 32px;
+    font-size: 0.8rem;
+    line-height: 1.7;
+  }
+
+  footer strong { color: white; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .header-inner, main { padding-left: 18px; padding-right: 18px; }
+    .actividad-cuerpo { padding: 20px 18px; }
+    .actividad-header { padding: 20px 18px; }
+    .reflexion-form { padding: 20px 18px; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    nav, .btn-primario, .btn-quiz, .btn-reintentar { display: none; }
+    .actividad-card { box-shadow: none; border: 1px solid #CCC; }
+    body { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="header-inner">
+    <div class="logo-area">
+      <div class="logo-placeholder" title="Logo Universidad de la Ciénega">
+        <!-- Reemplazar con: <img src="logo_uc.png" alt="Logo Universidad de la Ciénega"> -->
+        <span class="logo-text-fallback">UNE</span>
+      </div>
+      <div class="inst-info">
+        <div class="inst-nombre">Universidad UNE, Universidad de Especialidades<br>Plantel Centro</div>
+        <div class="inst-sub">Licenciatura en Psicología &nbsp;|&nbsp; Tecnologías de la Información Aplicadas a la Psicología</div>
+      </div>
+    </div>
+    <div class="header-badge">Guía Interactiva de Aprendizaje</div>
+    <h1 class="header-titulo">Seguridad, Privacidad<br>y Ética Digital</h1>
+    <p class="header-subtitulo">Configuración de privacidad en Google Chrome y uso ético de la información en contextos psicológicos y académicos.</p>
+    <div class="header-meta">
+      <div class="meta-item"><span class="meta-label">Nivel</span><span class="meta-valor">Licenciatura</span></div>
+      <div class="meta-item"><span class="meta-label">Unidad</span><span class="meta-valor">Ética y Privacidad Digital</span></div>
+      <div class="meta-item"><span class="meta-label">Modalidad</span><span class="meta-valor">Presencial / En línea</span></div>
+      <div class="meta-item"><span class="meta-label">Entrega</span><span class="meta-valor">Google Classroom</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#intro">Introducción</a>
+    <a href="#conceptos">Conceptos</a>
+    <a href="#configuracion">Configuración</a>
+    <a href="#actividad1">Actividad 1</a>
+    <a href="#actividad2">Actividad 2</a>
+    <a href="#actividad3">Quiz</a>
+    <a href="#reflexion">Reflexión</a>
+  </div>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<main>
+
+  <!-- ── 0. PRESENTACIÓN ── -->
+  <section id="intro">
+    <div class="section-encabezado">
+      <div class="section-num">0</div>
+      <h2 class="section-titulo">Presentación de la Guía</h2>
+    </div>
+    <div class="section-linea"></div>
+
+    <div class="card">
+      <div class="card-titulo">¿Para qué sirve esta guía?</div>
+      <p>Esta guía ha sido diseñada bajo los principios del <strong>aprendizaje constructivista</strong> y el <strong>aprendizaje basado en problemas</strong>. Su propósito es que, como estudiante de Psicología, no solo conozcas los conceptos de seguridad y privacidad digital, sino que los integres activamente en tus prácticas cotidianas dentro de la universidad y en tu futura vida profesional.</p>
+      <p>Recuerda que el ejercicio de la Psicología implica el manejo constante de información sensible sobre personas. Proteger esa información es tanto una obligación legal como un imperativo ético.</p>
+    </div>
+
+    <div class="info-box tip">
+      <strong>Instrucciones generales</strong>
+      Navega las secciones en orden. Al finalizar cada actividad práctica, guarda tu trabajo para subirlo a Google Classroom. El quiz al final generará automáticamente tu puntaje.
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--verde-uc);margin:24px 0 16px;">Objetivos de Aprendizaje</h3>
+    <div class="objetivos-grid">
+      <div class="objetivo-item"><strong>Conceptual</strong>Comprender los principios fundamentales de seguridad, privacidad y ética en el entorno digital aplicados al campo psicológico.</div>
+      <div class="objetivo-item"><strong>Procedimental</strong>Configurar de forma autónoma las opciones de privacidad y seguridad del navegador Google Chrome.</div>
+      <div class="objetivo-item"><strong>Actitudinal</strong>Reflexionar críticamente sobre el uso ético de la información digital en contextos académicos y clínicos.</div>
+      <div class="objetivo-item"><strong>Colaborativo</strong>Construir conocimiento compartido a través del intercambio de perspectivas con pares en un foro académico.</div>
+    </div>
+  </section>
+
+  <!-- ── 1. CONCEPTOS ── -->
+  <section id="conceptos">
+    <div class="section-encabezado">
+      <div class="section-num">1</div>
+      <h2 class="section-titulo">Marco Conceptual</h2>
+    </div>
+    <div class="section-linea"></div>
+
+    <p style="font-size:0.9rem;color:var(--gris-medio);margin-bottom:20px;">Selecciona cada concepto para desplegar su definición y su relevancia en el contexto de la Psicología.</p>
+
+    <div id="conceptos-lista">
+
+      <div class="concepto">
+        <div class="concepto-header" onclick="toggleConcepto(this)">
+          <div class="concepto-icon">&#128274;</div>
+          <div class="concepto-nombre">Seguridad de la Información</div>
+          <div class="concepto-arrow">&#9656;</div>
+        </div>
+        <div class="concepto-body">
+          <p>La seguridad de la información comprende el conjunto de medidas, procedimientos y controles orientados a proteger los datos frente a accesos no autorizados, alteraciones indebidas, destrucción o divulgación no consentida. En Psicología, esta protección resulta especialmente relevante dado que se trabaja con información íntima y sensible de las personas.</p>
+          <p style="margin-top:10px;"><strong>Relevancia disciplinar:</strong> Las historias clínicas, los resultados de evaluaciones psicológicas y los registros de sesión constituyen datos de carácter altamente sensible cuya vulneración puede afectar gravemente la vida de los consultantes.</p>
+        </div>
+      </div>
+
+      <div class="concepto">
+        <div class="concepto-header" onclick="toggleConcepto(this)">
+          <div class="concepto-icon">&#128100;</div>
+          <div class="concepto-nombre">Privacidad Digital</div>
+          <div class="concepto-arrow">&#9656;</div>
+        </div>
+        <div class="concepto-body">
+          <p>La privacidad digital se refiere al derecho de los individuos a controlar qué información personal se recopila, procesa y comparte en entornos digitales. Incluye la gestión de datos de navegación, cookies, perfiles de usuario y metadatos generados en la interacción con servicios en línea.</p>
+          <p style="margin-top:10px;"><strong>Relevancia disciplinar:</strong> Como futuro profesional de la Psicología, deberás garantizar la privacidad digital de tus consultantes cuando utilices plataformas de teleconsulta, almacenamiento en la nube o herramientas de evaluación en línea.</p>
+        </div>
+      </div>
+
+      <div class="concepto">
+        <div class="concepto-header" onclick="toggleConcepto(this)">
+          <div class="concepto-icon">&#9878;&#65039;</div>
+          <div class="concepto-nombre">Ética Digital</div>
+          <div class="concepto-arrow">&#9656;</div>
+        </div>
+        <div class="concepto-body">
+          <p>La ética digital es la reflexión sistemática sobre las implicaciones morales del uso de tecnologías digitales. Abarca preguntas sobre la veracidad de la información compartida, el respeto a los derechos de autor, la honestidad en entornos académicos y profesionales, el consentimiento informado en la recopilación de datos, y la responsabilidad sobre el contenido que se genera o difunde.</p>
+          <p style="margin-top:10px;"><strong>Relevancia disciplinar:</strong> El Código Ético del Psicólogo establece obligaciones explícitas sobre confidencialidad y manejo de información que se extienden al ámbito digital.</p>
+        </div>
+      </div>
+
+      <div class="concepto">
+        <div class="concepto-header" onclick="toggleConcepto(this)">
+          <div class="concepto-icon">&#127919;</div>
+          <div class="concepto-nombre">Cookies y Rastreo en Línea</div>
+          <div class="concepto-arrow">&#9656;</div>
+        </div>
+        <div class="concepto-body">
+          <p>Las cookies son pequeños archivos de texto que los sitios web almacenan en el dispositivo del usuario para recordar sus preferencias, mantener sesiones activas y, en muchos casos, rastrear su comportamiento de navegación con fines publicitarios o analíticos. Existen cookies de primera parte (del propio sitio) y cookies de terceros (de empresas externas de rastreo).</p>
+          <p style="margin-top:10px;"><strong>Dato de contexto:</strong> Cuando navegas en sitios relacionados con salud mental o contenidos psicológicos desde un dispositivo del trabajo o de la universidad, puedes generar rastros que revelen información sensible sobre tus consultantes o investigaciones.</p>
+        </div>
+      </div>
+
+      <div class="concepto">
+        <div class="concepto-header" onclick="toggleConcepto(this)">
+          <div class="concepto-icon">&#128279;</div>
+          <div class="concepto-nombre">HTTPS y Certificados de Seguridad</div>
+          <div class="concepto-arrow">&#9656;</div>
+        </div>
+        <div class="concepto-body">
+          <p>El protocolo HTTPS (HyperText Transfer Protocol Secure) establece una conexión cifrada entre el navegador del usuario y el servidor web, protegiendo los datos transmitidos de ser interceptados por terceros. Los certificados SSL/TLS son los documentos digitales que verifican la autenticidad de un sitio web.</p>
+          <p style="margin-top:10px;"><strong>Buena práctica:</strong> Siempre verifica el candado de seguridad en la barra de direcciones antes de introducir datos personales, credenciales de acceso o información de tus consultantes en cualquier plataforma digital.</p>
+        </div>
+      </div>
+
+      <div class="concepto">
+        <div class="concepto-header" onclick="toggleConcepto(this)">
+          <div class="concepto-icon">&#128245;</div>
+          <div class="concepto-nombre">Phishing y Amenazas Sociales</div>
+          <div class="concepto-arrow">&#9656;</div>
+        </div>
+        <div class="concepto-body">
+          <p>El phishing es una técnica de engaño mediante la cual actores maliciosos suplantan la identidad de instituciones o personas de confianza para obtener información sensible como contraseñas, datos bancarios o información personal. En el ámbito académico, existen variantes como el spear phishing dirigido a investigadores o estudiantes universitarios.</p>
+          <p style="margin-top:10px;"><strong>Señales de alerta:</strong> Correos con urgencia artificial, enlaces que no coinciden con la institución real, solicitudes de contraseñas o datos personales por correo electrónico.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="info-box advertencia" style="margin-top:24px;">
+      <strong>Marco Legal de Referencia</strong>
+      En México, la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP) y la Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados establecen el marco jurídico aplicable al manejo de información personal, incluyendo datos de salud mental.
+    </div>
+  </section>
+
+  <!-- ── 2. CONFIGURACIÓN CHROME ── -->
+  <section id="configuracion">
+    <div class="section-encabezado">
+      <div class="section-num">2</div>
+      <h2 class="section-titulo">Configuración de Seguridad y Privacidad en Google Chrome</h2>
+    </div>
+    <div class="section-linea"></div>
+
+    <div class="card">
+      <div class="card-titulo">¿Por qué configurar tu navegador?</div>
+      <p>El navegador es la principal puerta de entrada a Internet. Una configuración inadecuada puede exponer tu información personal, revelar tus patrones de búsqueda y facilitar el acceso no autorizado a tus cuentas académicas e institucionales. Configurarlo correctamente es un acto de responsabilidad profesional.</p>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--verde-uc);margin:28px 0 18px;">Procedimiento paso a paso</h3>
+
+    <h4 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--gris-medio);margin-bottom:14px;">Módulo A &mdash; Acceso al Panel de Privacidad</h4>
+
+    <div class="pasos-lista">
+      <div class="paso">
+        <div class="paso-num">1</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Abrir Google Chrome</div>
+          <div class="paso-desc">Inicia el navegador desde el escritorio de tu computadora o desde el menú de aplicaciones.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">2</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Acceder a la Configuración</div>
+          <div class="paso-desc">Haz clic en el icono de tres puntos verticales (&#8942;) ubicado en la esquina superior derecha del navegador. En el menú desplegable, selecciona <strong>Configuración</strong>.</div>
+          <span class="paso-ruta">chrome://settings/</span>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">3</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Localizar la sección de Privacidad y Seguridad</div>
+          <div class="paso-desc">En el panel izquierdo de Configuración, haz clic en <strong>Privacidad y seguridad</strong>. Observarás cuatro subsecciones principales: Navegación segura, Eliminar datos de navegación, Cookies y otros datos de sitios, y Seguridad.</div>
+          <span class="paso-ruta">chrome://settings/privacy</span>
+        </div>
+      </div>
+    </div>
+
+    <h4 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--gris-medio);margin:24px 0 14px;">Módulo B &mdash; Configuración de Navegación Segura</h4>
+
+    <div class="pasos-lista">
+      <div class="paso">
+        <div class="paso-num">4</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Activar Navegación segura mejorada</div>
+          <div class="paso-desc">Ingresa a <strong>Seguridad</strong> dentro del panel de Privacidad y seguridad. En la sección "Navegación segura", selecciona la opción <strong>Protección mejorada</strong>. Esta configuración ofrece advertencias en tiempo real sobre sitios peligrosos, descargas maliciosas y extensiones no seguras.</div>
+          <span class="paso-ruta">chrome://settings/security</span>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">5</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Activar "Usar siempre conexiones seguras"</div>
+          <div class="paso-desc">En el mismo panel de Seguridad, activa la opción <strong>Usar siempre conexiones seguras</strong>. Chrome mostrará una advertencia cada vez que intentes acceder a un sitio que no utilice HTTPS, indicando que la conexión no es segura.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">6</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Activar el DNS seguro</div>
+          <div class="paso-desc">En la misma sección, activa <strong>Usar DNS seguro</strong> y selecciona un proveedor de confianza, como Google (8.8.8.8) o Cloudflare (1.1.1.1). Esto cifra las consultas de nombres de dominio, dificultando que terceros rastreen los sitios que visitas.</div>
+        </div>
+      </div>
+    </div>
+
+    <h4 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--gris-medio);margin:24px 0 14px;">Módulo C &mdash; Gestión de Cookies y Datos de Navegación</h4>
+
+    <div class="pasos-lista">
+      <div class="paso">
+        <div class="paso-num">7</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Configurar las cookies de terceros</div>
+          <div class="paso-desc">Ve a <strong>Cookies y otros datos de sitios</strong>. Selecciona la opción <strong>Bloquear cookies de terceros en el modo incógnito</strong> como mínimo, o bien <strong>Bloquear cookies de terceros</strong> para una mayor protección. Las cookies de terceros son utilizadas principalmente para rastreo publicitario y seguimiento de comportamiento entre sitios.</div>
+          <span class="paso-ruta">chrome://settings/cookies</span>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">8</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Eliminar datos de navegación periódicamente</div>
+          <div class="paso-desc">Ve a <strong>Eliminar datos de navegación</strong>. Selecciona el rango de tiempo <strong>Todo el tiempo</strong> y marca: historial de navegación, cookies y otros datos de sitios, e imágenes y archivos en caché. Realiza esta limpieza al final de cada sesión de trabajo con información sensible.</div>
+          <span class="paso-ruta">chrome://settings/clearBrowserData</span>
+        </div>
+      </div>
+    </div>
+
+    <h4 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--gris-medio);margin:24px 0 14px;">Módulo D &mdash; Permisos del Sitio</h4>
+
+    <div class="pasos-lista">
+      <div class="paso">
+        <div class="paso-num">9</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Revisar y restringir permisos</div>
+          <div class="paso-desc">Ve a <strong>Privacidad y seguridad &rarr; Configuración del sitio</strong>. Revisa uno por uno los permisos: Cámara, Micrófono, Ubicación, Notificaciones y Acceso a la portapapeles. Configura cada uno en <strong>Preguntar antes de acceder</strong> o <strong>Bloqueado</strong>.</div>
+          <span class="paso-ruta">chrome://settings/content</span>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">10</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Gestionar las extensiones instaladas</div>
+          <div class="paso-desc">Escribe en la barra de direcciones <span class="paso-ruta">chrome://extensions/</span>. Revisa todas las extensiones instaladas. Desactiva o elimina aquellas que no utilices activamente. Verifica los permisos solicitados por cada extensión; una extensión que pide acceso a todos los sitios web merece una revisión crítica.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box tip" style="margin-top:24px;">
+      <strong>Buena práctica para uso académico</strong>
+      Cuando trabajes con información de consultantes en entornos digitales, utiliza el <strong>Modo Incógnito</strong> de Chrome (Ctrl+Mayús+N) como medida adicional de protección. Este modo no guarda el historial de navegación, cookies ni datos de formularios en el dispositivo local.
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--verde-uc);margin:28px 0 16px;">Tabla de Referencia: Configuraciones Clave</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Configuración</th>
+          <th>Opción Recomendada</th>
+          <th>Motivo Ético-Profesional</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Navegación segura</td>
+          <td>Protección mejorada</td>
+          <td>Previene el acceso a sitios fraudulentos que puedan comprometer datos de trabajo</td>
+        </tr>
+        <tr>
+          <td>Conexiones HTTPS</td>
+          <td>Siempre activo</td>
+          <td>Garantiza la confidencialidad de los datos transmitidos</td>
+        </tr>
+        <tr>
+          <td>Cookies de terceros</td>
+          <td>Bloqueadas</td>
+          <td>Evita el rastreo de comportamiento por parte de empresas publicitarias</td>
+        </tr>
+        <tr>
+          <td>Cámara / Micrófono</td>
+          <td>Preguntar siempre</td>
+          <td>Protege la privacidad durante consultas o sesiones en línea</td>
+        </tr>
+        <tr>
+          <td>Notificaciones</td>
+          <td>Bloqueadas por defecto</td>
+          <td>Reduce distracciones y accesos no autorizados a información contextual</td>
+        </tr>
+        <tr>
+          <td>Eliminación de datos</td>
+          <td>Periódica / Manual</td>
+          <td>Minimiza la exposición de datos sensibles en dispositivos compartidos</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── ACTIVIDAD 1: FORO ── -->
+  <section id="actividad1">
+    <div class="section-encabezado">
+      <div class="section-num">3</div>
+      <h2 class="section-titulo">Actividad 1: Foro de Reflexión Crítica</h2>
+    </div>
+    <div class="section-linea"></div>
+
+    <div class="actividad-card">
+      <div class="actividad-header">
+        <div class="actividad-tag">Actividad de Mediación &mdash; Foro Académico</div>
+        <div class="actividad-titulo">La privacidad digital como imperativo ético en la práctica psicológica</div>
+        <div class="actividad-meta">
+          <div class="actividad-meta-item">Modalidad: Participación en foro de Classroom</div>
+          <div class="actividad-meta-item">Extensión: Mínimo 200 palabras por aportación</div>
+          <div class="actividad-meta-item">Interacción: Responder al menos 2 compañeros</div>
+        </div>
+      </div>
+
+      <div class="actividad-cuerpo">
+
+        <p class="actividad-instrucciones">"La psicóloga Yolanda registra las sesiones de sus consultantes en una aplicación de notas en su teléfono personal, sincronizada automáticamente con la nube. Una tarde, recibe un correo que indica que su cuenta ha sido comprometida. Al revisar, descubre que alguien accedió a las notas clínicas de treinta personas durante los últimos meses."</p>
+
+        <div class="foro-pregunta">
+          <div class="foro-pregunta-label">Pregunta Detonadora</div>
+          <p>A partir del caso anterior y de los contenidos revisados en esta guía: <strong>¿Qué responsabilidades éticas, legales y técnicas tenía la psicóloga Yolanda en el manejo digital de la información de sus consultantes?</strong> ¿Qué decisiones concretas debió haber tomado para prevenir esta situación? ¿En qué medida este escenario refleja riesgos presentes en tu propia práctica académica actual?</p>
+        </div>
+
+        <div class="info-box informacion">
+          <strong>Criterios de Participación de Calidad</strong>
+          Una aportación de alto valor académico debe: (1) articular conceptos teóricos revisados con el análisis del caso, (2) argumentar una postura personal fundamentada, (3) conectar la situación con la realidad de la práctica psicológica en México, y (4) formular al menos una pregunta o provocación intelectual dirigida a tus compañeros.
+        </div>
+
+        <h4 style="font-size:0.88rem;font-weight:700;color:var(--gris-oscuro);margin:22px 0 10px;">Escribe tu aportación para el foro</h4>
+        <p style="font-size:0.82rem;color:var(--gris-medio);margin-bottom:10px;">Usa este espacio para redactar tu participación antes de publicarla en Google Classroom. Puedes copiar el texto y pegarlo en la plataforma.</p>
+
+        <textarea class="respuesta-area" id="foro-respuesta" placeholder="Escribe aquí tu análisis del caso y tu postura fundamentada..." oninput="contarChars('foro-respuesta','foro-contador')"></textarea>
+        <div class="contador-chars" id="foro-contador">0 caracteres</div>
+
+        <button class="btn-primario" onclick="publicarRespuestaForo()">Agregar aportación al hilo</button>
+
+        <div class="respuestas-previas" id="foro-hilo">
+          <div class="respuestas-titulo">Hilo del Foro (Ejemplo de Referencia)</div>
+          <div class="respuesta-burbuja">
+            <div class="respuesta-autor">Ejemplo de Participación — Nivel Esperado</div>
+            El caso de la psicóloga Yolanda evidencia una brecha crítica entre las obligaciones éticas establecidas en el Código de Ética del Psicólogo Mexicano y las prácticas tecnológicas cotidianas. El artículo relativo a la confidencialidad no distingue entre el soporte físico y el digital de la información; por tanto, la obligación de proteger los datos existe independientemente del medio utilizado. Yolanda incurrió en al menos tres omisiones: no utilizó una herramienta con cifrado de extremo a extremo ni aprobada para uso clínico, no estableció autenticación de doble factor en su cuenta, y no obtuvo el consentimiento explícito de los consultantes sobre el almacenamiento digital de sus datos. Desde la perspectiva de la Ley Federal de Protección de Datos Personales, los datos de salud mental son considerados datos sensibles y requieren un nivel de protección superior. Mi pregunta para el grupo es: ¿consideramos que la formación universitaria actual nos prepara suficientemente para tomar estas decisiones técnicas con criterio ético?
+          </div>
+        </div>
+
+        <div class="classroom-box">
+          <strong>Instrucción para Google Classroom</strong>
+          Una vez finalizada tu aportación en este espacio, cópiala y publícala en el Foro correspondiente a esta actividad en Google Classroom. Recuerda regresar a la plataforma para leer y responder las aportaciones de al menos dos compañeros, estableciendo un diálogo académico fundamentado.
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ACTIVIDAD 2 ── -->
+  <section id="actividad2">
+    <div class="section-encabezado">
+      <div class="section-num">4</div>
+      <h2 class="section-titulo">Actividad 2: Auditoría de Privacidad Personal</h2>
+    </div>
+    <div class="section-linea"></div>
+
+    <div class="actividad-card">
+      <div class="actividad-header" style="background: linear-gradient(135deg, #5D4037, #3E2723);">
+        <div class="actividad-tag">Aprendizaje Significativo &mdash; Aplicación Práctica</div>
+        <div class="actividad-titulo">Auditoría de Privacidad Digital y Plan de Mejora</div>
+        <div class="actividad-meta">
+          <div class="actividad-meta-item">Entregable: Documento de reflexión en Classroom</div>
+          <div class="actividad-meta-item">Duración estimada: 45&ndash;60 minutos</div>
+          <div class="actividad-meta-item">Formato: Texto + Lista de acciones tomadas</div>
+        </div>
+      </div>
+
+      <div class="actividad-cuerpo">
+
+        <p style="font-size:0.93rem;color:var(--gris-texto);margin-bottom:20px;line-height:1.75;">Esta actividad te guiará para realizar una <strong>auditoría real de tu propia huella digital</strong> y tomar decisiones concretas de mejora. Al concluir, habrás transformado el conocimiento teórico en una práctica de autocuidado digital aplicable de forma inmediata en tu vida académica.</p>
+
+        <div class="info-box advertencia">
+          <strong>Antes de comenzar</strong>
+          Ten a la mano tu computadora con Google Chrome abierto. Realizarás las acciones directamente en el navegador mientras completas la lista de verificación. Esta actividad <strong>no requiere instalar ningún software adicional</strong>.
+        </div>
+
+        <h4 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--verde-uc);margin:22px 0 14px;">Lista de Verificación: Acciones a Realizar</h4>
+        <p style="font-size:0.83rem;color:var(--gris-medio);margin-bottom:14px;">Marca cada acción al completarla. El sistema registrará tu progreso.</p>
+
+        <ul class="checklist" id="checklist-auditoria">
+          <li>
+            <div class="check-box" onclick="marcarCheck(this)" title="Marcar como completado"></div>
+            <div class="check-text">Ingresé a <code>chrome://settings/privacy</code> y revisé la configuración actual de Navegación segura.</div>
+          </li>
+          <li>
+            <div class="check-box" onclick="marcarCheck(this)"></div>
+            <div class="check-text">Activé la opción "Protección mejorada" en la sección de Navegación segura.</div>
+          </li>
+          <li>
+            <div class="check-box" onclick="marcarCheck(this)"></div>
+            <div class="check-text">Activé "Usar siempre conexiones seguras" (HTTPS).</div>
+          </li>
+          <li>
+            <div class="check-box" onclick="marcarCheck(this)"></div>
+            <div class="check-text">Revisé y ajusté la configuración de cookies de terceros en <code>chrome://settings/cookies</code>.</div>
+          </li>
+          <li>
+            <div class="check-box" onclick="marcarCheck(this)"></div>
+            <div class="check-text">Eliminé el historial de navegación, cookies y caché de los últimos 7 días.</div>
+          </li>
+          <li>
+            <div class="check-box" onclick="marcarCheck(this)"></div>
+            <div class="check-text">Revisé los permisos de cámara, micrófono y ubicación en <code>chrome://settings/content</code>.</div>
+          </li>
+          <li>
+            <div class="check-box" onclick="marcarCheck(this)"></div>
+            <div class="check-text">Revisé las extensiones instaladas y eliminé o desactivé las que no utilizo.</div>
+          </li>
+          <li>
+            <div class="check-box" onclick="marcarCheck(this)"></div>
+            <div class="check-text">Verifiqué si mi cuenta de Google asociada a Chrome tiene verificación en dos pasos activada.</div>
+          </li>
+          <li>
+            <div class="check-box" onclick="marcarCheck(this)"></div>
+            <div class="check-text">Identifiqué al menos tres situaciones de mi vida académica actual donde aplican los conceptos de privacidad revisados.</div>
+          </li>
+          <li>
+            <div class="check-box" onclick="marcarCheck(this)"></div>
+            <div class="check-text">Redacté un párrafo de reflexión sobre cómo estas configuraciones impactan mi futura práctica profesional.</div>
+          </li>
+        </ul>
+
+        <div class="progreso-barra-wrap">
+          <div class="progreso-barra" id="barra-progreso"></div>
+        </div>
+        <div class="progreso-texto" id="texto-progreso">0 de 10 acciones completadas</div>
+
+        <h4 style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--verde-uc);margin:28px 0 14px;">Parte 2: Documento de Reflexión</h4>
+
+        <p style="font-size:0.88rem;color:var(--gris-medio);margin-bottom:16px;">Con base en tu auditoría, responde lo siguiente en un documento que subirás a Classroom:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Pregunta Guía para el Documento</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width:40px;text-align:center;font-weight:700;color:var(--verde-uc);">1</td>
+              <td>¿Cuál era el estado de tu configuración de privacidad antes de realizar la auditoría? ¿Qué vulnerabilidades identificaste?</td>
+            </tr>
+            <tr>
+              <td style="text-align:center;font-weight:700;color:var(--verde-uc);">2</td>
+              <td>¿Qué cambios realizaste y por qué consideraste que eran necesarios desde una perspectiva ética?</td>
+            </tr>
+            <tr>
+              <td style="text-align:center;font-weight:700;color:var(--verde-uc);">3</td>
+              <td>¿Cómo conectas esta práctica con los principios deontológicos de la Psicología, específicamente el de confidencialidad?</td>
+            </tr>
+            <tr>
+              <td style="text-align:center;font-weight:700;color:var(--verde-uc);">4</td>
+              <td>¿Qué práctica digital comprometiéndote a mantener de forma permanente en tu quehacer académico y profesional?</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="classroom-box">
+          <strong>Instrucción para Google Classroom</strong>
+          Sube tu documento de reflexión (formato .docx o .pdf, mínimo 300 palabras) a la tarea correspondiente en Google Classroom. Adjunta también una captura de pantalla que muestre al menos una de las configuraciones que realizaste en Chrome.
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ACTIVIDAD 3: QUIZ ── -->
+  <section id="actividad3">
+    <div class="section-encabezado">
+      <div class="section-num">5</div>
+      <h2 class="section-titulo">Actividad 3: Quiz de Evaluación</h2>
+    </div>
+    <div class="section-linea"></div>
+
+    <div class="actividad-card">
+      <div class="actividad-header" style="background: linear-gradient(135deg, #1A237E, #0D1B6E);">
+        <div class="actividad-tag">Quiz de Conocimientos &mdash; 5 Preguntas</div>
+        <div class="actividad-titulo">Evaluación: Seguridad, Privacidad y Ética Digital</div>
+        <div class="actividad-meta">
+          <div class="actividad-meta-item">Puntaje máximo: 10 puntos</div>
+          <div class="actividad-meta-item">Sin límite de tiempo</div>
+          <div class="actividad-meta-item">Retroalimentación inmediata por pregunta</div>
+        </div>
+      </div>
+
+      <div class="actividad-cuerpo">
+
+        <p style="font-size:0.9rem;color:var(--gris-medio);margin-bottom:20px;">Responde cada pregunta con base en los contenidos revisados en esta guía. Recibirás retroalimentación inmediata y un puntaje final. Toma una captura de pantalla de tu resultado para subirla a Classroom.</p>
+
+        <div id="quiz-contenedor">
+
+          <!-- Pregunta 1 -->
+          <div class="quiz-pregunta activa" id="q1">
+            <div class="quiz-num">Pregunta 1 de 5</div>
+            <div class="quiz-texto">Una estudiante de Psicología lleva un registro digital de sus observaciones clínicas en la aplicación de notas de su teléfono, sin contraseña y sin cifrado. Desde la perspectiva de la ética profesional, esta práctica es problemática principalmente porque:</div>
+            <div class="quiz-opciones">
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q1', false)"><div class="opcion-letra">A</div>Las notas digitales tienen menor validez científica que las escritas a mano.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q1', true)"><div class="opcion-letra">B</div>Expone información sensible de los consultantes sin medidas de protección adecuadas, vulnerando el principio de confidencialidad.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q1', false)"><div class="opcion-letra">C</div>El teléfono móvil no es un dispositivo aprobado para uso académico en la universidad.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q1', false)"><div class="opcion-letra">D</div>Las aplicaciones de notas no están diseñadas para uso profesional en ningún contexto.</div>
+            </div>
+            <div class="quiz-feedback" id="fb1"></div>
+            <div class="quiz-navegacion">
+              <button class="btn-quiz btn-quiz-ant" disabled>Anterior</button>
+              <button class="btn-quiz btn-quiz-siguiente" id="btn-sig-1" disabled onclick="mostrarPregunta(2)">Siguiente</button>
+            </div>
+          </div>
+
+          <!-- Pregunta 2 -->
+          <div class="quiz-pregunta" id="q2">
+            <div class="quiz-num">Pregunta 2 de 5</div>
+            <div class="quiz-texto">Al configurar Google Chrome con la opción "Bloquear cookies de terceros", el principal beneficio en términos de privacidad es:</div>
+            <div class="quiz-opciones">
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q2', false)"><div class="opcion-letra">A</div>El navegador carga las páginas web con mayor velocidad en todo momento.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q2', false)"><div class="opcion-letra">B</div>Se elimina la necesidad de introducir contraseñas en los sitios web visitados.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q2', true)"><div class="opcion-letra">C</div>Se impide que empresas externas rastreen el comportamiento de navegación del usuario entre distintos sitios web.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q2', false)"><div class="opcion-letra">D</div>Se garantiza que ningún sitio web pueda almacenar ningún tipo de información en el dispositivo del usuario.</div>
+            </div>
+            <div class="quiz-feedback" id="fb2"></div>
+            <div class="quiz-navegacion">
+              <button class="btn-quiz btn-quiz-ant" onclick="mostrarPregunta(1)">Anterior</button>
+              <button class="btn-quiz btn-quiz-siguiente" id="btn-sig-2" disabled onclick="mostrarPregunta(3)">Siguiente</button>
+            </div>
+          </div>
+
+          <!-- Pregunta 3 -->
+          <div class="quiz-pregunta" id="q3">
+            <div class="quiz-num">Pregunta 3 de 5</div>
+            <div class="quiz-texto">El protocolo HTTPS en una dirección web garantiza que:</div>
+            <div class="quiz-opciones">
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q3', false)"><div class="opcion-letra">A</div>El contenido del sitio web ha sido verificado y aprobado por una autoridad gubernamental competente.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q3', false)"><div class="opcion-letra">B</div>El sitio web no contiene publicidad ni cookies de ningún tipo.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q3', true)"><div class="opcion-letra">C</div>La comunicación entre el navegador del usuario y el servidor web está cifrada, protegiendo los datos transmitidos de posibles interceptaciones.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q3', false)"><div class="opcion-letra">D</div>La página web se cargará sin errores independientemente de la velocidad de la conexión a internet.</div>
+            </div>
+            <div class="quiz-feedback" id="fb3"></div>
+            <div class="quiz-navegacion">
+              <button class="btn-quiz btn-quiz-ant" onclick="mostrarPregunta(2)">Anterior</button>
+              <button class="btn-quiz btn-quiz-siguiente" id="btn-sig-3" disabled onclick="mostrarPregunta(4)">Siguiente</button>
+            </div>
+          </div>
+
+          <!-- Pregunta 4 -->
+          <div class="quiz-pregunta" id="q4">
+            <div class="quiz-num">Pregunta 4 de 5</div>
+            <div class="quiz-texto">Recibes un correo electrónico que dice provenir de la Coordinación de tu licenciatura, solicitando que ingreses tu contraseña institucional en un enlace adjunto para "verificar tu inscripción". ¿Cuál es la respuesta más adecuada desde una perspectiva de seguridad digital?</div>
+            <div class="quiz-opciones">
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q4', false)"><div class="opcion-letra">A</div>Ingresar la contraseña si el correo electrónico del remitente parece oficial.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q4', false)"><div class="opcion-letra">B</div>Responder al correo solicitando más información antes de ingresar datos.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q4', true)"><div class="opcion-letra">C</div>No ingresar ningún dato y verificar directamente con la coordinación a través de canales oficiales conocidos, ya que podría tratarse de un ataque de phishing.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q4', false)"><div class="opcion-letra">D</div>Ingresar al enlace desde el Modo Incógnito del navegador para mayor seguridad.</div>
+            </div>
+            <div class="quiz-feedback" id="fb4"></div>
+            <div class="quiz-navegacion">
+              <button class="btn-quiz btn-quiz-ant" onclick="mostrarPregunta(3)">Anterior</button>
+              <button class="btn-quiz btn-quiz-siguiente" id="btn-sig-4" disabled onclick="mostrarPregunta(5)">Siguiente</button>
+            </div>
+          </div>
+
+          <!-- Pregunta 5 -->
+          <div class="quiz-pregunta" id="q5">
+            <div class="quiz-num">Pregunta 5 de 5</div>
+            <div class="quiz-texto">En el marco de la ética digital aplicada a la Psicología, el principio de "uso ético de la información" implica, entre otros aspectos, que el profesional debe:</div>
+            <div class="quiz-opciones">
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q5', false)"><div class="opcion-letra">A</div>Compartir libremente la información de los consultantes con otros colegas para obtener supervisión clínica sin restricciones.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q5', false)"><div class="opcion-letra">B</div>Utilizar exclusivamente herramientas digitales de pago para garantizar la seguridad de los datos.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q5', false)"><div class="opcion-letra">C</div>Evitar el uso de cualquier tecnología digital en el ejercicio profesional para minimizar riesgos.</div>
+              <div class="quiz-opcion" onclick="responderQuiz(this, 'q5', true)"><div class="opcion-letra">D</div>Obtener consentimiento informado para el tratamiento digital de datos, utilizar herramientas con protocolos de seguridad adecuados y respetar la confidencialidad en todos los entornos tecnológicos.</div>
+            </div>
+            <div class="quiz-feedback" id="fb5"></div>
+            <div class="quiz-navegacion">
+              <button class="btn-quiz btn-quiz-ant" onclick="mostrarPregunta(4)">Anterior</button>
+              <button class="btn-quiz btn-quiz-siguiente" id="btn-sig-5" disabled onclick="mostrarResultado()">Ver Resultado</button>
+            </div>
+          </div>
+
+          <!-- INDICADORES -->
+          <div class="quiz-indicador" id="quiz-dots">
+            <div class="quiz-dot activa" id="dot1"></div>
+            <div class="quiz-dot" id="dot2"></div>
+            <div class="quiz-dot" id="dot3"></div>
+            <div class="quiz-dot" id="dot4"></div>
+            <div class="quiz-dot" id="dot5"></div>
+          </div>
+
+          <!-- RESULTADO -->
+          <div class="quiz-resultado" id="quiz-resultado">
+            <div class="resultado-circulo" id="resultado-circulo">—</div>
+            <h3 class="resultado-titulo" id="resultado-titulo">Procesando...</h3>
+            <p class="resultado-desc" id="resultado-desc"></p>
+            <div class="resultado-desglose">
+              <div class="desglose-item">
+                <span class="desglose-num" id="res-correctas" style="color:var(--verde-uc)">0</span>
+                <span class="desglose-label">Correctas</span>
+              </div>
+              <div class="desglose-item">
+                <span class="desglose-num" id="res-incorrectas" style="color:#E53935">0</span>
+                <span class="desglose-label">Incorrectas</span>
+              </div>
+              <div class="desglose-item">
+                <span class="desglose-num" id="res-puntaje" style="color:var(--dorado)">0</span>
+                <span class="desglose-label">Puntaje /10</span>
+              </div>
+            </div>
+            <button class="btn-reintentar" onclick="reiniciarQuiz()">Intentar de nuevo</button>
+
+            <div class="classroom-box" style="margin-top:20px;text-align:left;">
+              <strong>Instrucción para Google Classroom</strong>
+              Toma una captura de pantalla de esta pantalla de resultados y súbela a la tarea correspondiente en Google Classroom. Incluye también un párrafo breve en la entrega describiendo qué pregunta te resultó más desafiante y por qué.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── REFLEXIÓN FINAL ── -->
+  <section id="reflexion">
+    <div class="section-encabezado">
+      <div class="section-num">6</div>
+      <h2 class="section-titulo">Reflexión Final y Aplicación</h2>
+    </div>
+    <div class="section-linea"></div>
+
+    <div class="card" style="border-left-color:var(--dorado);">
+      <div class="card-titulo">El conocimiento como práctica transformadora</div>
+      <p>El aprendizaje significativo no concluye cuando termina la guía. Concluye cuando el conocimiento adquirido modifica genuinamente la forma en que piensas y actúas. Esta última sección te invita a planificar de manera explícita cómo incorporarás lo aprendido en tu vida académica y profesional.</p>
+    </div>
+
+    <div class="reflexion-form">
+
+      <div class="reflexion-campo">
+        <label>1. Lo más relevante que aprendí</label>
+        <textarea placeholder="Describe en tus propias palabras el aprendizaje más significativo de esta guía. ¿Qué cambió en tu perspectiva sobre el uso de la tecnología en Psicología?"></textarea>
+      </div>
+
+      <div class="reflexion-campo">
+        <label>2. Tres acciones concretas que implementaré</label>
+        <textarea placeholder="Enumera tres acciones específicas y realizables que llevarás a cabo en tus actividades académicas o en tu preparación profesional a partir de hoy..."></textarea>
+      </div>
+
+      <div class="reflexion-campo">
+        <label>3. Conexión con el ejercicio profesional de la Psicología</label>
+        <textarea placeholder="¿Cómo impactará el manejo responsable de la privacidad digital en tu relación con futuros consultantes? ¿Qué compromisos éticos concretos asumes desde ahora?"></textarea>
+      </div>
+
+      <div class="reflexion-campo">
+        <label>4. Una pregunta que aún tengo</label>
+        <textarea style="min-height:70px;" placeholder="¿Qué aspecto del tema te generó más dudas o deseos de profundizar? Esta pregunta puede ser el punto de partida de tu próxima investigación..."></textarea>
+      </div>
+
+      <button class="btn-primario" onclick="guardarReflexion(this)">Guardar Reflexión</button>
+      <div class="reflexion-guardado" id="reflexion-guardada">Su reflexión ha sido guardada en este dispositivo. Copie las respuestas para incluirlas en su entrega en Google Classroom.</div>
+
+    </div>
+
+    <div class="info-box tip" style="margin-top:28px;">
+      <strong>Recursos para Profundizar</strong>
+      Para continuar explorando estos temas, se recomienda revisar: el Código Ético del Psicólogo (Sociedad Mexicana de Psicología), la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP), las Directrices de la APA sobre práctica psicológica a distancia, y los recursos del Centro Interactivo para el Uso Seguro de Internet (CUSI) en México.
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <strong>Universidad UNE, Universidad de Especialidades Plantel Centro</strong><br>
+  Licenciatura en Psicología &nbsp;|&nbsp; Materia: Tecnologías de la Información Aplicadas a la Psicología<br>
+  Guía Interactiva de Aprendizaje &mdash; Unidad: Seguridad, Privacidad y Ética Digital<br><br>
+  Diseñada bajo los principios del aprendizaje constructivista y basado en problemas.<br>
+  Actividades vinculadas a Google Classroom para entrega y seguimiento académico.
+</footer>
+
+<!-- ══ SCRIPTS ══ -->
+<script>
+
+// ── ACORDEÓN CONCEPTOS ──
+function toggleConcepto(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.concepto-arrow');
+  const isOpen = body.classList.contains('abierto');
+  document.querySelectorAll('.concepto-body').forEach(b => b.classList.remove('abierto'));
+  document.querySelectorAll('.concepto-arrow').forEach(a => a.classList.remove('girado'));
+  if (!isOpen) {
+    body.classList.add('abierto');
+    arrow.classList.add('girado');
+  }
+}
+
+// ── CONTADOR CARACTERES ──
+function contarChars(idArea, idContador) {
+  const area = document.getElementById(idArea);
+  const cont = document.getElementById(idContador);
+  if (area && cont) cont.textContent = area.value.length + ' caracteres';
+}
+
+// ── FORO ──
+let respuestasForo = [];
+function publicarRespuestaForo() {
+  const txt = document.getElementById('foro-respuesta').value.trim();
+  if (txt.length < 50) {
+    alert('Por favor, escribe una aportación de al menos 50 caracteres antes de publicar.');
+    return;
+  }
+  const hilo = document.getElementById('foro-hilo');
+  const burbuja = document.createElement('div');
+  burbuja.className = 'respuesta-burbuja';
+  burbuja.innerHTML = '<div class="respuesta-autor">Tu Aportación</div>' + txt;
+  hilo.appendChild(burbuja);
+  document.getElementById('foro-respuesta').value = '';
+  document.getElementById('foro-contador').textContent = '0 caracteres';
+  window.scrollTo({ top: hilo.getBoundingClientRect().bottom + window.scrollY - 200, behavior: 'smooth' });
+}
+
+// ── CHECKLIST ──
+let checkCount = 0;
+const totalChecks = 10;
+function marcarCheck(box) {
+  const marcado = box.classList.toggle('marcado');
+  const texto = box.nextElementSibling;
+  if (marcado) {
+    box.innerHTML = '&#10003;';
+    texto.classList.add('tachado');
+    checkCount++;
+  } else {
+    box.innerHTML = '';
+    texto.classList.remove('tachado');
+    checkCount--;
+  }
+  const pct = (checkCount / totalChecks) * 100;
+  document.getElementById('barra-progreso').style.width = pct + '%';
+  document.getElementById('texto-progreso').textContent = checkCount + ' de ' + totalChecks + ' acciones completadas';
+}
+
+// ── QUIZ ──
+let preguntaActual = 1;
+let respuestasCorrectas = 0;
+let respondidas = {};
+
+const feedbacks = {
+  q1: {
+    correcto: 'Correcto. La confidencialidad es un principio deontológico fundamental en Psicología. Almacenar información clínica sin medidas de seguridad adecuadas representa una vulneración directa a este principio, independientemente del soporte utilizado.',
+    incorrecto: 'Respuesta incorrecta. La razón principal no tiene que ver con la validez del soporte ni con políticas institucionales, sino con la violación del principio de confidencialidad al exponer datos sensibles sin protección adecuada.'
+  },
+  q2: {
+    correcto: 'Correcto. Las cookies de terceros son utilizadas principalmente por empresas externas para rastrear el comportamiento del usuario en múltiples sitios web y construir perfiles de comportamiento. Bloquearlas protege la privacidad de la navegación.',
+    incorrecto: 'Respuesta incorrecta. El bloqueo de cookies de terceros no afecta la velocidad de carga de manera significativa, ni elimina la necesidad de contraseñas. Su función principal es impedir el rastreo de comportamiento entre sitios por parte de empresas externas.'
+  },
+  q3: {
+    correcto: 'Correcto. HTTPS establece una conexión cifrada mediante protocolos SSL/TLS entre el navegador y el servidor, protegiendo los datos transmitidos de posibles interceptaciones por parte de terceros.',
+    incorrecto: 'Respuesta incorrecta. HTTPS no es un certificado de contenido aprobado por autoridades, no elimina cookies, ni mejora la velocidad de carga. Su función específica es el cifrado de la comunicación entre el navegador y el servidor web.'
+  },
+  q4: {
+    correcto: 'Correcto. Esta situación describe un ataque de phishing. La respuesta correcta siempre es no proporcionar datos y verificar directamente con la institución a través de canales conocidos y confiables, nunca a través del enlace recibido.',
+    incorrecto: 'Respuesta incorrecta. El Modo Incógnito no protege contra el phishing; solo evita que el historial se guarde localmente. Un correo aparentemente oficial no garantiza su legitimidad. La única respuesta segura es verificar por canales oficiales sin usar el enlace recibido.'
+  },
+  q5: {
+    correcto: 'Correcto. El uso ético de la información en Psicología Digital implica consentimiento informado, selección de herramientas seguras y mantenimiento de la confidencialidad en todos los entornos tecnológicos, sin que ello signifique evitar la tecnología.',
+    incorrecto: 'Respuesta incorrecta. El uso ético no implica compartir información sin restricciones, usar exclusivamente herramientas de pago, ni evitar la tecnología. Implica consentimiento informado, protocolos de seguridad adecuados y confidencialidad en entornos digitales.'
+  }
+};
+
+function responderQuiz(opcion, qId, esCorrecta) {
+  if (respondidas[qId]) return;
+  respondidas[qId] = esCorrecta;
+
+  const opciones = opcion.closest('.quiz-opciones').querySelectorAll('.quiz-opcion');
+  opciones.forEach(o => o.classList.add('deshabilitada'));
+  opcion.classList.add(esCorrecta ? 'correcta' : 'incorrecta');
+
+  if (esCorrecta) {
+    respuestasCorrectas++;
+    document.getElementById('dot' + qId.replace('q','')).classList.add('correcta-dot');
+  } else {
+    opciones.forEach(o => {
+      if (o.onclick && o.onclick.toString().includes('true')) {
+        o.classList.add('correcta');
+      }
+    });
+    document.getElementById('dot' + qId.replace('q','')).classList.add('respondida');
+  }
+
+  const fb = document.getElementById('fb' + qId.replace('q',''));
+  fb.className = 'quiz-feedback ' + (esCorrecta ? 'correcto' : 'incorrecto');
+  fb.textContent = feedbacks[qId][esCorrecta ? 'correcto' : 'incorrecto'];
+
+  const btnSig = document.getElementById('btn-sig-' + qId.replace('q',''));
+  if (btnSig) btnSig.disabled = false;
+}
+
+function mostrarPregunta(num) {
+  document.querySelectorAll('.quiz-pregunta').forEach(p => p.classList.remove('activa'));
+  document.getElementById('q' + num).classList.add('activa');
+  preguntaActual = num;
+  document.querySelectorAll('.quiz-dot').forEach((d, i) => {
+    d.classList.remove('activa');
+    if (i + 1 === num) d.classList.add('activa');
+  });
+}
+
+function mostrarResultado() {
+  document.querySelectorAll('.quiz-pregunta').forEach(p => p.style.display = 'none');
+  document.getElementById('quiz-dots').style.display = 'none';
+
+  const resultado = document.getElementById('quiz-resultado');
+  resultado.style.display = 'block';
+
+  const puntaje = (respuestasCorrectas / 5) * 10;
+  const incorrectas = 5 - respuestasCorrectas;
+
+  document.getElementById('res-correctas').textContent = respuestasCorrectas;
+  document.getElementById('res-incorrectas').textContent = incorrectas;
+  document.getElementById('res-puntaje').textContent = puntaje.toFixed(1);
+
+  const circulo = document.getElementById('resultado-circulo');
+  circulo.textContent = puntaje.toFixed(0);
+
+  let color, titulo, desc;
+  if (puntaje >= 9) {
+    color = 'linear-gradient(135deg, #1B5E20, #2E7D32)';
+    titulo = 'Excelente dominio del tema';
+    desc = 'Has demostrado una comprensión sólida de los principios de seguridad, privacidad y ética digital aplicados a la Psicología. Estás preparado para aplicar estos conocimientos en tu práctica académica y profesional.';
+  } else if (puntaje >= 7) {
+    color = 'linear-gradient(135deg, #C9A84C, #A07820)';
+    titulo = 'Buen desempeño';
+    desc = 'Tienes un conocimiento adecuado del tema. Te recomendamos revisar las preguntas en las que obtuviste retroalimentación de incorrecto y releer los conceptos correspondientes en la guía.';
+  } else if (puntaje >= 5) {
+    color = 'linear-gradient(135deg, #E65100, #BF360C)';
+    titulo = 'Conocimiento en desarrollo';
+    desc = 'Es recomendable releer con detenimiento las secciones de conceptos y configuración de la guía antes de tu entrega en Classroom. Considera también revisar las retroalimentaciones de cada pregunta.';
+  } else {
+    color = 'linear-gradient(135deg, #B71C1C, #7F0000)';
+    titulo = 'Se requiere reforzamiento';
+    desc = 'Te recomendamos revisar nuevamente todos los contenidos de la guía, consultar los recursos adicionales sugeridos y, si es necesario, acudir con tu docente para aclarar dudas antes de la siguiente sesión.';
+  }
+
+  circulo.style.background = color;
+  document.getElementById('resultado-titulo').textContent = titulo;
+  document.getElementById('resultado-desc').textContent = desc;
+}
+
+function reiniciarQuiz() {
+  respuestasCorrectas = 0;
+  respondidas = {};
+  preguntaActual = 1;
+
+  document.getElementById('quiz-resultado').style.display = 'none';
+
+  document.querySelectorAll('.quiz-pregunta').forEach(p => {
+    p.style.display = '';
+    p.classList.remove('activa');
+  });
+
+  document.getElementById('q1').classList.add('activa');
+  document.getElementById('quiz-dots').style.display = 'flex';
+
+  document.querySelectorAll('.quiz-opcion').forEach(o => {
+    o.className = 'quiz-opcion';
+    const orig = o.getAttribute('onclick');
+    o.onclick = new Function(orig.replace('onclick="','').replace('"',''));
+  });
+
+  document.querySelectorAll('.quiz-feedback').forEach(f => f.className = 'quiz-feedback');
+
+  document.querySelectorAll('.quiz-dot').forEach((d, i) => {
+    d.className = 'quiz-dot';
+    if (i === 0) d.classList.add('activa');
+  });
+
+  document.querySelectorAll('[id^="btn-sig-"]').forEach(b => b.disabled = true);
+
+  // Recrear los onclick correctamente
+  const opciones = document.querySelectorAll('.quiz-opcion');
+  opciones.forEach(o => {
+    const onclickStr = o.getAttribute('onclick');
+    if (onclickStr) {
+      o.onclick = function() { eval(onclickStr); };
+    }
+  });
+}
+
+// ── GUARDAR REFLEXIÓN ──
+function guardarReflexion(btn) {
+  document.getElementById('reflexion-guardada').style.display = 'block';
+  btn.textContent = 'Reflexión Guardada';
+  btn.style.background = '#4CAF50';
+  btn.disabled = true;
+}
+
+</script>
+</body>
+</html>
