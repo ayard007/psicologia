@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IA como Asistente de Tutoría y Escritura Académica | Psicología</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;900&family=Work+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal-prof:     #0F4C4C;
+    --teal-medio:    #1A6E6E;
+    --coral:         #E0623F;
+    --coral-claro:   #F4A48A;
+    --crema:         #FAF6F0;
+    --crema-card:    #FFFFFF;
+    --gris-texto:    #5B6B6B;
+    --azul-noche:    #16213E;
+    --borde:         #D9E0DC;
+    --verde-ok:      #2E7D52;
+    --sombra:        0 4px 22px rgba(15,76,76,0.08);
+    --sombra-hover:  0 10px 32px rgba(15,76,76,0.16);
+    --radio:         12px;
+    --f-display:     'Fraunces', Georgia, serif;
+    --f-body:        'Work Sans', 'Segoe UI', sans-serif;
+    --f-mono:        'Space Mono', 'Courier New', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--f-body);
+    background: var(--crema);
+    color: var(--azul-noche);
+    font-size: 16px; line-height: 1.75;
+  }
+
+  #progreso-barra {
+    position: fixed; top: 0; left: 0; height: 4px; width: 0%;
+    background: linear-gradient(90deg, var(--coral), var(--teal-medio));
+    z-index: 9999; transition: width 0.2s ease;
+  }
+
+  /* ── NAVEGACIÓN ── */
+  nav {
+    position: sticky; top: 0; z-index: 900;
+    background: var(--teal-prof);
+    border-bottom: 3px solid var(--coral);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; min-height: 56px;
+  }
+  nav .nav-marca {
+    font-family: var(--f-display);
+    color: var(--crema); font-size: 0.86rem;
+    font-weight: 700; letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.1rem; }
+  nav ul li a {
+    display: block; padding: 0.5rem 0.7rem;
+    color: rgba(255,255,255,0.75);
+    font-size: 0.76rem; font-weight: 600; letter-spacing: 0.03em;
+    text-decoration: none; border-radius: 5px;
+    transition: background 0.2s, color 0.2s;
+  }
+  nav ul li a:hover, nav ul li a.activo {
+    background: var(--coral); color: var(--crema);
+  }
+
+  /* ── ENCABEZADO ── */
+  header {
+    background: linear-gradient(150deg, var(--teal-prof) 0%, #143838 55%, var(--azul-noche) 100%);
+    color: var(--crema);
+    padding: 3.5rem 2rem 3rem;
+    position: relative; overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; right: -120px; top: -120px;
+    width: 380px; height: 380px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,98,63,0.18), transparent 70%);
+  }
+  header::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--coral) 0%, var(--coral-claro) 50%, var(--coral) 100%);
+  }
+  .header-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: flex-start; gap: 2.5rem;
+    position: relative; z-index: 1;
+  }
+  .header-logo {
+    flex-shrink: 0; background: var(--crema);
+    border-radius: 12px; padding: 0.7rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  }
+  .header-logo img { display: block; width: 90px; height: auto; }
+  .header-texto { flex: 1; }
+  .header-etiqueta {
+    display: inline-block; background: var(--coral); color: var(--crema);
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.25rem 0.8rem; border-radius: 3px; margin-bottom: 0.8rem;
+  }
+  .header-subtitulo-inst {
+    font-size: 0.8rem; font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  header h1 {
+    font-family: var(--f-display);
+    font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+    font-weight: 900; line-height: 1.25;
+    margin-bottom: 0.8rem;
+  }
+  header h1 span { color: var(--coral-claro); }
+  .header-meta {
+    display: flex; flex-wrap: wrap; gap: 1.2rem;
+    font-size: 0.82rem; color: rgba(255,255,255,0.7);
+    margin-top: 1.2rem;
+  }
+  .header-meta span { display: flex; align-items: center; gap: 0.4rem; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--coral-claro); display: inline-block; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+  .tarjeta {
+    background: var(--crema-card);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    padding: 2.2rem 2.5rem;
+    margin-bottom: 2.5rem;
+    border-top: 4px solid transparent;
+    transition: box-shadow 0.3s;
+  }
+  .tarjeta:hover { box-shadow: var(--sombra-hover); }
+  .tarjeta.borde-teal   { border-top-color: var(--teal-medio); }
+  .tarjeta.borde-coral  { border-top-color: var(--coral); }
+  .tarjeta.borde-noche  { border-top-color: var(--azul-noche); }
+
+  .seccion-titulo {
+    font-family: var(--f-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+    color: var(--teal-prof);
+    font-weight: 900; margin-bottom: 0.4rem;
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  .seccion-titulo .num {
+    font-family: var(--f-mono);
+    font-size: 0.72rem; font-weight: 700;
+    background: var(--teal-prof); color: var(--crema);
+    padding: 0.2rem 0.55rem; border-radius: 4px;
+    letter-spacing: 0.06em;
+  }
+  .seccion-desc {
+    font-size: 0.92rem; color: var(--gris-texto);
+    margin-bottom: 1.6rem; padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--borde);
+  }
+
+  h2 {
+    font-family: var(--f-display);
+    font-size: 1.35rem; font-weight: 700;
+    color: var(--teal-prof); margin: 1.8rem 0 0.8rem;
+  }
+  h3 {
+    font-family: var(--f-display);
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--teal-medio); margin: 1.4rem 0 0.5rem;
+  }
+  p { margin-bottom: 0.9rem; color: var(--gris-texto); font-size: 0.96rem; }
+  strong { color: var(--azul-noche); font-weight: 700; }
+  a.enlace-ext { color: var(--teal-medio); font-weight: 600; text-decoration: underline; }
+  a.enlace-ext:hover { color: var(--coral); }
+
+  /* ── ACORDEÓN ── */
+  .acordeon { margin: 1rem 0; }
+  .acord-item {
+    border: 1px solid var(--borde); border-radius: 8px;
+    margin-bottom: 0.6rem; overflow: hidden;
+  }
+  .acord-btn {
+    width: 100%; background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.3rem;
+    font-family: var(--f-body); font-size: 0.95rem;
+    font-weight: 700; color: var(--teal-prof); text-align: left;
+    background: linear-gradient(90deg, #FBFCFB, #FFFFFF);
+    transition: background 0.2s;
+  }
+  .acord-btn:hover { background: #F0F5F2; }
+  .acord-btn.abierto { background: var(--teal-prof); color: var(--crema); }
+  .acord-icono { font-size: 1.1rem; font-weight: 900; transition: transform 0.3s; flex-shrink: 0; margin-left: 1rem; }
+  .acord-btn.abierto .acord-icono { transform: rotate(45deg); }
+  .acord-body {
+    display: none; padding: 1.3rem 1.5rem;
+    background: var(--crema-card); font-size: 0.93rem;
+    color: var(--gris-texto); border-top: 1px solid var(--borde);
+    animation: fadeIn 0.25s ease;
+  }
+  .acord-body.visible { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+
+  /* ── PESTAÑAS ── */
+  .pestanas { margin: 1.5rem 0; }
+  .pest-nav { display: flex; flex-wrap: wrap; gap: 0.4rem; border-bottom: 2px solid var(--borde); }
+  .pest-btn {
+    padding: 0.6rem 1.2rem; border: none; background: none; cursor: pointer;
+    font-family: var(--f-body); font-size: 0.87rem; font-weight: 700;
+    color: var(--gris-texto); border-radius: 6px 6px 0 0;
+    border-bottom: 2px solid transparent; margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .pest-btn.activo { color: var(--teal-prof); border-bottom-color: var(--coral); background: var(--crema-card); }
+  .pest-panel { display: none; padding: 1.5rem 0.5rem; animation: fadeIn 0.25s ease; }
+  .pest-panel.visible { display: block; }
+
+  /* ── CONCEPTOS ── */
+  .concepto-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem; margin: 1rem 0;
+  }
+  .concepto-card {
+    background: var(--crema); border-left: 4px solid var(--teal-medio);
+    border-radius: 0 8px 8px 0; padding: 1rem 1.2rem;
+  }
+  .concepto-card.coral  { border-left-color: var(--coral); }
+  .concepto-card.noche  { border-left-color: var(--azul-noche); }
+  .concepto-titulo {
+    font-family: var(--f-mono); font-size: 0.8rem; font-weight: 700;
+    color: var(--teal-prof); text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+  }
+  .concepto-def { font-size: 0.88rem; color: var(--gris-texto); margin: 0; }
+
+  /* ── TABLAS ── */
+  .tabla-wrap { overflow-x: auto; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  thead tr { background: var(--teal-prof); color: var(--crema); }
+  thead th { padding: 0.8rem 1rem; text-align: left; font-weight: 700; }
+  tbody tr:nth-child(odd) { background: var(--crema); }
+  tbody tr:nth-child(even) { background: var(--crema-card); }
+  tbody td { padding: 0.75rem 1rem; color: var(--gris-texto); vertical-align: top; }
+  tbody tr:hover { background: #F0F5F2; }
+
+  /* ── CAJAS ── */
+  .caja { border-radius: 8px; padding: 1.1rem 1.4rem; margin: 1.1rem 0; font-size: 0.92rem; }
+  .caja-info   { background: #E6F2F2; border-left: 4px solid var(--teal-medio); }
+  .caja-alerta { background: #FCEDE6; border-left: 4px solid var(--coral); }
+  .caja-logro  { background: #E9F5EC; border-left: 4px solid var(--verde-ok); }
+  .caja-etica  { background: #EEF0F7; border-left: 4px solid var(--azul-noche); }
+  .caja p, .caja ul { margin-bottom: 0.4rem; color: inherit; }
+  .caja strong { color: inherit; }
+  .caja-titulo {
+    font-weight: 700; font-size: 0.82rem; text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 0.5rem; display: block;
+  }
+  .caja-info .caja-titulo   { color: var(--teal-medio); }
+  .caja-alerta .caja-titulo { color: #A6442A; }
+  .caja-logro .caja-titulo  { color: var(--verde-ok); }
+  .caja-etica .caja-titulo  { color: var(--azul-noche); }
+  ul.lista, ol.lista { padding-left: 1.5rem; margin: 0.6rem 0; }
+  ul.lista li, ol.lista li { margin-bottom: 0.4rem; font-size: 0.92rem; color: var(--gris-texto); }
+
+  /* ── PASOS ── */
+  .pasos-lista { counter-reset: paso; margin: 1rem 0; }
+  .paso {
+    counter-increment: paso; display: flex; gap: 1rem;
+    padding: 0.9rem 1rem; margin-bottom: 0.6rem;
+    background: var(--crema); border-radius: 8px; align-items: flex-start;
+  }
+  .paso::before {
+    content: counter(paso);
+    font-family: var(--f-mono); font-size: 0.75rem; font-weight: 700;
+    color: var(--crema); background: var(--teal-medio);
+    min-width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 0.05rem;
+  }
+  .paso p { margin: 0; font-size: 0.92rem; }
+
+  /* ── PREGUNTA DETONADORA / CONOCIMIENTO PREVIO ── */
+  .pregunta-detonadora {
+    background: linear-gradient(135deg, var(--teal-prof), #143838);
+    color: var(--crema); border-radius: 10px; padding: 1.8rem 2rem;
+    margin: 1.2rem 0; position: relative; overflow: hidden;
+  }
+  .pregunta-detonadora::before {
+    content: '?'; position: absolute; right: 1.5rem; top: 0.5rem;
+    font-family: var(--f-display); font-size: 8rem; font-weight: 900;
+    color: rgba(255,255,255,0.06); line-height: 1;
+  }
+  .pregunta-detonadora .pd-etiq {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--coral-claro);
+    margin-bottom: 0.7rem; display: block;
+  }
+  .pregunta-detonadora p {
+    font-family: var(--f-display); font-size: 1.1rem; font-weight: 700;
+    color: var(--crema); line-height: 1.5; position: relative; z-index: 1;
+  }
+
+  /* ── CONOCIMIENTO PREVIO ── */
+  .saber-previo {
+    background: var(--crema); border: 2px dashed var(--coral);
+    border-radius: 10px; padding: 1.5rem 1.8rem; margin: 1.2rem 0;
+  }
+  .saber-previo .pd-etiq {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--coral); margin-bottom: 0.6rem; display: block;
+  }
+  .saber-previo textarea {
+    width: 100%; margin-top: 0.8rem; border: 1px solid var(--borde);
+    border-radius: 6px; padding: 0.7rem 0.9rem; font-family: var(--f-body);
+    font-size: 0.9rem; color: var(--azul-noche); resize: vertical;
+  }
+  .saber-previo textarea:focus { outline: none; border-color: var(--teal-medio); }
+
+  /* ── ACTIVIDADES ── */
+  .actividad-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--borde);
+  }
+  .act-num {
+    font-family: var(--f-display); font-size: 2rem; font-weight: 900;
+    color: var(--coral); line-height: 1; flex-shrink: 0; min-width: 2rem;
+  }
+  .act-tipo {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--coral); display: block; margin-bottom: 0.1rem;
+  }
+  .act-nombre { font-family: var(--f-display); font-size: 1.15rem; font-weight: 900; color: var(--teal-prof); }
+
+  /* ── RUBRICA ── */
+  .rubrica { margin: 1.2rem 0; }
+  .rubrica-item {
+    display: grid; grid-template-columns: 2fr 1fr; gap: 0.5rem 1rem;
+    padding: 0.75rem 1rem; border-bottom: 1px solid var(--borde);
+    align-items: center; font-size: 0.88rem;
+  }
+  .rubrica-item:last-child { border-bottom: none; }
+  .rubrica-item:nth-child(odd) { background: var(--crema); }
+  .rubrica-header { background: var(--teal-prof) !important; color: var(--crema); font-weight: 700; border-radius: 6px 6px 0 0; }
+  .puntos { font-family: var(--f-mono); font-weight: 700; color: var(--teal-medio); text-align: right; }
+  .rubrica-header .puntos { color: var(--coral-claro); }
+
+  /* ── HERRAMIENTA CARD ── */
+  .herramienta-card {
+    background: var(--crema); border: 1px solid var(--borde); border-radius: 10px;
+    padding: 1.3rem 1.5rem; margin-bottom: 1rem; display: flex; gap: 1.1rem; align-items: flex-start;
+  }
+  .herr-icon {
+    width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--f-mono); font-weight: 700; font-size: 0.95rem; color: var(--crema);
+  }
+  .herr-icon.teal  { background: var(--teal-medio); }
+  .herr-icon.coral { background: var(--coral); }
+  .herr-icon.noche { background: var(--azul-noche); }
+  .herr-nombre { font-family: var(--f-display); font-weight: 900; font-size: 1.05rem; color: var(--teal-prof); margin-bottom: 0.3rem; }
+  .herr-desc { font-size: 0.9rem; color: var(--gris-texto); margin: 0; }
+
+  /* ── CASO PRÁCTICO ── */
+  .caso-practico {
+    background: var(--crema); border-radius: 10px; border: 1px solid var(--borde);
+    padding: 1.6rem 1.8rem; margin: 1.2rem 0;
+  }
+  .caso-etiq {
+    display: inline-block; background: var(--azul-noche); color: var(--crema);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.25rem 0.7rem; border-radius: 3px; margin-bottom: 0.8rem;
+  }
+  .caso-practico h4 {
+    font-family: var(--f-display); font-size: 1rem; color: var(--teal-prof);
+    margin: 1rem 0 0.4rem; font-weight: 700;
+  }
+
+  /* ── QUIZ ── */
+  #quiz { counter-reset: pregunta; }
+  .quiz-pregunta {
+    counter-increment: pregunta; background: var(--crema); border-radius: 8px;
+    padding: 1.3rem 1.5rem; margin-bottom: 1rem; border: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .quiz-pregunta.correcta   { border-color: var(--verde-ok); background: #E9F5EC; }
+  .quiz-pregunta.incorrecta { border-color: var(--coral); background: #FCEDE6; }
+  .quiz-enun { font-weight: 700; font-size: 0.95rem; color: var(--teal-prof); margin-bottom: 0.9rem; }
+  .quiz-enun::before { content: counter(pregunta) '. '; font-family: var(--f-mono); color: var(--coral); }
+  .quiz-opciones { display: flex; flex-direction: column; gap: 0.5rem; }
+  .quiz-opcion {
+    display: flex; align-items: center; gap: 0.7rem; padding: 0.6rem 0.9rem;
+    background: var(--crema-card); border-radius: 6px; cursor: pointer;
+    border: 1.5px solid var(--borde); font-size: 0.9rem; color: var(--gris-texto);
+    transition: border-color 0.2s, background 0.2s; user-select: none;
+  }
+  .quiz-opcion:hover { border-color: var(--teal-medio); background: #F0F5F2; }
+  .quiz-opcion input[type=radio] { accent-color: var(--teal-medio); }
+  .quiz-feedback {
+    margin-top: 0.7rem; padding: 0.6rem 0.9rem; border-radius: 6px;
+    font-size: 0.85rem; font-weight: 600; display: none;
+  }
+  .feedback-bien { background: #E9F5EC; color: var(--verde-ok); }
+  .feedback-mal  { background: #FCEDE6; color: #A6442A; }
+  .quiz-controles { text-align: center; margin-top: 1.5rem; }
+  .btn {
+    display: inline-block; padding: 0.75rem 2rem; border: none; border-radius: 7px;
+    cursor: pointer; font-family: var(--f-body); font-size: 0.9rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .btn-primario { background: var(--teal-prof); color: var(--crema); }
+  .btn-coral    { background: var(--coral);     color: var(--crema); }
+  #resultado-quiz {
+    display: none; margin-top: 1.5rem; border-radius: 10px;
+    padding: 1.8rem 2rem; text-align: center;
+  }
+  #resultado-quiz.alto  { background: #E9F5EC; border: 2px solid var(--verde-ok); }
+  #resultado-quiz.medio { background: #FCEDE6; border: 2px solid var(--coral); }
+  #resultado-quiz.bajo  { background: #FCEDE6; border: 2px solid #A6442A; }
+  .resultado-puntaje { font-family: var(--f-display); font-size: 3.5rem; font-weight: 900; line-height: 1; margin-bottom: 0.3rem; }
+  .alto  .resultado-puntaje { color: var(--verde-ok); }
+  .medio .resultado-puntaje { color: var(--coral); }
+  .bajo  .resultado-puntaje { color: #A6442A; }
+  .resultado-msg { font-size: 1rem; font-weight: 600; }
+
+  /* ── PLANIFICADOR ── */
+  .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  .plan-area { background: var(--crema); border: 1px solid var(--borde); border-radius: 8px; padding: 1rem; }
+  .plan-area label {
+    display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.07em; color: var(--teal-medio); margin-bottom: 0.5rem;
+  }
+  .plan-area textarea, .plan-area input {
+    width: 100%; border: 1px solid var(--borde); border-radius: 6px;
+    padding: 0.6rem 0.8rem; font-family: var(--f-body); font-size: 0.88rem;
+    color: var(--azul-noche); background: var(--crema-card); resize: vertical;
+    transition: border-color 0.2s;
+  }
+  .plan-area textarea:focus, .plan-area input:focus { outline: none; border-color: var(--teal-medio); }
+  #plan-guardado {
+    display: none; margin-top: 1rem; background: #E9F5EC; border: 1px solid var(--verde-ok);
+    border-radius: 8px; padding: 1rem 1.2rem; font-size: 0.9rem; color: var(--verde-ok); font-weight: 600;
+  }
+
+  /* ── MATERIALES EXTERNOS ── */
+  .material-card {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: var(--crema); border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 0.6rem;
+    border: 1px solid var(--borde);
+  }
+  .material-tipo {
+    font-family: var(--f-mono); font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--crema);
+    background: var(--teal-medio); padding: 0.2rem 0.5rem; border-radius: 4px;
+    flex-shrink: 0; min-width: 70px; text-align: center; margin-top: 0.1rem;
+  }
+  .material-tipo.video  { background: var(--coral); }
+  .material-tipo.guia   { background: var(--azul-noche); }
+  .material-titulo { font-weight: 700; font-size: 0.92rem; color: var(--teal-prof); margin-bottom: 0.2rem; }
+  .material-desc { font-size: 0.85rem; color: var(--gris-texto); margin: 0; }
+
+  /* ── PIE ── */
+  footer {
+    background: var(--teal-prof); color: rgba(255,255,255,0.65);
+    text-align: center; padding: 2rem 1.5rem; font-size: 0.82rem;
+  }
+  footer strong { color: rgba(255,255,255,0.9); }
+  footer .footer-linea { margin-bottom: 0.3rem; }
+
+  /* ── UTILIDADES ── */
+  .chip { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; }
+  .chip-teal  { background: #D6EAEA; color: var(--teal-prof); }
+  .chip-coral { background: #FBE2D9; color: #A6442A; }
+  .chip-verde { background: #DCF0E2; color: var(--verde-ok); }
+  .mt-1 { margin-top: 0.5rem; }
+  .mt-2 { margin-top: 1rem; }
+  .mb-1 { margin-bottom: 0.5rem; }
+  .divider { border: none; border-top: 1px solid var(--borde); margin: 1.5rem 0; }
+
+  @media (max-width: 680px) {
+    nav ul { gap: 0; }
+    nav ul li a { font-size: 0.7rem; padding: 0.4rem 0.45rem; }
+    .header-inner { flex-direction: column; gap: 1.2rem; }
+    .tarjeta { padding: 1.5rem 1.2rem; }
+    .plan-grid { grid-template-columns: 1fr; }
+    .concepto-grid { grid-template-columns: 1fr; }
+    .herramienta-card { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progreso-barra"></div>
+
+<!-- NAVEGACIÓN -->
+<nav>
+  <span class="nav-marca">IA como Tutor de Escritura Académica</span>
+  <ul>
+    <li><a href="#introduccion" onclick="marcarActivo(this)">Introducción</a></li>
+    <li><a href="#unidad-1" onclick="marcarActivo(this)">Perplexity</a></li>
+    <li><a href="#unidad-2" onclick="marcarActivo(this)">LanguageTool / QuillBot</a></li>
+    <li><a href="#materiales" onclick="marcarActivo(this)">Materiales</a></li>
+    <li><a href="#actividad-1" onclick="marcarActivo(this)">Act. 1</a></li>
+    <li><a href="#actividad-2" onclick="marcarActivo(this)">Act. 2</a></li>
+    <li><a href="#actividad-3" onclick="marcarActivo(this)">Act. 3</a></li>
+    <li><a href="#actividad-4" onclick="marcarActivo(this)">Quiz</a></li>
+    <li><a href="#reflexion" onclick="marcarActivo(this)">Reflexión</a></li>
+  </ul>
+</nav>
+
+<!-- ENCABEZADO -->
+<header>
+  <div class="header-inner">
+    <div class="header-logo">
+      <img src="data:image/jpeg;base64,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" alt="Logo Universidad" style="width:90px;height:auto;">
+    </div>
+    <div class="header-texto">
+      <span class="header-subtitulo-inst">Universidad UNE &mdash; Plantel Centro</span>
+      <span class="header-etiqueta">Licenciatura en Psicología</span>
+      <h1>Inteligencia Artificial como<br>Asistente de <span>Tutoría y Escritura Académica</span></h1>
+      <p style="color:rgba(255,255,255,0.72);font-size:0.92rem;margin:0.5rem 0 0;">Guía de aprendizaje interactiva &mdash; Investigación con fuentes confiables, verificación de hechos y redacción profesional con apoyo de IA</p>
+      <div class="header-meta">
+        <span><span class="dot"></span> Herramientas: Perplexity AI, LanguageTool, QuillBot</span>
+        <span><span class="dot"></span> Nivel: Licenciatura</span>
+        <span><span class="dot"></span> Metodología: Constructivista / ABP</span>
+        <span><span class="dot"></span> 4 Actividades evaluables</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════════════════════════════════════
+     INTRODUCCIÓN
+     ═══════════════════════════════════════════ -->
+<section id="introduccion">
+  <div class="tarjeta borde-teal">
+    <div class="seccion-titulo">
+      <span class="num">INTRO</span> Introducción al Curso
+    </div>
+    <p class="seccion-desc">Presentación general, objetivos de aprendizaje y enfoque pedagógico de esta guía.</p>
+
+    <p>La formación del psicólogo universitario exige hoy una competencia que va más allá del dominio teórico: la capacidad de <strong>investigar con rigor</strong>, <strong>verificar la veracidad de la información</strong> y <strong>comunicar ideas con claridad y corrección</strong>. La inteligencia artificial, utilizada de manera ética y crítica, puede convertirse en un poderoso <strong>asistente de tutoría y escritura</strong> que acompaña al estudiante en su proceso de aprendizaje, sin sustituir su pensamiento ni su responsabilidad académica.</p>
+
+    <p>Esta guía presenta tres herramientas de inteligencia artificial &mdash;<strong>Perplexity AI</strong> (plan gratuito), <strong>LanguageTool</strong> y <strong>QuillBot</strong>&mdash; orientadas a fortalecer dos competencias fundamentales para cualquier estudiante de psicología: la <strong>curaduría de información académica con fuentes reales</strong> y la <strong>comunicación escrita clara, correcta y con estilo profesional</strong>.</p>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Objetivo principal del curso</span>
+      <p>Que el estudiante incorpore Perplexity AI, LanguageTool y QuillBot como asistentes de tutoría capaces de responder preguntas en tiempo real, explicar conceptos difíciles y apoyar la redacción de ensayos o proyectos, brindando confianza y autonomía en el proceso de aprendizaje &mdash;sin que ello implique delegar el pensamiento crítico ni la autoría intelectual del estudiante.</p>
+    </div>
+
+    <h3>Objetivos de aprendizaje</h3>
+    <ul class="lista">
+      <li>Explicar el funcionamiento de Perplexity AI como motor de búsqueda conversacional basado en fuentes verificables.</li>
+      <li>Aplicar estrategias de curaduría de información: selección, contraste y evaluación crítica de fuentes académicas.</li>
+      <li>Utilizar LanguageTool para la verificación gramatical, ortográfica y de estilo en textos académicos.</li>
+      <li>Utilizar QuillBot para mejorar la claridad, fluidez y estilo profesional de la redacción, sin alterar el significado original ni la autoría del contenido.</li>
+      <li>Integrar estas herramientas como apoyo de tutoría en la elaboración de ensayos, reportes y proyectos universitarios.</li>
+      <li>Reflexionar críticamente sobre los límites éticos del uso de IA en el trabajo académico.</li>
+    </ul>
+
+    <h3>Enfoque pedagógico</h3>
+    <div class="concepto-grid">
+      <div class="concepto-card">
+        <div class="concepto-titulo">Constructivismo</div>
+        <p class="concepto-def">El estudiante construye su propio criterio de uso de la IA a partir de la exploración guiada, la experimentación directa con las herramientas y la reflexión sobre sus resultados.</p>
+      </div>
+      <div class="concepto-card coral">
+        <div class="concepto-titulo">Aprendizaje Basado en Problemas</div>
+        <p class="concepto-def">Cada herramienta se introduce a partir de una situación académica real: una pregunta de investigación, un ensayo con errores, un texto que requiere mejorar su estilo.</p>
+      </div>
+      <div class="concepto-card noche">
+        <div class="concepto-titulo">Pedagogia activa</div>
+        <p class="concepto-def">Las actividades requieren que el estudiante use directamente las plataformas, documente su proceso y comparta resultados con sus compañeros.</p>
+      </div>
+    </div>
+
+    <div class="caja caja-etica mt-2">
+      <span class="caja-titulo">Principio rector del curso</span>
+      <p>Las herramientas de inteligencia artificial presentadas en esta guía son <strong>asistentes</strong>, no sustitutos del pensamiento del estudiante. Su función es responder preguntas en tiempo real, explicar conceptos complejos y apoyar la redacción; la responsabilidad sobre el contenido final, su veracidad y su originalidad, recae siempre en el estudiante.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     UNIDAD 1 — PERPLEXITY AI
+     ═══════════════════════════════════════════ -->
+<section id="unidad-1">
+  <div class="tarjeta borde-teal">
+    <div class="seccion-titulo">
+      <span class="num">1</span> Perplexity AI: Investigación Académica con Fuentes Reales
+    </div>
+    <p class="seccion-desc">Curaduría de información, verificación de fuentes y construcción de preguntas de investigación efectivas.</p>
+
+    <h2>¿Qué es Perplexity AI?</h2>
+    <p><strong>Perplexity AI</strong> es un motor de búsqueda conversacional que, a diferencia de un chatbot convencional, responde a las preguntas del usuario <strong>citando fuentes reales y verificables</strong> en cada respuesta. En su plan gratuito, permite realizar búsquedas ilimitadas con respuestas que incluyen enlaces directos a los documentos, artículos o páginas consultadas.</p>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Diferencia clave frente a otros asistentes de IA</span>
+      <p>Mientras que muchos modelos de lenguaje generan respuestas a partir de su entrenamiento previo (sin mostrar de dónde proviene la información), Perplexity AI realiza búsquedas en tiempo real y <strong>enlaza cada afirmación con su fuente</strong>. Esto lo convierte en una herramienta especialmente útil para la investigación académica, ya que permite al estudiante rastrear, verificar y citar el origen de la información.</p>
+    </div>
+
+    <div class="acordeon">
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Como funciona Perplexity AI (plan gratuito)
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>El funcionamiento de Perplexity AI puede entenderse en tres pasos:</p>
+          <ul class="lista">
+            <li><strong>Formulación de la consulta:</strong> el usuario escribe una pregunta en lenguaje natural, igual que lo haría en una conversación.</li>
+            <li><strong>Búsqueda en tiempo real:</strong> la herramienta rastrea fuentes actualizadas en Internet relacionadas con la consulta.</li>
+            <li><strong>Respuesta con citas:</strong> Perplexity AI genera una respuesta sintetizada y coloca números de referencia que enlazan directamente a las fuentes utilizadas, las cuales aparecen listadas al final o al margen de la respuesta.</li>
+          </ul>
+          <p>El plan gratuito incluye un número limitado de búsquedas con el modelo más avanzado por día, y búsquedas ilimitadas con el modelo estándar, lo cual resulta suficiente para el trabajo académico regular de un estudiante de licenciatura.</p>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Modos de busqueda relevantes para psicologia
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>Perplexity AI ofrece distintos modos de enfoque que el estudiante de psicología puede aprovechar:</p>
+          <div class="tabla-wrap">
+            <table>
+              <thead><tr><th>Modo / enfoque</th><th>Descripción</th><th>Uso en psicología</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Búsqueda general (Web)</strong></td><td>Combina fuentes generales de Internet</td><td>Exploración inicial de un tema, contexto general de un fenómeno psicosocial</td></tr>
+                <tr><td><strong>Académico (Academic)</strong></td><td>Prioriza artículos científicos, revistas indexadas y bases de datos académicas</td><td>Investigación para ensayos, marcos teóricos, revisión de literatura</td></tr>
+                <tr><td><strong>Subida de documentos</strong></td><td>Permite cargar un PDF o documento propio para hacer preguntas sobre su contenido</td><td>Analizar un artículo extenso, resumir un capítulo de libro, aclarar dudas sobre una lectura asignada</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h2>Habilidades de curaduría de información</h2>
+    <p>La <strong>curaduría de información</strong> es la capacidad de buscar, seleccionar, organizar, evaluar y presentar contenido relevante de manera crítica, distinguiendo fuentes confiables de aquellas que no lo son. Perplexity AI facilita el proceso de búsqueda, pero la curaduría &mdash;el juicio crítico&mdash; sigue siendo responsabilidad del estudiante.</p>
+
+    <div class="acordeon">
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Criterios para evaluar las fuentes que cita Perplexity
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>Antes de utilizar una fuente citada por Perplexity AI en un trabajo académico, el estudiante debe verificar:</p>
+          <div class="concepto-grid">
+            <div class="concepto-card">
+              <div class="concepto-titulo">Origen de la fuente</div>
+              <p class="concepto-def">¿Proviene de una revista científica indexada, una institución académica reconocida, o un sitio de divulgación sin revisión por pares?</p>
+            </div>
+            <div class="concepto-card coral">
+              <div class="concepto-titulo">Actualidad</div>
+              <p class="concepto-def">¿La fecha de publicación es relevante para el tema? En psicología, algunos conceptos clásicos pueden citarse en su fuente original, pero datos estadísticos o clínicos requieren actualidad.</p>
+            </div>
+            <div class="concepto-card noche">
+              <div class="concepto-titulo">Autoria</div>
+              <p class="concepto-def">¿El autor o autores tienen credenciales verificables en el campo? ¿Es posible identificar su afiliación institucional?</p>
+            </div>
+          </div>
+          <div class="caja caja-alerta mt-2">
+            <span class="caja-titulo">Advertencia importante</span>
+            <p>Perplexity AI reduce significativamente el riesgo de "alucinaciones" (información inventada) en comparación con otros modelos de IA, porque cada afirmación está vinculada a una fuente. Sin embargo, esto <strong>no elimina la necesidad de verificación</strong>: una fuente puede existir y estar mal interpretada, ser de baja calidad académica, o no decir exactamente lo que la respuesta sintetizada sugiere. Siempre se debe abrir el enlace de la fuente y confirmar la información en el documento original.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Como construir preguntas de investigacion efectivas
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>La calidad de la respuesta de Perplexity AI depende directamente de la calidad de la pregunta. Una buena pregunta de investigación debe ser específica, contextualizada y delimitada.</p>
+          <div class="tabla-wrap">
+            <table>
+              <thead><tr><th>Pregunta poco efectiva</th><th>Pregunta efectiva (mejorada)</th></tr></thead>
+              <tbody>
+                <tr><td>"¿Qué es la ansiedad?"</td><td>"¿Cuáles son los hallazgos de investigaciones recientes (últimos 5 años) sobre la relación entre el uso de redes sociales y los niveles de ansiedad en estudiantes universitarios?"</td></tr>
+                <tr><td>"Háblame de Piaget"</td><td>"¿Cómo se ha aplicado la teoría de las etapas del desarrollo cognitivo de Piaget en investigaciones sobre el aprendizaje en entornos digitales?"</td></tr>
+                <tr><td>"Terapia cognitivo conductual"</td><td>"¿Qué evidencia empírica reciente respalda la eficacia de la terapia cognitivo-conductual para el tratamiento del trastorno de pánico, según estudios publicados en revistas indexadas?"</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h2>Pasos para usar Perplexity AI en una investigación académica</h2>
+    <div class="pasos-lista">
+      <div class="paso"><p><strong>Accede a perplexity.ai</strong> desde tu navegador. No es necesario crear una cuenta para realizar búsquedas básicas, aunque registrarse con correo institucional permite guardar el historial de consultas.</p></div>
+      <div class="paso"><p><strong>Selecciona el modo "Academic"</strong> (académico) si está disponible, para priorizar fuentes de revistas científicas y bases de datos académicas sobre fuentes generales de Internet.</p></div>
+      <div class="paso"><p><strong>Formula tu pregunta</strong> de investigación de manera específica y contextualizada, siguiendo los criterios revisados anteriormente.</p></div>
+      <div class="paso"><p><strong>Lee la respuesta sintetizada</strong> y, sin tomarla como definitiva, identifica los números de cita que aparecen junto a cada afirmación.</p></div>
+      <div class="paso"><p><strong>Abre cada fuente citada</strong> que resulte relevante para tu trabajo y verifica: autoría, año de publicación, tipo de revista o sitio, y si la información citada corresponde efectivamente a lo que dice la fuente original.</p></div>
+      <div class="paso"><p><strong>Registra las fuentes verificadas</strong> en tu gestor de referencias (por ejemplo, Zotero) o en un documento de trabajo, anotando por qué cada fuente es relevante para tu pregunta de investigación.</p></div>
+      <div class="paso"><p><strong>Formula preguntas de seguimiento</strong> a partir de los hallazgos iniciales, profundizando en aspectos específicos que hayan surgido de la primera búsqueda.</p></div>
+    </div>
+
+    <h3>Ejemplo de interaccion con Perplexity AI</h3>
+    <div class="caja caja-info">
+      <span class="caja-titulo">Ejemplo orientativo</span>
+      <p><strong>Pregunta del estudiante:</strong> "¿Qué evidencia reciente existe sobre la efectividad de las intervenciones de mindfulness en la reducción del estrés académico en estudiantes universitarios?"</p>
+      <p><strong>Proceso esperado del estudiante:</strong> Perplexity AI generará una respuesta sintetizada con varias citas numeradas. El estudiante debe abrir al menos tres de esas fuentes, verificar que se trate de estudios publicados en revistas con revisión por pares, anotar el año de publicación y el tamaño de la muestra de cada estudio, y a partir de ahí decidir cuáles utilizará en su ensayo, citándolas correctamente en formato APA.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     UNIDAD 2 — LANGUAGETOOL Y QUILLBOT
+     ═══════════════════════════════════════════ -->
+<section id="unidad-2">
+  <div class="tarjeta borde-coral">
+    <div class="seccion-titulo">
+      <span class="num">2</span> LanguageTool y QuillBot: Verificación y Redacción Profesional
+    </div>
+    <p class="seccion-desc">Corrección gramatical, ortográfica y de estilo para una comunicación escrita clara y profesional.</p>
+
+    <p>La <strong>comunicación escrita clara y correcta</strong> es una competencia transversal en la formación universitaria: un ensayo, un reporte de práctica o un protocolo de investigación con errores gramaticales o de redacción confusa pueden afectar negativamente la percepción de la calidad del trabajo, independientemente de la solidez de su contenido. <strong>LanguageTool</strong> y <strong>QuillBot</strong> son dos herramientas complementarias que apoyan distintos aspectos de este proceso.</p>
+
+    <div class="herramienta-card">
+      <div class="herr-icon teal">LT</div>
+      <div>
+        <div class="herr-nombre">LanguageTool</div>
+        <p class="herr-desc">Corrector gramatical, ortográfico y de estilo multilingüe. Detecta errores de concordancia, puntuación, repeticiones, uso incorrecto de palabras y sugiere correcciones con explicaciones. Su plan gratuito permite revisar textos directamente en su sitio web, o mediante extensiones para navegador y procesadores de texto.</p>
+      </div>
+    </div>
+    <div class="herramienta-card">
+      <div class="herr-icon coral">QB</div>
+      <div>
+        <div class="herr-nombre">QuillBot</div>
+        <p class="herr-desc">Herramienta enfocada en mejorar la fluidez, claridad y estilo de un texto mediante su función de "Paráfrasis" (Paraphraser), además de ofrecer corrector gramatical, resumidor de textos y verificador de citas. En su plan gratuito permite parafrasear fragmentos de texto en distintos "modos" de escritura (estándar, fluido, formal, académico, entre otros).</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h2>Verificación de hechos y corrección con LanguageTool</h2>
+
+    <div class="acordeon">
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Que tipo de errores detecta LanguageTool
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <div class="tabla-wrap">
+            <table>
+              <thead><tr><th>Tipo de error</th><th>Ejemplo detectado</th><th>Sugerencia</th></tr></thead>
+              <tbody>
+                <tr><td>Concordancia de género/número</td><td>"Los paciente presentaron mejoras"</td><td>"Los pacientes presentaron mejoras"</td></tr>
+                <tr><td>Puntuación</td><td>"Sin embargo los resultados no fueron significativos"</td><td>"Sin embargo, los resultados no fueron significativos"</td></tr>
+                <tr><td>Repetición de palabras</td><td>"El estudio mostró que el estudio tiene limitaciones"</td><td>"El estudio mostró que presenta limitaciones"</td></tr>
+                <tr><td>Estilo y registro</td><td>"Los resultados están súper interesantes"</td><td>"Los resultados resultan particularmente relevantes"</td></tr>
+                <tr><td>Confusión de palabras parónimas</td><td>"El comportamiento se debe a factores eternos"</td><td>"...factores externos"</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Pasos para usar LanguageTool en un ensayo academico
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <div class="pasos-lista">
+            <div class="paso"><p><strong>Accede a languagetool.org</strong> y selecciona el idioma español (puedes especificar la variante: español de México u otra).</p></div>
+            <div class="paso"><p><strong>Copia y pega tu texto</strong> en el editor de la página. También puedes instalar la extensión de navegador para revisar directamente mientras escribes en Google Docs o Word en línea.</p></div>
+            <div class="paso"><p><strong>Revisa cada sugerencia subrayada.</strong> LanguageTool clasifica los errores por color: ortografía, gramática y estilo. No aceptes todas las sugerencias automáticamente: lee la explicación de cada una.</p></div>
+            <div class="paso"><p><strong>Decide caso por caso</strong> si aceptas, rechazas o modificas la sugerencia, considerando el contexto académico y el sentido que deseas transmitir.</p></div>
+            <div class="paso"><p><strong>Vuelve a revisar el texto completo</strong> después de aplicar los cambios, ya que las correcciones pueden generar nuevas sugerencias relacionadas.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h2>Mejora de estilo y redacción con QuillBot</h2>
+
+    <div class="acordeon">
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Modos de parafraseo y su uso academico
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <p>QuillBot ofrece distintos "modos" que ajustan el resultado de la paráfrasis según el propósito del texto:</p>
+          <div class="tabla-wrap">
+            <table>
+              <thead><tr><th>Modo</th><th>Efecto en el texto</th><th>Cuándo utilizarlo</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Estándar</strong></td><td>Reformulación equilibrada, manteniendo el tono original</td><td>Revisión general de un párrafo antes de continuar escribiendo</td></tr>
+                <tr><td><strong>Fluido (Fluency)</strong></td><td>Mejora la fluidez y naturalidad de la redacción</td><td>Cuando el texto se lee de forma entrecortada o poco natural</td></tr>
+                <tr><td><strong>Formal</strong></td><td>Eleva el registro, elimina coloquialismos</td><td>Adaptar un borrador con lenguaje informal a un ensayo académico</td></tr>
+                <tr><td><strong>Académico</strong></td><td>Ajusta el vocabulario y la estructura a las convenciones de la escritura científica</td><td>Redacción de resúmenes, marcos teóricos, discusión de resultados</td></tr>
+                <tr><td><strong>Conciso (Shorten)</strong></td><td>Reduce la extensión sin perder el sentido central</td><td>Cuando el texto excede el límite de palabras de una tarea</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Pasos para usar QuillBot de forma etica en la redaccion
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <div class="pasos-lista">
+            <div class="paso"><p><strong>Escribe primero tu propia versión</strong> del párrafo o sección, con tus propias ideas, argumentos y estructura. QuillBot debe trabajar sobre un texto que ya es tuyo, no generar contenido desde cero.</p></div>
+            <div class="paso"><p><strong>Accede a quillbot.com</strong> y pega tu párrafo en el "Paraphraser".</p></div>
+            <div class="paso"><p><strong>Selecciona el modo apropiado</strong> según el propósito (por ejemplo, "Académico" para la sección de marco teórico de un ensayo).</p></div>
+            <div class="paso"><p><strong>Compara la versión original con la sugerida.</strong> Identifica qué cambios mejoran la claridad y cuáles, en tu opinión, alteran el matiz que querías transmitir.</p></div>
+            <div class="paso"><p><strong>Edita manualmente el resultado</strong>, combinando elementos de tu versión original con las mejoras de estilo sugeridas. El texto final debe seguir reflejando tu voz y tus ideas.</p></div>
+            <div class="paso"><p><strong>Verifica que las citas y referencias</strong> no hayan sido alteradas por el proceso de paráfrasis; los nombres de autores, años y datos técnicos deben permanecer exactamente como en la fuente original.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">
+          Ejemplo de mejora de redaccion
+          <span class="acord-icono">+</span>
+        </button>
+        <div class="acord-body">
+          <div class="caja caja-info">
+            <span class="caja-titulo">Antes (borrador del estudiante)</span>
+            <p>"En este trabajo vamos a hablar de cómo el estrés afecta a los estudiantes y por qué es importante que las universidades hagan algo al respecto porque muchos chicos no pueden manejar bien sus emociones."</p>
+          </div>
+          <div class="caja caja-logro">
+            <span class="caja-titulo">Despues (modo academico, editado por el estudiante)</span>
+            <p>"El presente trabajo analiza el impacto del estrés académico en el bienestar emocional de los estudiantes universitarios, así como la pertinencia de implementar estrategias institucionales orientadas al desarrollo de competencias de regulación emocional."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="caja caja-etica mt-2">
+      <span class="caja-titulo">Limites eticos del uso de estas herramientas</span>
+      <ul class="lista" style="color:#2A3550;">
+        <li>LanguageTool y QuillBot deben utilizarse sobre textos <strong>de autoría propia</strong>. Generar un ensayo completo con IA y solo "mejorarlo" con estas herramientas no constituye un trabajo original.</li>
+        <li>La función de paráfrasis de QuillBot <strong>no exime de citar las fuentes</strong>: si una idea proviene de un autor, debe citarse independientemente de que el texto haya sido reformulado.</li>
+        <li>El estudiante debe ser capaz de <strong>explicar y defender</strong> cualquier afirmación de su trabajo, incluso si el estilo de la oración fue ajustado con ayuda de estas herramientas.</li>
+        <li>Es recomendable que el estudiante consulte con su docente las políticas institucionales sobre el uso de herramientas de IA en trabajos evaluables.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     MATERIALES DE CONSULTA
+     ═══════════════════════════════════════════ -->
+<section id="materiales">
+  <div class="tarjeta borde-noche">
+    <div class="seccion-titulo">
+      <span class="num">REC</span> Materiales Externos de Consulta
+    </div>
+    <p class="seccion-desc">Recursos formales recomendados para profundizar en los temas de esta guía.</p>
+
+    <div class="material-card">
+      <span class="material-tipo">Sitio web</span>
+      <div>
+        <div class="material-titulo">Perplexity AI &mdash; Centro de ayuda</div>
+        <p class="material-desc">Documentación oficial sobre el funcionamiento de los modos de búsqueda, la función académica y la gestión del plan gratuito. <a class="enlace-ext" href="https://www.perplexity.ai" target="_blank" rel="noopener">perplexity.ai</a></p>
+      </div>
+    </div>
+    <div class="material-card">
+      <span class="material-tipo">Sitio web</span>
+      <div>
+        <div class="material-titulo">LanguageTool &mdash; Guía de uso</div>
+        <p class="material-desc">Documentación sobre las reglas gramaticales y de estilo soportadas para el español, así como extensiones disponibles para navegadores y editores de texto. <a class="enlace-ext" href="https://languagetool.org" target="_blank" rel="noopener">languagetool.org</a></p>
+      </div>
+    </div>
+    <div class="material-card">
+      <span class="material-tipo">Sitio web</span>
+      <div>
+        <div class="material-titulo">QuillBot &mdash; Centro de aprendizaje</div>
+        <p class="material-desc">Tutoriales sobre los modos de paráfrasis, el corrector gramatical y el resumidor de textos en su versión gratuita. <a class="enlace-ext" href="https://quillbot.com" target="_blank" rel="noopener">quillbot.com</a></p>
+      </div>
+    </div>
+    <div class="material-card">
+      <span class="material-tipo guia">Lectura</span>
+      <div>
+        <div class="material-titulo">Normas APA, 7ma edición &mdash; American Psychological Association</div>
+        <p class="material-desc">Manual de referencia para la citación de fuentes académicas, indispensable para complementar el proceso de curaduría de información iniciado con Perplexity AI.</p>
+      </div>
+    </div>
+    <div class="material-card">
+      <span class="material-tipo guia">Lectura</span>
+      <div>
+        <div class="material-titulo">Guías institucionales sobre el uso académico de inteligencia artificial</div>
+        <p class="material-desc">Se recomienda al estudiante consultar el reglamento académico vigente de la Universidad UNE, Plantel Centro, respecto a las políticas de uso de herramientas de inteligencia artificial generativa en trabajos evaluables.</p>
+      </div>
+    </div>
+    <div class="material-card">
+      <span class="material-tipo video">Video</span>
+      <div>
+        <div class="material-titulo">Tutoriales introductorios oficiales</div>
+        <p class="material-desc">Se recomienda buscar en los canales oficiales de cada plataforma (Perplexity AI, LanguageTool y QuillBot) tutoriales introductorios actualizados sobre el uso del plan gratuito de cada herramienta.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Pregunta de conocimiento previo</h3>
+    <div class="saber-previo">
+      <span class="pd-etiq">Antes de continuar, reflexiona</span>
+      <p style="color:var(--azul-noche);font-weight:700;font-family:var(--f-display);font-size:1rem;">¿Has utilizado alguna herramienta de inteligencia artificial para investigar, redactar o corregir un trabajo académico? ¿Qué ventajas y qué riesgos identificas en su uso?</p>
+      <textarea rows="4" placeholder="Escribe aquí tu respuesta inicial. No es necesario entregarla; su propósito es activar tus conocimientos previos antes de explorar el contenido de esta guía."></textarea>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     ACTIVIDAD 1 — FORO DE MEDIACIÓN
+     ═══════════════════════════════════════════ -->
+<section id="actividad-1">
+  <div class="tarjeta borde-coral">
+    <div class="actividad-header">
+      <div class="act-num">01</div>
+      <div>
+        <span class="act-tipo">Actividad 1 &mdash; Entrega en Google Classroom</span>
+        <div class="act-nombre">Foro de Mediación: IA como Asistente vs. IA como Sustituto</div>
+      </div>
+    </div>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Datos generales</span>
+      <p>
+        <span class="chip chip-teal">Tipo: Foro de discusión</span>&nbsp;
+        <span class="chip chip-coral">Entrega: Google Classroom / Moodle</span>&nbsp;
+        <span class="chip chip-verde">Modalidad: Colaborativa</span>
+      </p>
+      <p style="margin-top:0.5rem;margin-bottom:0;"><strong>Propósito:</strong> Promover la reflexión crítica sobre los límites entre el uso legítimo de la IA como asistente de tutoría y su uso indebido como sustituto del trabajo intelectual del estudiante.</p>
+    </div>
+
+    <h3>Pregunta detonadora</h3>
+    <div class="pregunta-detonadora">
+      <span class="pd-etiq">Pregunta central del foro</span>
+      <p>Si Perplexity AI puede responder preguntas de investigación con fuentes citadas, y QuillBot puede reformular un párrafo para que suene más "académico", ¿dónde se encuentra la línea entre usar estas herramientas como un tutor que acompaña el aprendizaje y usarlas como un atajo que sustituye el esfuerzo intelectual del estudiante? ¿Esta línea es la misma para todos los estudiantes, o depende del nivel de formación y del tipo de tarea?</p>
+    </div>
+
+    <h3>Instrucciones paso a paso</h3>
+    <div class="pasos-lista">
+      <div class="paso"><p><strong>Revisa los contenidos</strong> de las unidades 1 y 2 de esta guía, especialmente las secciones sobre límites éticos y verificación de fuentes.</p></div>
+      <div class="paso"><p><strong>Elabora tu aportación inicial</strong> (mínimo 250 palabras) en la que expongas tu postura frente a la pregunta detonadora. Tu argumento debe incluir al menos un ejemplo concreto de uso apropiado y uno de uso inapropiado de las herramientas revisadas.</p></div>
+      <div class="paso"><p><strong>Publica tu aportación</strong> en el foro habilitado en Google Classroom dentro del plazo establecido por tu docente.</p></div>
+      <div class="paso"><p><strong>Lee las aportaciones</strong> de al menos dos compañeros e identifica coincidencias y diferencias con tu propia postura.</p></div>
+      <div class="paso"><p><strong>Responde a cada compañero seleccionado</strong> (mínimo 100 palabras por respuesta), aportando una perspectiva nueva, un matiz, o una pregunta que profundice en su argumento. No se aceptan respuestas de mero acuerdo.</p></div>
+      <div class="paso"><p><strong>Cierre del foro (opcional):</strong> después de leer al menos cinco participaciones, redacta una breve síntesis (100-150 palabras) de los criterios comunes que el grupo propone para distinguir el uso adecuado del inadecuado de estas herramientas.</p></div>
+    </div>
+
+    <h3>Rúbrica de evaluación</h3>
+    <div class="rubrica">
+      <div class="rubrica-item rubrica-header"><span>Criterio</span><span class="puntos">Puntos</span></div>
+      <div class="rubrica-item"><span>Aportación inicial: postura clara, fundamentada y con ejemplos concretos</span><span class="puntos">25 pts</span></div>
+      <div class="rubrica-item"><span>Extensión y desarrollo argumental (mín. 250 palabras)</span><span class="puntos">15 pts</span></div>
+      <div class="rubrica-item"><span>Calidad de las respuestas a compañeros: nueva perspectiva o matiz argumentado</span><span class="puntos">30 pts</span></div>
+      <div class="rubrica-item"><span>Uso correcto de los conceptos revisados en la guía</span><span class="puntos">15 pts</span></div>
+      <div class="rubrica-item"><span>Respeto en el intercambio, claridad de expresión y ortografía</span><span class="puntos">15 pts</span></div>
+      <div class="rubrica-item rubrica-header"><span><strong>Total</strong></span><span class="puntos">100 pts</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     ACTIVIDAD 2 — APLICACIÓN SIGNIFICATIVA
+     ═══════════════════════════════════════════ -->
+<section id="actividad-2">
+  <div class="tarjeta borde-teal">
+    <div class="actividad-header">
+      <div class="act-num">02</div>
+      <div>
+        <span class="act-tipo">Actividad 2 &mdash; Entrega en Google Classroom</span>
+        <div class="act-nombre">Investigación Guiada: De la Pregunta a la Fuente Verificada</div>
+      </div>
+    </div>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Datos generales</span>
+      <p>
+        <span class="chip chip-teal">Tipo: Trabajo individual</span>&nbsp;
+        <span class="chip chip-coral">Entrega: Documento PDF o Google Docs</span>&nbsp;
+        <span class="chip chip-verde">Aprendizaje: Significativo y aplicable</span>
+      </p>
+      <p style="margin-top:0.5rem;margin-bottom:0;"><strong>Propósito:</strong> Que el estudiante aplique el proceso completo de investigación y redacción presentado en esta guía a una pregunta de su propio interés académico, generando un producto que pueda reutilizar en otras materias de la licenciatura.</p>
+    </div>
+
+    <h3>Descripción de la actividad</h3>
+    <p>Elaborarás un <strong>documento breve de investigación académica</strong> (de una a dos páginas) sobre un tema relacionado con alguna materia que estés cursando actualmente en la Licenciatura en Psicología. Este documento integrará el uso de las tres herramientas revisadas en esta guía: Perplexity AI para la investigación, y LanguageTool y QuillBot para la redacción final.</p>
+
+    <h3>Instrucciones paso a paso</h3>
+    <div class="pasos-lista">
+      <div class="paso"><p><strong>Selecciona un tema</strong> de alguna materia que estés cursando (por ejemplo, un concepto de Teorías del Aprendizaje, un fenómeno de Psicología Social, una técnica de Psicología Clínica) y formula una pregunta de investigación específica, siguiendo los criterios revisados en la Unidad 1.</p></div>
+      <div class="paso"><p><strong>Utiliza Perplexity AI</strong> (modo académico, si está disponible) para investigar tu pregunta. Realiza al menos dos consultas: la pregunta inicial y una pregunta de seguimiento que profundice en algún aspecto relevante.</p></div>
+      <div class="paso"><p><strong>Verifica al menos tres fuentes</strong> citadas por Perplexity AI, aplicando los criterios de evaluación de fuentes (origen, actualidad, autoría) revisados en esta guía. Registra estas fuentes en formato APA.</p></div>
+      <div class="paso"><p><strong>Redacta un texto propio</strong> de entre 300 y 400 palabras que sintetice lo investigado, en el que incluyas: una breve introducción al tema, los hallazgos principales de tu investigación con sus citas correspondientes, y una reflexión personal sobre la relevancia del tema para tu formación como psicólogo.</p></div>
+      <div class="paso"><p><strong>Revisa tu texto con LanguageTool</strong> y corrige los errores gramaticales y ortográficos detectados, documentando al menos tres correcciones que realizaste.</p></div>
+      <div class="paso"><p><strong>Mejora el estilo de al menos un párrafo</strong> con QuillBot (modo académico), comparando la versión original y la mejorada, y editando manualmente el resultado para asegurar que conserve tu voz y tus ideas.</p></div>
+      <div class="paso"><p><strong>Entrega un documento final</strong> que incluya: la pregunta de investigación, el texto redactado (versión final), la lista de referencias en formato APA, y un breve apartado de "proceso" donde describas qué correcciones aplicaste con LanguageTool y cómo mejoraste tu redacción con QuillBot.</p></div>
+    </div>
+
+    <h3>Rúbrica de evaluación</h3>
+    <div class="rubrica">
+      <div class="rubrica-item rubrica-header"><span>Criterio</span><span class="puntos">Puntos</span></div>
+      <div class="rubrica-item"><span>Pertinencia y especificidad de la pregunta de investigación</span><span class="puntos">15 pts</span></div>
+      <div class="rubrica-item"><span>Uso documentado de Perplexity AI (al menos 2 consultas, 3 fuentes verificadas)</span><span class="puntos">25 pts</span></div>
+      <div class="rubrica-item"><span>Calidad del texto redactado: claridad, coherencia y reflexión personal</span><span class="puntos">25 pts</span></div>
+      <div class="rubrica-item"><span>Evidencia del uso de LanguageTool (correcciones documentadas)</span><span class="puntos">15 pts</span></div>
+      <div class="rubrica-item"><span>Evidencia del uso de QuillBot (comparación y edición propia documentada)</span><span class="puntos">10 pts</span></div>
+      <div class="rubrica-item"><span>Formato de referencias APA correcto</span><span class="puntos">10 pts</span></div>
+      <div class="rubrica-item rubrica-header"><span><strong>Total</strong></span><span class="puntos">100 pts</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     ACTIVIDAD 3 — CASO PRÁCTICO
+     ═══════════════════════════════════════════ -->
+<section id="actividad-3">
+  <div class="tarjeta borde-noche">
+    <div class="actividad-header">
+      <div class="act-num">03</div>
+      <div>
+        <span class="act-tipo">Actividad 3 &mdash; Entrega en Google Classroom</span>
+        <div class="act-nombre">Análisis de Caso: El Ensayo de Mariana</div>
+      </div>
+    </div>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Datos generales</span>
+      <p>
+        <span class="chip chip-teal">Tipo: Análisis individual o en parejas</span>&nbsp;
+        <span class="chip chip-coral">Entrega: Documento de Google Classroom</span>&nbsp;
+        <span class="chip chip-verde">Modalidad: ABP</span>
+      </p>
+      <p style="margin-top:0.5rem;margin-bottom:0;"><strong>Propósito:</strong> Aplicar los criterios de curaduría de información y los límites éticos del uso de IA a una situación realista que un estudiante de psicología podría enfrentar.</p>
+    </div>
+
+    <h3>Caso a analizar</h3>
+    <div class="caso-practico">
+      <span class="caso-etiq">Caso práctico</span>
+      <p>Mariana es estudiante de cuarto semestre de la Licenciatura en Psicología. Para su materia de Psicología del Desarrollo, debe entregar un ensayo de cinco páginas sobre el impacto del uso prolongado de dispositivos móviles en el desarrollo socioemocional de niños en edad preescolar.</p>
+
+      <h4>Lo que hizo Mariana</h4>
+      <p>Mariana le preguntó a Perplexity AI: "Escríbeme un ensayo de cinco páginas sobre el impacto del uso de dispositivos móviles en el desarrollo socioemocional de niños preescolares, con citas en formato APA." Perplexity AI generó un texto extenso con varias citas numeradas y enlaces a fuentes. Mariana copió el texto completo, lo pegó en QuillBot en modo "Académico" para "que se viera mejor", y entregó el resultado como su ensayo, sin leer las fuentes citadas ni revisar el contenido con LanguageTool, porque "ya estaba en modo académico".</p>
+
+      <h4>Lo que ocurrió despues</h4>
+      <p>Al revisar el trabajo, el docente notó que dos de las fuentes citadas en el ensayo no correspondían exactamente a lo que se afirmaba en el texto: una de ellas era un estudio sobre adolescentes, no sobre preescolares, y otra era un artículo de opinión publicado en un blog, no un estudio científico. Además, el ensayo presentaba una estructura genérica que no abordaba ningún caso o contexto específico, y el estilo, aunque "académico", resultaba impersonal y poco argumentado.</p>
+
+      <h4>Preguntas para el analisis</h4>
+      <ul class="lista">
+        <li>Identifica al menos tres decisiones de Mariana que se desvían del uso adecuado de Perplexity AI, LanguageTool y QuillBot descrito en esta guía.</li>
+        <li>¿En qué momento del proceso debió Mariana haber aplicado los criterios de verificación de fuentes revisados en la Unidad 1? Explica qué habría encontrado si lo hubiera hecho.</li>
+        <li>¿Qué diferencia existe entre "usar QuillBot para mejorar tu propio texto" y "usar QuillBot para que un texto generado por IA se vea como propio"? ¿Por qué esta diferencia es relevante desde una perspectiva ética?</li>
+        <li>Si fueras compañero de Mariana y ella te pidiera consejo antes de entregar el trabajo, ¿qué tres recomendaciones concretas le darías, basándote en los pasos correctos descritos en esta guía?</li>
+        <li>Reescribe, de manera breve (entre 150 y 200 palabras), cómo debería haber sido el proceso completo de Mariana, desde la formulación de su pregunta de investigación hasta la entrega del ensayo, aplicando correctamente las tres herramientas.</li>
+      </ul>
+    </div>
+
+    <h3>Instrucciones de entrega</h3>
+    <div class="pasos-lista">
+      <div class="paso"><p><strong>Responde cada una de las cinco preguntas</strong> del análisis de caso en un documento de texto, con respuestas argumentadas (mínimo 60 palabras por pregunta).</p></div>
+      <div class="paso"><p><strong>Relaciona tus respuestas</strong> con conceptos específicos abordados en las Unidades 1 y 2 de esta guía (por ejemplo, criterios de evaluación de fuentes, modos de paráfrasis, límites éticos).</p></div>
+      <div class="paso"><p><strong>Sube tu documento</strong> a la tarea correspondiente en Google Classroom dentro del plazo establecido.</p></div>
+    </div>
+
+    <h3>Rúbrica de evaluación</h3>
+    <div class="rubrica">
+      <div class="rubrica-item rubrica-header"><span>Criterio</span><span class="puntos">Puntos</span></div>
+      <div class="rubrica-item"><span>Identificación correcta de las decisiones inadecuadas de Mariana</span><span class="puntos">20 pts</span></div>
+      <div class="rubrica-item"><span>Aplicación de los criterios de verificación de fuentes al caso</span><span class="puntos">20 pts</span></div>
+      <div class="rubrica-item"><span>Análisis de la diferencia ética entre mejorar un texto propio y disfrazar un texto generado por IA</span><span class="puntos">25 pts</span></div>
+      <div class="rubrica-item"><span>Recomendaciones concretas y aplicables</span><span class="puntos">15 pts</span></div>
+      <div class="rubrica-item"><span>Reescritura del proceso correcto: completa, coherente y fundamentada</span><span class="puntos">20 pts</span></div>
+      <div class="rubrica-item rubrica-header"><span><strong>Total</strong></span><span class="puntos">100 pts</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     ACTIVIDAD 4 — QUIZ INTERACTIVO
+     ═══════════════════════════════════════════ -->
+<section id="actividad-4">
+  <div class="tarjeta borde-coral">
+    <div class="actividad-header">
+      <div class="act-num">04</div>
+      <div>
+        <span class="act-tipo">Actividad 4 &mdash; Entrega en Google Classroom</span>
+        <div class="act-nombre">Quiz Interactivo: IA como Asistente de Tutoría y Escritura</div>
+      </div>
+    </div>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Instrucciones</span>
+      <p>Responde las 5 preguntas seleccionando la opción que consideres correcta. Al finalizar, haz clic en "Revisar respuestas" para obtener tu puntuación y retroalimentación. <strong>Toma una captura de pantalla de tu resultado y súbela a la tarea correspondiente en Google Classroom.</strong> Se acepta un máximo de dos intentos.</p>
+    </div>
+
+    <div id="quiz">
+
+      <div class="quiz-pregunta" id="q1">
+        <div class="quiz-enun">¿Cuál es la característica principal que distingue a Perplexity AI de un chatbot de inteligencia artificial convencional para fines de investigación académica?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q1" value="a"> Genera textos más largos que otros modelos de IA.</label>
+          <label class="quiz-opcion"><input type="radio" name="q1" value="b"> Realiza búsquedas en tiempo real y cita las fuentes reales en las que se basa cada respuesta.</label>
+          <label class="quiz-opcion"><input type="radio" name="q1" value="c"> No requiere conexión a Internet para funcionar.</label>
+          <label class="quiz-opcion"><input type="radio" name="q1" value="d"> Solo permite búsquedas en idioma inglés.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb1-bien">Correcto. La característica distintiva de Perplexity AI es que enlaza cada afirmación de su respuesta con fuentes reales y verificables, a diferencia de modelos que generan texto sin mostrar su origen.</div>
+        <div class="quiz-feedback feedback-mal" id="fb1-mal">Incorrecto. La respuesta correcta es la segunda opción. Perplexity AI realiza búsquedas en tiempo real y cita fuentes reales, lo que permite al estudiante verificar el origen de la información.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q2">
+        <div class="quiz-enun">Perplexity AI cita un artículo como fuente para respaldar una afirmación sobre el desarrollo infantil. Según los criterios de curaduría de información revisados en esta guía, ¿cuál es el siguiente paso correcto del estudiante?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q2" value="a"> Citar directamente la respuesta de Perplexity AI en su ensayo, sin necesidad de revisar la fuente original.</label>
+          <label class="quiz-opcion"><input type="radio" name="q2" value="b"> Abrir la fuente citada y verificar su origen, actualidad, autoría y que efectivamente respalde la afirmación.</label>
+          <label class="quiz-opcion"><input type="radio" name="q2" value="c"> Descartar la respuesta, ya que toda información generada por IA es poco confiable.</label>
+          <label class="quiz-opcion"><input type="radio" name="q2" value="d"> Reformular la respuesta con QuillBot para que parezca redactada por el estudiante, sin revisar la fuente.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb2-bien">Correcto. La curaduría de información exige verificar cada fuente citada: su origen, actualidad, autoría y correspondencia real con la afirmación que respalda.</div>
+        <div class="quiz-feedback feedback-mal" id="fb2-mal">Incorrecto. La respuesta correcta es la segunda opción. Una respuesta con fuentes citadas no exime de la verificación: el estudiante debe abrir y revisar cada fuente antes de utilizarla.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q3">
+        <div class="quiz-enun">Un estudiante escribe un párrafo con ideas propias, pero con redacción confusa y errores gramaticales. ¿Cuál sería la combinación más adecuada de herramientas y orden de uso, según esta guía?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q3" value="a"> Pedir a Perplexity AI que reescriba el párrafo completo desde cero.</label>
+          <label class="quiz-opcion"><input type="radio" name="q3" value="b"> Usar QuillBot para generar un párrafo nuevo y luego revisarlo con LanguageTool.</label>
+          <label class="quiz-opcion"><input type="radio" name="q3" value="c"> Revisar primero la gramática y ortografía con LanguageTool, y después mejorar el estilo con QuillBot, editando manualmente el resultado final.</label>
+          <label class="quiz-opcion"><input type="radio" name="q3" value="d"> No es necesario revisar el texto si las ideas son correctas; el estilo no afecta la evaluación académica.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb3-bien">Correcto. El proceso adecuado parte del texto propio del estudiante: primero se corrigen errores con LanguageTool, luego se mejora el estilo con QuillBot, y finalmente se edita manualmente para conservar la voz del autor.</div>
+        <div class="quiz-feedback feedback-mal" id="fb3-mal">Incorrecto. La respuesta correcta es la tercera opción. El proceso debe partir de un texto propio: LanguageTool para corrección gramatical y QuillBot para estilo, siempre con edición manual final.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q4">
+        <div class="quiz-enun">Un estudiante utiliza el modo "Académico" de QuillBot para reformular un párrafo que él mismo redactó, y posteriormente edita el resultado para asegurarse de que refleje sus propias ideas. ¿Esta práctica es ética según los criterios de esta guía?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q4" value="a"> No, porque cualquier uso de IA en la redacción constituye plagio.</label>
+          <label class="quiz-opcion"><input type="radio" name="q4" value="b"> Sí, siempre y cuando el texto base sea de autoría propia y el estudiante revise y edite el resultado para conservar su voz e ideas.</label>
+          <label class="quiz-opcion"><input type="radio" name="q4" value="c"> Sí, pero únicamente si el estudiante no informa a su docente sobre el uso de la herramienta.</label>
+          <label class="quiz-opcion"><input type="radio" name="q4" value="d"> No, porque QuillBot solo debe usarse para textos en inglés.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb4-bien">Correcto. El uso ético de QuillBot implica que el texto base sea propio y que el resultado se edite y revise por el estudiante, conservando su autoría intelectual.</div>
+        <div class="quiz-feedback feedback-mal" id="fb4-mal">Incorrecto. La respuesta correcta es la segunda opción. Usar QuillBot sobre un texto propio, revisando y editando el resultado, es una práctica ética y consistente con el papel de estas herramientas como asistentes.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q5">
+        <div class="quiz-enun">Según el principio rector de esta guía sobre el papel de la inteligencia artificial en la formación universitaria, Perplexity AI, LanguageTool y QuillBot deben entenderse principalmente como:</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q5" value="a"> Sustitutos del trabajo intelectual del estudiante en tareas de investigación y redacción.</label>
+          <label class="quiz-opcion"><input type="radio" name="q5" value="b"> Herramientas exclusivas para estudiantes de posgrado, no aplicables a la licenciatura.</label>
+          <label class="quiz-opcion"><input type="radio" name="q5" value="c"> Asistentes de tutoría que apoyan la investigación, la explicación de conceptos y la redacción, sin sustituir la responsabilidad y el pensamiento crítico del estudiante.</label>
+          <label class="quiz-opcion"><input type="radio" name="q5" value="d"> Herramientas que garantizan automáticamente una calificación más alta en cualquier trabajo académico.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb5-bien">Correcto. El principio rector de esta guía establece que estas herramientas son asistentes de tutoría que acompañan el proceso de aprendizaje, brindando apoyo y autonomía, sin sustituir el pensamiento crítico ni la responsabilidad del estudiante.</div>
+        <div class="quiz-feedback feedback-mal" id="fb5-mal">Incorrecto. La respuesta correcta es la tercera opción. Estas herramientas son asistentes de tutoría: apoyan la investigación, la comprensión y la redacción, pero la responsabilidad final recae en el estudiante.</div>
+      </div>
+
+    </div>
+
+    <div class="quiz-controles">
+      <button class="btn btn-primario" onclick="revisarQuiz()">Revisar respuestas y ver puntuación</button>
+      <button class="btn btn-coral" onclick="reiniciarQuiz()" style="margin-left:0.8rem;">Reiniciar quiz</button>
+    </div>
+
+    <div id="resultado-quiz">
+      <div class="resultado-puntaje" id="puntaje-texto"></div>
+      <div class="resultado-msg" id="resultado-msg-texto"></div>
+      <p id="resultado-detalle" style="margin-top:0.8rem;font-size:0.88rem;color:var(--gris-texto);"></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     REFLEXIÓN Y APLICACIÓN
+     ═══════════════════════════════════════════ -->
+<section id="reflexion">
+  <div class="tarjeta borde-teal">
+    <div class="seccion-titulo">
+      <span class="num">REF</span> Reflexión y Aplicación
+    </div>
+    <p class="seccion-desc">Planificación de la incorporación de los aprendizajes a la vida académica y profesional.</p>
+
+    <p>Las herramientas presentadas en esta guía tienen sentido en la medida en que se integran de manera consciente y sostenida en tu proceso formativo. Esta sección busca que articules un plan concreto y personal para incorporarlas en tus actividades como estudiante de psicología.</p>
+
+    <h3>Planificador de incorporacion del aprendizaje</h3>
+    <p>Completa los campos del planificador y guarda tu reflexión. Puedes copiar el texto generado y pegarlo en la tarea de reflexión en Google Classroom.</p>
+
+    <div class="plan-grid">
+      <div class="plan-area">
+        <label>¿En qué materia o tipo de trabajo académico utilizarás Perplexity AI como apoyo de investigación, y con qué frecuencia?</label>
+        <textarea rows="4" id="plan-perplexity" placeholder="Por ejemplo: en la materia de Psicología Social, para investigar marcos teóricos antes de cada ensayo, verificando siempre al menos tres fuentes por consulta..."></textarea>
+      </div>
+      <div class="plan-area">
+        <label>¿Cómo integrarás LanguageTool en tu proceso de escritura habitual?</label>
+        <textarea rows="4" id="plan-languagetool" placeholder="Por ejemplo: revisaré con LanguageTool cada borrador antes de entregarlo, prestando especial atención a..."></textarea>
+      </div>
+      <div class="plan-area">
+        <label>¿En qué tipo de textos usarás QuillBot, y qué medidas tomarás para asegurar que el resultado siga reflejando tu propia voz?</label>
+        <textarea rows="4" id="plan-quillbot" placeholder="Por ejemplo: usaré el modo académico para mis resúmenes de lectura, pero siempre editaré el resultado para..."></textarea>
+      </div>
+      <div class="plan-area">
+        <label>¿Qué límite ético personal te comprometes a respetar en el uso de estas herramientas durante tu formación universitaria?</label>
+        <textarea rows="4" id="plan-etica" placeholder="Por ejemplo: nunca entregaré un texto generado completamente por IA como si fuera propio; siempre verificaré las fuentes antes de citarlas..."></textarea>
+      </div>
+    </div>
+
+    <div class="quiz-controles mt-2">
+      <button class="btn btn-primario" onclick="guardarPlan()">Guardar mi planificación</button>
+      <button class="btn btn-coral" onclick="copiarPlan()" style="margin-left:0.8rem;">Copiar texto para Classroom</button>
+    </div>
+    <div id="plan-guardado">
+      Tu planificación ha sido guardada. Puedes copiarla y pegarla en la tarea de reflexión de Google Classroom.
+    </div>
+
+    <hr class="divider">
+
+    <h3>Síntesis conceptual de la guía</h3>
+    <div class="concepto-grid">
+      <div class="concepto-card">
+        <div class="concepto-titulo">Investigacion verificable</div>
+        <p class="concepto-def">Perplexity AI facilita el acceso a fuentes, pero la verificación crítica de cada una sigue siendo responsabilidad del estudiante.</p>
+      </div>
+      <div class="concepto-card coral">
+        <div class="concepto-titulo">Correccion como proceso</div>
+        <p class="concepto-def">LanguageTool corrige forma; QuillBot mejora estilo. Ambas operan sobre un texto que primero debe ser propio.</p>
+      </div>
+      <div class="concepto-card noche">
+        <div class="concepto-titulo">IA como asistente de tutoria</div>
+        <p class="concepto-def">El valor de estas herramientas está en explicar, acompañar y apoyar; la autoría y la responsabilidad permanecen en el estudiante.</p>
+      </div>
+      <div class="concepto-card">
+        <div class="concepto-titulo">Autonomia con confianza</div>
+        <p class="concepto-def">El uso crítico y ético de estas herramientas fortalece, en lugar de sustituir, la autonomía del estudiante en su proceso de aprendizaje.</p>
+      </div>
+    </div>
+
+    <div class="caja caja-logro mt-2">
+      <span class="caja-titulo">Cierre de la guia</span>
+      <p>Has concluido el estudio de esta guía sobre el uso de Perplexity AI, LanguageTool y QuillBot como asistentes de tutoría y escritura académica. Estas herramientas, integradas con criterio ético y pensamiento crítico, pueden acompañarte de manera constante a lo largo de tu formación en la Licenciatura en Psicología y en tu futura práctica profesional.</p>
+      <p style="margin-bottom:0;">Recuerda entregar las cuatro actividades en Google Classroom dentro de los plazos establecidos por tu docente: el foro de mediación (Actividad 1), la investigación guiada (Actividad 2), el análisis de caso (Actividad 3) y la captura del quiz (Actividad 4).</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- PIE DE PÁGINA -->
+<footer>
+  <div class="footer-linea"><strong>Universidad UNE &mdash; Plantel Centro</strong></div>
+  <div class="footer-linea">Licenciatura en Psicología</div>
+  <div class="footer-linea">Inteligencia Artificial como Asistente de Tutoría y Escritura Académica &mdash; Guía de aprendizaje interactiva</div>
+  <div class="footer-linea" style="margin-top:0.8rem;font-size:0.75rem;">Diseñada con metodología constructivista, pedagogía activa y Aprendizaje Basado en Problemas (ABP)</div>
+</footer>
+
+
+<script>
+  // ── BARRA DE PROGRESO ──
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    document.getElementById('progreso-barra').style.width = pct + '%';
+  });
+
+  // ── NAV ACTIVO ──
+  function marcarActivo(el) {
+    document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('activo'));
+    el.classList.add('activo');
+  }
+
+  // ── ACORDEÓN ──
+  function toggleAcord(btn) {
+    const body = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('abierto');
+    const parent = btn.closest('.acordeon');
+    parent.querySelectorAll('.acord-btn.abierto').forEach(b => {
+      b.classList.remove('abierto');
+      b.nextElementSibling.classList.remove('visible');
+    });
+    if (!isOpen) {
+      btn.classList.add('abierto');
+      body.classList.add('visible');
+    }
+  }
+
+  // ── QUIZ ──
+  const respuestas = { q1: 'b', q2: 'b', q3: 'c', q4: 'b', q5: 'c' };
+
+  function revisarQuiz() {
+    let correctas = 0;
+    for (const [num, correcta] of Object.entries(respuestas)) {
+      const sel = document.querySelector(`input[name="${num}"]:checked`);
+      const qDiv = document.getElementById(num);
+      const fbBien = document.getElementById('fb' + num.replace('q','') + '-bien');
+      const fbMal  = document.getElementById('fb' + num.replace('q','') + '-mal');
+
+      fbBien.style.display = 'none';
+      fbMal.style.display  = 'none';
+      qDiv.classList.remove('correcta', 'incorrecta');
+
+      if (!sel) {
+        qDiv.classList.add('incorrecta');
+        fbMal.style.display = 'block';
+        continue;
+      }
+      if (sel.value === correcta) {
+        correctas++;
+        qDiv.classList.add('correcta');
+        fbBien.style.display = 'block';
+      } else {
+        qDiv.classList.add('incorrecta');
+        fbMal.style.display = 'block';
+      }
+    }
+
+    const pct = (correctas / 5) * 100;
+    const divRes = document.getElementById('resultado-quiz');
+    const puntajeEl = document.getElementById('puntaje-texto');
+    const msgEl = document.getElementById('resultado-msg-texto');
+    const detEl = document.getElementById('resultado-detalle');
+
+    divRes.classList.remove('alto','medio','bajo');
+    divRes.style.display = 'block';
+    puntajeEl.textContent = correctas + ' / 5';
+    detEl.textContent = 'Porcentaje de aciertos: ' + pct + '%. Recuerda tomar una captura de pantalla de este resultado para subirla a Google Classroom.';
+
+    if (pct >= 80) {
+      divRes.classList.add('alto');
+      msgEl.textContent = 'Excelente desempeño. Demuestras una comprensión sólida del uso responsable de estas herramientas.';
+    } else if (pct >= 60) {
+      divRes.classList.add('medio');
+      msgEl.textContent = 'Desempeño aceptable. Revisa las preguntas incorrectas y los conceptos asociados antes de tu segundo intento.';
+    } else {
+      divRes.classList.add('bajo');
+      msgEl.textContent = 'Es necesario reforzar los contenidos. Revisa las unidades 1 y 2 de la guía y vuelve a intentarlo.';
+    }
+
+    divRes.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function reiniciarQuiz() {
+    document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+    document.querySelectorAll('.quiz-pregunta').forEach(q => q.classList.remove('correcta','incorrecta'));
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.style.display = 'none');
+    const divRes = document.getElementById('resultado-quiz');
+    divRes.style.display = 'none';
+    divRes.classList.remove('alto','medio','bajo');
+  }
+
+  // ── PLANIFICADOR ──
+  function guardarPlan() {
+    const campos = ['plan-perplexity','plan-languagetool','plan-quillbot','plan-etica'];
+    const lleno = campos.some(id => document.getElementById(id).value.trim() !== '');
+    const aviso = document.getElementById('plan-guardado');
+    if (lleno) {
+      aviso.style.display = 'block';
+      setTimeout(() => aviso.style.display = 'none', 5000);
+    } else {
+      alert('Por favor, completa al menos uno de los campos del planificador antes de guardar.');
+    }
+  }
+
+  function copiarPlan() {
+    const etiquetas = [
+      'Uso de Perplexity AI',
+      'Integración de LanguageTool',
+      'Uso de QuillBot y voz propia',
+      'Límite ético personal'
+    ];
+    const ids = ['plan-perplexity','plan-languagetool','plan-quillbot','plan-etica'];
+    let texto = 'PLANIFICACIÓN DE INCORPORACIÓN DEL APRENDIZAJE\nIA como Asistente de Tutoría y Escritura Académica\n\n';
+    ids.forEach((id, i) => {
+      const val = document.getElementById(id).value.trim();
+      if (val) texto += etiquetas[i] + ':\n' + val + '\n\n';
+    });
+    if (texto.length < 100) {
+      alert('Por favor completa al menos un campo antes de copiar.'); return;
+    }
+    navigator.clipboard.writeText(texto)
+      .then(() => alert('Texto copiado al portapapeles. Pégalo en Google Classroom.'))
+      .catch(() => alert('No se pudo copiar automáticamente. Selecciona el texto manualmente.'));
+  }
+</script>
+</body>
+</html>
