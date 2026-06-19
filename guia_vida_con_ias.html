@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Vida con IAs | Tecnologías de la Información Aplicadas a la Psicología</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --indigo:        #2D2A6E;
+    --indigo-medio:  #4842A8;
+    --violeta:       #6C5CE7;
+    --magenta:       #D64584;
+    --magenta-claro: #F2A6C7;
+    --ambar:         #E8A33D;
+    --fondo:         #F6F5FB;
+    --card:          #FFFFFF;
+    --gris-texto:    #54526B;
+    --tinta:         #1C1A33;
+    --borde:         #E0DEF0;
+    --verde-ok:      #2E8B6E;
+    --sombra:        0 4px 24px rgba(45,42,110,0.09);
+    --sombra-hover:  0 10px 34px rgba(45,42,110,0.17);
+    --radio:         14px;
+    --f-display:     'Sora', sans-serif;
+    --f-body:        'Inter', 'Segoe UI', sans-serif;
+    --f-mono:        'IBM Plex Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--f-body);
+    background: var(--fondo);
+    color: var(--tinta);
+    font-size: 16px; line-height: 1.75;
+  }
+
+  #progreso-barra {
+    position: fixed; top: 0; left: 0; height: 4px; width: 0%;
+    background: linear-gradient(90deg, var(--magenta), var(--violeta), var(--ambar));
+    z-index: 9999; transition: width 0.2s ease;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 900;
+    background: var(--indigo);
+    border-bottom: 3px solid var(--magenta);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; min-height: 56px;
+  }
+  nav .nav-marca {
+    font-family: var(--f-display);
+    color: #fff; font-size: 0.86rem; font-weight: 700;
+    letter-spacing: 0.02em; white-space: nowrap;
+  }
+  nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.1rem; }
+  nav ul li a {
+    display: block; padding: 0.5rem 0.7rem;
+    color: rgba(255,255,255,0.75);
+    font-size: 0.76rem; font-weight: 600; letter-spacing: 0.02em;
+    text-decoration: none; border-radius: 5px;
+    transition: background 0.2s, color 0.2s;
+  }
+  nav ul li a:hover, nav ul li a.activo { background: var(--magenta); color: #fff; }
+
+  /* ── HEADER ── */
+  header {
+    background:
+      radial-gradient(circle at 80% 20%, rgba(214,69,132,0.25), transparent 45%),
+      radial-gradient(circle at 15% 80%, rgba(108,92,231,0.3), transparent 50%),
+      linear-gradient(140deg, var(--indigo) 0%, #36307F 60%, var(--indigo-medio) 100%);
+    color: #fff; padding: 3.5rem 2rem 3rem;
+    position: relative; overflow: hidden;
+  }
+  header::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--magenta), var(--violeta) 50%, var(--ambar));
+  }
+  .header-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: flex-start; gap: 2.5rem;
+    position: relative; z-index: 1;
+  }
+  .header-logo {
+    flex-shrink: 0; background: #fff; border-radius: 12px;
+    padding: 0.7rem; box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  }
+  .header-logo img { display: block; width: 90px; height: auto; }
+  .header-texto { flex: 1; }
+  .header-etiqueta {
+    display: inline-block; background: var(--magenta); color: #fff;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 0.25rem 0.8rem;
+    border-radius: 3px; margin-bottom: 0.8rem;
+  }
+  .header-subtitulo-inst {
+    font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.62);
+    letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.4rem;
+  }
+  header h1 {
+    font-family: var(--f-display);
+    font-size: clamp(1.7rem, 3.6vw, 2.7rem);
+    font-weight: 800; line-height: 1.2; margin-bottom: 0.8rem;
+  }
+  header h1 span { color: var(--magenta-claro); }
+  .header-meta {
+    display: flex; flex-wrap: wrap; gap: 1.2rem;
+    font-size: 0.82rem; color: rgba(255,255,255,0.72); margin-top: 1.2rem;
+  }
+  .header-meta span { display: flex; align-items: center; gap: 0.4rem; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ambar); display: inline-block; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+  .tarjeta {
+    background: var(--card); border-radius: var(--radio);
+    box-shadow: var(--sombra); padding: 2.2rem 2.5rem;
+    margin-bottom: 2.5rem; border-top: 4px solid transparent;
+    transition: box-shadow 0.3s;
+  }
+  .tarjeta:hover { box-shadow: var(--sombra-hover); }
+  .tarjeta.borde-violeta { border-top-color: var(--violeta); }
+  .tarjeta.borde-magenta { border-top-color: var(--magenta); }
+  .tarjeta.borde-ambar   { border-top-color: var(--ambar); }
+
+  .seccion-titulo {
+    font-family: var(--f-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+    color: var(--indigo); font-weight: 800;
+    margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.7rem;
+  }
+  .seccion-titulo .num {
+    font-family: var(--f-mono); font-size: 0.72rem; font-weight: 600;
+    background: var(--indigo); color: #fff; padding: 0.2rem 0.55rem;
+    border-radius: 4px; letter-spacing: 0.06em;
+  }
+  .seccion-desc {
+    font-size: 0.92rem; color: var(--gris-texto);
+    margin-bottom: 1.6rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--borde);
+  }
+
+  h2 { font-family: var(--f-display); font-size: 1.35rem; font-weight: 700; color: var(--indigo); margin: 1.8rem 0 0.8rem; }
+  h3 { font-family: var(--f-display); font-size: 1.1rem; font-weight: 600; color: var(--indigo-medio); margin: 1.4rem 0 0.5rem; }
+  p { margin-bottom: 0.9rem; color: var(--gris-texto); font-size: 0.96rem; }
+  strong { color: var(--tinta); font-weight: 700; }
+  a.enlace-ext { color: var(--violeta); font-weight: 600; text-decoration: underline; }
+  a.enlace-ext:hover { color: var(--magenta); }
+
+  /* ── ACORDEÓN ── */
+  .acordeon { margin: 1rem 0; }
+  .acord-item { border: 1px solid var(--borde); border-radius: 8px; margin-bottom: 0.6rem; overflow: hidden; }
+  .acord-btn {
+    width: 100%; background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.3rem; font-family: var(--f-body); font-size: 0.95rem;
+    font-weight: 600; color: var(--indigo); text-align: left;
+    background: linear-gradient(90deg, #FBFAFE, #FFFFFF); transition: background 0.2s;
+  }
+  .acord-btn:hover { background: #F1EFFB; }
+  .acord-btn.abierto { background: var(--indigo); color: #fff; }
+  .acord-icono { font-size: 1.1rem; font-weight: 700; transition: transform 0.3s; flex-shrink: 0; margin-left: 1rem; }
+  .acord-btn.abierto .acord-icono { transform: rotate(45deg); }
+  .acord-body {
+    display: none; padding: 1.3rem 1.5rem; background: var(--card);
+    font-size: 0.93rem; color: var(--gris-texto); border-top: 1px solid var(--borde);
+    animation: fadeIn 0.25s ease;
+  }
+  .acord-body.visible { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+
+  /* ── PESTAÑAS ── */
+  .pestanas { margin: 1.5rem 0; }
+  .pest-nav { display: flex; flex-wrap: wrap; gap: 0.4rem; border-bottom: 2px solid var(--borde); }
+  .pest-btn {
+    padding: 0.6rem 1.2rem; border: none; background: none; cursor: pointer;
+    font-family: var(--f-body); font-size: 0.87rem; font-weight: 600;
+    color: var(--gris-texto); border-radius: 6px 6px 0 0;
+    border-bottom: 2px solid transparent; margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .pest-btn.activo { color: var(--indigo); border-bottom-color: var(--magenta); background: var(--card); }
+  .pest-panel { display: none; padding: 1.5rem 0.5rem; animation: fadeIn 0.25s ease; }
+  .pest-panel.visible { display: block; }
+
+  /* ── CONCEPTOS ── */
+  .concepto-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .concepto-card { background: var(--fondo); border-left: 4px solid var(--violeta); border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; }
+  .concepto-card.magenta { border-left-color: var(--magenta); }
+  .concepto-card.ambar   { border-left-color: var(--ambar); }
+  .concepto-titulo { font-family: var(--f-mono); font-size: 0.8rem; font-weight: 600; color: var(--indigo); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+  .concepto-def { font-size: 0.88rem; color: var(--gris-texto); margin: 0; }
+
+  /* ── TABLAS ── */
+  .tabla-wrap { overflow-x: auto; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  thead tr { background: var(--indigo); color: #fff; }
+  thead th { padding: 0.8rem 1rem; text-align: left; font-weight: 600; }
+  tbody tr:nth-child(odd) { background: var(--fondo); }
+  tbody tr:nth-child(even) { background: var(--card); }
+  tbody td { padding: 0.75rem 1rem; color: var(--gris-texto); vertical-align: top; }
+  tbody tr:hover { background: #F1EFFB; }
+
+  /* ── CAJAS ── */
+  .caja { border-radius: 8px; padding: 1.1rem 1.4rem; margin: 1.1rem 0; font-size: 0.92rem; }
+  .caja-info   { background: #EDEBFB; border-left: 4px solid var(--violeta); }
+  .caja-alerta { background: #FCF0DD; border-left: 4px solid var(--ambar); }
+  .caja-logro  { background: #E3F4EE; border-left: 4px solid var(--verde-ok); }
+  .caja-etica  { background: #FBE8F1; border-left: 4px solid var(--magenta); }
+  .caja p, .caja ul { margin-bottom: 0.4rem; color: inherit; }
+  .caja strong { color: inherit; }
+  .caja-titulo { font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; display: block; }
+  .caja-info .caja-titulo   { color: var(--violeta); }
+  .caja-alerta .caja-titulo { color: #9A6A1A; }
+  .caja-logro .caja-titulo  { color: var(--verde-ok); }
+  .caja-etica .caja-titulo  { color: var(--magenta); }
+  ul.lista, ol.lista { padding-left: 1.5rem; margin: 0.6rem 0; }
+  ul.lista li, ol.lista li { margin-bottom: 0.4rem; font-size: 0.92rem; color: var(--gris-texto); }
+
+  /* ── PASOS ── */
+  .pasos-lista { counter-reset: paso; margin: 1rem 0; }
+  .paso { counter-increment: paso; display: flex; gap: 1rem; padding: 0.9rem 1rem; margin-bottom: 0.6rem; background: var(--fondo); border-radius: 8px; align-items: flex-start; }
+  .paso::before {
+    content: counter(paso); font-family: var(--f-mono); font-size: 0.75rem; font-weight: 600;
+    color: #fff; background: var(--violeta); min-width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.05rem;
+  }
+  .paso p { margin: 0; font-size: 0.92rem; }
+
+  /* ── PREGUNTA DETONADORA ── */
+  .pregunta-detonadora {
+    background: linear-gradient(135deg, var(--indigo), var(--violeta));
+    color: #fff; border-radius: 10px; padding: 1.8rem 2rem; margin: 1.2rem 0;
+    position: relative; overflow: hidden;
+  }
+  .pregunta-detonadora::before {
+    content: '?'; position: absolute; right: 1.5rem; top: 0.5rem;
+    font-family: var(--f-display); font-size: 8rem; font-weight: 800;
+    color: rgba(255,255,255,0.07); line-height: 1;
+  }
+  .pregunta-detonadora .pd-etiq { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--magenta-claro); margin-bottom: 0.7rem; display: block; }
+  .pregunta-detonadora p { font-family: var(--f-display); font-size: 1.1rem; font-weight: 600; color: #fff; line-height: 1.5; position: relative; z-index: 1; }
+
+  /* ── ACTIVIDADES ── */
+  .actividad-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--borde); }
+  .act-num { font-family: var(--f-display); font-size: 2rem; font-weight: 800; color: var(--magenta); line-height: 1; flex-shrink: 0; min-width: 2rem; }
+  .act-tipo { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--magenta); display: block; margin-bottom: 0.1rem; }
+  .act-nombre { font-family: var(--f-display); font-size: 1.15rem; font-weight: 800; color: var(--indigo); }
+
+  /* ── RUBRICA ── */
+  .rubrica { margin: 1.2rem 0; }
+  .rubrica-item { display: grid; grid-template-columns: 2fr 1fr; gap: 0.5rem 1rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--borde); align-items: center; font-size: 0.88rem; }
+  .rubrica-item:last-child { border-bottom: none; }
+  .rubrica-item:nth-child(odd) { background: var(--fondo); }
+  .rubrica-header { background: var(--indigo) !important; color: #fff; font-weight: 700; border-radius: 6px 6px 0 0; }
+  .puntos { font-family: var(--f-mono); font-weight: 600; color: var(--violeta); text-align: right; }
+  .rubrica-header .puntos { color: var(--magenta-claro); }
+
+  /* ── HERRAMIENTA / USO CARD ── */
+  .uso-card { background: var(--fondo); border: 1px solid var(--borde); border-radius: 10px; padding: 1.3rem 1.5rem; margin-bottom: 1rem; display: flex; gap: 1.1rem; align-items: flex-start; }
+  .uso-icon { width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: var(--f-mono); font-weight: 600; font-size: 0.9rem; color: #fff; }
+  .uso-icon.violeta { background: var(--violeta); }
+  .uso-icon.magenta { background: var(--magenta); }
+  .uso-icon.ambar   { background: var(--ambar); }
+  .uso-icon.indigo  { background: var(--indigo); }
+  .uso-nombre { font-family: var(--f-display); font-weight: 700; font-size: 1.02rem; color: var(--indigo); margin-bottom: 0.3rem; }
+  .uso-desc { font-size: 0.9rem; color: var(--gris-texto); margin: 0; }
+
+  /* ── QUIZ ── */
+  #quiz { counter-reset: pregunta; }
+  .quiz-pregunta { counter-increment: pregunta; background: var(--fondo); border-radius: 8px; padding: 1.3rem 1.5rem; margin-bottom: 1rem; border: 2px solid transparent; transition: border-color 0.3s; }
+  .quiz-pregunta.correcta   { border-color: var(--verde-ok); background: #E3F4EE; }
+  .quiz-pregunta.incorrecta { border-color: var(--magenta); background: #FBE8F1; }
+  .quiz-enun { font-weight: 700; font-size: 0.95rem; color: var(--indigo); margin-bottom: 0.9rem; }
+  .quiz-enun::before { content: counter(pregunta) '. '; font-family: var(--f-mono); color: var(--magenta); }
+  .quiz-opciones { display: flex; flex-direction: column; gap: 0.5rem; }
+  .quiz-opcion { display: flex; align-items: center; gap: 0.7rem; padding: 0.6rem 0.9rem; background: var(--card); border-radius: 6px; cursor: pointer; border: 1.5px solid var(--borde); font-size: 0.9rem; color: var(--gris-texto); transition: border-color 0.2s, background 0.2s; user-select: none; }
+  .quiz-opcion:hover { border-color: var(--violeta); background: #F1EFFB; }
+  .quiz-opcion input[type=radio] { accent-color: var(--violeta); }
+  .quiz-feedback { margin-top: 0.7rem; padding: 0.6rem 0.9rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; display: none; }
+  .feedback-bien { background: #E3F4EE; color: var(--verde-ok); }
+  .feedback-mal  { background: #FBE8F1; color: #A82C63; }
+  .quiz-controles { text-align: center; margin-top: 1.5rem; }
+  .btn { display: inline-block; padding: 0.75rem 2rem; border: none; border-radius: 7px; cursor: pointer; font-family: var(--f-body); font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .btn-primario { background: var(--indigo); color: #fff; }
+  .btn-magenta  { background: var(--magenta); color: #fff; }
+  #resultado-quiz { display: none; margin-top: 1.5rem; border-radius: 10px; padding: 1.8rem 2rem; text-align: center; }
+  #resultado-quiz.alto  { background: #E3F4EE; border: 2px solid var(--verde-ok); }
+  #resultado-quiz.medio { background: #FCF0DD; border: 2px solid var(--ambar); }
+  #resultado-quiz.bajo  { background: #FBE8F1; border: 2px solid var(--magenta); }
+  .resultado-puntaje { font-family: var(--f-display); font-size: 3.5rem; font-weight: 800; line-height: 1; margin-bottom: 0.3rem; }
+  .alto  .resultado-puntaje { color: var(--verde-ok); }
+  .medio .resultado-puntaje { color: #9A6A1A; }
+  .bajo  .resultado-puntaje { color: var(--magenta); }
+  .resultado-msg { font-size: 1rem; font-weight: 600; }
+
+  /* ── PLANIFICADOR ── */
+  .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  .plan-area { background: var(--fondo); border: 1px solid var(--borde); border-radius: 8px; padding: 1rem; }
+  .plan-area label { display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--violeta); margin-bottom: 0.5rem; }
+  .plan-area textarea, .plan-area input { width: 100%; border: 1px solid var(--borde); border-radius: 6px; padding: 0.6rem 0.8rem; font-family: var(--f-body); font-size: 0.88rem; color: var(--tinta); background: var(--card); resize: vertical; transition: border-color 0.2s; }
+  .plan-area textarea:focus, .plan-area input:focus { outline: none; border-color: var(--violeta); }
+  #plan-guardado { display: none; margin-top: 1rem; background: #E3F4EE; border: 1px solid var(--verde-ok); border-radius: 8px; padding: 1rem 1.2rem; font-size: 0.9rem; color: var(--verde-ok); font-weight: 600; }
+
+  /* ── PIE ── */
+  footer { background: var(--indigo); color: rgba(255,255,255,0.65); text-align: center; padding: 2rem 1.5rem; font-size: 0.82rem; }
+  footer strong { color: rgba(255,255,255,0.9); }
+  footer .footer-linea { margin-bottom: 0.3rem; }
+
+  /* ── UTILIDADES ── */
+  .chip { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; }
+  .chip-violeta { background: #E2DEFA; color: var(--indigo); }
+  .chip-magenta { background: #FBDCEA; color: #A82C63; }
+  .chip-verde   { background: #D7EFE6; color: var(--verde-ok); }
+  .mt-1 { margin-top: 0.5rem; } .mt-2 { margin-top: 1rem; } .mb-1 { margin-bottom: 0.5rem; }
+  .divider { border: none; border-top: 1px solid var(--borde); margin: 1.5rem 0; }
+
+  @media (max-width: 680px) {
+    nav ul { gap: 0; }
+    nav ul li a { font-size: 0.7rem; padding: 0.4rem 0.45rem; }
+    .header-inner { flex-direction: column; gap: 1.2rem; }
+    .tarjeta { padding: 1.5rem 1.2rem; }
+    .plan-grid { grid-template-columns: 1fr; }
+    .concepto-grid { grid-template-columns: 1fr; }
+    .uso-card { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progreso-barra"></div>
+
+<nav>
+  <span class="nav-marca">La Vida con IAs</span>
+  <ul>
+    <li><a href="#introduccion" onclick="marcarActivo(this)">Introducción</a></li>
+    <li><a href="#que-es" onclick="marcarActivo(this)">¿Qué son?</a></li>
+    <li><a href="#aplicaciones" onclick="marcarActivo(this)">En Psicología</a></li>
+    <li><a href="#etica" onclick="marcarActivo(this)">Ética</a></li>
+    <li><a href="#actividad-1" onclick="marcarActivo(this)">Act. 1</a></li>
+    <li><a href="#actividad-2" onclick="marcarActivo(this)">Act. 2</a></li>
+    <li><a href="#actividad-3" onclick="marcarActivo(this)">Quiz</a></li>
+    <li><a href="#reflexion" onclick="marcarActivo(this)">Reflexión</a></li>
+  </ul>
+</nav>
+
+<header>
+  <div class="header-inner">
+    <div class="header-logo">
+      <img src="data:image/jpeg;base64,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" alt="Logo Universidad UNE" style="width:90px;height:auto;">
+    </div>
+    <div class="header-texto">
+      <span class="header-subtitulo-inst">Universidad de Especialidades UNE</span>
+      <span class="header-etiqueta">Licenciatura en Psicología</span>
+      <h1>La Vida con IAs:<br><span>Inteligencia Artificial en el Campo de la Psicología</span></h1>
+      <p style="color:rgba(255,255,255,0.72);font-size:0.92rem;margin:0.5rem 0 0;">Guía de aprendizaje interactiva &mdash; Tecnologías de la Información Aplicadas a la Psicología</p>
+      <div class="header-meta">
+        <span><span class="dot"></span> Tema: La vida con IAs</span>
+        <span><span class="dot"></span> Nivel: Licenciatura</span>
+        <span><span class="dot"></span> Metodología: Constructivista / ABP</span>
+        <span><span class="dot"></span> 3 Actividades evaluables</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- INTRODUCCIÓN -->
+<section id="introduccion">
+  <div class="tarjeta borde-violeta">
+    <div class="seccion-titulo"><span class="num">INTRO</span> Introducción</div>
+    <p class="seccion-desc">Presentación del tema, objetivos de aprendizaje y enfoque pedagógico.</p>
+
+    <p>La inteligencia artificial (IA) ha dejado de ser una promesa futurista para convertirse en una presencia cotidiana. Asistentes conversacionales, sistemas de recomendación, traductores automáticos y herramientas de generación de texto e imágenes forman ya parte de la vida diaria de millones de personas. Para el estudiante de psicología, comprender qué son estas tecnologías, cómo funcionan y qué implicaciones tienen no es opcional: es una competencia profesional emergente.</p>
+
+    <p>Esta guía aborda el tema <strong>"La vida con IAs"</strong> desde una doble perspectiva: por un lado, comprender el papel creciente de la inteligencia artificial en la sociedad y en la experiencia humana; por otro, explorar cómo el futuro profesional de la psicología puede <strong>aprovechar estas herramientas de manera ética y crítica</strong> en la investigación, la práctica clínica, la docencia y la divulgación.</p>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Propósito de la guía</span>
+      <p>Que el estudiante de la Licenciatura en Psicología desarrolle una comprensión crítica del papel de las inteligencias artificiales en la vida contemporánea y adquiera criterios para integrarlas de forma responsable en su formación académica y en su futuro ejercicio profesional.</p>
+    </div>
+
+    <h3>Objetivos de aprendizaje</h3>
+    <ul class="lista">
+      <li>Comprender qué es la inteligencia artificial y distinguir sus principales tipos y aplicaciones cotidianas.</li>
+      <li>Identificar usos concretos de la IA en los distintos campos de la psicología: clínico, educativo, organizacional e investigativo.</li>
+      <li>Analizar críticamente las oportunidades y los riesgos del uso de IA en contextos psicológicos.</li>
+      <li>Reflexionar sobre las implicaciones éticas del uso de IA en el trabajo con personas.</li>
+      <li>Aplicar herramientas de IA como apoyo en tareas académicas universitarias de manera ética y consciente.</li>
+    </ul>
+
+    <h3>Enfoque pedagógico</h3>
+    <div class="concepto-grid">
+      <div class="concepto-card">
+        <div class="concepto-titulo">Constructivismo</div>
+        <p class="concepto-def">El estudiante construye su comprensión de la IA a partir de su propia experiencia cotidiana con estas tecnologías y de la reflexión guiada sobre sus usos.</p>
+      </div>
+      <div class="concepto-card magenta">
+        <div class="concepto-titulo">Aprendizaje Basado en Problemas</div>
+        <p class="concepto-def">El contenido se articula en torno a situaciones y dilemas reales que un psicólogo podría enfrentar al usar o evaluar tecnologías de IA.</p>
+      </div>
+      <div class="concepto-card ambar">
+        <div class="concepto-titulo">Pedagogia activa</div>
+        <p class="concepto-def">Las actividades exigen experimentación directa, discusión colaborativa y aplicación práctica de lo aprendido en el contexto universitario.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ¿QUÉ SON LAS IAs? -->
+<section id="que-es">
+  <div class="tarjeta borde-violeta">
+    <div class="seccion-titulo"><span class="num">1</span> ¿Qué son las Inteligencias Artificiales?</div>
+    <p class="seccion-desc">Conceptos fundamentales para comprender las tecnologías de IA presentes en la vida cotidiana.</p>
+
+    <p>La <strong>inteligencia artificial</strong> es el campo de la informática dedicado a crear sistemas capaces de realizar tareas que tradicionalmente requerían inteligencia humana: reconocer patrones, comprender lenguaje, tomar decisiones o generar contenido. No se trata de una sola tecnología, sino de un conjunto amplio de enfoques y aplicaciones.</p>
+
+    <div class="acordeon">
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">Tipos de inteligencia artificial<span class="acord-icono">+</span></button>
+        <div class="acord-body">
+          <div class="tabla-wrap">
+            <table>
+              <thead><tr><th>Tipo</th><th>Descripción</th><th>Ejemplo cotidiano</th></tr></thead>
+              <tbody>
+                <tr><td><strong>IA estrecha o débil</strong></td><td>Diseñada para una tarea específica. Es la única que existe actualmente.</td><td>Asistentes de voz, filtros de correo no deseado, recomendaciones de contenido</td></tr>
+                <tr><td><strong>IA generativa</strong></td><td>Subtipo capaz de crear contenido nuevo (texto, imágenes, audio) a partir de patrones aprendidos.</td><td>Generadores de texto e imágenes, asistentes conversacionales</td></tr>
+                <tr><td><strong>IA general (AGI)</strong></td><td>Hipotética; tendría capacidad de razonamiento equivalente a la humana en cualquier dominio.</td><td>No existe; pertenece al terreno de la investigación y la especulación</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">Conceptos clave: aprendizaje automático y modelos de lenguaje<span class="acord-icono">+</span></button>
+        <div class="acord-body">
+          <div class="concepto-grid">
+            <div class="concepto-card">
+              <div class="concepto-titulo">Aprendizaje automatico</div>
+              <p class="concepto-def">Rama de la IA en la que los sistemas "aprenden" patrones a partir de grandes cantidades de datos, en lugar de seguir reglas programadas explícitamente.</p>
+            </div>
+            <div class="concepto-card magenta">
+              <div class="concepto-titulo">Modelos de lenguaje</div>
+              <p class="concepto-def">Sistemas entrenados con enormes volúmenes de texto que predicen y generan lenguaje. Son la base de los asistentes conversacionales actuales.</p>
+            </div>
+            <div class="concepto-card ambar">
+              <div class="concepto-titulo">Datos de entrenamiento</div>
+              <p class="concepto-def">Conjunto de información con el que se entrena un sistema de IA. Su calidad y sus sesgos influyen directamente en los resultados que produce.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acord-item">
+        <button class="acord-btn" onclick="toggleAcord(this)">Limitaciones importantes de las IAs actuales<span class="acord-icono">+</span></button>
+        <div class="acord-body">
+          <ul class="lista">
+            <li><strong>Alucinaciones:</strong> los modelos generativos pueden producir información falsa con apariencia de veracidad.</li>
+            <li><strong>Sesgos:</strong> reproducen y amplifican los sesgos presentes en sus datos de entrenamiento, lo que tiene implicaciones serias en contextos psicológicos y sociales.</li>
+            <li><strong>Ausencia de comprensión real:</strong> procesan patrones estadísticos del lenguaje, pero no "comprenden" ni tienen experiencia subjetiva ni empatía genuina.</li>
+            <li><strong>Dependencia de los datos:</strong> su conocimiento está limitado por la información con la que fueron entrenadas y su fecha de corte.</li>
+          </ul>
+          <div class="caja caja-alerta">
+            <span class="caja-titulo">Implicacion para la psicologia</span>
+            <p>Un sistema de IA puede simular una conversación empática, pero no siente empatía. Comprender esta distinción es fundamental para el psicólogo, especialmente al evaluar aplicaciones de "salud mental" basadas en IA.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- APLICACIONES EN PSICOLOGÍA -->
+<section id="aplicaciones">
+  <div class="tarjeta borde-magenta">
+    <div class="seccion-titulo"><span class="num">2</span> La IA en el Campo de la Psicología</div>
+    <p class="seccion-desc">Aplicaciones concretas de la inteligencia artificial en las distintas áreas del ejercicio profesional psicológico.</p>
+
+    <p>La inteligencia artificial está transformando la manera en que se investiga, se enseña y se ejerce la psicología. A continuación se presentan aplicaciones organizadas por campo de actividad profesional, junto con sus oportunidades y precauciones.</p>
+
+    <div class="pestanas">
+      <div class="pest-nav">
+        <button class="pest-btn activo" onclick="mostrarPestana(this,'app-clinica')">Clínica</button>
+        <button class="pest-btn" onclick="mostrarPestana(this,'app-educativa')">Educativa</button>
+        <button class="pest-btn" onclick="mostrarPestana(this,'app-organizacional')">Organizacional</button>
+        <button class="pest-btn" onclick="mostrarPestana(this,'app-investigacion')">Investigación</button>
+      </div>
+
+      <div id="app-clinica" class="pest-panel visible">
+        <div class="uso-card">
+          <div class="uso-icon magenta">Cl</div>
+          <div>
+            <div class="uso-nombre">Apoyo en psicología clínica</div>
+            <p class="uso-desc">Herramientas de IA se utilizan como apoyo en el cribado inicial de síntomas, el seguimiento de estados de ánimo mediante aplicaciones, la transcripción de sesiones (con consentimiento) y la organización de notas clínicas. <strong>Nunca sustituyen el juicio clínico ni la relación terapéutica.</strong></p>
+          </div>
+        </div>
+        <div class="caja caja-etica">
+          <span class="caja-titulo">Precaucion fundamental</span>
+          <p>Las aplicaciones de "terapia con IA" o chatbots de acompañamiento emocional no son terapia psicológica. Pueden ofrecer apoyo limitado, pero presentan riesgos en situaciones de crisis y carecen de la responsabilidad profesional y ética que implica el ejercicio clínico.</p>
+        </div>
+      </div>
+
+      <div id="app-educativa" class="pest-panel">
+        <div class="uso-card">
+          <div class="uso-icon violeta">Ed</div>
+          <div>
+            <div class="uso-nombre">Psicología educativa</div>
+            <p class="uso-desc">La IA permite diseñar materiales didácticos personalizados, generar ejemplos y analogías para explicar conceptos, y crear sistemas de aprendizaje adaptativo que ajustan el contenido al ritmo de cada estudiante. El psicólogo educativo puede emplearla para diseñar intervenciones y evaluar necesidades de aprendizaje.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="app-organizacional" class="pest-panel">
+        <div class="uso-card">
+          <div class="uso-icon ambar">Or</div>
+          <div>
+            <div class="uso-nombre">Psicología organizacional</div>
+            <p class="uso-desc">Se utiliza en procesos de selección de personal (con importantes debates éticos sobre sesgos algorítmicos), análisis de clima laboral a partir de encuestas, y diseño de programas de bienestar. El psicólogo organizacional debe evaluar críticamente estas herramientas para evitar la discriminación automatizada.</p>
+          </div>
+        </div>
+        <div class="caja caja-alerta">
+          <span class="caja-titulo">Riesgo de sesgo algoritmico</span>
+          <p>Un sistema de IA entrenado con datos históricos de contratación puede perpetuar sesgos de género, edad u origen. El psicólogo tiene la responsabilidad de identificar y cuestionar estos sesgos.</p>
+        </div>
+      </div>
+
+      <div id="app-investigacion" class="pest-panel">
+        <div class="uso-card">
+          <div class="uso-icon indigo">In</div>
+          <div>
+            <div class="uso-nombre">Investigación psicológica</div>
+            <p class="uso-desc">La IA apoya el análisis de grandes volúmenes de datos, la revisión de literatura científica, la identificación de patrones en respuestas, el análisis de texto en estudios cualitativos y la asistencia en la redacción académica. Acelera procesos, pero el diseño, la interpretación y la responsabilidad ética siguen siendo del investigador.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h2>Herramientas de IA útiles para el estudiante de psicología</h2>
+    <div class="tabla-wrap">
+      <table>
+        <thead><tr><th>Categoría</th><th>Uso académico</th><th>Precaución principal</th></tr></thead>
+        <tbody>
+          <tr><td>Asistentes conversacionales</td><td>Explicar conceptos difíciles, generar ejemplos, apoyar la lluvia de ideas</td><td>Verificar siempre la información; pueden generar datos falsos</td></tr>
+          <tr><td>Buscadores con IA y citas</td><td>Investigación académica con fuentes verificables</td><td>Confirmar cada fuente en su origen</td></tr>
+          <tr><td>Correctores y asistentes de escritura</td><td>Mejorar redacción, ortografía y estilo de trabajos propios</td><td>El texto base debe ser de autoría propia</td></tr>
+          <tr><td>Generadores de mapas y resúmenes</td><td>Organizar y sintetizar información de lecturas</td><td>No sustituyen la lectura y comprensión personal</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ÉTICA -->
+<section id="etica">
+  <div class="tarjeta borde-ambar">
+    <div class="seccion-titulo"><span class="num">3</span> Ética y Uso Responsable de la IA en Psicología</div>
+    <p class="seccion-desc">Principios para una integración crítica y responsable de la inteligencia artificial en el trabajo psicológico.</p>
+
+    <p>El uso de IA en psicología plantea dilemas éticos específicos, dado que esta disciplina trabaja con personas, su bienestar y su información más íntima. Los siguientes principios orientan un uso responsable.</p>
+
+    <div class="concepto-grid">
+      <div class="concepto-card">
+        <div class="concepto-titulo">Confidencialidad</div>
+        <p class="concepto-def">Los datos de pacientes nunca deben introducirse en herramientas de IA sin garantías de privacidad y sin consentimiento informado. Muchas plataformas almacenan y reutilizan la información ingresada.</p>
+      </div>
+      <div class="concepto-card magenta">
+        <div class="concepto-titulo">Responsabilidad profesional</div>
+        <p class="concepto-def">La IA es una herramienta de apoyo; la responsabilidad sobre las decisiones, diagnósticos e interpretaciones recae siempre en el profesional, no en el sistema.</p>
+      </div>
+      <div class="concepto-card ambar">
+        <div class="concepto-titulo">Transparencia</div>
+        <p class="concepto-def">El uso de IA en contextos académicos y profesionales debe declararse con honestidad, conforme a las políticas institucionales y los principios de integridad académica.</p>
+      </div>
+      <div class="concepto-card">
+        <div class="concepto-titulo">No maleficencia</div>
+        <p class="concepto-def">Antes de recomendar o emplear una herramienta de IA con personas, debe evaluarse si puede causar daño, especialmente en poblaciones vulnerables.</p>
+      </div>
+    </div>
+
+    <div class="caja caja-etica mt-2">
+      <span class="caja-titulo">Pregunta etica central</span>
+      <p>Cada vez que un psicólogo en formación utilice una herramienta de IA, debe preguntarse: ¿esta tecnología fortalece mi criterio profesional y mi aprendizaje, o lo sustituye? ¿Protege la dignidad y la privacidad de las personas involucradas? La respuesta a estas preguntas define la diferencia entre un uso responsable y uno problemático.</p>
+    </div>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Recursos formales de consulta</span>
+      <ul class="lista">
+        <li>Código Ético del Psicólogo (Sociedad Mexicana de Psicología) &mdash; principios deontológicos aplicables al uso de tecnología.</li>
+        <li>Normas APA, 7ma edición &mdash; lineamientos sobre la citación y la declaración del uso de herramientas de IA en trabajos académicos.</li>
+        <li>Reglamento académico vigente de la Universidad de Especialidades UNE respecto al uso de inteligencia artificial generativa.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ACTIVIDAD 1 — FORO -->
+<section id="actividad-1">
+  <div class="tarjeta borde-magenta">
+    <div class="actividad-header">
+      <div class="act-num">01</div>
+      <div>
+        <span class="act-tipo">Actividad 1 &mdash; Entrega en Google Classroom</span>
+        <div class="act-nombre">Foro de Mediación: Convivir con las Inteligencias Artificiales</div>
+      </div>
+    </div>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Datos generales</span>
+      <p>
+        <span class="chip chip-violeta">Tipo: Foro de discusión</span>&nbsp;
+        <span class="chip chip-magenta">Entrega: Google Classroom</span>&nbsp;
+        <span class="chip chip-verde">Modalidad: Colaborativa</span>
+      </p>
+      <p style="margin-top:0.5rem;margin-bottom:0;"><strong>Propósito:</strong> Promover la reflexión crítica sobre el papel de la IA en la vida cotidiana y profesional, y construir colectivamente criterios sobre su uso responsable en psicología.</p>
+    </div>
+
+    <h3>Pregunta detonadora</h3>
+    <div class="pregunta-detonadora">
+      <span class="pd-etiq">Pregunta central del foro</span>
+      <p>Si una aplicación de inteligencia artificial puede conversar con una persona en crisis emocional las 24 horas del día, sin juzgar y de forma gratuita, ¿representa esto un avance que democratiza el apoyo psicológico, o un riesgo que podría sustituir peligrosamente la relación humana y el juicio profesional? ¿Cuál debería ser, en tu opinión, el papel del psicólogo frente a estas tecnologías?</p>
+    </div>
+
+    <h3>Instrucciones paso a paso</h3>
+    <div class="pasos-lista">
+      <div class="paso"><p><strong>Revisa los contenidos</strong> de las secciones "¿Qué son las IAs?", "La IA en el campo de la psicología" y "Ética" antes de participar.</p></div>
+      <div class="paso"><p><strong>Elabora tu aportación inicial</strong> (mínimo 250 palabras): expón tu postura frente a la pregunta detonadora, fundaméntala con al menos dos argumentos y relaciónala con un concepto revisado en la guía (por ejemplo, las limitaciones de la IA o un principio ético).</p></div>
+      <div class="paso"><p><strong>Publica tu aportación</strong> en el foro de Google Classroom dentro del plazo establecido por tu docente.</p></div>
+      <div class="paso"><p><strong>Lee las aportaciones</strong> de al menos dos compañeros, identificando coincidencias y diferencias con tu postura.</p></div>
+      <div class="paso"><p><strong>Responde a cada compañero</strong> seleccionado (mínimo 100 palabras por respuesta), aportando una perspectiva nueva, un matiz o una pregunta que profundice el debate. No se aceptan respuestas de mero acuerdo.</p></div>
+      <div class="paso"><p><strong>Cierre (opcional):</strong> tras leer al menos cinco participaciones, redacta una síntesis breve (100-150 palabras) de los criterios comunes que surgieron en el grupo.</p></div>
+    </div>
+
+    <h3>Ejemplo de aportación inicial</h3>
+    <div class="caja caja-info">
+      <span class="caja-titulo">Ejemplo orientativo (no copiar)</span>
+      <p>"Considero que las aplicaciones de IA para acompañamiento emocional representan tanto una oportunidad como un riesgo. Por un lado, democratizan el acceso a un primer nivel de apoyo para personas que de otro modo no lo tendrían. Por otro lado, como vimos en la guía, estos sistemas no sienten empatía genuina ni asumen responsabilidad profesional, lo que resulta especialmente delicado en situaciones de crisis. En mi opinión, el papel del psicólogo no debería ser competir con estas herramientas, sino..."</p>
+    </div>
+
+    <h3>Rúbrica de evaluación</h3>
+    <div class="rubrica">
+      <div class="rubrica-item rubrica-header"><span>Criterio</span><span class="puntos">Puntos</span></div>
+      <div class="rubrica-item"><span>Aportación inicial: postura clara, fundamentada y vinculada a conceptos de la guía</span><span class="puntos">25 pts</span></div>
+      <div class="rubrica-item"><span>Extensión y desarrollo argumental (mín. 250 palabras)</span><span class="puntos">15 pts</span></div>
+      <div class="rubrica-item"><span>Calidad de las respuestas a compañeros: nueva perspectiva o matiz</span><span class="puntos">30 pts</span></div>
+      <div class="rubrica-item"><span>Uso correcto de los conceptos del tema</span><span class="puntos">15 pts</span></div>
+      <div class="rubrica-item"><span>Respeto en el intercambio, claridad y ortografía</span><span class="puntos">15 pts</span></div>
+      <div class="rubrica-item rubrica-header"><span><strong>Total</strong></span><span class="puntos">100 pts</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ACTIVIDAD 2 — APLICACIÓN SIGNIFICATIVA -->
+<section id="actividad-2">
+  <div class="tarjeta borde-violeta">
+    <div class="actividad-header">
+      <div class="act-num">02</div>
+      <div>
+        <span class="act-tipo">Actividad 2 &mdash; Entrega en Google Classroom</span>
+        <div class="act-nombre">Laboratorio de IA: Explora, Evalúa y Aplica</div>
+      </div>
+    </div>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Datos generales</span>
+      <p>
+        <span class="chip chip-violeta">Tipo: Trabajo individual</span>&nbsp;
+        <span class="chip chip-magenta">Entrega: Documento PDF o Google Docs</span>&nbsp;
+        <span class="chip chip-verde">Aprendizaje: Significativo y aplicable</span>
+      </p>
+      <p style="margin-top:0.5rem;margin-bottom:0;"><strong>Propósito:</strong> Que el estudiante experimente directamente con una herramienta de IA, evalúe críticamente su utilidad y limitaciones, y diseñe una aplicación concreta para una de sus materias universitarias actuales.</p>
+    </div>
+
+    <h3>Descripción de la actividad</h3>
+    <p>Realizarás un <strong>ejercicio práctico documentado</strong> en el que utilizarás una herramienta de IA para apoyar una tarea académica real de alguna materia que estés cursando, evaluando de manera crítica su desempeño y reflexionando sobre los límites de su uso.</p>
+
+    <h3>Instrucciones paso a paso</h3>
+    <div class="pasos-lista">
+      <div class="paso"><p><strong>Selecciona una tarea académica real</strong> de alguna materia que estés cursando (por ejemplo: comprender un concepto difícil de Neuropsicología, generar ejemplos para un tema de Psicología del Desarrollo, o estructurar el esquema de un ensayo).</p></div>
+      <div class="paso"><p><strong>Elige una herramienta de IA</strong> apropiada para esa tarea (un asistente conversacional, un buscador con citas, un generador de resúmenes) y accede a ella con una cuenta gratuita.</p></div>
+      <div class="paso"><p><strong>Formula tus consultas</strong> de manera clara y específica. Documenta cada consulta que realices y la respuesta obtenida (puedes incluir capturas de pantalla).</p></div>
+      <div class="paso"><p><strong>Verifica críticamente los resultados.</strong> Identifica al menos un dato o afirmación que debiste comprobar en una fuente externa. Anota si la herramienta cometió algún error, imprecisión o "alucinación".</p></div>
+      <div class="paso"><p><strong>Evalúa la herramienta</strong> según tres criterios: utilidad para tu tarea, precisión de la información, y límites o riesgos detectados.</p></div>
+      <div class="paso"><p><strong>Diseña una aplicación concreta:</strong> describe cómo integrarías esta herramienta de forma ética y útil en tu rutina de estudio, especificando qué harías tú y qué delegarías en la IA.</p></div>
+      <div class="paso"><p><strong>Entrega un documento</strong> que incluya: la tarea elegida, la herramienta utilizada, el registro de consultas y respuestas, tu evaluación crítica según los tres criterios, y tu propuesta de aplicación. Súbelo a Google Classroom.</p></div>
+    </div>
+
+    <h3>Ejemplo orientativo</h3>
+    <div class="caja caja-logro">
+      <span class="caja-titulo">Ejemplo de tarea documentada</span>
+      <p>Un estudiante usa un asistente conversacional para que le explique la diferencia entre refuerzo negativo y castigo (un concepto que suele confundirse). Documenta la consulta, verifica la explicación en su libro de texto de Psicología del Aprendizaje, detecta que la IA dio un ejemplo impreciso, lo corrige, y concluye que la herramienta es útil para obtener explicaciones iniciales y ejemplos, pero que siempre debe contrastar con fuentes académicas formales.</p>
+    </div>
+
+    <h3>Rúbrica de evaluación</h3>
+    <div class="rubrica">
+      <div class="rubrica-item rubrica-header"><span>Criterio</span><span class="puntos">Puntos</span></div>
+      <div class="rubrica-item"><span>Pertinencia de la tarea y la herramienta seleccionadas</span><span class="puntos">15 pts</span></div>
+      <div class="rubrica-item"><span>Registro completo y claro de consultas y respuestas</span><span class="puntos">20 pts</span></div>
+      <div class="rubrica-item"><span>Verificación crítica: identificación de errores o necesidad de comprobación externa</span><span class="puntos">25 pts</span></div>
+      <div class="rubrica-item"><span>Evaluación según los tres criterios (utilidad, precisión, límites)</span><span class="puntos">20 pts</span></div>
+      <div class="rubrica-item"><span>Propuesta de aplicación ética y concreta</span><span class="puntos">20 pts</span></div>
+      <div class="rubrica-item rubrica-header"><span><strong>Total</strong></span><span class="puntos">100 pts</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ACTIVIDAD 3 — QUIZ -->
+<section id="actividad-3">
+  <div class="tarjeta borde-magenta">
+    <div class="actividad-header">
+      <div class="act-num">03</div>
+      <div>
+        <span class="act-tipo">Actividad 3 &mdash; Entrega en Google Classroom</span>
+        <div class="act-nombre">Quiz Interactivo: La Vida con IAs</div>
+      </div>
+    </div>
+
+    <div class="caja caja-info">
+      <span class="caja-titulo">Instrucciones</span>
+      <p>Responde las 5 preguntas seleccionando la opción correcta. Al finalizar, haz clic en "Revisar respuestas" para obtener tu puntuación y retroalimentación. <strong>Toma una captura de pantalla de tu resultado y súbela a la tarea correspondiente en Google Classroom.</strong> Se acepta un máximo de dos intentos.</p>
+    </div>
+
+    <div id="quiz">
+
+      <div class="quiz-pregunta" id="q1">
+        <div class="quiz-enun">¿Cuál de las siguientes afirmaciones describe correctamente el estado actual de la inteligencia artificial?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q1" value="a"> Ya existe la IA general (AGI), capaz de razonar como un ser humano en cualquier dominio.</label>
+          <label class="quiz-opcion"><input type="radio" name="q1" value="b"> La IA actual es "estrecha": está diseñada para tareas específicas, aunque algunas puedan generar contenido nuevo.</label>
+          <label class="quiz-opcion"><input type="radio" name="q1" value="c"> La IA comprende y siente las emociones humanas de la misma forma que una persona.</label>
+          <label class="quiz-opcion"><input type="radio" name="q1" value="d"> Toda la IA actual funciona sin necesidad de datos de entrenamiento.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb1-bien">Correcto. La IA actual es estrecha o débil: está diseñada para tareas específicas. La IA general aún no existe.</div>
+        <div class="quiz-feedback feedback-mal" id="fb1-mal">Incorrecto. La respuesta correcta es la segunda opción. La IA actual es "estrecha": resuelve tareas específicas; la IA general todavía no existe.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q2">
+        <div class="quiz-enun">En el contexto de las IAs generativas, ¿qué es una "alucinación"?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q2" value="a"> Una experiencia subjetiva del sistema, similar a la percepción humana.</label>
+          <label class="quiz-opcion"><input type="radio" name="q2" value="b"> Un error de conexión a Internet de la herramienta.</label>
+          <label class="quiz-opcion"><input type="radio" name="q2" value="c"> La producción de información falsa o inventada con apariencia de veracidad.</label>
+          <label class="quiz-opcion"><input type="radio" name="q2" value="d"> Una función avanzada que mejora la precisión de las respuestas.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb2-bien">Correcto. Una alucinación es la generación de información falsa que aparenta ser verdadera, por lo que siempre debe verificarse la información que produce la IA.</div>
+        <div class="quiz-feedback feedback-mal" id="fb2-mal">Incorrecto. La respuesta correcta es la tercera opción. Una "alucinación" es información falsa generada con apariencia de veracidad.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q3">
+        <div class="quiz-enun">Un psicólogo organizacional planea usar un sistema de IA para preseleccionar candidatos en un proceso de contratación. ¿Cuál es la precaución ética más relevante que debe considerar?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q3" value="a"> Que el sistema funcione únicamente en horario laboral.</label>
+          <label class="quiz-opcion"><input type="radio" name="q3" value="b"> Que el sistema pueda reproducir y amplificar sesgos presentes en sus datos de entrenamiento, generando discriminación automatizada.</label>
+          <label class="quiz-opcion"><input type="radio" name="q3" value="c"> Que el sistema sea de una marca reconocida.</label>
+          <label class="quiz-opcion"><input type="radio" name="q3" value="d"> Que el sistema procese los datos lo más rápido posible.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb3-bien">Correcto. El sesgo algorítmico es un riesgo central: la IA puede perpetuar discriminaciones presentes en los datos históricos, y el psicólogo debe identificarlo y cuestionarlo.</div>
+        <div class="quiz-feedback feedback-mal" id="fb3-mal">Incorrecto. La respuesta correcta es la segunda opción. El riesgo ético principal es el sesgo algorítmico, que puede generar discriminación automatizada.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q4">
+        <div class="quiz-enun">Respecto al uso de aplicaciones de "terapia con IA" o chatbots de acompañamiento emocional, ¿cuál es la postura correcta según esta guía?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q4" value="a"> Constituyen terapia psicológica completa y pueden sustituir al profesional.</label>
+          <label class="quiz-opcion"><input type="radio" name="q4" value="b"> Pueden ofrecer apoyo limitado, pero no son terapia y presentan riesgos, especialmente en situaciones de crisis.</label>
+          <label class="quiz-opcion"><input type="radio" name="q4" value="c"> Son siempre peligrosas y nunca deben utilizarse bajo ninguna circunstancia.</label>
+          <label class="quiz-opcion"><input type="radio" name="q4" value="d"> Sienten empatía genuina, igual que un terapeuta humano.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb4-bien">Correcto. Estas aplicaciones pueden brindar apoyo limitado, pero no son terapia, no sienten empatía genuina y presentan riesgos importantes en situaciones de crisis.</div>
+        <div class="quiz-feedback feedback-mal" id="fb4-mal">Incorrecto. La respuesta correcta es la segunda opción. Pueden ofrecer apoyo limitado, pero no constituyen terapia y entrañan riesgos, sobre todo en crisis.</div>
+      </div>
+
+      <div class="quiz-pregunta" id="q5">
+        <div class="quiz-enun">Un estudiante de psicología quiere usar un asistente de IA para preparar un ensayo. ¿Cuál es el uso éticamente responsable según los principios de esta guía?</div>
+        <div class="quiz-opciones">
+          <label class="quiz-opcion"><input type="radio" name="q5" value="a"> Pedir a la IA que escriba el ensayo completo y entregarlo como propio.</label>
+          <label class="quiz-opcion"><input type="radio" name="q5" value="b"> Usar la IA para explicar conceptos y generar ideas, verificar la información en fuentes formales, y elaborar el ensayo con criterio y autoría propia.</label>
+          <label class="quiz-opcion"><input type="radio" name="q5" value="c"> Introducir datos confidenciales de personas para obtener mejores resultados.</label>
+          <label class="quiz-opcion"><input type="radio" name="q5" value="d"> Aceptar toda la información de la IA sin verificarla, ya que siempre es precisa.</label>
+        </div>
+        <div class="quiz-feedback feedback-bien" id="fb5-bien">Correcto. El uso responsable emplea la IA como apoyo para comprender y generar ideas, verifica siempre la información en fuentes formales y conserva la autoría y el criterio del estudiante.</div>
+        <div class="quiz-feedback feedback-mal" id="fb5-mal">Incorrecto. La respuesta correcta es la segunda opción. El uso responsable utiliza la IA como apoyo, verifica la información y conserva la autoría y el pensamiento crítico del estudiante.</div>
+      </div>
+
+    </div>
+
+    <div class="quiz-controles">
+      <button class="btn btn-primario" onclick="revisarQuiz()">Revisar respuestas y ver puntuación</button>
+      <button class="btn btn-magenta" onclick="reiniciarQuiz()" style="margin-left:0.8rem;">Reiniciar quiz</button>
+    </div>
+
+    <div id="resultado-quiz">
+      <div class="resultado-puntaje" id="puntaje-texto"></div>
+      <div class="resultado-msg" id="resultado-msg-texto"></div>
+      <p id="resultado-detalle" style="margin-top:0.8rem;font-size:0.88rem;color:var(--gris-texto);"></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- REFLEXIÓN -->
+<section id="reflexion">
+  <div class="tarjeta borde-ambar">
+    <div class="seccion-titulo"><span class="num">REF</span> Reflexión y Aplicación</div>
+    <p class="seccion-desc">Planificación de la incorporación de los aprendizajes a la vida académica y profesional.</p>
+
+    <p>La presencia de las inteligencias artificiales en la vida cotidiana y profesional seguirá creciendo. El propósito de esta sección final es que articules un plan concreto y personal sobre cómo convivir e integrar estas tecnologías de manera crítica y ética en tu trayectoria como estudiante y futuro profesional de la psicología.</p>
+
+    <h3>Planificador de incorporación del aprendizaje</h3>
+    <p>Completa los campos y guarda tu reflexión. Puedes copiar el texto generado y pegarlo en la tarea de reflexión en Google Classroom.</p>
+
+    <div class="plan-grid">
+      <div class="plan-area">
+        <label>¿En qué tareas académicas concretas integrarás herramientas de IA, y con qué precauciones?</label>
+        <textarea rows="4" id="plan-academico" placeholder="Por ejemplo: usaré un asistente conversacional para comprender conceptos difíciles, verificando siempre en mis libros de texto..."></textarea>
+      </div>
+      <div class="plan-area">
+        <label>¿Qué uso de la IA reconoces como inadecuado y te comprometes a evitar?</label>
+        <textarea rows="4" id="plan-evitar" placeholder="Por ejemplo: nunca entregaré como propio un texto generado completamente por IA, ni introduciré datos confidenciales..."></textarea>
+      </div>
+      <div class="plan-area">
+        <label>En tu futuro campo profesional de interés, ¿cómo imaginas que la IA podría apoyar tu trabajo de forma ética?</label>
+        <textarea rows="4" id="plan-profesional" placeholder="Por ejemplo: en psicología educativa, para diseñar materiales personalizados, siempre supervisados por mi criterio profesional..."></textarea>
+      </div>
+      <div class="plan-area">
+        <label>¿Qué principio ético consideras más importante al usar IA en el trabajo con personas, y por qué?</label>
+        <textarea rows="4" id="plan-etica" placeholder="Por ejemplo: la confidencialidad, porque la información de las personas es lo más sensible que maneja un psicólogo..."></textarea>
+      </div>
+    </div>
+
+    <div class="quiz-controles mt-2">
+      <button class="btn btn-primario" onclick="guardarPlan()">Guardar mi planificación</button>
+      <button class="btn btn-magenta" onclick="copiarPlan()" style="margin-left:0.8rem;">Copiar texto para Classroom</button>
+    </div>
+    <div id="plan-guardado">Tu planificación ha sido guardada. Puedes copiarla y pegarla en la tarea de reflexión de Google Classroom.</div>
+
+    <hr class="divider">
+
+    <h3>Síntesis conceptual del tema</h3>
+    <div class="concepto-grid">
+      <div class="concepto-card">
+        <div class="concepto-titulo">IA como herramienta</div>
+        <p class="concepto-def">La inteligencia artificial es un apoyo poderoso, no un sustituto del pensamiento, la empatía ni la responsabilidad del psicólogo.</p>
+      </div>
+      <div class="concepto-card magenta">
+        <div class="concepto-titulo">Verificacion constante</div>
+        <p class="concepto-def">Las IAs pueden generar información falsa; la verificación crítica en fuentes formales es siempre indispensable.</p>
+      </div>
+      <div class="concepto-card ambar">
+        <div class="concepto-titulo">Etica primero</div>
+        <p class="concepto-def">La confidencialidad, la responsabilidad profesional y la no maleficencia rigen cualquier uso de IA en el trabajo con personas.</p>
+      </div>
+      <div class="concepto-card">
+        <div class="concepto-titulo">Autonomia critica</div>
+        <p class="concepto-def">Convivir con las IAs exige criterio propio: aprovechar sus ventajas sin renunciar a la autonomía intelectual ni al juicio profesional.</p>
+      </div>
+    </div>
+
+    <div class="caja caja-logro mt-2">
+      <span class="caja-titulo">Cierre de la guía</span>
+      <p>Has concluido el estudio del tema "La vida con IAs" y su aplicación en el campo de la psicología. La inteligencia artificial será una compañera constante en tu vida académica y profesional; tu tarea es aprender a convivir con ella de forma crítica, ética y consciente, de manera que potencie tu formación sin sustituir aquello que te hace un profesional de la psicología: el criterio, la empatía y la responsabilidad hacia las personas.</p>
+      <p style="margin-bottom:0;">Recuerda entregar las tres actividades en Google Classroom dentro de los plazos establecidos por tu docente: el foro de mediación (Actividad 1), el laboratorio de IA (Actividad 2) y la captura del quiz (Actividad 3).</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-linea"><strong>Universidad de Especialidades UNE</strong></div>
+  <div class="footer-linea">Licenciatura en Psicología &nbsp;|&nbsp; Tecnologías de la Información Aplicadas a la Psicología</div>
+  <div class="footer-linea">La Vida con IAs: Inteligencia Artificial en el Campo de la Psicología &mdash; Guía de aprendizaje interactiva</div>
+  <div class="footer-linea" style="margin-top:0.8rem;font-size:0.75rem;">Diseñada con metodología constructivista, pedagogía activa y Aprendizaje Basado en Problemas (ABP)</div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    document.getElementById('progreso-barra').style.width = pct + '%';
+  });
+
+  function marcarActivo(el) {
+    document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('activo'));
+    el.classList.add('activo');
+  }
+
+  function toggleAcord(btn) {
+    const body = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('abierto');
+    const parent = btn.closest('.acordeon');
+    parent.querySelectorAll('.acord-btn.abierto').forEach(b => {
+      b.classList.remove('abierto');
+      b.nextElementSibling.classList.remove('visible');
+    });
+    if (!isOpen) { btn.classList.add('abierto'); body.classList.add('visible'); }
+  }
+
+  function mostrarPestana(btn, idPanel) {
+    const contenedor = btn.closest('.pestanas');
+    contenedor.querySelectorAll('.pest-btn').forEach(b => b.classList.remove('activo'));
+    contenedor.querySelectorAll('.pest-panel').forEach(p => p.classList.remove('visible'));
+    btn.classList.add('activo');
+    document.getElementById(idPanel).classList.add('visible');
+  }
+
+  const respuestas = { q1: 'b', q2: 'c', q3: 'b', q4: 'b', q5: 'b' };
+
+  function revisarQuiz() {
+    let correctas = 0;
+    for (const [num, correcta] of Object.entries(respuestas)) {
+      const sel = document.querySelector(`input[name="${num}"]:checked`);
+      const qDiv = document.getElementById(num);
+      const fbBien = document.getElementById('fb' + num.replace('q','') + '-bien');
+      const fbMal  = document.getElementById('fb' + num.replace('q','') + '-mal');
+      fbBien.style.display = 'none'; fbMal.style.display = 'none';
+      qDiv.classList.remove('correcta', 'incorrecta');
+      if (!sel) { qDiv.classList.add('incorrecta'); fbMal.style.display = 'block'; continue; }
+      if (sel.value === correcta) { correctas++; qDiv.classList.add('correcta'); fbBien.style.display = 'block'; }
+      else { qDiv.classList.add('incorrecta'); fbMal.style.display = 'block'; }
+    }
+    const pct = (correctas / 5) * 100;
+    const divRes = document.getElementById('resultado-quiz');
+    const puntajeEl = document.getElementById('puntaje-texto');
+    const msgEl = document.getElementById('resultado-msg-texto');
+    const detEl = document.getElementById('resultado-detalle');
+    divRes.classList.remove('alto','medio','bajo');
+    divRes.style.display = 'block';
+    puntajeEl.textContent = correctas + ' / 5';
+    detEl.textContent = 'Porcentaje de aciertos: ' + pct + '%. Recuerda tomar una captura de pantalla de este resultado para subirla a Google Classroom.';
+    if (pct >= 80) { divRes.classList.add('alto'); msgEl.textContent = 'Excelente desempeño. Demuestras una comprensión sólida del tema.'; }
+    else if (pct >= 60) { divRes.classList.add('medio'); msgEl.textContent = 'Desempeño aceptable. Revisa las preguntas incorrectas antes de tu segundo intento.'; }
+    else { divRes.classList.add('bajo'); msgEl.textContent = 'Es necesario reforzar los contenidos. Revisa las secciones de la guía y vuelve a intentarlo.'; }
+    divRes.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function reiniciarQuiz() {
+    document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+    document.querySelectorAll('.quiz-pregunta').forEach(q => q.classList.remove('correcta','incorrecta'));
+    document.querySelectorAll('.quiz-feedback').forEach(f => f.style.display = 'none');
+    const divRes = document.getElementById('resultado-quiz');
+    divRes.style.display = 'none'; divRes.classList.remove('alto','medio','bajo');
+  }
+
+  function guardarPlan() {
+    const campos = ['plan-academico','plan-evitar','plan-profesional','plan-etica'];
+    const lleno = campos.some(id => document.getElementById(id).value.trim() !== '');
+    const aviso = document.getElementById('plan-guardado');
+    if (lleno) { aviso.style.display = 'block'; setTimeout(() => aviso.style.display = 'none', 5000); }
+    else { alert('Por favor, completa al menos uno de los campos del planificador antes de guardar.'); }
+  }
+
+  function copiarPlan() {
+    const etiquetas = ['Integración en tareas académicas','Uso inadecuado que evitaré','Aplicación profesional ética','Principio ético prioritario'];
+    const ids = ['plan-academico','plan-evitar','plan-profesional','plan-etica'];
+    let texto = 'PLANIFICACIÓN DE INCORPORACIÓN DEL APRENDIZAJE\nLa Vida con IAs — Tecnologías de la Información Aplicadas a la Psicología\n\n';
+    ids.forEach((id, i) => { const val = document.getElementById(id).value.trim(); if (val) texto += etiquetas[i] + ':\n' + val + '\n\n'; });
+    if (texto.length < 110) { alert('Por favor completa al menos un campo antes de copiar.'); return; }
+    navigator.clipboard.writeText(texto)
+      .then(() => alert('Texto copiado al portapapeles. Pégalo en Google Classroom.'))
+      .catch(() => alert('No se pudo copiar automáticamente. Selecciona el texto manualmente.'));
+  }
+</script>
+</body>
+</html>
