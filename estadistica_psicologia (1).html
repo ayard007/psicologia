@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estadística para Psicología · Guía interactiva 10 horas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,600&family=JetBrains+Mono:wght@400;600;700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1530;
+    --ink-soft:#3d3354;
+    --paper:#f4ead5;
+    --paper-warm:#ebdfc4;
+    --accent:#e85d3c;
+    --accent-deep:#b8421f;
+    --grid:#217346;
+    --grid-dark:#0e5c32;
+    --highlight:#f5c518;
+    --violet:#6a3d9a;
+    --violet-deep:#4a2670;
+    --violet-soft:#b08fd0;
+    --teal:#0e7c7b;
+    --cell-line:rgba(26,21,48,0.12);
+    --shadow:0 2px 0 var(--ink), 6px 8px 0 rgba(26,21,48,0.15);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter Tight', sans-serif;
+    background:var(--paper); color:var(--ink); line-height:1.65;
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(106,61,154,0.05) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(14,124,123,0.04) 0%, transparent 40%);
+  }
+  h1,h2,h3,h4{font-family:'Fraunces', serif; font-weight:800; letter-spacing:-0.01em; color:var(--ink)}
+  code, .mono{font-family:'JetBrains Mono', monospace}
+  header.hero{
+    border-bottom:3px solid var(--ink); background:var(--paper-warm);
+    padding:3rem 2rem 2.5rem; position:relative; overflow:hidden;
+  }
+  header.hero::before{
+    content:""; position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--cell-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--cell-line) 1px, transparent 1px);
+    background-size:48px 28px; opacity:0.55; pointer-events:none;
+  }
+  .hero-inner{max-width:1100px; margin:0 auto; position:relative; z-index:1}
+  .pill{
+    display:inline-block; background:var(--violet); color:var(--paper);
+    padding:0.3rem 0.9rem; font-size:0.78rem; font-weight:600;
+    letter-spacing:0.08em; text-transform:uppercase; margin-bottom:1rem;
+  }
+  h1.title{font-size:clamp(2.2rem, 5.5vw, 4rem); line-height:1.05; max-width:22ch}
+  h1.title em{font-style:italic; color:var(--violet-deep); font-weight:600}
+  .subtitle{margin-top:1rem; font-size:1.1rem; max-width:62ch; color:var(--ink-soft)}
+  .hero-meta{
+    display:flex; flex-wrap:wrap; gap:1.5rem 2.5rem;
+    margin-top:1.8rem; padding-top:1.5rem;
+    border-top:1px dashed var(--ink); font-size:0.9rem;
+  }
+  .hero-meta div{display:flex; flex-direction:column; gap:0.2rem}
+  .hero-meta span.label{font-weight:700; text-transform:uppercase; font-size:0.7rem; letter-spacing:0.1em; color:var(--violet-deep)}
+  .progress-wrap{
+    position:sticky; top:0; z-index:100;
+    background:var(--paper); border-bottom:2px solid var(--ink);
+    padding:0.8rem 2rem;
+  }
+  .progress-inner{max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:1rem; flex-wrap:wrap}
+  .progress-label{font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em}
+  .progress-bar{
+    flex:1; min-width:180px; height:14px;
+    background:var(--paper-warm); border:1.5px solid var(--ink); overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; width:0%;
+    background:linear-gradient(90deg, var(--violet) 0%, var(--teal) 100%);
+    transition:width 0.4s ease;
+  }
+  .progress-text{font-size:0.82rem; font-weight:700; min-width:75px; text-align:right; color:var(--violet-deep)}
+  main{max-width:1100px; margin:0 auto; padding:3rem 2rem}
+  .metodologia{
+    background:white; border:2px solid var(--ink); box-shadow:var(--shadow);
+    padding:1.8rem; margin-bottom:3rem;
+  }
+  .metodologia h3{font-size:1.3rem; margin-bottom:1rem; display:flex; align-items:center; gap:0.6rem}
+  .metodologia h3::before{
+    content:""; width:14px; height:14px; background:var(--violet);
+    display:inline-block; transform:rotate(45deg);
+  }
+  .abp-banner{
+    background:linear-gradient(135deg, var(--teal), var(--violet));
+    color:white; padding:1.2rem 1.5rem;
+    border-radius:6px; margin-top:1rem;
+    border:2px solid var(--ink);
+  }
+  .abp-banner h4{color:white; font-size:1.1rem; margin-bottom:0.4rem}
+  .abp-banner p{font-size:0.92rem; opacity:0.95}
+  .ciclo-pedagogico{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+    gap:1rem; margin-top:1rem;
+  }
+  .ciclo-item{
+    background:var(--paper-warm); border:1.5px solid var(--ink);
+    padding:1rem; text-align:center; border-radius:4px;
+  }
+  .ciclo-item .num{
+    background:var(--accent); color:var(--paper);
+    width:30px; height:30px; border:2px solid var(--ink); border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:800; margin-bottom:0.4rem;
+  }
+  .ciclo-item strong{display:block; font-size:0.92rem; margin-bottom:0.3rem}
+  .ciclo-item small{font-size:0.78rem; color:var(--ink-soft); line-height:1.3; display:block}
+  .intro-grid{display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-bottom:3rem}
+  @media (max-width:800px){.intro-grid{grid-template-columns:1fr}}
+  .intro-card{background:white; border:2px solid var(--ink); padding:1.8rem; box-shadow:var(--shadow)}
+  .intro-card h3{font-size:1.25rem; margin-bottom:0.8rem; display:flex; align-items:center; gap:0.6rem}
+  .intro-card h3::before{content:""; width:14px; height:14px; background:var(--accent); display:inline-block; transform:rotate(45deg)}
+  .intro-card ul{list-style:none}
+  .intro-card ul li{padding:0.45rem 0 0.45rem 1.6rem; position:relative; border-bottom:1px dashed var(--cell-line); font-size:0.95rem}
+  .intro-card ul li::before{content:"→"; position:absolute; left:0; color:var(--violet-deep); font-weight:700}
+  .intro-card ul li:last-child{border-bottom:none}
+  .ai-notice{
+    background:var(--ink); color:var(--paper);
+    padding:2rem 2rem 1.8rem; margin-bottom:3rem;
+    position:relative; border:2px solid var(--ink);
+  }
+  .ai-notice::after{
+    content:"¡RAZONA!"; position:absolute; top:-14px; right:20px;
+    background:var(--highlight); color:var(--ink);
+    padding:0.3rem 0.8rem; font-family:'Fraunces', serif;
+    font-weight:800; font-size:0.85rem;
+    transform:rotate(3deg); border:2px solid var(--ink);
+  }
+  .ai-notice h3{color:var(--paper); margin-bottom:0.8rem; font-size:1.4rem}
+  .ai-notice p{margin-bottom:0.7rem; font-size:0.98rem}
+  .ai-notice p:last-child{margin-bottom:0}
+  .ai-notice strong{color:var(--highlight)}
+  .indice{background:white; border:2px solid var(--ink); padding:1.8rem; margin-bottom:3rem; box-shadow:var(--shadow)}
+  .indice h3{font-size:1.3rem; margin-bottom:1rem}
+  .indice-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:0.8rem}
+  .indice-item{
+    display:flex; gap:0.8rem; align-items:flex-start;
+    padding:0.7rem 0.9rem; border:1.5px solid var(--cell-line);
+    background:var(--paper); text-decoration:none; color:var(--ink);
+    transition:all 0.2s ease;
+  }
+  .indice-item:hover{background:var(--highlight); border-color:var(--ink); transform:translateY(-2px)}
+  .indice-item .n{
+    background:var(--violet); color:var(--paper);
+    width:28px; height:28px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:800; font-size:0.9rem;
+  }
+  .indice-item .t{font-size:0.9rem; line-height:1.3}
+  .indice-item .t strong{display:block; font-size:0.96rem}
+  .indice-item .t small{color:var(--ink-soft); font-size:0.78rem}
+  section.fase{
+    margin-bottom:4rem; border:2px solid var(--ink); background:white;
+    box-shadow:var(--shadow); scroll-margin-top:80px;
+  }
+  .fase-header{
+    background:var(--violet); color:var(--paper);
+    padding:1.5rem 2rem;
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:1rem; border-bottom:2px solid var(--ink);
+  }
+  .fase-num{font-family:'Fraunces', serif; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.15em; opacity:0.85}
+  .fase-header h2{color:var(--paper); font-size:1.8rem; margin-top:0.2rem}
+  .fase-time{
+    background:var(--highlight); color:var(--ink);
+    padding:0.5rem 1rem; font-size:0.85rem; font-weight:700;
+    border:2px solid var(--ink); white-space:nowrap;
+  }
+  .fase-body{padding:2rem}
+  .problema-abp{
+    background:linear-gradient(135deg, #fff4e6, #ffe9d6);
+    border:2px solid var(--accent);
+    padding:1.5rem; margin-bottom:1.8rem;
+    border-radius:6px; position:relative;
+  }
+  .problema-abp::before{
+    content:"PROBLEMA A RESOLVER";
+    position:absolute; top:-12px; left:15px;
+    background:var(--accent); color:white;
+    padding:0.2rem 0.8rem; font-size:0.72rem;
+    font-weight:700; letter-spacing:0.1em;
+  }
+  .problema-abp h3{margin-top:0.3rem; margin-bottom:0.6rem; font-size:1.2rem; color:var(--accent-deep)}
+  .problema-abp p{margin-bottom:0.6rem}
+  .problema-abp p:last-child{margin-bottom:0}
+  .objetivo{
+    background:var(--paper-warm); border-left:4px solid var(--violet);
+    padding:1rem 1.3rem; margin-bottom:1.5rem;
+    font-family:'Fraunces', serif; font-style:italic;
+  }
+  .objetivo strong{
+    font-style:normal; display:block;
+    font-size:0.75rem; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--violet-deep); margin-bottom:0.3rem;
+    font-family:'Inter Tight', sans-serif;
+  }
+  .activacion{
+    background:#fff9e6; border-left:4px solid var(--highlight);
+    padding:1rem 1.3rem; margin-bottom:1.5rem; border-radius:0 4px 4px 0;
+  }
+  .activacion strong.titulo{
+    display:block; font-size:0.75rem; text-transform:uppercase;
+    letter-spacing:0.12em; color:var(--accent-deep); margin-bottom:0.3rem;
+  }
+  .activacion textarea{
+    width:100%; min-height:60px; padding:0.6rem;
+    font-family:'Inter Tight', sans-serif; font-size:0.92rem;
+    border:1.5px solid var(--ink); background:white;
+    margin-top:0.5rem; border-radius:3px; resize:vertical;
+  }
+  .paso{
+    margin-bottom:2rem; padding:1.5rem;
+    border:1.5px solid var(--cell-line); background:var(--paper);
+    border-radius:4px;
+  }
+  .paso-header{
+    display:flex; align-items:center; gap:0.8rem;
+    margin-bottom:0.9rem; padding-bottom:0.7rem;
+    border-bottom:1.5px dashed var(--ink-soft);
+  }
+  .paso-num{
+    background:var(--accent); color:var(--paper);
+    width:36px; height:36px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:800; font-size:1.05rem;
+    border:2px solid var(--ink);
+  }
+  .paso-header h3{font-size:1.15rem}
+  .paso p{margin-bottom:0.7rem}
+  .paso ul, .paso ol{margin:0.6rem 0 0.8rem 1.5rem}
+  .paso ul li, .paso ol li{margin-bottom:0.4rem}
+  .ejemplo{
+    background:#f0e8f8; border:2px solid var(--violet);
+    padding:1.3rem 1.5rem; margin:1.3rem 0;
+    border-radius:4px; position:relative;
+  }
+  .ejemplo::before{
+    content:"CONCEPTO EXPLICADO";
+    position:absolute; top:-11px; left:15px;
+    background:var(--violet); color:var(--paper);
+    padding:0.15rem 0.7rem; font-size:0.72rem;
+    font-weight:700; letter-spacing:0.1em;
+  }
+  .ejemplo h4{font-size:1.05rem; margin-bottom:0.6rem; margin-top:0.3rem}
+  .ejemplo p{margin-bottom:0.6rem}
+  .excel-demo{margin:1rem 0; border:2px solid var(--grid-dark); overflow-x:auto}
+  table.excel{
+    border-collapse:collapse; width:100%;
+    font-family:'JetBrains Mono', monospace; font-size:0.85rem;
+    background:white;
+  }
+  table.excel th, table.excel td{
+    border:1px solid #c5c5c5;
+    padding:0.4rem 0.6rem; text-align:left;
+  }
+  table.excel thead th{
+    background:var(--grid); color:var(--paper);
+    font-family:'Inter Tight', sans-serif; font-weight:600; text-align:center;
+  }
+  table.excel .col-letter, table.excel .row-num{
+    background:#d8d8d8; color:var(--ink);
+    text-align:center; font-weight:700;
+  }
+  table.excel .col-letter{width:50px}
+  table.excel .row-num{width:32px}
+  table.excel td.hl{background:var(--highlight); font-weight:700}
+  table.excel td.hl-g{background:#c8e6c9; font-weight:700}
+  table.excel td.hl-r{background:#ffccbc; font-weight:700}
+  table.excel td.hl-v{background:#e1bee7; font-weight:700}
+  .excel-caption{font-size:0.82rem; color:var(--ink-soft); font-style:italic; margin-top:0.4rem}
+  .formula{
+    background:var(--ink); color:var(--paper);
+    padding:0.85rem 1.1rem;
+    font-family:'JetBrains Mono', monospace; font-size:0.92rem;
+    margin:0.8rem 0; border-left:4px solid var(--violet-soft);
+    overflow-x:auto; white-space:pre-wrap;
+  }
+  .formula .kw{color:var(--highlight); font-weight:700}
+  .formula .arg{color:#c5b3e3}
+  .formula .comment{color:#88a099; font-style:italic; display:block; margin-top:0.4rem; font-size:0.82rem}
+  code.inline{
+    background:var(--paper-warm); padding:0.15rem 0.45rem;
+    border:1px solid var(--cell-line); font-size:0.88em;
+    border-radius:3px; font-family:'JetBrains Mono', monospace;
+  }
+  .reflexion{
+    background:#fff4e6; border:2px dashed var(--accent-deep);
+    padding:1.4rem 1.5rem 1.3rem; margin:1.5rem 0;
+    border-radius:6px; position:relative;
+  }
+  .reflexion::before{
+    content:"REFLEXIÓN · CONSTRUYE TU CONOCIMIENTO";
+    position:absolute; top:-11px; left:15px;
+    background:var(--accent-deep); color:var(--paper);
+    padding:0.15rem 0.7rem; font-size:0.7rem;
+    font-weight:700; letter-spacing:0.1em;
+  }
+  .reflexion p{margin-bottom:0.6rem}
+  .reflexion ol{margin-left:1.4rem; margin-top:0.6rem}
+  .reflexion ol li{margin-bottom:0.5rem}
+  .reflexion textarea{
+    width:100%; min-height:90px; padding:0.7rem;
+    font-family:'Inter Tight', sans-serif; font-size:0.92rem;
+    border:1.5px solid var(--ink); background:white;
+    resize:vertical; margin-top:0.5rem; border-radius:3px;
+  }
+  .reto{
+    background:#e8f5e9; border:2px solid var(--grid);
+    padding:1.3rem 1.5rem; margin:1.3rem 0;
+    border-radius:4px; position:relative;
+  }
+  .reto::before{
+    content:"RETO PRÁCTICO";
+    position:absolute; top:-11px; left:15px;
+    background:var(--grid); color:var(--paper);
+    padding:0.15rem 0.7rem; font-size:0.72rem;
+    font-weight:700; letter-spacing:0.1em;
+  }
+  .reto h4{margin-top:0.3rem; margin-bottom:0.5rem; font-size:1.05rem}
+  .reto p{margin-bottom:0.5rem; font-size:0.95rem}
+  .hipotesis{
+    background:#f3e5f5; border:2px solid var(--violet);
+    padding:1.2rem 1.4rem; margin:1.2rem 0;
+    border-radius:4px; position:relative;
+  }
+  .hipotesis::before{
+    content:"PLANTEA TU HIPÓTESIS";
+    position:absolute; top:-11px; left:15px;
+    background:var(--violet); color:white;
+    padding:0.15rem 0.7rem; font-size:0.72rem;
+    font-weight:700; letter-spacing:0.1em;
+  }
+  .hipotesis p{margin-top:0.4rem; font-size:0.95rem}
+  .hipotesis textarea{
+    width:100%; min-height:60px; padding:0.6rem;
+    font-family:'Inter Tight', sans-serif; font-size:0.92rem;
+    border:1.5px solid var(--ink); background:white;
+    resize:vertical; margin-top:0.4rem; border-radius:3px;
+  }
+  .entregable{
+    background:var(--grid); color:var(--paper);
+    padding:1.4rem 1.5rem 1.3rem; margin:1.5rem 0;
+    border-radius:4px; position:relative;
+  }
+  .entregable::before{
+    content:"ENTREGA";
+    position:absolute; top:-11px; left:15px;
+    background:var(--highlight); color:var(--ink);
+    padding:0.15rem 0.7rem; font-size:0.7rem;
+    font-weight:700; letter-spacing:0.1em;
+    border:1.5px solid var(--ink);
+  }
+  .entregable h4{color:var(--paper); margin-bottom:0.5rem; font-size:1.1rem}
+  .entregable ul{margin-left:1.4rem; margin-top:0.4rem}
+  .entregable ul li{margin-bottom:0.3rem}
+  .check-done{
+    margin-top:1.2rem; padding-top:1rem;
+    border-top:1px dashed var(--ink);
+    display:flex; align-items:center; gap:0.7rem;
+    font-weight:600; font-size:0.95rem;
+    cursor:pointer; user-select:none;
+  }
+  .check-done input[type="checkbox"]{
+    width:22px; height:22px; accent-color:var(--violet); cursor:pointer;
+  }
+  .tip{
+    background:#fff9e6; border-left:4px solid var(--highlight);
+    padding:0.8rem 1.1rem; margin:1rem 0; font-size:0.93rem;
+    border-radius:0 4px 4px 0;
+  }
+  .tip strong{color:var(--violet-deep)}
+  .ruta-clics{
+    background:white; border:1.5px dashed var(--violet);
+    padding:0.9rem 1.2rem; margin:1rem 0;
+    border-radius:4px; font-size:0.93rem;
+  }
+  .ruta-clics strong.titulo{
+    display:block; font-size:0.75rem; text-transform:uppercase;
+    letter-spacing:0.08em; color:var(--violet-deep); margin-bottom:0.4rem;
+  }
+  .ruta-clics .ruta{
+    font-family:'JetBrains Mono', monospace;
+    background:var(--paper-warm); padding:0.4rem 0.6rem;
+    border-radius:3px; display:inline-block; margin:0.2rem 0;
+  }
+  .ruta-clics .ruta span{color:var(--violet-deep); font-weight:700}
+  .comparativa{
+    display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:1.5rem 0;
+  }
+  @media (max-width:700px){.comparativa{grid-template-columns:1fr}}
+  .compara-card{
+    background:white; border:2px solid var(--ink);
+    padding:1.2rem; border-radius:4px;
+  }
+  .compara-card h4{
+    font-size:1.05rem; padding-bottom:0.5rem;
+    border-bottom:2px solid; margin-bottom:0.7rem;
+  }
+  .compara-card.a{border-color:var(--violet)}
+  .compara-card.a h4{border-color:var(--violet); color:var(--violet-deep)}
+  .compara-card.b{border-color:var(--teal)}
+  .compara-card.b h4{border-color:var(--teal); color:var(--teal)}
+  .compara-card ul{margin:0; padding-left:1.2rem}
+  .compara-card ul li{font-size:0.9rem; margin-bottom:0.4rem}
+  .glosario{
+    background:white; border:2px solid var(--violet);
+    padding:1.2rem 1.4rem; margin:1.2rem 0; border-radius:6px;
+    position:relative;
+  }
+  .glosario::before{
+    content:"VOCABULARIO CLAVE";
+    position:absolute; top:-11px; left:15px;
+    background:var(--violet); color:white;
+    padding:0.15rem 0.7rem; font-size:0.72rem;
+    font-weight:700; letter-spacing:0.1em;
+  }
+  .glosario dl{margin-top:0.4rem}
+  .glosario dt{font-weight:700; color:var(--violet-deep); margin-top:0.7rem; font-size:0.95rem}
+  .glosario dt:first-child{margin-top:0}
+  .glosario dd{margin-left:0; padding-left:1rem; font-size:0.92rem; color:var(--ink-soft); border-left:2px solid var(--violet-soft)}
+  .proyecto-final{
+    margin-top:4rem; background:var(--ink); color:var(--paper);
+    padding:2.5rem; border:3px solid var(--ink);
+    position:relative; overflow:hidden; box-shadow:var(--shadow);
+  }
+  .proyecto-final::before{
+    content:""; position:absolute; top:-60px; right:-60px;
+    width:220px; height:220px;
+    background:var(--violet); transform:rotate(45deg); opacity:0.25;
+  }
+  .proyecto-final h2{color:var(--paper); font-size:2.2rem; margin-bottom:0.8rem}
+  .proyecto-final h3{color:var(--highlight); font-size:1.2rem; margin:1.4rem 0 0.6rem}
+  .proyecto-final p, .proyecto-final li{color:var(--paper)}
+  .proyecto-final ul{margin-left:1.5rem; margin-bottom:1rem}
+  .proyecto-final ul li{margin-bottom:0.4rem}
+  .proyecto-final .rubrica{
+    background:var(--paper); color:var(--ink);
+    padding:1.5rem; margin-top:1.5rem; border:2px solid var(--highlight);
+  }
+  .proyecto-final .rubrica h4{color:var(--ink); margin-bottom:0.8rem; font-size:1.1rem}
+  .proyecto-final .rubrica table{width:100%; border-collapse:collapse; font-size:0.9rem}
+  .proyecto-final .rubrica th, .proyecto-final .rubrica td{
+    border:1px solid var(--ink); padding:0.5rem 0.7rem; text-align:left;
+  }
+  .proyecto-final .rubrica th{background:var(--violet); color:var(--paper)}
+  footer{
+    margin-top:4rem; padding:2rem;
+    background:var(--paper-warm); border-top:3px solid var(--ink);
+    text-align:center; font-size:0.9rem; color:var(--ink-soft);
+  }
+  @media (max-width:600px){
+    header.hero{padding:2rem 1.2rem}
+    main{padding:2rem 1.2rem}
+    .fase-header{padding:1.2rem 1.3rem}
+    .fase-body{padding:1.3rem}
+    .paso{padding:1.1rem}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="pill">Licenciatura en Psicología · Estadística aplicada</span>
+    <h1 class="title">Estadística para <em>Psicología</em> con Excel</h1>
+    <p class="subtitle">Guía interactiva de 10 horas con método pedagógico activo y Aprendizaje Basado en Problemas (ABP). Vas a construir tu propio entendimiento sobre la investigación en psicología, los métodos cuantitativos y cualitativos, y el uso de Excel para analizar datos psicológicos.</p>
+    <div class="hero-meta">
+      <div><span class="label">Duración</span>10 horas (5 fases)</div>
+      <div><span class="label">Unidades</span>I y II del programa</div>
+      <div><span class="label">Modalidad</span>Plataforma + Excel</div>
+      <div><span class="label">Metodología</span>ABP + construcción de conocimiento</div>
+    </div>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <span class="progress-label">Tu progreso</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-text" id="progressText">0 / 20</span>
+  </div>
+</div>
+
+<main>
+
+  <div class="metodologia">
+    <h3>Cómo aprenderás en esta guía</h3>
+    <p>Esta guía combina dos enfoques pedagógicos que se complementan: <strong>Aprendizaje Basado en Problemas (ABP)</strong> y <strong>construcción activa del conocimiento</strong>. Cada fase comienza con un <em>problema real</em> de psicología que necesita resolverse. Tú vas construyendo las herramientas conceptuales y técnicas (con Excel) para resolverlo.</p>
+    <div class="abp-banner">
+      <h4>¿Qué es el Aprendizaje Basado en Problemas?</h4>
+      <p>En lugar de empezar con teoría y luego aplicarla, empiezas con un <strong>problema sin resolver</strong>. Mientras lo abordas, descubres por ti mismo qué conceptos necesitas. Esto genera aprendizaje significativo porque cada idea tiene un propósito claro: te ayuda a resolver algo concreto.</p>
+    </div>
+    <p style="margin-top:1.2rem">En cada concepto importante seguirás este ciclo:</p>
+    <div class="ciclo-pedagogico">
+      <div class="ciclo-item"><div class="num">1</div><strong>Problema</strong><small>Conoces una situación real que requiere resolverse</small></div>
+      <div class="ciclo-item"><div class="num">2</div><strong>Activa</strong><small>Recuperas lo que ya sabes y formulas preguntas</small></div>
+      <div class="ciclo-item"><div class="num">3</div><strong>Construye</strong><small>Adquieres los conceptos y herramientas necesarias</small></div>
+      <div class="ciclo-item"><div class="num">4</div><strong>Experimenta</strong><small>Aplicas en Excel con datos reales</small></div>
+      <div class="ciclo-item"><div class="num">5</div><strong>Reflexiona</strong><small>Conectas el aprendizaje con la psicología profesional</small></div>
+    </div>
+  </div>
+
+  <div class="intro-grid">
+    <div class="intro-card">
+      <h3>¿Qué vas a aprender?</h3>
+      <ul>
+        <li>Por qué la psicología necesita la estadística como aliada</li>
+        <li>Diferencia entre estadística descriptiva e inferencial</li>
+        <li>Métodos cuantitativos vs cualitativos: cuándo usar cada uno</li>
+        <li>Variables independientes, dependientes y de control en experimentos</li>
+        <li>Diseños experimentales: entre sujetos vs medidas repetidas</li>
+        <li>Métodos observacionales y estudios comparativos</li>
+        <li>Cómo formular buenas preguntas de investigación cuantitativa</li>
+        <li>Instrumentos de medición: encuestas, escalas, pruebas psicométricas</li>
+        <li>Niveles de medición: nominal, ordinal, intervalo, razón</li>
+        <li>Uso de Excel para análisis estadístico básico y visualización</li>
+      </ul>
+    </div>
+    <div class="intro-card">
+      <h3>¿Qué necesitas?</h3>
+      <ul>
+        <li>Microsoft Excel <strong>2019, 2021 o Microsoft 365</strong></li>
+        <li>Conocimientos previos: capturar datos, fórmulas básicas (=SUMA, =PROMEDIO)</li>
+        <li>Esta guía abierta como referencia paso a paso</li>
+        <li>Un cuaderno o documento para tus reflexiones y planteamientos</li>
+        <li>Mentalidad científica: vas a analizar conductas humanas reales</li>
+        <li>Aproximadamente 10 horas distribuidas en sesiones de 1-2 horas</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ai-notice">
+    <h3>Sobre el uso de la Inteligencia Artificial</h3>
+    <p>Es muy fácil pedir a una IA "explícame qué es estadística inferencial" o "haz mi tabla en Excel". Pero si haces eso, no estarás <strong>construyendo</strong> el conocimiento: lo estarás <em>consumiendo</em>. Eso no te servirá cuando tengas que diseñar tu propia investigación o interpretar un artículo científico.</p>
+    <p>El método ABP que usa esta guía requiere que tú <strong>razones, propongas, te equivoques y corrijas</strong>. La IA no puede hacer eso por ti porque no eres tú quien recibirá la formación profesional como psicólogo.</p>
+    <p>Usa la IA <em>después</em> de intentarlo: para verificar conceptos, encontrar referencias adicionales, o cuando un término técnico no esté claro. Nunca para que invente datos de tu proyecto ni redacte tus interpretaciones. <strong>Tu juicio profesional es el producto final de esta guía, no las hojas de Excel que entregues.</strong></p>
+  </div>
+
+  <div class="indice">
+    <h3>Ruta de aprendizaje · Programa de Estadística para Psicología</h3>
+    <div class="indice-grid">
+      <a href="#fase1" class="indice-item">
+        <span class="n">1</span>
+        <span class="t"><strong>Psicología y estadística</strong><small>2 h · Unidad I (1.1 a 1.4)</small></span>
+      </a>
+      <a href="#fase2" class="indice-item">
+        <span class="n">2</span>
+        <span class="t"><strong>Cuantitativo vs cualitativo</strong><small>1.5 h · Unidad II (2.1)</small></span>
+      </a>
+      <a href="#fase3" class="indice-item">
+        <span class="n">3</span>
+        <span class="t"><strong>Métodos experimentales</strong><small>2 h · Unidad II (2.2, 2.3)</small></span>
+      </a>
+      <a href="#fase4" class="indice-item">
+        <span class="n">4</span>
+        <span class="t"><strong>Observación y comparación</strong><small>1.5 h · Unidad II (2.4, 2.5)</small></span>
+      </a>
+      <a href="#fase5" class="indice-item">
+        <span class="n">5</span>
+        <span class="t"><strong>Instrumentos + Proyecto</strong><small>3 h · Unidad II (2.6, 2.7, 2.8)</small></span>
+      </a>
+    </div>
+  </div>
+
+
+  <!-- ============== FASE 1: UNIDAD I COMPLETA (2 horas) ============== -->
+  <section class="fase" id="fase1">
+    <div class="fase-header">
+      <div>
+        <div class="fase-num">Fase 1 · Unidad I (1.1 a 1.4)</div>
+        <h2>Psicología, investigación y estadística</h2>
+      </div>
+      <div class="fase-time">⏱ 2 horas</div>
+    </div>
+    <div class="fase-body">
+
+      <div class="problema-abp">
+        <h3>El problema con el que vas a trabajar</h3>
+        <p>Imagina que eres parte del equipo de investigación de un centro de salud mental universitario en México. La directora te pide responder esta pregunta:</p>
+        <p style="font-size:1.05rem; font-weight:600; color:var(--accent-deep); padding:0.6rem 0;">"¿Las técnicas de relajación que aplicamos a los estudiantes realmente reducen su ansiedad, o sólo se están sintiendo bien porque alguien les pone atención?"</p>
+        <p>Esta pregunta parece sencilla, pero para responderla de manera profesional necesitas estadística. Sin ella, sólo tienes opiniones. Con ella, tienes evidencia. Vamos a construir las herramientas para responderla.</p>
+      </div>
+
+      <div class="objetivo">
+        <strong>Objetivo de esta fase</strong>
+        Vas a entender por qué la psicología necesita la estadística (subtema 1.1 y 1.2), conocerás aplicaciones reales en ciencias del comportamiento (1.3) y aprenderás a diferenciar entre estadística descriptiva e inferencial (1.4). Usarás Excel para calcular medidas descriptivas básicas.
+      </div>
+
+      <div class="activacion">
+        <strong class="titulo">Activa tus conocimientos previos</strong>
+        <p>Antes de empezar, responde con tus propias palabras (no busques):</p>
+        <ol style="margin-left:1.3rem; font-size:0.93rem">
+          <li>¿Qué entiendes por "investigación científica"? ¿En qué se diferencia de la "opinión personal"?</li>
+          <li>¿Has escuchado la frase "los números no mienten"? ¿Estás de acuerdo? ¿Por qué?</li>
+          <li>Si un amigo te dice "la meditación cura la depresión, lo vi en TikTok", ¿qué le preguntarías para verificar si eso es cierto?</li>
+        </ol>
+        <textarea placeholder="Tus respuestas honestas antes de comenzar..."></textarea>
+      </div>
+
+      <!-- PASO 1 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">1</div><h3>Subtema 1.1 y 1.2 · ¿Por qué la psicología necesita la estadística?</h3></div>
+
+        <p>La psicología es una ciencia. Eso significa que sus afirmaciones deben estar basadas en <strong>evidencia recolectada de forma sistemática</strong>, no en opiniones o intuiciones. Pero la evidencia psicológica tiene un problema: las conductas humanas son muy variables.</p>
+
+        <div class="ejemplo">
+          <h4>Veamos un ejemplo concreto</h4>
+          <p>Imagina que aplicas una técnica de respiración profunda a un estudiante con ansiedad. Antes tenía un puntaje de 18 en una escala de ansiedad, y después tiene 14. ¿Funcionó la técnica?</p>
+          <p>No puedes saberlo todavía. Porque:</p>
+          <ul style="margin-left:1.3rem">
+            <li>Tal vez ese día se sentía mejor por otras razones (durmió bien, comió, etc.)</li>
+            <li>Tal vez quería complacerte y reportó un número más bajo</li>
+            <li>Tal vez la ansiedad fluctúa naturalmente y de todos modos habría bajado</li>
+            <li>Tal vez 4 puntos no es una diferencia importante (puede ser ruido)</li>
+          </ul>
+          <p>Para saber si <strong>realmente funcionó</strong>, necesitas aplicar la técnica a muchos estudiantes, compararlos con otros que no la recibieron, y analizar los datos con estadística. Eso es lo que diferencia la psicología científica del "consejo de amigo".</p>
+        </div>
+
+        <div class="glosario">
+          <dl>
+            <dt>Psicología (definición operativa)</dt>
+            <dd>Ciencia que estudia el comportamiento y los procesos mentales usando el método científico.</dd>
+            <dt>Estadística</dt>
+            <dd>Conjunto de procedimientos para recolectar, organizar, analizar e interpretar datos para tomar decisiones basadas en evidencia.</dd>
+            <dt>Investigación científica</dt>
+            <dd>Proceso sistemático y controlado de búsqueda de respuestas a preguntas, usando datos verificables por otros investigadores.</dd>
+          </dl>
+        </div>
+
+        <p>La estadística es para el psicólogo lo que el estetoscopio es para el médico: una herramienta indispensable para hacer su trabajo con rigor. Sin estadística, la psicología sería sólo filosofía.</p>
+
+        <div class="hipotesis">
+          <p><strong>Antes de continuar, reflexiona:</strong></p>
+          <p>¿Por qué crees que algunas personas desconfían de los resultados de la psicología científica? ¿Será por falta de estadística, o por algo distinto?</p>
+          <textarea placeholder="Mi reflexión..."></textarea>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Entendí por qué la psicología necesita la estadística</div>
+      </div>
+
+      <!-- PASO 2 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">2</div><h3>Subtema 1.3 · Aplicaciones reales de la estadística en psicología</h3></div>
+
+        <p>La estadística no se usa solo en investigación. Está presente en muchas áreas del trabajo psicológico real:</p>
+
+        <div class="comparativa">
+          <div class="compara-card a">
+            <h4>En clínica</h4>
+            <ul>
+              <li>Interpretar pruebas psicométricas (CI, MMPI, BDI)</li>
+              <li>Medir cambios del paciente a lo largo del tratamiento</li>
+              <li>Comparar la efectividad de distintas terapias</li>
+              <li>Establecer puntos de corte clínicos (cuándo es preocupante)</li>
+            </ul>
+          </div>
+          <div class="compara-card b">
+            <h4>En educación</h4>
+            <ul>
+              <li>Detectar problemas de aprendizaje en grupos</li>
+              <li>Evaluar el impacto de programas educativos</li>
+              <li>Identificar factores de éxito o deserción escolar</li>
+              <li>Diseñar pruebas estandarizadas</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="comparativa">
+          <div class="compara-card a">
+            <h4>En investigación organizacional</h4>
+            <ul>
+              <li>Medir satisfacción y bienestar laboral</li>
+              <li>Predecir desempeño con pruebas de selección</li>
+              <li>Evaluar el clima organizacional</li>
+              <li>Analizar productividad y burnout</li>
+            </ul>
+          </div>
+          <div class="compara-card b">
+            <h4>En ciencias del comportamiento</h4>
+            <ul>
+              <li>Estudiar el aprendizaje (curvas de adquisición)</li>
+              <li>Análisis de la conducta animal y humana</li>
+              <li>Neurociencia: comparar grupos con/sin daño</li>
+              <li>Psicología del consumidor y marketing</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tip"><strong>Punto importante:</strong> aunque pienses que serás "psicólogo clínico" y no investigador, vas a interpretar pruebas, leer artículos científicos y comparar opciones de tratamiento. Sin estadística básica, dependerás de lo que otros te digan sin poder verificar.</div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Identifiqué áreas donde aplicaré estadística en mi profesión</div>
+      </div>
+
+      <!-- PASO 3 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">3</div><h3>Subtema 1.4 · Estadística descriptiva: prepara tu Excel</h3></div>
+
+        <p>La estadística se divide en dos grandes ramas. Vamos a empezar con la primera: la <strong>estadística descriptiva</strong>, que sirve para <em>describir</em> los datos que tienes.</p>
+
+        <div class="ejemplo">
+          <h4>Estadística descriptiva en pocas palabras</h4>
+          <p>Si tienes los puntajes de ansiedad de 30 estudiantes, son 30 números sueltos. ¿Cómo "resumes" esa información en pocas cifras útiles? La estadística descriptiva te da las herramientas:</p>
+          <ul style="margin-left:1.3rem">
+            <li><strong>Medidas de tendencia central:</strong> ¿cuál es el valor "típico"? (media, mediana, moda)</li>
+            <li><strong>Medidas de dispersión:</strong> ¿qué tan parecidos o diferentes son los valores entre sí? (rango, varianza, desviación estándar)</li>
+            <li><strong>Tablas de frecuencias:</strong> ¿cuántas personas hay en cada categoría?</li>
+            <li><strong>Gráficos:</strong> visualizaciones para entender los datos de un vistazo</li>
+          </ul>
+        </div>
+
+        <p>Crea tu libro de prácticas en Excel:</p>
+        <ol>
+          <li>Abre Microsoft Excel y crea un libro nuevo</li>
+          <li>Guárdalo como <code class="inline">Estadistica_Psi_TuNombre.xlsx</code></li>
+          <li>Renombra "Hoja1" como <code class="inline">Datos_Ansiedad</code> con pestaña <strong>morada</strong></li>
+        </ol>
+
+        <p>Vamos a trabajar con el problema del inicio: ¿las técnicas de relajación reducen la ansiedad? Captura estos datos reales de un estudio simulado:</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">A</td><td class="col-letter">B</td><td class="col-letter">C</td></tr>
+            <tr><td class="row-num">1</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">ID</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Ansiedad ANTES</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Ansiedad DESPUÉS</td>
+            </tr>
+            <tr><td class="row-num">2</td><td>E01</td><td>18</td><td>12</td></tr>
+            <tr><td class="row-num">3</td><td>E02</td><td>15</td><td>10</td></tr>
+            <tr><td class="row-num">4</td><td>E03</td><td>20</td><td>16</td></tr>
+            <tr><td class="row-num">5</td><td>E04</td><td>14</td><td>11</td></tr>
+            <tr><td class="row-num">6</td><td>E05</td><td>17</td><td>13</td></tr>
+            <tr><td class="row-num">7</td><td>E06</td><td>19</td><td>14</td></tr>
+            <tr><td class="row-num">8</td><td>E07</td><td>13</td><td>9</td></tr>
+            <tr><td class="row-num">9</td><td>E08</td><td>21</td><td>17</td></tr>
+            <tr><td class="row-num">10</td><td>E09</td><td>16</td><td>12</td></tr>
+            <tr><td class="row-num">11</td><td>E10</td><td>18</td><td>14</td></tr>
+            <tr><td class="row-num">12</td><td>E11</td><td>15</td><td>11</td></tr>
+            <tr><td class="row-num">13</td><td>E12</td><td>22</td><td>18</td></tr>
+            <tr><td class="row-num">14</td><td>E13</td><td>14</td><td>10</td></tr>
+            <tr><td class="row-num">15</td><td>E14</td><td>17</td><td>13</td></tr>
+            <tr><td class="row-num">15</td><td>E15</td><td>19</td><td>15</td></tr>
+          </table>
+          <p class="excel-caption">Puntajes en escala GAD-7 (0-21) antes y después de 4 sesiones de técnicas de relajación. n=15.</p>
+        </div>
+
+        <div class="hipotesis">
+          <p><strong>Antes de hacer cálculos, predice:</strong></p>
+          <p>Observando los 15 pares de datos: ¿crees que en promedio los estudiantes bajaron mucho, poco, o nada? Da tu predicción aproximada en puntos.</p>
+          <textarea placeholder="Mi predicción: creo que bajaron aproximadamente ___ puntos en promedio."></textarea>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Capturé los datos del estudio en Excel</div>
+      </div>
+
+      <!-- PASO 4 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">4</div><h3>Calcula medidas de tendencia central con Excel</h3></div>
+
+        <p>Vamos a calcular las medidas descriptivas básicas. En la columna D, empezando en D1, agrega un encabezado <code class="inline">Análisis estadístico</code>. Luego en las celdas D3 a D14, vas a calcular las siguientes medidas para la columna ANTES y DESPUÉS:</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">D</td><td class="col-letter">E</td><td class="col-letter">F</td></tr>
+            <tr><td class="row-num">2</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700">Estadístico</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700">ANTES</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700">DESPUÉS</td>
+            </tr>
+            <tr><td class="row-num">3</td><td>Media (promedio)</td><td class="hl">=PROMEDIO(B2:B16)</td><td class="hl">=PROMEDIO(C2:C16)</td></tr>
+            <tr><td class="row-num">4</td><td>Mediana</td><td class="hl">=MEDIANA(B2:B16)</td><td class="hl">=MEDIANA(C2:C16)</td></tr>
+            <tr><td class="row-num">5</td><td>Moda</td><td class="hl">=MODA(B2:B16)</td><td class="hl">=MODA(C2:C16)</td></tr>
+            <tr><td class="row-num">6</td><td>Valor mínimo</td><td class="hl">=MIN(B2:B16)</td><td class="hl">=MIN(C2:C16)</td></tr>
+            <tr><td class="row-num">7</td><td>Valor máximo</td><td class="hl">=MAX(B2:B16)</td><td class="hl">=MAX(C2:C16)</td></tr>
+            <tr><td class="row-num">8</td><td>Rango (máx - mín)</td><td class="hl">=E7-E6</td><td class="hl">=F7-F6</td></tr>
+            <tr><td class="row-num">9</td><td>Desviación estándar</td><td class="hl">=DESVEST.M(B2:B16)</td><td class="hl">=DESVEST.M(C2:C16)</td></tr>
+            <tr><td class="row-num">10</td><td>Cantidad (n)</td><td class="hl">=CONTAR(B2:B16)</td><td class="hl">=CONTAR(C2:C16)</td></tr>
+          </table>
+        </div>
+
+        <div class="ejemplo">
+          <h4>Entendamos cada medida</h4>
+          <p><strong>Media (promedio):</strong> suma todos los valores y los divide entre el número de casos. Es la medida más conocida, pero <em>se ve afectada por valores extremos</em>.</p>
+          <p><strong>Mediana:</strong> el valor que queda exactamente en medio cuando ordenas los datos de menor a mayor. <em>No le afectan los valores extremos</em>.</p>
+          <p><strong>Moda:</strong> el valor que se repite más veces. Útil para variables categóricas.</p>
+          <p><strong>Rango:</strong> distancia entre el valor más alto y el más bajo. Te da una primera idea de cuán "dispersos" están los datos.</p>
+          <p><strong>Desviación estándar:</strong> dice cuánto se alejan en promedio los valores de la media. <em>Es la medida de dispersión más importante en psicología.</em> Si es baja, los valores están concentrados cerca de la media. Si es alta, están muy dispersos.</p>
+        </div>
+
+        <p><strong>Verifica tus resultados:</strong> debes obtener aproximadamente estos valores:</p>
+        <ul style="margin-left:1.3rem">
+          <li>Media ANTES = 17.2 (aprox.), Media DESPUÉS = 13.0</li>
+          <li>Mediana ANTES = 17, Mediana DESPUÉS = 13</li>
+          <li>Mín ANTES = 13, Máx ANTES = 22</li>
+          <li>Mín DESPUÉS = 9, Máx DESPUÉS = 18</li>
+          <li>Desviación estándar ANTES ≈ 2.6, DESPUÉS ≈ 2.6</li>
+        </ul>
+
+        <div class="reflexion">
+          <p><strong>Interpreta tus hallazgos descriptivos</strong>:</p>
+          <ol>
+            <li>La media bajó de 17.2 a 13.0. ¿Cuántos puntos de diferencia es? ¿Tu predicción del paso anterior fue correcta?</li>
+            <li>La desviación estándar es similar en ambas mediciones (≈2.6). ¿Qué te dice esto sobre cómo "respondieron" los estudiantes al tratamiento? ¿Todos bajaron parecido o algunos mucho y otros poco?</li>
+            <li>Solo con la estadística descriptiva, ¿puedes afirmar que la técnica de relajación FUNCIONA? Justifica.</li>
+            <li>Si un compañero te dijera "yo bajé de 22 a 18 con relajación", ¿podrías afirmar que su mejoría es típica o atípica con base en estos datos?</li>
+          </ol>
+          <textarea placeholder="Tus interpretaciones psicológicas..."></textarea>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Calculé las medidas descriptivas en Excel</div>
+      </div>
+
+      <!-- PASO 5 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">5</div><h3>Subtema 1.4 · Estadística inferencial (introducción)</h3></div>
+
+        <p>Acabas de ver que el promedio bajó 4.2 puntos. Pero aquí surge una pregunta importante: <strong>¿esa diferencia es real, o se debe al azar?</strong></p>
+
+        <div class="ejemplo">
+          <h4>El problema del azar en investigación</h4>
+          <p>Imagina que hubieras lanzado una moneda 15 veces antes del tratamiento y 15 veces después. Tu "puntaje" sería el número de águilas. Es muy probable que los dos resultados sean diferentes, pero <em>no porque hayas hecho algo</em>, sino por puro azar.</p>
+          <p>En psicología pasa algo similar: incluso sin hacer nada, los puntajes de ansiedad varían naturalmente entre días. ¿Cómo sabemos si los 4.2 puntos de bajada se deben a la técnica o al azar?</p>
+        </div>
+
+        <p>Aquí entra la <strong>estadística inferencial</strong>:</p>
+
+        <div class="glosario">
+          <dl>
+            <dt>Estadística inferencial</dt>
+            <dd>Conjunto de procedimientos para hacer inferencias (conclusiones) que van más allá de los datos observados. Permite generalizar resultados de una muestra a una población más grande, y determinar si los hallazgos son estadísticamente significativos o producto del azar.</dd>
+            <dt>Significancia estadística (valor p)</dt>
+            <dd>Probabilidad de que la diferencia observada se deba al azar. Si p &lt; 0.05, se considera estadísticamente significativa (la probabilidad de azar es menor al 5%).</dd>
+            <dt>Población vs muestra</dt>
+            <dd>Población = todos los individuos sobre los que quieres concluir (ej. todos los universitarios mexicanos). Muestra = subconjunto al que realmente mediste (los 15 estudiantes del estudio).</dd>
+          </dl>
+        </div>
+
+        <p>En esta guía nos enfocamos principalmente en estadística descriptiva, pero es importante que sepas que existen <strong>pruebas inferenciales</strong> como:</p>
+        <ul style="margin-left:1.3rem">
+          <li><strong>Prueba t de Student:</strong> compara medias de dos grupos o de antes/después</li>
+          <li><strong>ANOVA:</strong> compara medias de tres o más grupos</li>
+          <li><strong>Correlación de Pearson:</strong> mide la relación entre dos variables numéricas</li>
+          <li><strong>Chi cuadrada:</strong> compara frecuencias entre categorías</li>
+        </ul>
+
+        <div class="tip"><strong>Para tu carrera:</strong> aprenderás estas pruebas en cursos avanzados de estadística. Por ahora, lo importante es que entiendas la diferencia: la <em>descriptiva</em> resume lo que tienes; la <em>inferencial</em> te dice si lo que tienes refleja un patrón real o es producto del azar.</div>
+
+        <div class="reflexion">
+          <p><strong>Reflexión integradora de la Fase 1</strong>:</p>
+          <ol>
+            <li>Con tus palabras: ¿en qué se diferencian la estadística descriptiva y la inferencial? Da un ejemplo de cada una en el contexto del estudio que acabas de analizar.</li>
+            <li>Si fueras la directora del centro de salud mental y vieras tus resultados descriptivos (media bajó de 17.2 a 13.0), ¿le invertirías más recursos al programa de relajación o pedirías un estudio más riguroso? Justifica.</li>
+            <li>¿Por qué crees que un solo caso (un solo paciente que mejora) no es suficiente para afirmar que un tratamiento funciona, aunque la mejoría sea impresionante?</li>
+            <li>Relaciona: ¿en qué se parece el trabajo del psicólogo al del detective? ¿Y al del científico de laboratorio?</li>
+          </ol>
+          <textarea placeholder="Tus reflexiones..."></textarea>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Entendí la diferencia entre descriptiva e inferencial</div>
+      </div>
+
+      <div class="entregable">
+        <h4>Entrega de la Fase 1</h4>
+        <ul>
+          <li>Archivo <code class="inline" style="color:var(--ink)">Estadistica_Psi_TuNombre.xlsx</code> con hoja Datos_Ansiedad</li>
+          <li>Tabla con los 15 estudiantes y las medidas descriptivas calculadas</li>
+          <li>Reflexión escrita sobre las 4 preguntas de cierre</li>
+          <li>Definición personal (en tu cuaderno) de estadística descriptiva e inferencial</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============== FASE 2: 2.1 CUANTI vs CUALI (1.5h) ============== -->
+  <section class="fase" id="fase2">
+    <div class="fase-header">
+      <div>
+        <div class="fase-num">Fase 2 · Unidad II (2.1)</div>
+        <h2>Métodos cuantitativos vs cualitativos</h2>
+      </div>
+      <div class="fase-time">⏱ 1.5 horas</div>
+    </div>
+    <div class="fase-body">
+
+      <div class="problema-abp">
+        <h3>El problema con el que vas a trabajar</h3>
+        <p>Una colega psicóloga te pregunta: <em>"Quiero investigar la experiencia del duelo en mujeres mexicanas que perdieron un hijo. ¿Debo hacer encuestas con escalas numéricas o entrevistas a profundidad?"</em></p>
+        <p>Tu respuesta dependerá de saber distinguir <strong>métodos cuantitativos</strong> de <strong>métodos cualitativos</strong>. Cada uno responde un tipo distinto de pregunta, y elegir mal puede arruinar la investigación. Vamos a entender cuándo usar cada uno.</p>
+      </div>
+
+      <div class="objetivo">
+        <strong>Objetivo de esta fase</strong>
+        Vas a entender la diferencia entre métodos cuantitativos y cualitativos (subtema 2.1), reconocer cuándo conviene cada uno según la pregunta de investigación, y construir en Excel una tabla comparativa que ilustre la diferencia con datos reales.
+      </div>
+
+      <!-- PASO 6 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">6</div><h3>Subtema 2.1 · Las dos grandes familias de métodos</h3></div>
+
+        <p>En psicología, todas las investigaciones se pueden clasificar en dos grandes familias (con una tercera familia mixta que combina ambas):</p>
+
+        <div class="comparativa">
+          <div class="compara-card a">
+            <h4>Métodos cuantitativos</h4>
+            <ul>
+              <li><strong>Pregunta:</strong> ¿cuánto? ¿cuántos? ¿cómo se relacionan?</li>
+              <li><strong>Datos:</strong> números, mediciones, frecuencias, escalas</li>
+              <li><strong>Análisis:</strong> estadística descriptiva e inferencial</li>
+              <li><strong>Muestras:</strong> grandes (decenas, cientos o miles de personas)</li>
+              <li><strong>Resultado:</strong> tablas, gráficos, valores p</li>
+              <li><strong>Generalización:</strong> sí, busca resultados aplicables a poblaciones</li>
+              <li><strong>Ejemplo:</strong> aplicar escala GAD-7 a 500 universitarios y reportar la prevalencia de ansiedad por género</li>
+            </ul>
+          </div>
+          <div class="compara-card b">
+            <h4>Métodos cualitativos</h4>
+            <ul>
+              <li><strong>Pregunta:</strong> ¿cómo? ¿por qué? ¿qué significa?</li>
+              <li><strong>Datos:</strong> palabras, narraciones, observaciones, imágenes</li>
+              <li><strong>Análisis:</strong> identificación de temas, categorías, patrones de discurso</li>
+              <li><strong>Muestras:</strong> pequeñas (5 a 30 casos profundos)</li>
+              <li><strong>Resultado:</strong> categorías, narrativas, modelos descriptivos</li>
+              <li><strong>Generalización:</strong> limitada, busca comprensión profunda de casos</li>
+              <li><strong>Ejemplo:</strong> entrevistar a 12 mujeres en duelo y analizar los temas comunes en sus relatos</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="ejemplo">
+          <h4>Ninguno es mejor que el otro: dependen de la pregunta</h4>
+          <p>Un investigador novato puede pensar que lo cuantitativo es "más serio" porque usa números. Eso es un error. La pregunta correcta no es ¿cuál es mejor? sino <strong>¿cuál responde mi pregunta de investigación?</strong></p>
+          <p>Algunas preguntas necesitan números (cuántas personas tienen ansiedad). Otras necesitan profundidad (cómo es vivir con ansiedad). Las mejores investigaciones a menudo combinan ambos: son <strong>métodos mixtos</strong>.</p>
+        </div>
+
+        <div class="hipotesis">
+          <p><strong>Clasifica estas preguntas de investigación</strong>:</p>
+          <p>Indica si cada una se responde mejor con métodos cuantitativos (CT), cualitativos (CL) o mixtos (M):</p>
+          <ol style="margin-left:1.3rem; font-size:0.93rem">
+            <li>¿Qué porcentaje de adolescentes mexicanos usa redes sociales más de 5 horas al día?</li>
+            <li>¿Cómo viven las personas con depresión sus días "buenos" y "malos"?</li>
+            <li>¿Existe relación entre horas de sueño y rendimiento académico?</li>
+            <li>¿Qué significa "estar bien" para una persona en recuperación de adicciones?</li>
+            <li>¿La meditación reduce el cortisol más que la actividad física?</li>
+            <li>¿Cómo afecta el confinamiento por pandemia a las familias y cuántas familias experimentaron crisis?</li>
+          </ol>
+          <textarea placeholder="1) CT  2) CL  3) ___  4) ___  5) ___  6) ___ ... y por qué"></textarea>
+        </div>
+
+        <div class="tip"><strong>Respuestas:</strong> 1) Cuantitativo (porcentajes); 2) Cualitativo (experiencia subjetiva); 3) Cuantitativo (correlación); 4) Cualitativo (significados); 5) Cuantitativo (comparación de medias); 6) Mixto (cantidad de familias + experiencias).</div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Entendí cuándo usar cada tipo de método</div>
+      </div>
+
+      <!-- PASO 7 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">7</div><h3>Práctica · Diseña una tabla comparativa en Excel</h3></div>
+
+        <p>Crea una nueva hoja llamada <code class="inline">Metodos</code> con pestaña <strong>verde</strong>. Vamos a capturar un comparativo de un estudio mixto sobre bienestar emocional. La idea es que tú mismo veas en tu hoja cómo se ven los datos cuantitativos vs cualitativos.</p>
+
+        <p>Captura esta tabla (es un fragmento de un estudio simulado donde se entrevistó y midió a 8 estudiantes):</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">A</td><td class="col-letter">B</td><td class="col-letter">C</td><td class="col-letter">D</td><td class="col-letter">E</td></tr>
+            <tr><td class="row-num">1</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">ID</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Ansiedad (0-21)</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Horas sueño</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Sexo</td>
+              <td style="background:#0e7c7b;color:white;font-weight:700;text-align:center">¿Cómo describes tus días?</td>
+            </tr>
+            <tr><td class="row-num">2</td><td>P01</td><td>15</td><td>6.5</td><td>F</td><td>"Estresada todo el tiempo, no logro descansar bien"</td></tr>
+            <tr><td class="row-num">3</td><td>P02</td><td>8</td><td>7.0</td><td>M</td><td>"Tranquilo en general, aunque ocupado con la escuela"</td></tr>
+            <tr><td class="row-num">4</td><td>P03</td><td>18</td><td>5.5</td><td>F</td><td>"Días caóticos, siento que no me alcanza el tiempo"</td></tr>
+            <tr><td class="row-num">5</td><td>P04</td><td>10</td><td>7.5</td><td>M</td><td>"Bien la mayoría de los días, sobre todo cuando hago ejercicio"</td></tr>
+            <tr><td class="row-num">6</td><td>P05</td><td>14</td><td>6.0</td><td>F</td><td>"Variables, depende mucho de mi ciclo y el trabajo escolar"</td></tr>
+            <tr><td class="row-num">7</td><td>P06</td><td>7</td><td>8.0</td><td>M</td><td>"En paz, tengo buena familia y duermo bien"</td></tr>
+            <tr><td class="row-num">8</td><td>P07</td><td>17</td><td>5.0</td><td>F</td><td>"Agotada, siento que vivo en piloto automático"</td></tr>
+            <tr><td class="row-num">9</td><td>P08</td><td>11</td><td>6.5</td><td>M</td><td>"Tranquilos pero a veces aburridos, me falta motivación"</td></tr>
+          </table>
+        </div>
+
+        <p>En las columnas A a D tienes <strong>datos cuantitativos</strong> (números, categorías): puedes calcular promedios, hacer gráficos, comparar grupos. En la columna E tienes <strong>datos cualitativos</strong>: relatos que requieren un análisis distinto.</p>
+
+        <p>Calcula las estadísticas descriptivas para las variables cuantitativas. En la columna G escribe:</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">G</td><td class="col-letter">H</td></tr>
+            <tr><td class="row-num">1</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700">Indicador</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700">Valor</td>
+            </tr>
+            <tr><td class="row-num">2</td><td>Promedio ansiedad</td><td class="hl">=PROMEDIO(B2:B9)</td></tr>
+            <tr><td class="row-num">3</td><td>Promedio horas sueño</td><td class="hl">=PROMEDIO(C2:C9)</td></tr>
+            <tr><td class="row-num">4</td><td>Promedio ansiedad mujeres</td><td class="hl">=PROMEDIO.SI(D2:D9,"F",B2:B9)</td></tr>
+            <tr><td class="row-num">5</td><td>Promedio ansiedad hombres</td><td class="hl">=PROMEDIO.SI(D2:D9,"M",B2:B9)</td></tr>
+            <tr><td class="row-num">6</td><td>Diferencia M-H</td><td class="hl">=H4-H5</td></tr>
+          </table>
+        </div>
+
+        <p><strong>Resultados que deberías obtener:</strong></p>
+        <ul style="margin-left:1.3rem">
+          <li>Promedio ansiedad general: 12.5</li>
+          <li>Promedio horas sueño: 6.5</li>
+          <li>Mujeres tienen 16.0 de ansiedad promedio</li>
+          <li>Hombres tienen 9.0 de ansiedad promedio</li>
+          <li>Diferencia: 7.0 puntos a favor de mayor ansiedad en mujeres</li>
+        </ul>
+
+        <div class="reto">
+          <h4>Análisis cualitativo paso a paso</h4>
+          <p>Ahora haz tú el análisis cualitativo de la columna E. Esto no se hace con fórmulas: requiere tu razonamiento.</p>
+          <p>Lee las 8 respuestas de la columna E e identifica <strong>3 temas</strong> que se repiten. Por ejemplo:</p>
+          <ul style="margin-left:1.3rem; font-size:0.92rem">
+            <li>Tema 1: "Cansancio o agotamiento"</li>
+            <li>Tema 2: "Sensación de tranquilidad"</li>
+            <li>Tema 3: "Estrés por carga académica"</li>
+          </ul>
+          <p>En tu hoja, en la celda J1 escribe "Temas cualitativos identificados" y abajo lista los 3 temas que encuentres con tus propias palabras. Indica al lado cuántas respuestas mencionan cada tema.</p>
+        </div>
+
+        <div class="reflexion">
+          <p><strong>Reflexión integradora</strong>:</p>
+          <ol>
+            <li>El promedio de ansiedad de las mujeres fue 16, de los hombres 9. ¿Qué conclusión cuantitativa puedes sacar? ¿Es suficiente para afirmar que las mujeres son "más ansiosas"?</li>
+            <li>Lee la respuesta cualitativa de P03 ("Días caóticos, siento que no me alcanza el tiempo") y compárala con su puntaje cuantitativo (18). ¿La narración coincide con el número?</li>
+            <li>Si hubieras hecho solo entrevistas (sin números), ¿qué te perderías? Y si hubieras hecho solo escalas (sin entrevistas), ¿qué te perderías?</li>
+            <li>Vuelve al problema inicial: tu colega quiere investigar el duelo en mujeres que perdieron un hijo. Ahora con conocimiento, ¿qué metodología le recomiendas y por qué?</li>
+          </ol>
+          <textarea placeholder="Tus reflexiones..."></textarea>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Apliqué análisis cuantitativo y cualitativo a un mismo dataset</div>
+      </div>
+
+      <div class="entregable">
+        <h4>Entrega de la Fase 2</h4>
+        <ul>
+          <li>Hoja <code class="inline" style="color:var(--ink)">Metodos</code> con la tabla de los 8 estudiantes</li>
+          <li>Cálculos descriptivos por sexo en columnas G-H</li>
+          <li>Identificación escrita de los 3 temas cualitativos con su frecuencia</li>
+          <li>Clasificación de las 6 preguntas del Paso 6 (cuanti, cuali o mixta)</li>
+          <li>Reflexión escrita sobre la complementariedad entre métodos</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============== FASE 3: 2.2 y 2.3 EXPERIMENTAL (2h) ============== -->
+  <section class="fase" id="fase3">
+    <div class="fase-header">
+      <div>
+        <div class="fase-num">Fase 3 · Unidad II (2.2 y 2.3)</div>
+        <h2>Métodos y diseños experimentales</h2>
+      </div>
+      <div class="fase-time">⏱ 2 horas</div>
+    </div>
+    <div class="fase-body">
+
+      <div class="problema-abp">
+        <h3>El problema con el que vas a trabajar</h3>
+        <p>Un grupo de psicólogos quiere demostrar que el <strong>mindfulness</strong> reduce la ansiedad en estudiantes universitarios. Han escuchado anécdotas positivas pero necesitan <em>evidencia experimental</em>. Te piden ayuda para diseñar el experimento.</p>
+        <p style="font-weight:600; color:var(--accent-deep);">Tu reto: ¿cómo demuestras que es el mindfulness el que reduce la ansiedad, y no otra causa? Cuidado: si lo haces mal, tu estudio será desechado y no servirá para nada.</p>
+      </div>
+
+      <div class="objetivo">
+        <strong>Objetivo de esta fase</strong>
+        Vas a aprender a diseñar un experimento psicológico identificando variables (independiente, dependiente, controladas), distinguirás entre diseños entre sujetos y de medidas repetidas, y simularás en Excel los resultados de un estudio experimental.
+      </div>
+
+      <!-- PASO 8 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">8</div><h3>Subtema 2.2 · Las variables de un experimento</h3></div>
+
+        <p>Todo experimento psicológico tiene tres tipos de variables. Entenderlas es la primera regla del método experimental.</p>
+
+        <div class="glosario">
+          <dl>
+            <dt>Variable independiente (VI)</dt>
+            <dd>La que el investigador <strong>manipula</strong> intencionalmente. Es la "causa" hipotética. Ejemplo: tipo de terapia (mindfulness vs control), dosis de medicamento, horas de estudio asignadas.</dd>
+            <dt>Variable dependiente (VD)</dt>
+            <dd>La que el investigador <strong>mide</strong> para ver si cambió por efecto de la VI. Es el "efecto" esperado. Ejemplo: puntaje en escala de ansiedad, tiempo de reacción, número de errores.</dd>
+            <dt>Variables controladas (VC)</dt>
+            <dd>Las que se <strong>mantienen constantes</strong> entre grupos para que no contaminen los resultados. Ejemplo: edad, sexo, hora del día en que se aplica la medición, ambiente físico.</dd>
+            <dt>Variables extrañas o de confusión</dt>
+            <dd>Las que <strong>no controlaste</strong> y pueden estar afectando los resultados sin que te des cuenta. Son el enemigo del investigador.</dd>
+          </dl>
+        </div>
+
+        <div class="ejemplo">
+          <h4>Aplicación al problema del mindfulness</h4>
+          <p>Si queremos probar que el mindfulness reduce la ansiedad:</p>
+          <ul style="margin-left:1.3rem">
+            <li><strong>VI:</strong> participar (o no) en sesiones de mindfulness (2 niveles: sí / no)</li>
+            <li><strong>VD:</strong> puntaje en escala GAD-7 medido antes y después</li>
+            <li><strong>VC (que deberíamos controlar):</strong> edad, sexo, carrera, año de estudio, hora de aplicación</li>
+            <li><strong>VE (variables extrañas posibles):</strong> que un grupo haya tenido exámenes esa semana, problemas familiares, consumo de cafeína, calidad del sueño</li>
+          </ul>
+        </div>
+
+        <div class="hipotesis">
+          <p><strong>Reto de identificación de variables</strong>:</p>
+          <p>Lee este estudio hipotético e identifica VI, VD y al menos 3 VC:</p>
+          <p style="font-style:italic; padding:0.6rem 0;">"Una psicóloga investiga si escuchar música clásica antes de un examen mejora el desempeño. Para ello, divide a 60 estudiantes en dos grupos: el grupo A escucha 15 minutos de Mozart antes del examen; el grupo B se queda en silencio. Después aplica el mismo examen de matemáticas a ambos grupos. Mide el número de aciertos."</p>
+          <textarea placeholder="VI: ___ | VD: ___ | VC posibles: 1)___, 2)___, 3)___"></textarea>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Identifiqué los tres tipos de variables en un experimento</div>
+      </div>
+
+      <!-- PASO 9 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">9</div><h3>Subtema 2.3 · Los dos grandes diseños experimentales</h3></div>
+
+        <p>Para evaluar el efecto del mindfulness, tienes dos opciones de diseño. Cada uno tiene ventajas y desventajas:</p>
+
+        <div class="comparativa">
+          <div class="compara-card a">
+            <h4>Diseño entre sujetos</h4>
+            <ul>
+              <li>Dos grupos de personas <strong>diferentes</strong></li>
+              <li>Un grupo recibe el tratamiento (grupo experimental)</li>
+              <li>Otro no lo recibe (grupo control)</li>
+              <li>Se comparan los resultados entre los dos grupos</li>
+              <li><strong>Ventaja:</strong> evita que el sujeto "aprenda" o "se canse"</li>
+              <li><strong>Desventaja:</strong> requiere más participantes y los grupos podrían diferir antes del estudio</li>
+            </ul>
+          </div>
+          <div class="compara-card b">
+            <h4>Diseño de medidas repetidas</h4>
+            <ul>
+              <li>Las <strong>mismas personas</strong> son medidas antes y después</li>
+              <li>Cada persona es su propio control</li>
+              <li>Se compara el cambio dentro de cada sujeto</li>
+              <li><strong>Ventaja:</strong> elimina diferencias individuales como factor de confusión</li>
+              <li><strong>Desventaja:</strong> efecto de práctica, fatiga, esperar al tratamiento</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="ejemplo">
+          <h4>¿Cuál elegir para el mindfulness?</h4>
+          <p>El estudio que vimos en la Fase 1 (técnicas de relajación) era <strong>de medidas repetidas</strong>: midimos a los mismos 15 estudiantes antes y después. Eso tiene un problema: ¿cómo sabemos que la mejora no se debió a otro motivo (el paso del tiempo, recibir atención profesional, etc.)?</p>
+          <p>Un diseño más riguroso sería <strong>entre sujetos con grupo control</strong>: tener un grupo que sí recibe mindfulness y otro que no recibe nada (o recibe algo placebo, como "tiempo libre"). Si solo mejora el grupo de mindfulness, podemos atribuir el efecto al tratamiento.</p>
+          <p>El <strong>diseño ideal</strong> combina ambas cosas: dos grupos (control y experimental), medidos antes y después. Esto se llama diseño "factorial mixto" o "pre-post con grupo control".</p>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Distinguí entre diseño entre sujetos y de medidas repetidas</div>
+      </div>
+
+      <!-- PASO 10 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">10</div><h3>Práctica · Simula el experimento de mindfulness en Excel</h3></div>
+
+        <p>Crea una nueva hoja llamada <code class="inline">Experimento</code> con pestaña <strong>naranja</strong>. Vas a simular el estudio del mindfulness con un diseño pre-post con grupo control. Captura estos datos:</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">A</td><td class="col-letter">B</td><td class="col-letter">C</td><td class="col-letter">D</td></tr>
+            <tr><td class="row-num">1</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">ID</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Grupo</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Ansiedad PRE</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Ansiedad POST</td>
+            </tr>
+            <tr><td class="row-num">2</td><td>E01</td><td>Experimental</td><td>17</td><td>11</td></tr>
+            <tr><td class="row-num">3</td><td>E02</td><td>Experimental</td><td>15</td><td>10</td></tr>
+            <tr><td class="row-num">4</td><td>E03</td><td>Experimental</td><td>19</td><td>13</td></tr>
+            <tr><td class="row-num">5</td><td>E04</td><td>Experimental</td><td>14</td><td>9</td></tr>
+            <tr><td class="row-num">6</td><td>E05</td><td>Experimental</td><td>16</td><td>11</td></tr>
+            <tr><td class="row-num">7</td><td>E06</td><td>Experimental</td><td>20</td><td>14</td></tr>
+            <tr><td class="row-num">8</td><td>E07</td><td>Experimental</td><td>13</td><td>8</td></tr>
+            <tr><td class="row-num">9</td><td>E08</td><td>Experimental</td><td>18</td><td>12</td></tr>
+            <tr><td class="row-num">10</td><td>E09</td><td>Experimental</td><td>15</td><td>11</td></tr>
+            <tr><td class="row-num">11</td><td>E10</td><td>Experimental</td><td>17</td><td>12</td></tr>
+            <tr><td class="row-num">12</td><td>C01</td><td>Control</td><td>16</td><td>15</td></tr>
+            <tr><td class="row-num">13</td><td>C02</td><td>Control</td><td>14</td><td>14</td></tr>
+            <tr><td class="row-num">14</td><td>C03</td><td>Control</td><td>18</td><td>17</td></tr>
+            <tr><td class="row-num">15</td><td>C04</td><td>Control</td><td>15</td><td>16</td></tr>
+            <tr><td class="row-num">16</td><td>C05</td><td>Control</td><td>17</td><td>16</td></tr>
+            <tr><td class="row-num">17</td><td>C06</td><td>Control</td><td>19</td><td>18</td></tr>
+            <tr><td class="row-num">18</td><td>C07</td><td>Control</td><td>13</td><td>14</td></tr>
+            <tr><td class="row-num">19</td><td>C08</td><td>Control</td><td>16</td><td>15</td></tr>
+            <tr><td class="row-num">20</td><td>C09</td><td>Control</td><td>14</td><td>13</td></tr>
+            <tr><td class="row-num">21</td><td>C10</td><td>Control</td><td>17</td><td>17</td></tr>
+          </table>
+          <p class="excel-caption">Diseño pre-post con grupo control. n=10 por grupo. Escala GAD-7 (0-21).</p>
+        </div>
+
+        <p>Ahora calcula las estadísticas comparativas. En la columna F escribe el panel de análisis:</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">F</td><td class="col-letter">G</td><td class="col-letter">H</td></tr>
+            <tr><td class="row-num">2</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700">Indicador</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700">Experimental</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700">Control</td>
+            </tr>
+            <tr><td class="row-num">3</td><td>Media PRE</td><td class="hl">=PROMEDIO.SI(B2:B21,"Experimental",C2:C21)</td><td class="hl">=PROMEDIO.SI(B2:B21,"Control",C2:C21)</td></tr>
+            <tr><td class="row-num">4</td><td>Media POST</td><td class="hl">=PROMEDIO.SI(B2:B21,"Experimental",D2:D21)</td><td class="hl">=PROMEDIO.SI(B2:B21,"Control",D2:D21)</td></tr>
+            <tr><td class="row-num">5</td><td>Diferencia (PRE - POST)</td><td class="hl">=G3-G4</td><td class="hl">=H3-H4</td></tr>
+            <tr><td class="row-num">6</td><td>Desv. estándar PRE</td><td class="hl">=DESVEST.M(C2:C11)</td><td class="hl">=DESVEST.M(C12:C21)</td></tr>
+            <tr><td class="row-num">7</td><td>Desv. estándar POST</td><td class="hl">=DESVEST.M(D2:D11)</td><td class="hl">=DESVEST.M(D12:D21)</td></tr>
+            <tr><td class="row-num">8</td><td>n</td><td>10</td><td>10</td></tr>
+          </table>
+        </div>
+
+        <p><strong>Resultados que deberías obtener:</strong></p>
+        <ul style="margin-left:1.3rem">
+          <li>Grupo Experimental: media PRE = 16.4, media POST = 11.1, diferencia = 5.3</li>
+          <li>Grupo Control: media PRE = 15.9, media POST = 15.5, diferencia = 0.4</li>
+        </ul>
+
+        <div class="hipotesis">
+          <p><strong>Antes de hacer el gráfico, predice:</strong></p>
+          <p>¿Qué te dice esa diferencia? ¿El grupo experimental bajó significativamente más que el control? ¿Eso es prueba de que el mindfulness funcionó?</p>
+          <textarea placeholder="Mi interpretación..."></textarea>
+        </div>
+
+        <p><strong>Crea el gráfico comparativo:</strong></p>
+        <ol>
+          <li>Selecciona el rango <code class="inline">F2:H5</code> (sin desviaciones estándar)</li>
+          <li>Insertar → Gráficos → Columna agrupada</li>
+          <li>Cambia el título a: <code class="inline">Efecto del mindfulness en ansiedad (n=10 por grupo)</code></li>
+          <li>Agrega título al eje Y: <code class="inline">Puntaje de ansiedad (GAD-7)</code></li>
+          <li>Aplica colores distintos: morado para experimental, gris para control</li>
+        </ol>
+
+        <p>El gráfico debe mostrar claramente que el grupo experimental bajó mucho (de 16.4 a 11.1) mientras que el grupo control prácticamente no cambió (de 15.9 a 15.5). <strong>Esta es la base de la evidencia experimental.</strong></p>
+
+        <div class="reflexion">
+          <p><strong>Interpretación experimental</strong>:</p>
+          <ol>
+            <li>¿Por qué fue importante incluir un grupo control? ¿Qué habríamos concluido erróneamente si no lo hubiéramos incluido?</li>
+            <li>El grupo control también cambió ligeramente (0.4 puntos). ¿Qué razones psicológicas podrías dar para ese cambio mínimo? (paso del tiempo, expectativa, etc.)</li>
+            <li>Si fueras el psicólogo investigador, ¿qué le contestarías a un escéptico que dice "tal vez los del grupo experimental ya querían mejorar y por eso reportaron menos ansiedad"?</li>
+            <li>Si quisieras estar 100% seguro del efecto, ¿qué controles adicionales aplicarías al estudio? (Doble ciego, asignación aleatoria, evaluador externo...)</li>
+          </ol>
+          <textarea placeholder="Tus reflexiones experimentales..."></textarea>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Simulé un experimento con grupo control y gráfico comparativo</div>
+      </div>
+
+      <div class="entregable">
+        <h4>Entrega de la Fase 3</h4>
+        <ul>
+          <li>Hoja <code class="inline" style="color:var(--ink)">Experimento</code> con los 20 participantes</li>
+          <li>Panel de análisis comparativo entre grupos experimental y control</li>
+          <li>Gráfico de columnas agrupadas con título y ejes etiquetados</li>
+          <li>Identificación escrita de VI, VD y VC del estudio del mindfulness</li>
+          <li>Reflexión sobre por qué el grupo control es indispensable</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============== FASE 4: 2.4 y 2.5 OBSERVACIÓN (1.5h) ============== -->
+  <section class="fase" id="fase4">
+    <div class="fase-header">
+      <div>
+        <div class="fase-num">Fase 4 · Unidad II (2.4 y 2.5)</div>
+        <h2>Métodos observacionales y estudios comparativos</h2>
+      </div>
+      <div class="fase-time">⏱ 1.5 horas</div>
+    </div>
+    <div class="fase-body">
+
+      <div class="problema-abp">
+        <h3>El problema con el que vas a trabajar</h3>
+        <p>Un Director de Educación Básica te llama. Quiere entender por qué las niñas y los niños en el patio de recreo se comportan de manera tan diferente: muchas niñas conversan en pequeños grupos sentadas, mientras los niños juegan en grupos grandes con actividad física intensa.</p>
+        <p style="font-weight:600; color:var(--accent-deep);">Tu reto: no puedes hacer un experimento (no le vas a "dar tratamiento" a los niños). Necesitas <strong>observar</strong> sin intervenir, y registrar lo que ves de manera sistemática. ¿Cómo lo haces sin sesgar tu observación?</p>
+      </div>
+
+      <div class="objetivo">
+        <strong>Objetivo de esta fase</strong>
+        Vas a aprender los métodos observacionales (subtema 2.4) y los estudios comparativos (2.5), entenderás cuándo usarlos y por qué son tan importantes en psicología del desarrollo. Capturarás un registro observacional en Excel y harás un análisis comparativo entre grupos.
+      </div>
+
+      <!-- PASO 11 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">11</div><h3>Subtema 2.4 · Métodos observacionales</h3></div>
+
+        <p>En psicología, muchas veces no podemos (o no debemos) manipular variables. Por ejemplo, no puedes "asignar" depresión a un grupo para ver qué pasa. En estos casos, el método observacional es la mejor opción.</p>
+
+        <div class="glosario">
+          <dl>
+            <dt>Observación naturalista</dt>
+            <dd>Se observa el comportamiento <strong>en su entorno natural</strong>, sin intervenir. Ejemplo: registrar interacciones de niños en el patio de recreo.</dd>
+            <dt>Observación participante</dt>
+            <dd>El investigador <strong>participa</strong> en el grupo que estudia. Ejemplo: una psicóloga que se une a un grupo de apoyo para entenderlo desde adentro.</dd>
+            <dt>Observación estructurada</dt>
+            <dd>Se observan <strong>categorías específicas</strong> predefinidas con una lista de cotejo o sistema de codificación. Ejemplo: "¿el niño compartió juguetes? sí / no".</dd>
+            <dt>Observación de campo vs laboratorio</dt>
+            <dd>Campo = ambiente real (escuela, hogar). Laboratorio = ambiente controlado (sala de observación con espejo de Gesell).</dd>
+          </dl>
+        </div>
+
+        <div class="ejemplo">
+          <h4>Reglas básicas para observar bien en psicología</h4>
+          <ul style="margin-left:1.3rem">
+            <li><strong>Define qué vas a observar antes de empezar:</strong> sin un sistema de categorías, terminarás "viendo lo que ya creías"</li>
+            <li><strong>Sé descriptivo, no interpretativo:</strong> escribe "Juan empujó a Pedro" en vez de "Juan estaba enojado"</li>
+            <li><strong>Registra el tiempo:</strong> hora, duración, contexto</li>
+            <li><strong>Si es posible, usa dos observadores:</strong> para verificar que ambos vean lo mismo (confiabilidad inter-observadores)</li>
+            <li><strong>Cuida los aspectos éticos:</strong> obtén permisos, mantén anonimato, no expongas a los participantes</li>
+          </ul>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Entendí los tipos de observación y sus reglas básicas</div>
+      </div>
+
+      <!-- PASO 12 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">12</div><h3>Práctica · Registra observaciones en Excel</h3></div>
+
+        <p>Vas a simular un registro observacional del recreo escolar. Imagina que observaste durante 30 minutos a un grupo de 20 niños (10 niñas, 10 niños) de tercero de primaria, registrando sus conductas. Crea una hoja llamada <code class="inline">Observacion</code> con pestaña <strong>amarilla</strong>.</p>
+
+        <p>Captura este registro:</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">A</td><td class="col-letter">B</td><td class="col-letter">C</td><td class="col-letter">D</td><td class="col-letter">E</td><td class="col-letter">F</td></tr>
+            <tr><td class="row-num">1</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">ID</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Sexo</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Actividad principal</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Tamaño grupo</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Nivel actividad</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Conversación</td>
+            </tr>
+            <tr><td class="row-num">2</td><td>N01</td><td>F</td><td>Conversar</td><td>3</td><td>Bajo</td><td>Sí</td></tr>
+            <tr><td class="row-num">3</td><td>N02</td><td>F</td><td>Caminar y conversar</td><td>2</td><td>Bajo</td><td>Sí</td></tr>
+            <tr><td class="row-num">4</td><td>N03</td><td>F</td><td>Juego de roles</td><td>4</td><td>Medio</td><td>Sí</td></tr>
+            <tr><td class="row-num">5</td><td>N04</td><td>F</td><td>Conversar</td><td>5</td><td>Bajo</td><td>Sí</td></tr>
+            <tr><td class="row-num">6</td><td>N05</td><td>F</td><td>Salto de cuerda</td><td>3</td><td>Alto</td><td>Sí</td></tr>
+            <tr><td class="row-num">7</td><td>N06</td><td>F</td><td>Conversar</td><td>4</td><td>Bajo</td><td>Sí</td></tr>
+            <tr><td class="row-num">8</td><td>N07</td><td>F</td><td>Dibujar</td><td>2</td><td>Bajo</td><td>Sí</td></tr>
+            <tr><td class="row-num">9</td><td>N08</td><td>F</td><td>Conversar</td><td>3</td><td>Bajo</td><td>Sí</td></tr>
+            <tr><td class="row-num">10</td><td>N09</td><td>F</td><td>Juego de roles</td><td>4</td><td>Medio</td><td>Sí</td></tr>
+            <tr><td class="row-num">11</td><td>N10</td><td>F</td><td>Salto de cuerda</td><td>3</td><td>Alto</td><td>Sí</td></tr>
+            <tr><td class="row-num">12</td><td>N11</td><td>M</td><td>Fútbol</td><td>8</td><td>Alto</td><td>No</td></tr>
+            <tr><td class="row-num">13</td><td>N12</td><td>M</td><td>Fútbol</td><td>8</td><td>Alto</td><td>No</td></tr>
+            <tr><td class="row-num">14</td><td>N13</td><td>M</td><td>Persecución</td><td>6</td><td>Alto</td><td>No</td></tr>
+            <tr><td class="row-num">15</td><td>N14</td><td>M</td><td>Fútbol</td><td>8</td><td>Alto</td><td>No</td></tr>
+            <tr><td class="row-num">16</td><td>N15</td><td>M</td><td>Persecución</td><td>5</td><td>Alto</td><td>No</td></tr>
+            <tr><td class="row-num">17</td><td>N16</td><td>M</td><td>Conversar</td><td>2</td><td>Bajo</td><td>Sí</td></tr>
+            <tr><td class="row-num">18</td><td>N17</td><td>M</td><td>Cartas Pokémon</td><td>3</td><td>Bajo</td><td>Sí</td></tr>
+            <tr><td class="row-num">19</td><td>N18</td><td>M</td><td>Fútbol</td><td>8</td><td>Alto</td><td>No</td></tr>
+            <tr><td class="row-num">20</td><td>N19</td><td>M</td><td>Persecución</td><td>5</td><td>Alto</td><td>No</td></tr>
+            <tr><td class="row-num">21</td><td>N20</td><td>M</td><td>Lego</td><td>2</td><td>Bajo</td><td>Sí</td></tr>
+          </table>
+          <p class="excel-caption">Observación del recreo, escuela primaria, 30 minutos. n=20 (10F, 10M).</p>
+        </div>
+
+        <p>Observa que la columna C ("Actividad principal") es una <strong>variable nominal</strong> (categorías sin orden), la columna D ("Tamaño grupo") es <strong>numérica</strong>, la columna E ("Nivel actividad") es <strong>ordinal</strong> (bajo&lt;medio&lt;alto) y la columna F es <strong>nominal dicotómica</strong> (sí/no). Cada tipo requiere análisis diferente.</p>
+
+        <div class="check-done"><input type="checkbox" class="check"> Capturé el registro observacional con sus distintos tipos de variables</div>
+      </div>
+
+      <!-- PASO 13 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">13</div><h3>Subtema 2.5 · Estudios comparativos · Análisis en Excel</h3></div>
+
+        <p>El estudio que acabas de capturar es un <strong>estudio comparativo</strong>: comparas grupos definidos por una característica (en este caso, el sexo de los niños). No manipulaste nada, solo observaste. Pero puedes encontrar diferencias importantes.</p>
+
+        <p>En la columna H, construye el panel de análisis comparativo:</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">H</td><td class="col-letter">I</td><td class="col-letter">J</td></tr>
+            <tr><td class="row-num">2</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700">Indicador</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700">Niñas (F)</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700">Niños (M)</td>
+            </tr>
+            <tr><td class="row-num">3</td><td>n</td><td class="hl">=CONTAR.SI(B2:B21,"F")</td><td class="hl">=CONTAR.SI(B2:B21,"M")</td></tr>
+            <tr><td class="row-num">4</td><td>Promedio tamaño grupo</td><td class="hl">=PROMEDIO.SI(B2:B21,"F",D2:D21)</td><td class="hl">=PROMEDIO.SI(B2:B21,"M",D2:D21)</td></tr>
+            <tr><td class="row-num">5</td><td>Casos con actividad alta</td><td class="hl">=CONTAR.SI.CONJUNTO(B2:B21,"F",E2:E21,"Alto")</td><td class="hl">=CONTAR.SI.CONJUNTO(B2:B21,"M",E2:E21,"Alto")</td></tr>
+            <tr><td class="row-num">6</td><td>Casos con conversación</td><td class="hl">=CONTAR.SI.CONJUNTO(B2:B21,"F",F2:F21,"Sí")</td><td class="hl">=CONTAR.SI.CONJUNTO(B2:B21,"M",F2:F21,"Sí")</td></tr>
+            <tr><td class="row-num">7</td><td>% con actividad alta</td><td class="hl">=I5/I3*100</td><td class="hl">=J5/J3*100</td></tr>
+          </table>
+        </div>
+
+        <p><strong>Resultados que deberías obtener:</strong></p>
+        <ul style="margin-left:1.3rem">
+          <li>Promedio tamaño de grupo niñas: 3.3 | niños: 5.5 (los niños tienden a grupos más grandes)</li>
+          <li>Niñas con actividad alta: 2 (20%) | Niños con actividad alta: 7 (70%)</li>
+          <li>Niñas que conversan: 10 (100%) | Niños que conversan: 3 (30%)</li>
+        </ul>
+
+        <p><strong>Crea un gráfico comparativo:</strong></p>
+        <ol>
+          <li>Selecciona <code class="inline">H4:J7</code></li>
+          <li>Insertar → Columna agrupada</li>
+          <li>Título: <code class="inline">Diferencias conductuales en el recreo por sexo (n=20)</code></li>
+          <li>Eje Y: <code class="inline">Frecuencia o promedio</code></li>
+        </ol>
+
+        <p><strong>También cuenta las actividades más frecuentes</strong> (en columnas L y M):</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">L</td><td class="col-letter">M</td></tr>
+            <tr><td class="row-num">2</td><td style="background:#6a3d9a;color:white;font-weight:700">Actividad</td><td style="background:#6a3d9a;color:white;font-weight:700">Frecuencia</td></tr>
+            <tr><td class="row-num">3</td><td>Conversar</td><td class="hl">=CONTAR.SI(C2:C21,"Conversar")</td></tr>
+            <tr><td class="row-num">4</td><td>Fútbol</td><td class="hl">=CONTAR.SI(C2:C21,"Fútbol")</td></tr>
+            <tr><td class="row-num">5</td><td>Persecución</td><td class="hl">=CONTAR.SI(C2:C21,"Persecución")</td></tr>
+            <tr><td class="row-num">6</td><td>Juego de roles</td><td class="hl">=CONTAR.SI(C2:C21,"Juego de roles")</td></tr>
+            <tr><td class="row-num">7</td><td>Salto de cuerda</td><td class="hl">=CONTAR.SI(C2:C21,"Salto de cuerda")</td></tr>
+            <tr><td class="row-num">8</td><td>Otra</td><td class="hl">=20-SUMA(M3:M7)</td></tr>
+          </table>
+        </div>
+
+        <p>Crea un <strong>gráfico de pastel</strong> con esta tabla para mostrar la distribución de actividades.</p>
+
+        <div class="reflexion">
+          <p><strong>Interpretación del estudio observacional comparativo</strong>:</p>
+          <ol>
+            <li>¿Qué diferencias importantes encontraste entre niños y niñas? Menciona al menos 2.</li>
+            <li>Como psicólogo en formación, ¿qué hipótesis tendrías para EXPLICAR esas diferencias? (socialización de género, biología, cultura, etc.)</li>
+            <li>Este es un estudio observacional, NO experimental. ¿Puedes concluir que "ser niño causa jugar más fútbol"? ¿Por qué sí o por qué no?</li>
+            <li>¿Qué limitaciones tiene este estudio? Menciona 3 (tamaño de muestra, una sola escuela, una sola observación, sesgo del observador, etc.).</li>
+            <li>Si quisieras profundizar, ¿cómo combinarías este estudio observacional con un estudio cualitativo de entrevistas? ¿Qué preguntas adicionales te haría falta?</li>
+          </ol>
+          <textarea placeholder="Tus reflexiones..."></textarea>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Realicé análisis comparativo entre dos grupos observados</div>
+      </div>
+
+      <div class="entregable">
+        <h4>Entrega de la Fase 4</h4>
+        <ul>
+          <li>Hoja <code class="inline" style="color:var(--ink)">Observacion</code> con el registro completo de los 20 niños</li>
+          <li>Panel comparativo entre niñas y niños</li>
+          <li>Gráfico de columnas comparando comportamientos por sexo</li>
+          <li>Gráfico de pastel con distribución de actividades</li>
+          <li>Reflexión interpretativa con hipótesis psicológicas y limitaciones del estudio</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============== FASE 5: 2.6, 2.7, 2.8 + PROYECTO (3h) ============== -->
+  <section class="fase" id="fase5">
+    <div class="fase-header">
+      <div>
+        <div class="fase-num">Fase 5 · Unidad II (2.6, 2.7, 2.8) + Proyecto</div>
+        <h2>Instrumentos de medición y proyecto integrador</h2>
+      </div>
+      <div class="fase-time">⏱ 3 horas</div>
+    </div>
+    <div class="fase-body">
+
+      <div class="problema-abp">
+        <h3>El gran problema integrador</h3>
+        <p>La pandemia de COVID-19 dejó una huella profunda en la salud mental de los estudiantes universitarios. A más de 5 años de esos eventos, todavía hay preguntas sin responder. Te encomiendan una investigación real:</p>
+        <p style="font-size:1.05rem; font-weight:600; color:var(--accent-deep); padding:0.6rem 0;">"¿Cómo es el bienestar emocional actual de los estudiantes universitarios mexicanos en 2026, y qué factores lo explican?"</p>
+        <p>Vas a diseñar el estudio, elegir los instrumentos, capturar datos simulados, analizarlos y presentar un <strong>dashboard completo</strong> con tus hallazgos. Este es tu producto final del curso.</p>
+      </div>
+
+      <div class="objetivo">
+        <strong>Objetivo de esta fase</strong>
+        Vas a integrar todo lo aprendido: plantearás una buena pregunta de investigación (2.6), elegirás los instrumentos de medición apropiados (2.7), aplicarás los nuevos paradigmas cuantitativos (2.8) y construirás un proyecto completo con análisis estadístico y visualización en Excel.
+      </div>
+
+      <!-- PASO 14 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">14</div><h3>Subtema 2.6 · Planteamiento de preguntas de investigación</h3></div>
+
+        <p>Una buena pregunta de investigación es el corazón de un estudio. Si la pregunta está mal planteada, todo lo demás se desmorona. Las preguntas cuantitativas tienen características específicas.</p>
+
+        <div class="ejemplo">
+          <h4>Características de una buena pregunta cuantitativa en psicología</h4>
+          <ul style="margin-left:1.3rem">
+            <li><strong>Específica:</strong> no "¿cómo están los estudiantes?" sino "¿cuál es el nivel de ansiedad de estudiantes universitarios mexicanos según el GAD-7?"</li>
+            <li><strong>Medible:</strong> contiene variables que se pueden cuantificar con instrumentos</li>
+            <li><strong>Acotada en tiempo y espacio:</strong> "...durante el semestre enero-junio 2026, en universidades públicas de Jalisco"</li>
+            <li><strong>Relevante:</strong> aporta conocimiento al campo, no responde algo trivial</li>
+            <li><strong>Ética:</strong> no causa daño a los participantes</li>
+            <li><strong>Factible:</strong> tienes los recursos y tiempo para responderla</li>
+          </ul>
+        </div>
+
+        <div class="comparativa">
+          <div class="compara-card a">
+            <h4>Pregunta mal planteada</h4>
+            <ul>
+              <li>"¿Las personas son felices?" (demasiado amplia, sin medición)</li>
+              <li>"¿La música es buena?" (no es medible, no específica)</li>
+              <li>"¿Existe el bienestar?" (filosófica, no investigable)</li>
+              <li>"¿Por qué Juan está deprimido?" (caso único, no generalizable)</li>
+            </ul>
+          </div>
+          <div class="compara-card b">
+            <h4>Pregunta bien planteada</h4>
+            <ul>
+              <li>"¿Qué porcentaje de universitarios mexicanos reporta síntomas de ansiedad clínicamente significativos según GAD-7 en 2026?"</li>
+              <li>"¿Existe relación entre horas de uso de redes sociales y nivel de ansiedad en estudiantes de 18-22 años?"</li>
+              <li>"¿Hay diferencias significativas en bienestar emocional entre estudiantes que practican ejercicio regularmente vs los que no?"</li>
+              <li>"¿La calidad del sueño predice el rendimiento académico en estudiantes universitarios?"</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="hipotesis">
+          <p><strong>Plantea tu pregunta de investigación</strong>:</p>
+          <p>Para el proyecto integrador sobre bienestar emocional post-pandemia, escribe una pregunta de investigación específica que cumpla con las 6 características. Si te cuesta trabajo, sigue esta estructura: <em>"¿Existe relación entre [variable 1] y [variable 2] en [población] durante [periodo]?"</em> o <em>"¿Cuál es el nivel de [variable] en [población] durante [periodo]?"</em></p>
+          <textarea placeholder="Mi pregunta de investigación es..."></textarea>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Planteé una pregunta de investigación cuantitativa bien formulada</div>
+      </div>
+
+      <!-- PASO 15 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">15</div><h3>Subtema 2.7 · Instrumentos de medición</h3></div>
+
+        <p>Una vez que tienes la pregunta, necesitas decidir <strong>cómo vas a medir</strong> las variables. Para eso existen los instrumentos de medición. En psicología los más comunes son:</p>
+
+        <div class="glosario">
+          <dl>
+            <dt>Entrevista</dt>
+            <dd>Diálogo estructurado, semiestructurado o libre con el participante. Permite profundidad pero requiere mucho tiempo. Más usada en métodos cualitativos.</dd>
+            <dt>Encuesta</dt>
+            <dd>Cuestionario amplio que recoge información de muchas personas. Ideal para describir poblaciones (ej. encuesta nacional de salud mental).</dd>
+            <dt>Cuestionario</dt>
+            <dd>Conjunto de preguntas escritas con opciones de respuesta. Pueden ser anónimos. Más rápido que la entrevista.</dd>
+            <dt>Escala psicométrica</dt>
+            <dd>Instrumento estandarizado y validado que mide un constructo psicológico. Ejemplos: GAD-7 (ansiedad), PHQ-9 (depresión), Escala Rosenberg (autoestima), Escala Likert (5 puntos, "muy en desacuerdo" a "muy de acuerdo").</dd>
+            <dt>Prueba psicológica (test)</dt>
+            <dd>Instrumento que evalúa una habilidad o característica de manera sistemática. Ejemplos: WISC (inteligencia infantil), MMPI (personalidad), Bender (organización visomotora).</dd>
+            <dt>Observación sistemática</dt>
+            <dd>Como viste en la Fase 4, registro estructurado de conductas según categorías predefinidas.</dd>
+          </dl>
+        </div>
+
+        <div class="ejemplo">
+          <h4>Niveles de medición de las variables</h4>
+          <p>Cada variable que mides tiene un <strong>nivel de medición</strong>. Esto determina qué análisis estadísticos puedes hacer:</p>
+          <ul style="margin-left:1.3rem">
+            <li><strong>Nominal:</strong> categorías sin orden. Ejemplo: sexo (M/F), religión, estado civil. Solo puedes contar frecuencias.</li>
+            <li><strong>Ordinal:</strong> categorías con orden, pero sin distancia exacta. Ejemplo: nivel socioeconómico (bajo/medio/alto), escala Likert (5 puntos).</li>
+            <li><strong>Intervalo:</strong> distancia exacta entre valores, pero sin cero absoluto. Ejemplo: temperatura, coeficiente intelectual.</li>
+            <li><strong>Razón:</strong> distancia exacta y cero absoluto. Ejemplo: edad, número de hijos, horas de sueño, peso.</li>
+          </ul>
+        </div>
+
+        <div class="reto">
+          <h4>Reto · Diseña tu cuestionario de bienestar</h4>
+          <p>Diseña en tu cuaderno un mini-cuestionario de <strong>10 preguntas</strong> para tu proyecto sobre bienestar emocional post-pandemia. Incluye:</p>
+          <ul style="margin-left:1.3rem; font-size:0.92rem">
+            <li>2 preguntas demográficas (nivel nominal/razón): edad, sexo</li>
+            <li>3 preguntas sobre conductas (nivel razón): horas de sueño, horas de redes sociales, frecuencia de ejercicio semanal</li>
+            <li>3 preguntas con escala Likert 1-5 (nivel ordinal): satisfacción con la vida, percepción de apoyo social, percepción de afectación por la pandemia</li>
+            <li>2 preguntas de escala numérica (nivel intervalo): nivel de ansiedad 0-10, nivel de bienestar 0-10</li>
+          </ul>
+          <p>Para cada pregunta, identifica su <strong>nivel de medición</strong> y qué tipo de análisis estadístico podrías hacer con ella.</p>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Diseñé un cuestionario con preguntas de distintos niveles de medición</div>
+      </div>
+
+      <!-- PASO 16 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">16</div><h3>Subtema 2.8 · Nuevos paradigmas de investigación cuantitativa</h3></div>
+
+        <p>La investigación cuantitativa contemporánea ha evolucionado mucho. Los métodos tradicionales se complementan con nuevos paradigmas que aprovechan la tecnología y replantean conceptos.</p>
+
+        <div class="ejemplo">
+          <h4>Tendencias actuales en investigación cuantitativa en psicología</h4>
+          <ul style="margin-left:1.3rem">
+            <li><strong>Big data en psicología:</strong> análisis de grandes volúmenes de datos provenientes de redes sociales, aplicaciones móviles o registros médicos.</li>
+            <li><strong>Estudios de ciencia abierta y replicación:</strong> compartir datos y métodos para que otros puedan verificar los resultados. Surge tras la "crisis de replicación" en psicología.</li>
+            <li><strong>Análisis bayesiano:</strong> alternativa a la estadística clásica (frecuentista) que incorpora información previa.</li>
+            <li><strong>Estudios longitudinales con apps móviles:</strong> medir el estado de ánimo varias veces al día durante semanas (Ecological Momentary Assessment).</li>
+            <li><strong>Meta-análisis:</strong> combinar resultados de muchos estudios para tener conclusiones más robustas.</li>
+            <li><strong>Investigación con neuroimagen:</strong> RMNf, EEG combinados con pruebas psicológicas.</li>
+            <li><strong>Modelos de ecuaciones estructurales (SEM):</strong> análisis estadísticos complejos para probar modelos teóricos.</li>
+          </ul>
+        </div>
+
+        <p>Para tu proyecto integrador, aunque no aplicarás estos paradigmas avanzados, es importante que sepas que existen. La psicología como ciencia está en constante evolución metodológica.</p>
+
+        <div class="check-done"><input type="checkbox" class="check"> Conozco los nuevos paradigmas de investigación cuantitativa</div>
+      </div>
+
+
+      <!-- PASO 17: PROYECTO INTEGRADOR -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">17</div><h3>Proyecto integrador · Captura el dataset</h3></div>
+
+        <p>Has llegado al momento de aplicar todo. Vas a trabajar con datos simulados de una investigación real sobre bienestar emocional post-pandemia en estudiantes universitarios mexicanos en 2026. Tu rol: analista de datos psicológicos.</p>
+
+        <p>Crea una nueva hoja llamada <code class="inline">Proyecto_Bienestar</code> con pestaña <strong>roja</strong>. Captura este dataset de 25 estudiantes:</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">A</td><td class="col-letter">B</td><td class="col-letter">C</td><td class="col-letter">D</td><td class="col-letter">E</td><td class="col-letter">F</td><td class="col-letter">G</td><td class="col-letter">H</td></tr>
+            <tr><td class="row-num">1</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">ID</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Edad</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Sexo</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Ansiedad (0-21)</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Depresión (0-27)</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Horas sueño</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Horas pantalla</td>
+              <td style="background:#6a3d9a;color:white;font-weight:700;text-align:center">Ejercicio sem.</td>
+            </tr>
+            <tr><td class="row-num">2</td><td>P01</td><td>19</td><td>F</td><td>14</td><td>12</td><td>6.5</td><td>7</td><td>0</td></tr>
+            <tr><td class="row-num">3</td><td>P02</td><td>22</td><td>M</td><td>8</td><td>5</td><td>7.5</td><td>4</td><td>3</td></tr>
+            <tr><td class="row-num">4</td><td>P03</td><td>20</td><td>F</td><td>17</td><td>16</td><td>5.5</td><td>9</td><td>0</td></tr>
+            <tr><td class="row-num">5</td><td>P04</td><td>21</td><td>M</td><td>11</td><td>8</td><td>7</td><td>5</td><td>2</td></tr>
+            <tr><td class="row-num">6</td><td>P05</td><td>19</td><td>F</td><td>16</td><td>14</td><td>6</td><td>8</td><td>1</td></tr>
+            <tr><td class="row-num">7</td><td>P06</td><td>23</td><td>M</td><td>6</td><td>4</td><td>8</td><td>3</td><td>4</td></tr>
+            <tr><td class="row-num">8</td><td>P07</td><td>18</td><td>F</td><td>19</td><td>17</td><td>5</td><td>10</td><td>0</td></tr>
+            <tr><td class="row-num">9</td><td>P08</td><td>20</td><td>M</td><td>13</td><td>10</td><td>6.5</td><td>6</td><td>2</td></tr>
+            <tr><td class="row-num">10</td><td>P09</td><td>21</td><td>F</td><td>15</td><td>13</td><td>6</td><td>7</td><td>1</td></tr>
+            <tr><td class="row-num">11</td><td>P10</td><td>19</td><td>M</td><td>9</td><td>7</td><td>7.5</td><td>4</td><td>3</td></tr>
+            <tr><td class="row-num">12</td><td>P11</td><td>22</td><td>F</td><td>18</td><td>15</td><td>5.5</td><td>9</td><td>0</td></tr>
+            <tr><td class="row-num">13</td><td>P12</td><td>20</td><td>M</td><td>7</td><td>5</td><td>8</td><td>3</td><td>5</td></tr>
+            <tr><td class="row-num">14</td><td>P13</td><td>21</td><td>F</td><td>13</td><td>11</td><td>6.5</td><td>6</td><td>1</td></tr>
+            <tr><td class="row-num">15</td><td>P14</td><td>19</td><td>M</td><td>10</td><td>8</td><td>7</td><td>5</td><td>2</td></tr>
+            <tr><td class="row-num">16</td><td>P15</td><td>23</td><td>F</td><td>20</td><td>18</td><td>4.5</td><td>11</td><td>0</td></tr>
+            <tr><td class="row-num">17</td><td>P16</td><td>20</td><td>M</td><td>8</td><td>6</td><td>7.5</td><td>4</td><td>3</td></tr>
+            <tr><td class="row-num">18</td><td>P17</td><td>22</td><td>F</td><td>12</td><td>10</td><td>7</td><td>5</td><td>2</td></tr>
+            <tr><td class="row-num">19</td><td>P18</td><td>21</td><td>M</td><td>5</td><td>3</td><td>8.5</td><td>2</td><td>5</td></tr>
+            <tr><td class="row-num">20</td><td>P19</td><td>19</td><td>F</td><td>16</td><td>13</td><td>6</td><td>8</td><td>0</td></tr>
+            <tr><td class="row-num">21</td><td>P20</td><td>20</td><td>M</td><td>12</td><td>9</td><td>6.5</td><td>6</td><td>2</td></tr>
+            <tr><td class="row-num">22</td><td>P21</td><td>22</td><td>F</td><td>11</td><td>9</td><td>7</td><td>5</td><td>3</td></tr>
+            <tr><td class="row-num">23</td><td>P22</td><td>21</td><td>M</td><td>14</td><td>11</td><td>6</td><td>7</td><td>1</td></tr>
+            <tr><td class="row-num">24</td><td>P23</td><td>20</td><td>F</td><td>17</td><td>15</td><td>5.5</td><td>9</td><td>0</td></tr>
+            <tr><td class="row-num">25</td><td>P24</td><td>19</td><td>M</td><td>6</td><td>4</td><td>8</td><td>3</td><td>4</td></tr>
+            <tr><td class="row-num">26</td><td>P25</td><td>21</td><td>F</td><td>13</td><td>12</td><td>6.5</td><td>7</td><td>1</td></tr>
+          </table>
+          <p class="excel-caption">Datos simulados, n=25 universitarios mexicanos, semestre primavera 2026. Variables: ansiedad (GAD-7), depresión (PHQ-9), horas de sueño promedio diario, horas de pantalla recreativa diaria, sesiones de ejercicio semanal.</p>
+        </div>
+
+        <p>Identifica el <strong>nivel de medición</strong> de cada variable. Anótalo en una celda libre o en tu cuaderno:</p>
+        <ul style="margin-left:1.3rem; font-size:0.93rem">
+          <li>ID: nominal (identificador)</li>
+          <li>Edad: razón (años cumplidos)</li>
+          <li>Sexo: nominal (F/M)</li>
+          <li>Ansiedad, Depresión: intervalo (puntajes en escala)</li>
+          <li>Horas sueño, pantalla, ejercicio: razón (medición con cero absoluto)</li>
+        </ul>
+
+        <div class="check-done"><input type="checkbox" class="check"> Capturé el dataset completo de 25 estudiantes</div>
+      </div>
+
+      <!-- PASO 18 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">18</div><h3>Análisis estadístico descriptivo del estudio</h3></div>
+
+        <p>Construye un panel de análisis descriptivo. Comienza en la columna J:</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">J</td><td class="col-letter">K</td><td class="col-letter">L</td><td class="col-letter">M</td><td class="col-letter">N</td></tr>
+            <tr><td class="row-num">1</td><td colspan="5" style="background:#6a3d9a;color:white;font-weight:800;text-align:center">PANEL DE ANÁLISIS · MUESTRA TOTAL (n=25)</td></tr>
+            <tr><td class="row-num">2</td>
+              <td style="background:#f0e8f8;font-weight:700">Variable</td>
+              <td style="background:#f0e8f8;font-weight:700">Media</td>
+              <td style="background:#f0e8f8;font-weight:700">Mediana</td>
+              <td style="background:#f0e8f8;font-weight:700">Desv. Est.</td>
+              <td style="background:#f0e8f8;font-weight:700">Rango</td>
+            </tr>
+            <tr><td class="row-num">3</td><td>Ansiedad</td><td class="hl">=PROMEDIO(D2:D26)</td><td class="hl">=MEDIANA(D2:D26)</td><td class="hl">=DESVEST.M(D2:D26)</td><td class="hl">=MAX(D2:D26)-MIN(D2:D26)</td></tr>
+            <tr><td class="row-num">4</td><td>Depresión</td><td class="hl">=PROMEDIO(E2:E26)</td><td class="hl">=MEDIANA(E2:E26)</td><td class="hl">=DESVEST.M(E2:E26)</td><td class="hl">=MAX(E2:E26)-MIN(E2:E26)</td></tr>
+            <tr><td class="row-num">5</td><td>Horas sueño</td><td class="hl">=PROMEDIO(F2:F26)</td><td class="hl">=MEDIANA(F2:F26)</td><td class="hl">=DESVEST.M(F2:F26)</td><td class="hl">=MAX(F2:F26)-MIN(F2:F26)</td></tr>
+            <tr><td class="row-num">6</td><td>Horas pantalla</td><td class="hl">=PROMEDIO(G2:G26)</td><td class="hl">=MEDIANA(G2:G26)</td><td class="hl">=DESVEST.M(G2:G26)</td><td class="hl">=MAX(G2:G26)-MIN(G2:G26)</td></tr>
+            <tr><td class="row-num">7</td><td>Ejercicio sem.</td><td class="hl">=PROMEDIO(H2:H26)</td><td class="hl">=MEDIANA(H2:H26)</td><td class="hl">=DESVEST.M(H2:H26)</td><td class="hl">=MAX(H2:H26)-MIN(H2:H26)</td></tr>
+          </table>
+        </div>
+
+        <p>Ahora construye el análisis <strong>comparativo por sexo</strong> en la fila 10:</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">J</td><td class="col-letter">K</td><td class="col-letter">L</td><td class="col-letter">M</td></tr>
+            <tr><td class="row-num">9</td><td colspan="4" style="background:#0e7c7b;color:white;font-weight:800;text-align:center">COMPARATIVO POR SEXO</td></tr>
+            <tr><td class="row-num">10</td>
+              <td style="background:#e0f2f1;font-weight:700">Indicador</td>
+              <td style="background:#e0f2f1;font-weight:700">Mujeres</td>
+              <td style="background:#e0f2f1;font-weight:700">Hombres</td>
+              <td style="background:#e0f2f1;font-weight:700">Diferencia</td>
+            </tr>
+            <tr><td class="row-num">11</td><td>n</td><td class="hl">=CONTAR.SI(C2:C26,"F")</td><td class="hl">=CONTAR.SI(C2:C26,"M")</td><td>-</td></tr>
+            <tr><td class="row-num">12</td><td>Ansiedad promedio</td><td class="hl">=PROMEDIO.SI(C2:C26,"F",D2:D26)</td><td class="hl">=PROMEDIO.SI(C2:C26,"M",D2:D26)</td><td class="hl">=K12-L12</td></tr>
+            <tr><td class="row-num">13</td><td>Depresión promedio</td><td class="hl">=PROMEDIO.SI(C2:C26,"F",E2:E26)</td><td class="hl">=PROMEDIO.SI(C2:C26,"M",E2:E26)</td><td class="hl">=K13-L13</td></tr>
+            <tr><td class="row-num">14</td><td>Horas sueño promedio</td><td class="hl">=PROMEDIO.SI(C2:C26,"F",F2:F26)</td><td class="hl">=PROMEDIO.SI(C2:C26,"M",F2:F26)</td><td class="hl">=K14-L14</td></tr>
+            <tr><td class="row-num">15</td><td>Horas pantalla promedio</td><td class="hl">=PROMEDIO.SI(C2:C26,"F",G2:G26)</td><td class="hl">=PROMEDIO.SI(C2:C26,"M",G2:G26)</td><td class="hl">=K15-L15</td></tr>
+            <tr><td class="row-num">16</td><td>Ejercicio promedio</td><td class="hl">=PROMEDIO.SI(C2:C26,"F",H2:H26)</td><td class="hl">=PROMEDIO.SI(C2:C26,"M",H2:H26)</td><td class="hl">=K16-L16</td></tr>
+          </table>
+        </div>
+
+        <p>Ahora construye el panel de <strong>niveles clínicos de ansiedad</strong>. Según el GAD-7, los puntos de corte son: 0-4 mínima, 5-9 leve, 10-14 moderada, 15-21 severa.</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td class="col-letter"></td><td class="col-letter">J</td><td class="col-letter">K</td></tr>
+            <tr><td class="row-num">19</td><td colspan="2" style="background:#e85d3c;color:white;font-weight:800;text-align:center">DISTRIBUCIÓN DE NIVELES DE ANSIEDAD</td></tr>
+            <tr><td class="row-num">20</td><td style="background:#fff4e6;font-weight:700">Nivel</td><td style="background:#fff4e6;font-weight:700">Frecuencia</td></tr>
+            <tr><td class="row-num">21</td><td>Mínima (0-4)</td><td class="hl">=CONTAR.SI.CONJUNTO(D2:D26,"&lt;=4")</td></tr>
+            <tr><td class="row-num">22</td><td>Leve (5-9)</td><td class="hl">=CONTAR.SI.CONJUNTO(D2:D26,"&gt;=5",D2:D26,"&lt;=9")</td></tr>
+            <tr><td class="row-num">23</td><td>Moderada (10-14)</td><td class="hl">=CONTAR.SI.CONJUNTO(D2:D26,"&gt;=10",D2:D26,"&lt;=14")</td></tr>
+            <tr><td class="row-num">24</td><td>Severa (15-21)</td><td class="hl">=CONTAR.SI.CONJUNTO(D2:D26,"&gt;=15",D2:D26,"&lt;=21")</td></tr>
+          </table>
+        </div>
+
+        <p><strong>Resultados esperados</strong> (verifica que tus cálculos coincidan):</p>
+        <ul style="margin-left:1.3rem">
+          <li>Muestra total: 13 mujeres, 12 hombres</li>
+          <li>Ansiedad promedio total ≈ 12.4 | Mujeres ≈ 15.5 | Hombres ≈ 9.1</li>
+          <li>Depresión promedio total ≈ 10.2 | Mujeres ≈ 13.5 | Hombres ≈ 6.7</li>
+          <li>Horas sueño promedio total ≈ 6.6 | Mujeres ≈ 6.0 | Hombres ≈ 7.3</li>
+          <li>Horas pantalla promedio total ≈ 6.1 | Mujeres ≈ 7.5 | Hombres ≈ 4.4</li>
+          <li>Niveles de ansiedad: Mínima ≈ 0, Leve ≈ 7, Moderada ≈ 10, Severa ≈ 8</li>
+        </ul>
+
+        <div class="check-done"><input type="checkbox" class="check"> Construí el panel de análisis descriptivo y comparativo</div>
+      </div>
+
+      <!-- PASO 19 -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">19</div><h3>Crea el dashboard de visualización</h3></div>
+
+        <p>Un buen estudio psicológico necesita visualizar sus resultados. Vas a crear <strong>4 gráficos profesionales</strong> que cuenten la historia de tus datos.</p>
+
+        <p><strong>Gráfico 1 · Distribución de niveles de ansiedad (gráfico de pastel):</strong></p>
+        <ol>
+          <li>Selecciona el rango <code class="inline">J20:K24</code></li>
+          <li>Insertar → Gráfico circular 2D</li>
+          <li>Título: <code class="inline">Niveles de ansiedad en universitarios mexicanos (GAD-7, n=25)</code></li>
+          <li>Agrega etiquetas de porcentaje y nombre de categoría</li>
+          <li>Colores semánticos: verde (mínima), amarillo (leve), naranja (moderada), rojo (severa)</li>
+        </ol>
+
+        <p><strong>Gráfico 2 · Comparativo por sexo (columnas agrupadas):</strong></p>
+        <ol>
+          <li>Selecciona el rango <code class="inline">J11:L16</code> (variables y promedios por sexo, sin la columna Diferencia)</li>
+          <li>Insertar → Columna agrupada</li>
+          <li>Título: <code class="inline">Diferencias de bienestar emocional por sexo (n=25)</code></li>
+          <li>Colores diferenciados: rosa para mujeres, azul para hombres (o tu elección que tenga contraste)</li>
+        </ol>
+
+        <p><strong>Gráfico 3 · Relación pantalla-ansiedad (dispersión):</strong></p>
+        <ol>
+          <li>Selecciona las columnas G (Horas pantalla) y D (Ansiedad) — usa Ctrl para selección no contigua</li>
+          <li>Insertar → Dispersión</li>
+          <li>Título: <code class="inline">Relación entre uso de pantalla y ansiedad (n=25)</code></li>
+          <li>Eje X: <code class="inline">Horas de pantalla diaria</code></li>
+          <li>Eje Y: <code class="inline">Puntaje de ansiedad (GAD-7)</code></li>
+          <li>Clic derecho en un punto → Agregar línea de tendencia → marca "Presentar valor R²"</li>
+        </ol>
+
+        <p><strong>Gráfico 4 · Histograma de depresión:</strong></p>
+        <ol>
+          <li>Selecciona el rango <code class="inline">E2:E26</code> (puntajes de depresión)</li>
+          <li>Insertar → busca <strong>Histograma</strong></li>
+          <li>Título: <code class="inline">Distribución de puntajes de depresión (PHQ-9, n=25)</code></li>
+          <li>Eje X: <code class="inline">Puntaje PHQ-9</code></li>
+          <li>Eje Y: <code class="inline">Frecuencia</code></li>
+          <li>Ajusta el ancho del contenedor a 3 (para tener 6-7 barras visibles)</li>
+        </ol>
+
+        <p>Reorganiza los 4 gráficos en una sección de la hoja para que se vean como un <strong>dashboard</strong> profesional. Agrega un título general arriba combinando celdas:</p>
+
+        <div class="excel-demo">
+          <table class="excel">
+            <tr><td colspan="6" style="background:#6a3d9a;color:white;font-weight:800;text-align:center;font-size:1.1rem;padding:0.8rem">DASHBOARD · BIENESTAR EMOCIONAL POST-PANDEMIA EN UNIVERSITARIOS MEXICANOS · 2026</td></tr>
+          </table>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Construí el dashboard con 4 gráficos profesionales</div>
+      </div>
+
+      <!-- PASO 20: INTERPRETACIÓN FINAL -->
+      <div class="paso">
+        <div class="paso-header"><div class="paso-num">20</div><h3>Redacta tu reporte de hallazgos</h3></div>
+
+        <p>El producto final no son los gráficos solos: es tu <strong>interpretación profesional</strong>. En tu cuaderno o documento, redacta un reporte de 1 página (300-400 palabras) con la siguiente estructura:</p>
+
+        <div class="ejemplo">
+          <h4>Estructura del reporte de hallazgos</h4>
+          <ol style="margin-left:1.3rem">
+            <li><strong>Pregunta de investigación</strong> (la que planteaste en el Paso 14)</li>
+            <li><strong>Método:</strong> tipo de estudio, muestra (n=25), instrumentos usados (GAD-7, PHQ-9)</li>
+            <li><strong>Resultados descriptivos:</strong> reporta los promedios y las diferencias más relevantes con base en tus datos. Cita números específicos.</li>
+            <li><strong>Hallazgo más importante:</strong> ¿qué fue lo que más te llamó la atención? Argumenta.</li>
+            <li><strong>Limitaciones:</strong> menciona al menos 3 limitaciones del estudio.</li>
+            <li><strong>Implicaciones para la psicología profesional:</strong> ¿qué deberíamos hacer con esta información? Sugiere 2 acciones.</li>
+          </ol>
+        </div>
+
+        <div class="reflexion">
+          <p><strong>Reflexión final del curso completo</strong>:</p>
+          <ol>
+            <li>Al inicio (Fase 1), no sabías si la diferencia entre antes y después era "real" o azar. Ahora que viste el comparativo con grupo control, ¿cómo respondes a esa duda inicial?</li>
+            <li>Si solo hubieras hecho estadística descriptiva (sin gráficos), ¿qué información se perdería? Y al revés, si solo hubieras hecho gráficos sin estadística, ¿qué información se perdería?</li>
+            <li>En el Paso 11 viste el problema de las variables de confusión. En tu proyecto, ¿qué variables de confusión podrían estar afectando los resultados? Menciona al menos 2.</li>
+            <li>La pregunta clave: como futura psicóloga, ¿en qué cambió tu manera de leer información estadística después de este curso? Cuando veas en redes sociales una afirmación como "estudios demuestran que...", ¿qué preguntas te harás antes de creerla?</li>
+            <li>Sin estadística la psicología sería opinión. Sin psicología la estadística sería solo aritmética. Reflexiona sobre esta relación y escribe tu propia definición de "psicólogo informado estadísticamente".</li>
+          </ol>
+          <textarea placeholder="Tu reflexión final integradora..."></textarea>
+        </div>
+
+        <div class="check-done"><input type="checkbox" class="check"> Redacté el reporte de hallazgos del proyecto integrador</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ PROYECTO FINAL · ENTREGA Y RÚBRICA ============ -->
+  <div class="proyecto-final">
+    <h2>Entrega final del curso</h2>
+    <p>Al terminar las 10 horas de actividad, debes entregar en la plataforma:</p>
+
+    <h3>1. Libro de Excel completo</h3>
+    <ul>
+      <li><code class="inline" style="color:var(--ink)">Estadistica_Psi_TuNombre.xlsx</code> con las 5 hojas:</li>
+      <li>Datos_Ansiedad (Fase 1) · Métodos descriptivos del estudio pre-post</li>
+      <li>Metodos (Fase 2) · Comparativo cuantitativo-cualitativo</li>
+      <li>Experimento (Fase 3) · Diseño pre-post con grupo control</li>
+      <li>Observacion (Fase 4) · Registro y análisis comparativo</li>
+      <li>Proyecto_Bienestar (Fase 5) · Dataset, panel y dashboard de 4 gráficos</li>
+    </ul>
+
+    <h3>2. Documento de reflexiones</h3>
+    <ul>
+      <li>Word o PDF con todas las reflexiones de las 5 fases</li>
+      <li>Definiciones personales construidas a partir de tu experiencia</li>
+      <li>Identificación de VI, VD y VC del estudio del mindfulness</li>
+      <li>Cuestionario diseñado en Paso 15 con niveles de medición</li>
+    </ul>
+
+    <h3>3. Reporte de hallazgos del proyecto integrador</h3>
+    <ul>
+      <li>1 página (300-400 palabras) con la estructura del Paso 20</li>
+      <li>Pregunta de investigación, método, resultados, hallazgo principal, limitaciones, implicaciones</li>
+      <li>Cita números específicos del análisis</li>
+    </ul>
+
+    <div class="rubrica">
+      <h4>Rúbrica de evaluación (100 puntos)</h4>
+      <table>
+        <thead>
+          <tr><th>Criterio</th><th>Puntos</th><th>Qué se evalúa</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Captura de datos correcta</strong></td><td>8</td><td>Los 5 datasets capturados sin errores de transcripción</td></tr>
+          <tr><td><strong>Cálculos descriptivos correctos</strong></td><td>10</td><td>Media, mediana, desviación estándar y rango bien calculados con fórmulas correctas</td></tr>
+          <tr><td><strong>Análisis comparativo</strong></td><td>10</td><td>Uso correcto de PROMEDIO.SI, CONTAR.SI.CONJUNTO para comparar grupos</td></tr>
+          <tr><td><strong>Identificación de variables</strong></td><td>8</td><td>VI, VD, VC del experimento del mindfulness correctamente identificadas</td></tr>
+          <tr><td><strong>Clasificación de métodos</strong></td><td>6</td><td>Diferenciación correcta entre métodos cuantitativos, cualitativos y mixtos</td></tr>
+          <tr><td><strong>Niveles de medición</strong></td><td>6</td><td>Identificación correcta de variables nominales, ordinales, intervalo y razón</td></tr>
+          <tr><td><strong>Diseño del cuestionario</strong></td><td>8</td><td>Las 10 preguntas con niveles de medición variados y bien justificados</td></tr>
+          <tr><td><strong>Dashboard del proyecto</strong></td><td>14</td><td>4 gráficos completos: pastel, columnas, dispersión, histograma con títulos APA</td></tr>
+          <tr><td><strong>Pregunta de investigación</strong></td><td>6</td><td>Pregunta cuantitativa bien planteada cumpliendo las 6 características</td></tr>
+          <tr><td><strong>Reporte de hallazgos</strong></td><td>12</td><td>Reporte de 1 página con estructura completa y argumentación profesional</td></tr>
+          <tr><td><strong>Reflexiones de cada fase</strong></td><td>12</td><td>Respuestas personales que demuestran construcción de conocimiento y razonamiento</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p><strong>Estadística para Psicología</strong> · Guía interactiva de 10 horas · Unidades I y II</p>
+  <p style="margin-top:0.5rem; font-size:0.82rem">Recuerda: el ciclo Problema-Activa-Construye-Experimenta-Reflexiona genera aprendizaje significativo. La IA es tu apoyo, no tu sustituto. Tu juicio profesional es insustituible.</p>
+</footer>
+
+<script>
+  const checks = document.querySelectorAll('input.check[type="checkbox"]');
+  const fill = document.getElementById('progressFill');
+  const text = document.getElementById('progressText');
+  const total = checks.length;
+
+  function updateProgress(){
+    const done = document.querySelectorAll('input.check[type="checkbox"]:checked').length;
+    const pct = total > 0 ? (done/total)*100 : 0;
+    fill.style.width = pct + '%';
+    text.textContent = done + ' / ' + total;
+    const states = Array.from(checks).map(c => c.checked);
+    try { sessionStorage.setItem('estadisticaPsiProgress', JSON.stringify(states)); } catch(e){}
+    const areas = document.querySelectorAll('textarea');
+    const texts = Array.from(areas).map(t => t.value);
+    try { sessionStorage.setItem('estadisticaPsiTexts', JSON.stringify(texts)); } catch(e){}
+  }
+
+  try {
+    const saved = sessionStorage.getItem('estadisticaPsiProgress');
+    if (saved) {
+      const states = JSON.parse(saved);
+      checks.forEach((c,i) => { if(states[i]) c.checked = true; });
+    }
+    const savedTexts = sessionStorage.getItem('estadisticaPsiTexts');
+    if (savedTexts) {
+      const texts = JSON.parse(savedTexts);
+      document.querySelectorAll('textarea').forEach((t,i) => { if(texts[i]) t.value = texts[i]; });
+    }
+  } catch(e){}
+
+  checks.forEach(c => c.addEventListener('change', updateProgress));
+  document.querySelectorAll('textarea').forEach(t => t.addEventListener('input', updateProgress));
+
+  updateProgress();
+</script>
+
+</body>
+</html>
