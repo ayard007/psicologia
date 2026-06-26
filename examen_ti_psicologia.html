@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen | Tecnologías de la Información Aplicadas a la Psicología</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --indigo:        #2D2A6E;
+    --indigo-medio:  #4842A8;
+    --violeta:       #6C5CE7;
+    --magenta:       #D64584;
+    --magenta-claro: #F2A6C7;
+    --ambar:         #E8A33D;
+    --fondo:         #F6F5FB;
+    --card:          #FFFFFF;
+    --gris-texto:    #54526B;
+    --tinta:         #1C1A33;
+    --borde:         #E0DEF0;
+    --verde-ok:      #2E8B6E;
+    --rojo:          #C8385F;
+    --sombra:        0 4px 24px rgba(45,42,110,0.09);
+    --radio:         14px;
+    --f-display:     'Sora', sans-serif;
+    --f-body:        'Inter', 'Segoe UI', sans-serif;
+    --f-mono:        'IBM Plex Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── ANTI-SELECCIÓN DE TEXTO ── */
+  html, body, * {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  /* Permitir escritura sólo en los campos de datos */
+  input[type="text"], input[type="email"] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--f-body);
+    background: var(--fondo);
+    color: var(--tinta);
+    font-size: 16px; line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background:
+      radial-gradient(circle at 85% 25%, rgba(214,69,132,0.22), transparent 45%),
+      linear-gradient(135deg, var(--indigo) 0%, #36307F 60%, var(--indigo-medio) 100%);
+    color: #fff; padding: 2.5rem 2rem; position: relative;
+  }
+  header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--magenta), var(--violeta) 50%, var(--ambar)); }
+  .header-inner { max-width: 920px; margin: 0 auto; display: flex; align-items: center; gap: 1.8rem; position: relative; z-index: 1; }
+  .header-logo { flex-shrink: 0; background: #fff; border-radius: 10px; padding: 0.6rem; box-shadow: 0 4px 18px rgba(0,0,0,0.3); }
+  .header-logo img { display: block; width: 72px; height: auto; }
+  .header-subtitulo-inst { font-size: 0.76rem; font-weight: 600; color: rgba(255,255,255,0.62); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.3rem; }
+  header h1 { font-family: var(--f-display); font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight: 800; line-height: 1.2; }
+  header .subt { color: rgba(255,255,255,0.75); font-size: 0.88rem; margin-top: 0.3rem; }
+
+  main { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .tarjeta { background: var(--card); border-radius: var(--radio); box-shadow: var(--sombra); padding: 2rem 2.3rem; margin-bottom: 1.8rem; }
+
+  h2 { font-family: var(--f-display); font-size: 1.25rem; font-weight: 700; color: var(--indigo); margin-bottom: 0.5rem; }
+  p { color: var(--gris-texto); font-size: 0.95rem; margin-bottom: 0.8rem; }
+  strong { color: var(--tinta); font-weight: 700; }
+
+  /* ── PANTALLA DE REGISTRO ── */
+  .registro-campos { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; margin: 1.3rem 0; }
+  .campo-grupo { display: flex; flex-direction: column; }
+  .campo-grupo.full { grid-column: 1 / -1; }
+  .campo-grupo label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--violeta); margin-bottom: 0.4rem; }
+  .campo-grupo input {
+    border: 1.5px solid var(--borde); border-radius: 8px; padding: 0.7rem 0.9rem;
+    font-family: var(--f-body); font-size: 0.95rem; color: var(--tinta); background: var(--fondo);
+    transition: border-color 0.2s;
+  }
+  .campo-grupo input:focus { outline: none; border-color: var(--violeta); background: #fff; }
+  .campo-error { color: var(--rojo); font-size: 0.8rem; margin-top: 0.3rem; display: none; }
+
+  .reglas { background: var(--fondo); border-left: 4px solid var(--ambar); border-radius: 8px; padding: 1rem 1.3rem; margin: 1.2rem 0; }
+  .reglas ul { padding-left: 1.3rem; margin-top: 0.4rem; }
+  .reglas li { font-size: 0.88rem; color: var(--gris-texto); margin-bottom: 0.3rem; }
+  .reglas .caja-titulo { font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; color: #9A6A1A; }
+
+  /* ── BARRA SUPERIOR FIJA DURANTE EL EXAMEN ── */
+  #barra-examen {
+    display: none; position: sticky; top: 0; z-index: 800;
+    background: var(--indigo); color: #fff;
+    padding: 0.7rem 1.5rem; border-bottom: 3px solid var(--magenta);
+    align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  #barra-examen .alumno-info { font-size: 0.82rem; color: rgba(255,255,255,0.8); }
+  #barra-examen .alumno-info strong { color: #fff; }
+  .crono { display: flex; align-items: center; gap: 0.6rem; }
+  .crono-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.6); }
+  #cronometro {
+    font-family: var(--f-mono); font-size: 1.3rem; font-weight: 600;
+    background: rgba(255,255,255,0.12); padding: 0.25rem 0.8rem; border-radius: 6px;
+    min-width: 92px; text-align: center;
+  }
+  #cronometro.alerta { background: var(--magenta); animation: pulso 1s infinite; }
+  @keyframes pulso { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+  .progreso-info { font-size: 0.8rem; color: rgba(255,255,255,0.75); }
+
+  /* ── PREGUNTAS ── */
+  #seccion-examen { display: none; }
+  .pregunta {
+    background: var(--card); border-radius: 12px; box-shadow: var(--sombra);
+    padding: 1.5rem 1.8rem; margin-bottom: 1.2rem; border-left: 4px solid var(--violeta);
+  }
+  .pregunta-num { font-family: var(--f-mono); font-size: 0.74rem; font-weight: 600; color: var(--magenta); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .pregunta-enun { font-weight: 600; font-size: 0.98rem; color: var(--indigo); margin-bottom: 1rem; line-height: 1.5; }
+  .opciones { display: flex; flex-direction: column; gap: 0.5rem; }
+  .opcion {
+    display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.7rem 1rem;
+    background: var(--fondo); border-radius: 8px; cursor: pointer;
+    border: 1.5px solid var(--borde); font-size: 0.92rem; color: var(--gris-texto);
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .opcion:hover { border-color: var(--violeta); background: #F1EFFB; }
+  .opcion input[type=radio] { accent-color: var(--violeta); margin-top: 0.25rem; flex-shrink: 0; }
+  .opcion.elegida { border-color: var(--violeta); background: #ECE9FB; }
+  .opcion .letra { font-weight: 700; color: var(--indigo-medio); margin-right: 0.2rem; }
+
+  /* ── BOTONES ── */
+  .btn { display: inline-block; padding: 0.85rem 2.2rem; border: none; border-radius: 8px; cursor: pointer; font-family: var(--f-body); font-size: 0.92rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.16); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-primario { background: var(--indigo); color: #fff; }
+  .btn-magenta  { background: var(--magenta); color: #fff; }
+  .btn-verde    { background: var(--verde-ok); color: #fff; }
+  .acciones-final { text-align: center; margin-top: 1.5rem; }
+  .aviso-pendientes { text-align: center; color: var(--rojo); font-size: 0.86rem; margin-top: 0.8rem; font-weight: 600; display: none; }
+
+  /* ── RESULTADO ── */
+  #seccion-resultado { display: none; }
+  .resultado-card { text-align: center; padding: 2.5rem 2rem; }
+  .resultado-puntaje { font-family: var(--f-display); font-size: 4rem; font-weight: 800; line-height: 1; margin: 0.5rem 0; }
+  .resultado-card.alto  .resultado-puntaje { color: var(--verde-ok); }
+  .resultado-card.medio .resultado-puntaje { color: var(--ambar); }
+  .resultado-card.bajo  .resultado-puntaje { color: var(--rojo); }
+  .resultado-msg { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .resultado-detalle { font-size: 0.9rem; color: var(--gris-texto); }
+  .resumen-datos { background: var(--fondo); border-radius: 10px; padding: 1.2rem 1.5rem; margin: 1.5rem auto 0; max-width: 460px; text-align: left; }
+  .resumen-fila { display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed var(--borde); font-size: 0.88rem; }
+  .resumen-fila:last-child { border-bottom: none; }
+  .resumen-fila .etq { color: var(--gris-texto); font-weight: 600; }
+  .resumen-fila .val { color: var(--tinta); font-weight: 700; }
+
+  footer { background: var(--indigo); color: rgba(255,255,255,0.65); text-align: center; padding: 1.5rem; font-size: 0.8rem; }
+  footer strong { color: rgba(255,255,255,0.9); }
+
+  @media (max-width: 620px) {
+    .registro-campos { grid-template-columns: 1fr; }
+    .header-inner { gap: 1rem; }
+    .header-logo img { width: 56px; }
+    .tarjeta { padding: 1.5rem 1.3rem; }
+  }
+</style>
+</head>
+<body oncontextmenu="return false;">
+
+<header>
+  <div class="header-inner">
+    <div class="header-logo">
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCADhAOEDASIAAhEBAxEB/8QAHQABAAICAwEBAAAAAAAAAAAAAAcIBgkDBAUBAv/EAFkQAAEDAgMDAwoODQoHAQAAAAEAAgMEBQYHEQgSIRMxQRY3UVZhcXWBkdMJFBgiUnKSlJWhsbTD0hUXMjM2QlNUdKKys8IjJDQ4VWJzdoKDJTVDY2WTwdH/xAAbAQEAAwEBAQEAAAAAAAAAAAAAAwQFAgYHAf/EADsRAAIBAgIDDAgGAwEAAAAAAAABAgMEBREGITEHEjJBUWFxgZGhscETFBYzUlPR8CI0QpLS4RVD8VT/2gAMAwEAAhEDEQA/ALloiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCLGMzMXdROGX319nrLnDG8NlFOWjkgeZ7yTwbroNQDpqoNum0hiKYEW3DdrouHAzzvqPkDFVr3lGg97N6zcwzRzEMTh6S3gnHPLNtLX259xZlFT+4Z4Zk1YIjvNNRa/m1FH/GHLw6rMrMGq15bGN34/k5RF+wAqcsYorYmehpbn1/LXOpBdr8vMu4iohNi3Fkz9+XFeIHO7Juc31l1n3y/P8Au7/eXd+4TH+JRvGY/B3luO51W466/a/qX4RUFbeb237m+Xdver5frLsRYmxPFpyeJ78zTm0ucw/iT/Mx+DvD3OqvFXX7f7L5IqO0uYGOqX7zjC9jTm36x8gHicSF7FvzkzKo3A9U8lS0fiVFJA4HxhgPxruOMUuOLK1Tc9vlwKsH05ryZcpFVi1bQ+NKfQXC3WavaOfdjfC4+MOI+JZjY9pG0TFrL3hquoiToX0k7aho7p3gw+IAqxDE7eXHkZVxoZi9HWqe+XM14an3E7IsOwvmhgTEkkcNuxFStqZDoynqdYJXHsBrwN497VZirkKkZrOLzPOXFrXtp7ytBxfI014hERdkAREQBERAEREAREQBERAEREAREQHFV08FXSy0tVCyaCZhjlje3Vr2kaEEHnBCpxnTl9PgPEvJwNkkstYS+gndx3ezC4+yb0E87dDxIdpcxeZifD9mxNaXWq+0EdbRue15jeSNHNOoIIIIPePMSOlU720VzDLjWw9Fo5j88HuN89dOXCXmudd+woSCDI2MEF7zo1o53HsAdKyiy5e46vLGvt2FLpIx3M6WLkGnxyloXuZrZyYoynxjXYQw5l1hXDRg9dDVGJ07qqB2u5K1w5Pn0IOu9oQ4c4UR4jz2zbvoe2qxvcKaN/8A06AMpQ3vOjAd+srNpoZXqxU5zST++c9De7pqi3G3o/ufksvEm6gyFxvJGJrnUWS0w6auNRVlzm+JrS39ZcVXlxga0OLcQ504Vo3gamKMxuf5DLqfIqr3W43G7zctdrjW3GX2dXUPmd5Xkrqta1o0a0AdwLapaFWseHJv76TzlfdExeo/wNR6EvPMs/UR7PNBIY6zNm7VTxz+krc97T3nNgcPjXVkv2zZTH1uJccV3taRrflhaq1or0dEsOW1Pt/ozZ6a4zPbWfcvBFjZMW7OY4NkzAPdbFD/APVwuxJs8yH1t2zEg17NNTuA/VJVeEXfsphvwd5xHTLGV/vZYhtwyEnA5HMXEtET+d2R8gHf5NgXPTWXLK4gOtWdeH+J0DbjQy0R8ZkI08irgignodh0tia6y3S09xun/tz6VH6Fn48pr9coXSYevWFMSREatFuuzHueO4HAD41K+WOKMx8I8lZMf4YvNTamAMiuMcXpqSmH/cMRdvs7v3Q0/GHNQfcZvh+63eHMdOKy7DeZeYWHC37C41vtKxo0bEax0sQ/237zPiVP2OVGW/t6rT5HsLFzpzWv6PoL6jGa5daknyp56uzp1GzmmmhqYI54JGyxSNDmPadQ4HpC5FRrBO1lmBaqqnixLSWy/wBCHATOEPIVRb0lrmnc16dCzj2Rzq4OXWOMNY/w5HfcMXFlXTOO7KwjdlgfpqY5Gc7XD4+cEggqC6w6va66i1cq2HnYVoVOCZIiIqJIEREAREQBERAEREAREQBERAEREBF+0blRR5o4LdTwiKC/0AdLa6p3ABx54nn2D9AD2CAejQ67LpR1VquFTb7lTyUdXSyuhqIZRuuje06Oae6CFtjWAZg2TC2HWXPMVmAbder5FG188wgZy5YwAb+85pI3WgakDXRvTotewxj1KnKNRZx2rmI/UpXVWMKfCby7enUa/cJ5d48xWGOw7hG8XCJ41bO2mLID/uv0Z8alPDuyfmhceTfc5rFZYnH14nqnSytHcbG0tPuwpHvm0NjKsG7abfarVGenddUSDvOJDf1Vg94zFx5dmubX4turmu52wyinHkiDQqFxpq9lKP31/Q9nabmt9PXWlGPXm+7V3mXW7ZAstFAJsT5hzhv43pakjp2jh7KRz/LoF3IslNm6y6suuM5LjI3nbLe4973MAaVDtS51VNy9U99RL+UmcXu8p4r4OCyKult7PY8vvmSPQ0NzS1j72s30JLxbJqGHdk61P4W4Vb9OcvuFQD5SWr6azZeh+9YFhnI/8W/+MhQoipS0iv5fr739TSp7n2Ex2ub61/EmWS97Ng4DK3f9rbIR8sgXF6f2ZpwRJlpNCCOJFG1pHuJdVD6Lj/P33xvv+pN7B4RllvZdv9Eqz2XZTrHHesF2oXO53RyVwA8Qe4eQLp1GVmzPdWl9Bja92jU8A+ZzWj/3wk/Go2RTw0nxCH6/H6lapud4TJfhcl1r+Jn0mzLge8fglnFQzOJ9bHPHDO49z1kjSO/ouTDGQWeGWeIhiDAeILBWSABroxUPjFVHz7ksT27hb/r1HOCDxUePYx40e1rh2CNV6Nnvd7szmm0Xm5W/d5m01U+NvuQdD5Ffp6YXWW9qpSXV9PMyrjczpcKhXyfOvNPyLq4Cvt5vVoBxHhisw7dogBUU0r2yxE+yilYS1zT2Do4dI5icjVPrBnbmJanNE12gusQ09ZXUzSdO45m67XvkqXcs897ViK4ttWI6OKyVchDYJxPvwSuP4pJALHHoB1B5tddAYqeJ29aWS/DnxfeZgYhoZidlB1MlOK2uL8mk+xMmRERXjygREQBERAEREAREQBERAEREAXxwDmlrgCCNCD0r6iAqHn9l2cF4iFfbICLDcXkwBo4U0nO6E9gc5b3NR+LxjNXyxdh+24pw7V2O7RcpS1LN0kfdMdzte09DgdCD3FDeFtnG3wycribEE9aA46QUUfIMcOjecd53k3dOyV5+6wybq50lqfcfWMD01to2W9vpPfx1bG3JcT6eXPLl4yuDntZpvODdToNTosjsWBcZ3zQ2rC91qGOPCR0BijPefJutPlVwsL4DwfhktfZcPUFNM0aemDHvzEd2R2rj5Vkikp4P8yXZ9+RVvN0TXla0euT8l/IqjaNn7HlWQ6tktFtYRxElQ6R48TGkfrLKLds1Sag3LGILdPXMprfunxOdIf2VYZFcjhdvHas+s89X03xerwZqPRFeebIWo9nHCUZBqb5fqg9IEkLAfJHr8a9Fmz/l8G6PZdpO6a0j5AFLCKZWVuv0Izp6TYtN5uvLqeXgRX9oHLn80ufwhJ/+rjfs/wCXxboxl2j7orSflBUsIv31Oh8C7DhaRYr/AOif7mQvWbOWEJONPer9TnoHKQvHxx6/GvFr9mqM/wDL8YysHYqaASE+Nr26eRWCRcSw+2f6fEtU9LcYp7K760n4plW7ns64xgaTQXay12nQ90kJI7264fGsUvOUOYttDuWwvPVRacX0ksc4P+kO3v1Vc9FXnhNB7M0alDT7E6fDUZdKy8GvAq/lhm3fMDSxWHHlJcfsSCGRTVUD2T0g7ADgDIzuc46NRo1WXtdfRXS3wXC3VUVVSVDA+KaJwc17T0ghctTBBUxGKohjmjdzskaHA+IrpWWxWeyCVtnt1Pb45nbz4qZnJxl3stwetBPSQNTw1Vq3o1KK3rlmu9GJi+I2eIS9NCj6Opx5POL58slk+jPPp1nooiK0YYREQBERAEREAUf7RV+u+GMl8RX6w1rqG5UkUToJ2sa8sJmY08HAg8CRxHSpAUWbWf8AV5xb/gQ/v41YtEpV4J7M14nM3lFlOfVCZz9vdV7xpfNL8y7Q2c7YnuGO6nUNJ/oNL5pRiuOo+8Se1PyL3as7f5cexGSq089ptfw7PLVYft1TUP35paWJ8jtAN5xYCTw7q7y8zCf4LWn9Ch/YC9NfPZbWa62FB8zc9s2rVmViq1W7GdRT0VFe62mpoW0dMRHFHO9jG6mMk6NAGpJKx71Qmc/b3Ve8aXzSxjOHrv42/wAx3H51IsWXvqNpbunFumti4kZU6s1J6y++xrjfFWOsCXq4Ysu77pV012MEUr4Y4y2PkY3bujGtHO49GvFV3zHz3zbteYmJrZb8aVFPR0d3q6eniFHTEMjZM9rW6mMk6AAcTqpm9D662mIvDh+bwqqObfXYxj4ervnD1mWdvSle1ouKyWXEierOSpRaZlPqhM5+3uq940vmlYXZMz4rMX1D8G45uDJr+S6S31jo2x+nGaaujcGgN5RvEjQDeb3WkmlS5KSoqKOrgrKSeSnqaeRssM0bt18b2nVrmnoIIBBWhc4bQrU3BRSfKkiCncTjLNvM2yqDdsrG+KsC4Estwwnd32urqbsIJZWQxyF0fIyO3dHtcOdo6NeC9XZlzfpsz8KGC4PihxNbWtbXwDQCZvMJ2D2LuYj8V2o5i0nCPRBetph3w4Pm8y8rZ27p3saVVcew0ZzzpuUSvXqhM5+3uq940vmlmmRedmaeIc4MMWO9YvqKy3VtbydRA6kp2h7dxx01bGCOIHMVXtSFs1dfzBnhH6N69Vc2lBUZtQWx8S5DPpVZuaTZbLbLxxivAuCrHX4TvElrqam6chNIyGOQuZyL3aaPa4Di0KrfqhM5+3uq940vmlYL0Qbrd4b8NfQSqlqpYPb0Z2qlOCb17UiW5qSjPJMlD1Qmc/b3Ve8aXzSeqEzn7e6r3jS+aUXOIaNXEADpK/HLQ/lWe6C1PU7f5cexFf0tTlZKnqhM5+3uq940vmk9UJnP291XvGl80or5aH8qz3QTlofyrPdBPU7f5a7EPS1OVmxrZXxRfsY5N2++4luLrhcpampjfO6NjC5rJXNbwYAOAA6FKahPYkIOz5aiDqDWVn796mxeGvYqNzUSWSzfiatN5xWYREVU7CIiAIiIAos2s/6vOLf8CH9/GpTUWbWf9XnFv+BD+/jVmz/MU+leJxU4DNdK46j7xJ7U/IuRcdR94k9qfkX0NbTGW02tYT/Ba0/oUP7AXprzMJ/gtaf0KH9gL0181lwmba2Gr/OHrv42/wAx3H51IsWWU5w9d/G3+Y7j86kWLL6LR93HoRjVOGy6vofXW0xF4cPzeFVRzb67GMfD1d84erXeh9dbTEXhw/N4VVHNvrsYx8PV3zh6ybL8/X6izW91AxhEX7khmjhimkhkZFNvGJ7mkNk3Tod09Oh4HTmW0Uz18DYqvWCsU0WJcP1PIV9G/VuvFkrD91G8dLHDgR4xoQCLHbVePbLmRkBhPEllfuh98EdVTOcC+lmFNLvRu7o11B6QQelVXXIJ5xSvpRNIIHyNldFvHdL2hwa4jm1Ac4A/3j2VVrWkKtWFXjj4EsKrjFx4mcakLZq6/mDPCP0b1HqkLZq6/mDPCP0b13de4n0PwPylw0WQ9EG63eG/DX0EqparpeiDdbvDfhr6CVUtVDBPyi6X4k137wzTIu8WGwZuYevOJ3xss1LNI6qdJAZmhphkaNWAEn1xbzAq4H28dnb88t3wDN5pULRT3eHU7qanNtZLLV/w4p15U1kkX0+3js7fnlu+AZvNL47PLZ1a0uNZbtANT/wCbzSoYuOo+8Se1PyKqsCofFLtX0JFdzb2I2xWeOgjtsJtdPDBSSNEsbYohG3R3HXdAGmuq7a87DH4NWv9Dh/YC9FeOe00giIvwBERAEREAUfbSFA+5ZEYypo2F722uWZrRzkx/wAp/ApBXFWU8NXSTUlTGJIJo3RyMPM5rhoQfEVJSn6OanyPM/Gs1kamkcA5paeYjQrJs0cG1+AMeXTCte2T+ZzH0tK4ff6c8YpB2dW6a6czg4dCxpfRYTU4qUdjMVpxeTNjWzTmFa8d5YWrkaqL7L26ljpblS738pHIxobv6ewfpvA83HTnBAzbGuKLHg7DlVf8Q18VFQ0zC5znni89DGjnc48waOJK1aUdVVUVUyqoqqelqGfcTQSuje3vOaQQuW6XO53aZk11uddcJYxox9XUPmc0dgFxOiwKmARlVclPKL4si4rzKOtazmxPdZL9ia7X2aPk5LlXT1j2a67plkc8jXub2i89F2LXb667XOltdrpZKuurJWwU0Ef3Ukjjo1o8fkXoElFcyKWuTLubBFulpMnK+ukaQ2vvU0sR7LGRxR6+6Y8eJVCzb67GMfD1d84etjeVOE4cDZdWTCkLmSG30oZNI0aCSUkukePbPc4+Na5M2+uxjHw9XfOHrAwqsq13Wmtj+pduY72nFGMK1+RmWFrzS2V32mpLKa5012q5bZWlvGCXRnA9JY7QBw7x52giqCvhsKdYseFqn+FWsZqSpW6nB5NNeZHapSk0+Qo7iGz3PD18rbHeaOSjuNDKYaiF/O1w+UEaEEcCCCOBXRV8NrPJgY+sXVNh2mHVRbYtOTaONfANSYj/AHxxLD329IIoedQSCCCDoQRoQewrNhexu6W+W1bUR1qTpy5gpC2auv5gzwj9G9R6pC2auv5gzwj9G9TXXuJ9D8Dmlw0WQ9EG63eG/DX0EqparpeiDdbvDfhr6CVUtVDBPyi6X4k137wzHJPC9vxrmrYcK3WWpiobjNIyZ9M4NkAbC943S4EDi0c4PDVWz9SJln/a+K/fcHmVSGhrKugrI6ygq6ijqoiTHPTyujkYSCCWuaQRwJHDsr2erfG3bpib4XqPrqa7trirNOlU3qyOaU6cVlKOZcX1ImWf9r4r99weZXx+yFlk5jmm74r0I0/pcHmVTvq3xt26Ym+F6j66dW+Nu3TE3wvUfXVT1C++eSelo/CbRKCmZR0NPRxFxjgibG0uPEho0Gvd4LmUFbENzud2ydqqq7XKtuNQLzOwS1dQ+Z4aI4tBvOJOnE8O6p1Xlbii6NWVNvPIvwlvophERQnQREQBERAEREBG+e2UFgzVsccNa80F4pAfSNyjZvOi152PbqN+M9LdRoeII6aTZg5H5mYKqHivw3U3GjafW1trY6phcOyQ0b7P9TQtkKLTssVrWq3q1x5H5ENWhGpre01KSPZG90cjgx7To5rjoQe6F+RLEToJGE+2C2x1ltt1br6coKWp15+Vha/5QvxSWe00bt6ktdDTnsxU7W/IFqe0Sy933/0V/Uuc1q4IyrzCxnPGywYUuUsL9P51PEYKcDs8o/Rp7zdT3FcjZ1yAtmWr23+9VEV2xQ+MtErAeQow4aObCCASTxBeQCRwAaCdZvRZ15jFa5jvF+Fc31JqdvCDz2sLWpmrhbFM+aWLZ4ML32WKS+Vr45I7dM5r2md5BBDdCCOkLZWihsL92cm1HPM7q0lVWTNWHUji7tTxD8Fz/VV39ia319tyUFNcqGqoZ/spUO5KphdE/Q7uh3XAHRTginvsWld0vRuOWvPacUrdU3mmFUTbEyQnFdJmHgy2z1HpqUfZigpYi9wkdzVDGDidToHgDnId7Iq3aKlaXc7Wopw/6S1KaqRyZqw6kcXdqeIfguf6qz7Z0wziakzywhVVeG71TU8VfvSSzW+WNjBybxqXOaAOJC2IotWrj06kJQ3m1ZbSCNpGLTzK57edrud0y/w9Fa7bW18kd433spad8rmt5CQakNBOmpHHuqnnUji7tTxD8Fz/AFVtPRQ2eMStaSpqOfWdVbdVJZtmrDqRxd2p4h+C5/qp1I4u7U8Q/Bc/1VtPRWvaGfwd5H6nHlNWHUji7tTxD8Fz/VTqRxd2p4h+C5/qraeie0M/g7x6nHlIJ2HrfcLZk5VU9zoKuhnN5ncIqmB0T90xxaHRwB07qnZEWFcVnWqyqNZZlqEd7FIIiKE6CIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiA/9k=" alt="Logo Universidad UNE">
+    </div>
+    <div>
+      <div class="header-subtitulo-inst">Universidad de Especialidades UNE</div>
+      <h1>Examen de Conocimientos</h1>
+      <div class="subt">Tecnologías de la Información Aplicadas a la Psicología</div>
+    </div>
+  </div>
+</header>
+
+<!-- BARRA DE EXAMEN -->
+<div id="barra-examen">
+  <div class="alumno-info" id="barra-alumno"></div>
+  <div class="progreso-info" id="barra-progreso">Respondidas: 0 / 20</div>
+  <div class="crono">
+    <span class="crono-label">Tiempo restante</span>
+    <span id="cronometro">30:00</span>
+  </div>
+</div>
+
+<main>
+
+<!-- ══════════ PANTALLA DE REGISTRO ══════════ -->
+<section id="seccion-registro">
+  <div class="tarjeta">
+    <h2>Registro del alumno</h2>
+    <p>Antes de iniciar, completa tus datos. Estos aparecerán en el documento PDF de resultados que se generará al finalizar el examen.</p>
+
+    <div class="registro-campos">
+      <div class="campo-grupo full">
+        <label for="in-nombre">Nombre completo del alumno</label>
+        <input type="text" id="in-nombre" placeholder="Nombre(s) y apellidos" autocomplete="off">
+        <span class="campo-error" id="err-nombre">Por favor, ingresa tu nombre completo.</span>
+      </div>
+      <div class="campo-grupo">
+        <label for="in-correo">Correo electrónico</label>
+        <input type="email" id="in-correo" placeholder="correo@ejemplo.com" autocomplete="off">
+        <span class="campo-error" id="err-correo">Ingresa un correo electrónico válido.</span>
+      </div>
+      <div class="campo-grupo">
+        <label for="in-codigo">Código de estudiante</label>
+        <input type="text" id="in-codigo" placeholder="Ej. UNE-2024-0001" autocomplete="off">
+        <span class="campo-error" id="err-codigo">Ingresa tu código de estudiante.</span>
+      </div>
+    </div>
+
+    <div class="reglas">
+      <span class="caja-titulo">Instrucciones y reglas del examen</span>
+      <ul>
+        <li>El examen consta de <strong>20 preguntas</strong> de opción múltiple. Cada pregunta tiene una sola respuesta correcta.</li>
+        <li>Dispones de <strong>30 minutos</strong> para completarlo. El tiempo comenzará a correr al iniciar y no podrá pausarse.</li>
+        <li>Al agotarse el tiempo, el examen se calificará automáticamente con las respuestas registradas hasta ese momento.</li>
+        <li>Cada pregunta correcta vale <strong>5 puntos</strong>, para un total de 100 puntos.</li>
+        <li>Al finalizar, podrás descargar un documento PDF con tus datos y tu puntuación.</li>
+        <li>No se permite recargar la página: hacerlo reiniciará el examen y perderás tus respuestas.</li>
+      </ul>
+    </div>
+
+    <div style="text-align:center;margin-top:1.5rem;">
+      <button class="btn btn-primario" id="btn-iniciar" onclick="iniciarExamen()">Iniciar examen</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ EXAMEN ══════════ -->
+<section id="seccion-examen">
+  <div id="contenedor-preguntas"></div>
+
+  <div class="acciones-final">
+    <button class="btn btn-verde" onclick="finalizarExamen(false)">Finalizar y calificar examen</button>
+    <div class="aviso-pendientes" id="aviso-pendientes">Tienes preguntas sin responder. Puedes finalizar de todos modos, pero contarán como incorrectas.</div>
+  </div>
+</section>
+
+
+<!-- ══════════ RESULTADO ══════════ -->
+<section id="seccion-resultado">
+  <div class="tarjeta resultado-card" id="resultado-card">
+    <h2 id="resultado-titulo">Examen finalizado</h2>
+    <div class="resultado-puntaje" id="res-puntaje">0 / 100</div>
+    <div class="resultado-msg" id="res-msg"></div>
+    <div class="resultado-detalle" id="res-detalle"></div>
+
+    <div class="resumen-datos" id="resumen-datos"></div>
+
+    <div class="acciones-final">
+      <button class="btn btn-magenta" onclick="descargarPDF()">Descargar PDF de resultados</button>
+    </div>
+    <p style="font-size:0.82rem;color:var(--gris-texto);margin-top:1rem;">Descarga el documento PDF y entrégalo según las indicaciones de tu docente.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div><strong>Universidad de Especialidades UNE</strong></div>
+  <div>Tecnologías de la Información Aplicadas a la Psicología &mdash; Examen de conocimientos</div>
+</footer>
+
+
+<script>
+  const LOGO_B64 = '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';
+
+  // ══════════ BANCO DE PREGUNTAS ══════════
+  const PREGUNTAS = [
+    {
+      q: "¿Cuál es la diferencia esencial entre el modelo cliente-servidor tradicional y la computación en la nube?",
+      op: [
+        "En la nube no se utilizan servidores de ningún tipo.",
+        "En el modelo cliente-servidor la institución gestiona su propia infraestructura, mientras que en la nube el almacenamiento y mantenimiento recaen en un proveedor externo.",
+        "El modelo cliente-servidor es más reciente que la computación en la nube.",
+        "Ambos modelos son idénticos y el término solo cambia según la moda."
+      ],
+      correcta: 1
+    },
+    {
+      q: "¿Qué garantiza principalmente el protocolo HTTPS frente a HTTP en una plataforma de salud mental?",
+      op: [
+        "Que la página cargue más rápido.",
+        "Que el sitio aparezca primero en los buscadores.",
+        "Que la comunicación entre el navegador y el servidor esté cifrada, protegiendo la información sensible.",
+        "Que el contenido sea siempre verdadero."
+      ],
+      correcta: 2
+    },
+    {
+      q: "Un sistema de expedientes clínicos accesible únicamente para el personal interno de un hospital, sin acceso externo, corresponde a:",
+      op: [ "Internet público.", "Una Extranet.", "Una red social.", "Una Intranet institucional." ],
+      correcta: 3
+    },
+    {
+      q: "En una URL segura como 'https://www.ejemplo.edu.mx/recursos', ¿qué parte indica el dominio de nivel superior asociado a una institución educativa de México?",
+      op: [ "https://", "/recursos", ".edu.mx", "www" ],
+      correcta: 2
+    },
+    {
+      q: "¿Cuál de las siguientes plataformas ha reemplazado funcionalmente al antiguo protocolo IRC para comunidades y mensajería síncrona?",
+      op: [ "Discord", "Una hoja de cálculo", "El correo postal", "Un disco duro externo" ],
+      correcta: 0
+    },
+    {
+      q: "¿Qué red social está orientada específicamente a la comunidad científica y permite compartir publicaciones de investigación?",
+      op: [ "Instagram", "ResearchGate", "Una plataforma de videojuegos", "Un servicio de streaming musical" ],
+      correcta: 1
+    },
+    {
+      q: "Desde la ética profesional, compartir en redes sociales el caso de un paciente cambiando solo su nombre:",
+      op: [
+        "Es aceptable porque el nombre fue modificado.",
+        "Es aceptable si la plataforma usa HTTPS.",
+        "Constituye una violación de la confidencialidad, pues otros datos permiten la identificación indirecta.",
+        "Es obligatorio para la divulgación científica."
+      ],
+      correcta: 2
+    },
+    {
+      q: "¿Qué caracteriza a Perplexity AI frente a un asistente conversacional convencional para investigación académica?",
+      op: [
+        "Genera respuestas sin conexión a Internet.",
+        "Realiza búsquedas en tiempo real y cita fuentes reales y verificables.",
+        "Nunca comete errores ni imprecisiones.",
+        "Solo funciona en inglés."
+      ],
+      correcta: 1
+    },
+    {
+      q: "La 'curaduría de información' se refiere a la capacidad de:",
+      op: [
+        "Copiar y pegar información sin revisarla.",
+        "Aceptar como verdadera cualquier respuesta de una IA.",
+        "Buscar, seleccionar, evaluar críticamente y organizar contenido de fuentes confiables.",
+        "Eliminar todas las fuentes de un trabajo."
+      ],
+      correcta: 2
+    },
+    {
+      q: "Después de que Perplexity AI cita una fuente, el siguiente paso correcto del estudiante es:",
+      op: [
+        "Citar la respuesta sin revisar la fuente original.",
+        "Abrir la fuente y verificar su origen, autoría, actualidad y correspondencia con la afirmación.",
+        "Descartar la información por provenir de una IA.",
+        "Parafrasearla para ocultar su origen."
+      ],
+      correcta: 1
+    },
+    {
+      q: "¿Para qué tipo de tarea es más apropiado LanguageTool?",
+      op: [
+        "Generar un ensayo completo desde cero.",
+        "Detectar y corregir errores gramaticales, ortográficos y de estilo en un texto.",
+        "Crear imágenes a partir de texto.",
+        "Buscar fuentes académicas."
+      ],
+      correcta: 1
+    },
+    {
+      q: "El uso ético de QuillBot en la redacción académica implica que:",
+      op: [
+        "El texto base debe ser de autoría propia y el resultado debe revisarse y editarse conservando la voz del estudiante.",
+        "Se puede generar un texto con IA y solo 'mejorarlo' para entregarlo como propio.",
+        "No es necesario citar las fuentes si el texto fue parafraseado.",
+        "Solo debe usarse para ocultar el plagio."
+      ],
+      correcta: 0
+    },
+    {
+      q: "Una 'pregunta de investigación efectiva' para usar con un buscador de IA se caracteriza por ser:",
+      op: [
+        "Lo más vaga y general posible.",
+        "Específica, contextualizada y delimitada.",
+        "Una sola palabra suelta.",
+        "Una orden para que la IA escriba el trabajo completo."
+      ],
+      correcta: 1
+    },
+    {
+      q: "¿Qué tipo de inteligencia artificial es la única que existe en la actualidad?",
+      op: [
+        "La IA general (AGI), equivalente al razonamiento humano.",
+        "La IA estrecha o débil, diseñada para tareas específicas.",
+        "Una IA con conciencia y emociones propias.",
+        "Ninguna; la IA aún no se ha desarrollado."
+      ],
+      correcta: 1
+    },
+    {
+      q: "En el contexto de las IAs generativas, una 'alucinación' es:",
+      op: [
+        "Una experiencia subjetiva del sistema.",
+        "Una mejora en la precisión de las respuestas.",
+        "La producción de información falsa con apariencia de veracidad.",
+        "Un fallo de la pantalla del dispositivo."
+      ],
+      correcta: 2
+    },
+    {
+      q: "¿Por qué los modelos de IA pueden reproducir sesgos sociales?",
+      op: [
+        "Porque tienen opiniones propias.",
+        "Porque aprenden patrones de grandes volúmenes de datos que pueden contener sesgos.",
+        "Porque están programados para discriminar intencionalmente.",
+        "Porque no usan datos de ningún tipo."
+      ],
+      correcta: 1
+    },
+    {
+      q: "Respecto a las aplicaciones de 'terapia con IA' o chatbots de acompañamiento emocional, lo correcto es afirmar que:",
+      op: [
+        "Sustituyen completamente al psicólogo.",
+        "Sienten empatía genuina igual que un terapeuta.",
+        "Pueden ofrecer apoyo limitado, pero no son terapia y presentan riesgos, sobre todo en crisis.",
+        "Nunca deben usarse bajo ninguna circunstancia."
+      ],
+      correcta: 2
+    },
+    {
+      q: "Un psicólogo organizacional que usa IA para preseleccionar candidatos debe vigilar principalmente:",
+      op: [
+        "Que el sistema sea de una marca famosa.",
+        "Que el sistema pueda amplificar sesgos de sus datos y generar discriminación automatizada.",
+        "Que funcione únicamente de noche.",
+        "Que procese los datos lo más rápido posible sin importar la calidad."
+      ],
+      correcta: 1
+    },
+    {
+      q: "Al usar herramientas de IA con información de pacientes, el principio ético de confidencialidad exige:",
+      op: [
+        "Introducir libremente los datos para obtener mejores resultados.",
+        "No introducir datos de pacientes sin garantías de privacidad ni consentimiento informado.",
+        "Compartir los datos con otros estudiantes.",
+        "Publicar los datos en redes sociales."
+      ],
+      correcta: 1
+    },
+    {
+      q: "¿Cuál es el uso académicamente responsable de un asistente de IA para preparar un ensayo?",
+      op: [
+        "Pedir a la IA el ensayo completo y entregarlo como propio.",
+        "Aceptar toda la información sin verificarla.",
+        "Usar la IA para explicar conceptos y generar ideas, verificar la información en fuentes formales y redactar con criterio y autoría propia.",
+        "Introducir datos confidenciales para mejorar el resultado."
+      ],
+      correcta: 2
+    }
+  ];
+
+  const TOTAL = PREGUNTAS.length;
+  const PUNTOS_POR_PREGUNTA = 100 / TOTAL;
+  const DURACION_SEG = 30 * 60;
+
+  let respuestas = new Array(TOTAL).fill(null);
+  let tiempoRestante = DURACION_SEG;
+  let intervalo = null;
+  let datosAlumno = {};
+  let examenFinalizado = false;
+
+  // ══════════ VALIDACIÓN Y INICIO ══════════
+  function validarCorreo(c) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c); }
+
+  function iniciarExamen() {
+    const nombre = document.getElementById('in-nombre').value.trim();
+    const correo = document.getElementById('in-correo').value.trim();
+    const codigo = document.getElementById('in-codigo').value.trim();
+    let ok = true;
+
+    document.getElementById('err-nombre').style.display = 'none';
+    document.getElementById('err-correo').style.display = 'none';
+    document.getElementById('err-codigo').style.display = 'none';
+
+    if (nombre.length < 3) { document.getElementById('err-nombre').style.display = 'block'; ok = false; }
+    if (!validarCorreo(correo)) { document.getElementById('err-correo').style.display = 'block'; ok = false; }
+    if (codigo.length < 2) { document.getElementById('err-codigo').style.display = 'block'; ok = false; }
+    if (!ok) return;
+
+    datosAlumno = { nombre, correo, codigo, fecha: new Date() };
+
+    document.getElementById('seccion-registro').style.display = 'none';
+    document.getElementById('seccion-examen').style.display = 'block';
+    document.getElementById('barra-examen').style.display = 'flex';
+    document.getElementById('barra-alumno').innerHTML = '<strong>' + escapeHTML(nombre) + '</strong> &nbsp;|&nbsp; ' + escapeHTML(codigo);
+
+    renderPreguntas();
+    iniciarCronometro();
+    window.scrollTo(0, 0);
+  }
+
+  function escapeHTML(s) {
+    return s.replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+  }
+
+  // ══════════ RENDER ══════════
+  function renderPreguntas() {
+    const cont = document.getElementById('contenedor-preguntas');
+    const letras = ['A', 'B', 'C', 'D'];
+    let html = '';
+    PREGUNTAS.forEach((p, i) => {
+      html += '<div class="pregunta" id="preg-' + i + '">';
+      html += '<div class="pregunta-num">Pregunta ' + (i + 1) + ' de ' + TOTAL + '</div>';
+      html += '<div class="pregunta-enun">' + escapeHTML(p.q) + '</div>';
+      html += '<div class="opciones">';
+      p.op.forEach((o, j) => {
+        html += '<label class="opcion" id="op-' + i + '-' + j + '">';
+        html += '<input type="radio" name="preg' + i + '" value="' + j + '" onchange="elegir(' + i + ',' + j + ')">';
+        html += '<span><span class="letra">' + letras[j] + ')</span> ' + escapeHTML(o) + '</span>';
+        html += '</label>';
+      });
+      html += '</div></div>';
+    });
+    cont.innerHTML = html;
+  }
+
+  function elegir(i, j) {
+    respuestas[i] = j;
+    document.querySelectorAll('#preg-' + i + ' .opcion').forEach(el => el.classList.remove('elegida'));
+    document.getElementById('op-' + i + '-' + j).classList.add('elegida');
+    const respondidas = respuestas.filter(r => r !== null).length;
+    document.getElementById('barra-progreso').textContent = 'Respondidas: ' + respondidas + ' / ' + TOTAL;
+    const pend = document.getElementById('aviso-pendientes');
+    if (respondidas < TOTAL) pend.style.display = 'block'; else pend.style.display = 'none';
+  }
+
+  // ══════════ CRONÓMETRO ══════════
+  function iniciarCronometro() {
+    actualizarCrono();
+    intervalo = setInterval(() => {
+      tiempoRestante--;
+      actualizarCrono();
+      if (tiempoRestante <= 0) {
+        clearInterval(intervalo);
+        finalizarExamen(true);
+      }
+    }, 1000);
+  }
+
+  function actualizarCrono() {
+    const min = Math.floor(tiempoRestante / 60);
+    const seg = tiempoRestante % 60;
+    const txt = String(min).padStart(2, '0') + ':' + String(seg).padStart(2, '0');
+    const cr = document.getElementById('cronometro');
+    cr.textContent = txt;
+    if (tiempoRestante <= 120) cr.classList.add('alerta'); else cr.classList.remove('alerta');
+  }
+
+  // ══════════ FINALIZAR ══════════
+  function finalizarExamen(porTiempo) {
+    if (examenFinalizado) return;
+    examenFinalizado = true;
+    clearInterval(intervalo);
+
+    let correctas = 0;
+    PREGUNTAS.forEach((p, i) => { if (respuestas[i] === p.correcta) correctas++; });
+    const puntaje = Math.round(correctas * PUNTOS_POR_PREGUNTA);
+
+    datosAlumno.correctas = correctas;
+    datosAlumno.incorrectas = TOTAL - correctas;
+    datosAlumno.puntaje = puntaje;
+    datosAlumno.porTiempo = porTiempo;
+    datosAlumno.tiempoUsado = DURACION_SEG - tiempoRestante;
+
+    document.getElementById('seccion-examen').style.display = 'none';
+    document.getElementById('barra-examen').style.display = 'none';
+    document.getElementById('seccion-resultado').style.display = 'block';
+
+    const card = document.getElementById('resultado-card');
+    card.classList.remove('alto', 'medio', 'bajo');
+    let nivel, msg;
+    if (puntaje >= 80) { nivel = 'alto'; msg = 'Aprobado con excelente desempeño.'; }
+    else if (puntaje >= 60) { nivel = 'medio'; msg = 'Aprobado. Hay áreas que puedes reforzar.'; }
+    else { nivel = 'bajo'; msg = 'No aprobado. Es necesario reforzar los contenidos.'; }
+    card.classList.add(nivel);
+
+    document.getElementById('resultado-titulo').textContent = porTiempo ? 'Tiempo agotado: examen calificado' : 'Examen finalizado';
+    document.getElementById('res-puntaje').textContent = puntaje + ' / 100';
+    document.getElementById('res-msg').textContent = msg;
+    document.getElementById('res-detalle').textContent = 'Respuestas correctas: ' + correctas + ' de ' + TOTAL + '  (incorrectas o sin responder: ' + (TOTAL - correctas) + ').';
+
+    const min = Math.floor(datosAlumno.tiempoUsado / 60);
+    const seg = datosAlumno.tiempoUsado % 60;
+    const tiempoTxt = String(min).padStart(2,'0') + ':' + String(seg).padStart(2,'0');
+
+    document.getElementById('resumen-datos').innerHTML =
+      fila('Alumno', datosAlumno.nombre) +
+      fila('Correo', datosAlumno.correo) +
+      fila('Código de estudiante', datosAlumno.codigo) +
+      fila('Fecha', datosAlumno.fecha.toLocaleString('es-MX')) +
+      fila('Tiempo utilizado', tiempoTxt) +
+      fila('Puntuación final', puntaje + ' / 100');
+
+    window.scrollTo(0, 0);
+  }
+
+  function fila(etq, val) {
+    return '<div class="resumen-fila"><span class="etq">' + escapeHTML(etq) + '</span><span class="val">' + escapeHTML(String(val)) + '</span></div>';
+  }
+
+  // ══════════ GENERACIÓN DE PDF ══════════
+  function descargarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    const W = doc.internal.pageSize.getWidth();
+
+    // Colores institucionales
+    const indigo = [45, 42, 110];
+    const magenta = [214, 69, 132];
+    const gris = [84, 82, 107];
+
+    // Encabezado
+    doc.setFillColor(indigo[0], indigo[1], indigo[2]);
+    doc.rect(0, 0, W, 38, 'F');
+    doc.setFillColor(magenta[0], magenta[1], magenta[2]);
+    doc.rect(0, 38, W, 1.5, 'F');
+
+    // Logo
+    try {
+      const logoData = 'data:image/jpeg;base64,' + LOGO_B64;
+      doc.addImage(logoData, 'JPEG', 14, 7, 24, 24);
+    } catch (e) { /* si falla el logo, continúa sin él */ }
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(15);
+    doc.text('Universidad de Especialidades UNE', 44, 16);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.text('Tecnologías de la Información Aplicadas a la Psicología', 44, 23);
+    doc.setFontSize(9);
+    doc.text('Constancia de resultados de examen', 44, 29);
+
+    // Título
+    let y = 52;
+    doc.setTextColor(indigo[0], indigo[1], indigo[2]);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text('Resultados del examen', 14, y);
+    y += 4;
+    doc.setDrawColor(224, 222, 240);
+    doc.line(14, y, W - 14, y);
+    y += 10;
+
+    // Datos del alumno
+    const min = Math.floor(datosAlumno.tiempoUsado / 60);
+    const seg = datosAlumno.tiempoUsado % 60;
+    const tiempoTxt = String(min).padStart(2,'0') + ':' + String(seg).padStart(2,'0');
+
+    const datos = [
+      ['Nombre del alumno', datosAlumno.nombre],
+      ['Correo electrónico', datosAlumno.correo],
+      ['Código de estudiante', datosAlumno.codigo],
+      ['Fecha y hora', datosAlumno.fecha.toLocaleString('es-MX')],
+      ['Tiempo utilizado', tiempoTxt + ' min'],
+    ];
+
+    doc.setFontSize(10.5);
+    datos.forEach(d => {
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(gris[0], gris[1], gris[2]);
+      doc.text(d[0] + ':', 14, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(28, 26, 51);
+      doc.text(String(d[1]), 70, y);
+      y += 8;
+    });
+
+    y += 4;
+
+    // Caja de puntuación
+    const puntaje = datosAlumno.puntaje;
+    let nivelTxt, colorNivel;
+    if (puntaje >= 80) { nivelTxt = 'Aprobado - Excelente desempeño'; colorNivel = [46, 139, 110]; }
+    else if (puntaje >= 60) { nivelTxt = 'Aprobado'; colorNivel = [232, 163, 61]; }
+    else { nivelTxt = 'No aprobado'; colorNivel = [200, 56, 95]; }
+
+    doc.setFillColor(246, 245, 251);
+    doc.roundedRect(14, y, W - 28, 34, 3, 3, 'F');
+    doc.setDrawColor(colorNivel[0], colorNivel[1], colorNivel[2]);
+    doc.setLineWidth(0.8);
+    doc.roundedRect(14, y, W - 28, 34, 3, 3, 'S');
+    doc.setLineWidth(0.2);
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(gris[0], gris[1], gris[2]);
+    doc.text('PUNTUACIÓN FINAL', 22, y + 11);
+
+    doc.setFontSize(26);
+    doc.setTextColor(colorNivel[0], colorNivel[1], colorNivel[2]);
+    doc.text(puntaje + ' / 100', 22, y + 25);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(28, 26, 51);
+    doc.text('Respuestas correctas: ' + datosAlumno.correctas + ' de ' + TOTAL, W - 22, y + 13, { align: 'right' });
+    doc.text('Incorrectas o sin responder: ' + datosAlumno.incorrectas, W - 22, y + 20, { align: 'right' });
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(colorNivel[0], colorNivel[1], colorNivel[2]);
+    doc.text(nivelTxt, W - 22, y + 28, { align: 'right' });
+
+    y += 46;
+
+    // Nota de validez
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(8.5);
+    doc.setTextColor(gris[0], gris[1], gris[2]);
+    const nota = 'Este documento es una constancia de resultados generada automáticamente al concluir el examen. ' +
+                 'Su validez está sujeta a la verificación del docente responsable de la asignatura.';
+    const notaLineas = doc.splitTextToSize(nota, W - 28);
+    doc.text(notaLineas, 14, y);
+
+    // Pie
+    const H = doc.internal.pageSize.getHeight();
+    doc.setFillColor(indigo[0], indigo[1], indigo[2]);
+    doc.rect(0, H - 16, W, 16, 'F');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(255, 255, 255);
+    doc.text('Universidad de Especialidades UNE  |  Licenciatura en Psicología', W / 2, H - 6, { align: 'center' });
+
+    // Nombre de archivo
+    const nombreArchivo = 'Resultado_' + datosAlumno.codigo.replace(/[^a-zA-Z0-9]/g, '') + '.pdf';
+    doc.save(nombreArchivo);
+  }
+
+  // ══════════ PROTECCIONES ══════════
+  // Evitar recargar accidentalmente durante el examen
+  window.addEventListener('beforeunload', function (e) {
+    const enCurso = document.getElementById('seccion-examen').style.display === 'block' && !examenFinalizado;
+    if (enCurso) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  // Reforzar bloqueo de selección y menú contextual
+  document.addEventListener('selectstart', function (e) {
+    const t = e.target.tagName;
+    if (t !== 'INPUT' && t !== 'TEXTAREA') e.preventDefault();
+  });
+  document.addEventListener('dragstart', e => e.preventDefault());
+</script>
+</body>
+</html>
