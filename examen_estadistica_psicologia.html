@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen · Estadística para Psicología</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#1a1530;
+    --ink-soft:#3d3354;
+    --paper:#faf6ec;
+    --paper-warm:#f0e9d6;
+    --violet:#6a3d9a;
+    --violet-deep:#4a2670;
+    --violet-soft:#b08fd0;
+    --violet-pale:#f0e8f8;
+    --accent:#e85d3c;
+    --accent-deep:#b8421f;
+    --gold:#c9a227;
+    --gold-deep:#8a6f15;
+    --success:#2e7d32;
+    --danger:#c62828;
+    --cell-line:rgba(26,21,48,0.15);
+    --shadow:0 2px 0 var(--ink), 6px 8px 0 rgba(26,21,48,0.15);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    -webkit-touch-callout:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+  /* Permitir selección sólo en inputs editables */
+  input[type="text"], input[type="email"], textarea{
+    -webkit-user-select:text;
+    -moz-user-select:text;
+    -ms-user-select:text;
+    user-select:text;
+  }
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter Tight', sans-serif;
+    background:var(--paper); color:var(--ink); line-height:1.6;
+    min-height:100vh; padding:0;
+    background-image:
+      linear-gradient(135deg, rgba(106,61,154,0.04) 0%, transparent 100%);
+  }
+  h1, h2, h3, h4{font-family:'Fraunces', serif; font-weight:800; letter-spacing:-0.01em}
+
+  /* ENCABEZADO INSTITUCIONAL */
+  .institucional{
+    background:white;
+    border-bottom:4px solid var(--violet);
+    padding:1.2rem 2rem;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:1rem; flex-wrap:wrap;
+    box-shadow:0 2px 8px rgba(26,21,48,0.08);
+    position:sticky; top:0; z-index:100;
+  }
+  .logo-area{display:flex; align-items:center; gap:1rem}
+  .logo-placeholder{
+    width:64px; height:64px;
+    background:var(--violet);
+    color:white; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:800; font-size:1.8rem;
+    border-radius:8px; flex-shrink:0;
+    border:2px solid var(--violet-deep);
+    box-shadow:0 2px 0 var(--ink);
+  }
+  /* Para reemplazar el logo: convertir tu imagen a base64 y poner en .logo-img */
+  .logo-img{
+    width:64px; height:64px; object-fit:contain;
+    flex-shrink:0; display:none;  /* cambiar a block cuando agregues imagen */
+  }
+  .logo-text strong{
+    display:block; font-family:'Fraunces', serif;
+    font-size:1rem; color:var(--ink);
+    line-height:1.2;
+  }
+  .logo-text span{
+    font-size:0.8rem; color:var(--ink-soft);
+    letter-spacing:0.05em;
+  }
+  .timer-area{
+    display:flex; align-items:center; gap:0.7rem;
+    background:var(--violet-pale);
+    padding:0.6rem 1.2rem;
+    border:2px solid var(--violet);
+    border-radius:6px;
+  }
+  .timer-area .icono{font-size:1.4rem}
+  .timer-area .tiempo{
+    font-family:'Fraunces', serif;
+    font-size:1.4rem; font-weight:800;
+    color:var(--violet-deep);
+    min-width:80px; text-align:center;
+  }
+  .timer-area .tiempo.alerta{color:var(--accent-deep); animation:pulso 1s infinite}
+  .timer-area .tiempo.critico{color:var(--danger); animation:pulso 0.5s infinite}
+  .timer-area.oculto{display:none}
+  @keyframes pulso{
+    0%, 100%{opacity:1}
+    50%{opacity:0.5}
+  }
+
+  /* CONTENEDOR PRINCIPAL */
+  main{max-width:900px; margin:0 auto; padding:2rem; min-height:calc(100vh - 90px)}
+
+  /* PANTALLA 1: BIENVENIDA */
+  .pantalla{display:none}
+  .pantalla.activa{display:block; animation:fadeIn 0.4s ease}
+  @keyframes fadeIn{
+    from{opacity:0; transform:translateY(10px)}
+    to{opacity:1; transform:translateY(0)}
+  }
+
+  .bienvenida{
+    background:white;
+    border:2px solid var(--ink);
+    padding:2.5rem;
+    box-shadow:var(--shadow);
+    margin-bottom:2rem;
+  }
+  .bienvenida h1{
+    font-size:2rem; color:var(--violet-deep);
+    margin-bottom:0.5rem;
+    border-bottom:3px solid var(--violet);
+    padding-bottom:0.8rem;
+  }
+  .bienvenida .subtitulo{
+    font-size:1rem; color:var(--ink-soft);
+    margin-bottom:1.5rem;
+  }
+  .info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+    gap:1rem; margin:1.5rem 0;
+  }
+  .info-item{
+    background:var(--violet-pale);
+    border-left:4px solid var(--violet);
+    padding:0.9rem 1.1rem;
+    border-radius:0 4px 4px 0;
+  }
+  .info-item strong{
+    display:block; font-size:0.75rem;
+    text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--violet-deep); margin-bottom:0.3rem;
+  }
+  .info-item span{font-size:1rem; font-weight:600}
+
+  .instrucciones{
+    background:#fff9e6;
+    border-left:4px solid var(--gold);
+    padding:1.2rem 1.4rem;
+    margin:1.5rem 0;
+    border-radius:0 4px 4px 0;
+  }
+  .instrucciones h3{
+    font-size:1.05rem; margin-bottom:0.6rem;
+    color:var(--gold-deep);
+  }
+  .instrucciones ul{margin-left:1.3rem; font-size:0.92rem}
+  .instrucciones ul li{margin-bottom:0.3rem}
+
+  /* FORMULARIO */
+  .form-datos{
+    background:var(--paper-warm);
+    border:2px solid var(--ink);
+    padding:2rem;
+    margin-top:1.5rem;
+  }
+  .form-datos h3{
+    font-size:1.2rem; margin-bottom:1.2rem;
+    color:var(--violet-deep);
+    display:flex; align-items:center; gap:0.5rem;
+  }
+  .form-datos h3::before{
+    content:""; width:14px; height:14px;
+    background:var(--violet); transform:rotate(45deg);
+  }
+  .form-grupo{margin-bottom:1.2rem}
+  .form-grupo label{
+    display:block;
+    font-size:0.85rem; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.05em;
+    color:var(--ink-soft); margin-bottom:0.4rem;
+  }
+  .form-grupo label .req{color:var(--accent-deep)}
+  .form-grupo input{
+    width:100%;
+    padding:0.8rem 1rem;
+    font-family:'Inter Tight', sans-serif;
+    font-size:1rem;
+    border:2px solid var(--ink);
+    background:white;
+    border-radius:4px;
+    transition:border-color 0.2s;
+  }
+  .form-grupo input:focus{
+    outline:none;
+    border-color:var(--violet);
+    box-shadow:0 0 0 3px rgba(106,61,154,0.15);
+  }
+  .form-grupo input.error{
+    border-color:var(--danger);
+    background:#fff5f5;
+  }
+  .form-grupo .mensaje-error{
+    font-size:0.82rem;
+    color:var(--danger);
+    margin-top:0.3rem;
+    display:none;
+  }
+  .form-grupo .mensaje-error.visible{display:block}
+
+  .btn-principal{
+    background:var(--violet);
+    color:white;
+    border:2px solid var(--ink);
+    padding:0.9rem 2rem;
+    font-family:'Fraunces', serif;
+    font-weight:800;
+    font-size:1.05rem;
+    cursor:pointer;
+    border-radius:4px;
+    box-shadow:0 3px 0 var(--ink);
+    transition:transform 0.15s, box-shadow 0.15s;
+    margin-top:1rem;
+    display:inline-block;
+  }
+  .btn-principal:hover{
+    transform:translate(0, 2px);
+    box-shadow:0 1px 0 var(--ink);
+  }
+  .btn-principal:active{
+    transform:translate(0, 3px);
+    box-shadow:0 0 0 var(--ink);
+  }
+  .btn-principal:disabled{
+    background:#ccc; cursor:not-allowed;
+    transform:none; box-shadow:0 3px 0 var(--ink);
+  }
+  .btn-secundario{
+    background:white;
+    color:var(--violet-deep);
+    border:2px solid var(--violet);
+    padding:0.7rem 1.5rem;
+    font-family:'Inter Tight', sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    cursor:pointer;
+    border-radius:4px;
+    margin-right:0.5rem;
+  }
+  .btn-secundario:hover{
+    background:var(--violet-pale);
+  }
+
+
+  /* PANTALLA 2: EXAMEN */
+  .barra-progreso-examen{
+    background:white;
+    border:2px solid var(--ink);
+    padding:1rem 1.5rem;
+    margin-bottom:1.5rem;
+    box-shadow:var(--shadow);
+    display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+  }
+  .barra-progreso-examen .etiqueta{
+    font-size:0.78rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--violet-deep);
+  }
+  .barra-bg{
+    flex:1; min-width:200px; height:14px;
+    background:var(--paper-warm);
+    border:1.5px solid var(--ink);
+    overflow:hidden;
+  }
+  .barra-fill{
+    height:100%; width:0%;
+    background:linear-gradient(90deg, var(--violet), var(--accent));
+    transition:width 0.4s ease;
+  }
+  .barra-progreso-examen .conteo{
+    font-family:'Fraunces', serif;
+    font-weight:800; font-size:1.05rem;
+    color:var(--violet-deep);
+    min-width:75px; text-align:right;
+  }
+
+  .pregunta{
+    background:white;
+    border:2px solid var(--ink);
+    padding:1.8rem 2rem;
+    margin-bottom:1.5rem;
+    box-shadow:var(--shadow);
+    border-radius:4px;
+  }
+  .pregunta-header{
+    display:flex; align-items:center; gap:0.8rem;
+    padding-bottom:0.8rem;
+    border-bottom:2px dashed var(--cell-line);
+    margin-bottom:1.2rem;
+  }
+  .pregunta-numero{
+    background:var(--violet);
+    color:white;
+    width:42px; height:42px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif;
+    font-weight:800; font-size:1.15rem;
+    border:2px solid var(--ink);
+    flex-shrink:0;
+  }
+  .pregunta-categoria{
+    font-size:0.72rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--violet-deep);
+    background:var(--violet-pale);
+    padding:0.25rem 0.6rem;
+    border-radius:3px;
+  }
+  .pregunta-texto{
+    font-size:1.05rem;
+    line-height:1.55;
+    margin-bottom:1.2rem;
+    color:var(--ink);
+    font-weight:500;
+  }
+  .opciones{
+    display:flex; flex-direction:column;
+    gap:0.6rem;
+  }
+  .opcion{
+    display:flex; align-items:flex-start; gap:0.8rem;
+    padding:0.8rem 1rem;
+    background:var(--paper);
+    border:2px solid var(--cell-line);
+    border-radius:4px;
+    cursor:pointer;
+    transition:all 0.15s;
+  }
+  .opcion:hover{
+    background:var(--violet-pale);
+    border-color:var(--violet-soft);
+  }
+  .opcion.seleccionada{
+    background:var(--violet-pale);
+    border-color:var(--violet);
+    border-width:2px;
+  }
+  .opcion input[type="radio"]{
+    appearance:none;
+    width:22px; height:22px;
+    border:2px solid var(--ink);
+    border-radius:50%;
+    background:white;
+    cursor:pointer;
+    flex-shrink:0;
+    margin-top:2px;
+    position:relative;
+    transition:all 0.15s;
+  }
+  .opcion input[type="radio"]:checked{
+    border-color:var(--violet);
+    background:var(--violet);
+    box-shadow:inset 0 0 0 4px white, inset 0 0 0 6px var(--violet);
+  }
+  .opcion .letra{
+    font-family:'Fraunces', serif;
+    font-weight:800;
+    color:var(--violet-deep);
+    margin-right:0.2rem;
+  }
+  .opcion .texto{
+    flex:1; font-size:0.95rem;
+    line-height:1.45;
+  }
+
+  .controles-examen{
+    background:white;
+    border:2px solid var(--ink);
+    padding:1.2rem 1.5rem;
+    margin-top:1rem;
+    text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .controles-examen p{
+    font-size:0.88rem;
+    color:var(--ink-soft);
+    margin-bottom:0.8rem;
+  }
+  .btn-finalizar{
+    background:var(--accent);
+    color:white;
+    border:2px solid var(--ink);
+    padding:1rem 2.5rem;
+    font-family:'Fraunces', serif;
+    font-weight:800;
+    font-size:1.1rem;
+    cursor:pointer;
+    border-radius:4px;
+    box-shadow:0 3px 0 var(--ink);
+    transition:transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-finalizar:hover{
+    transform:translate(0, 2px);
+    box-shadow:0 1px 0 var(--ink);
+  }
+
+  /* PANTALLA 3: RESULTADOS */
+  .resultados{
+    background:white;
+    border:3px solid var(--violet);
+    padding:2.5rem;
+    box-shadow:var(--shadow);
+    text-align:center;
+  }
+  .resultados h1{
+    font-size:2rem;
+    color:var(--violet-deep);
+    margin-bottom:0.5rem;
+  }
+  .resultados .alumno-info{
+    background:var(--violet-pale);
+    padding:1.2rem;
+    border-radius:6px;
+    margin:1.5rem 0;
+    text-align:left;
+  }
+  .resultados .alumno-info p{
+    margin-bottom:0.3rem;
+    font-size:0.95rem;
+  }
+  .resultados .alumno-info strong{
+    display:inline-block;
+    min-width:140px;
+    color:var(--violet-deep);
+  }
+  .puntuacion-grande{
+    background:linear-gradient(135deg, var(--violet), var(--accent));
+    color:white;
+    padding:2rem;
+    border-radius:8px;
+    margin:1.5rem 0;
+    border:3px solid var(--ink);
+  }
+  .puntuacion-grande .numero{
+    font-family:'Fraunces', serif;
+    font-size:5rem;
+    font-weight:800;
+    line-height:1;
+    display:block;
+  }
+  .puntuacion-grande .denominador{
+    font-size:1.4rem;
+    opacity:0.9;
+  }
+  .puntuacion-grande .porcentaje{
+    display:block;
+    font-size:1.6rem;
+    font-weight:700;
+    margin-top:0.5rem;
+  }
+  .estadisticas-resultado{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+    gap:1rem; margin:1.5rem 0;
+  }
+  .stat-card{
+    background:var(--paper-warm);
+    border:2px solid var(--ink);
+    padding:1rem;
+    border-radius:4px;
+  }
+  .stat-card .num{
+    font-family:'Fraunces', serif;
+    font-size:1.8rem; font-weight:800;
+    color:var(--violet-deep);
+    display:block;
+  }
+  .stat-card .lbl{
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    font-weight:600;
+  }
+  .nivel-resultado{
+    padding:1rem 1.5rem;
+    margin:1rem 0;
+    border-radius:6px;
+    font-size:1.05rem;
+    font-weight:600;
+  }
+  .nivel-resultado.excelente{background:#c8e6c9; color:#1b5e20; border:2px solid #1b5e20}
+  .nivel-resultado.bueno{background:#dcedc8; color:#33691e; border:2px solid #33691e}
+  .nivel-resultado.suficiente{background:#fff3e0; color:#e65100; border:2px solid #e65100}
+  .nivel-resultado.insuficiente{background:#ffcdd2; color:#b71c1c; border:2px solid #b71c1c}
+
+  .acciones-resultado{
+    margin-top:2rem;
+    display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;
+  }
+
+  /* MODAL CONFIRMACIÓN */
+  .modal-overlay{
+    display:none;
+    position:fixed; top:0; left:0; right:0; bottom:0;
+    background:rgba(26,21,48,0.7);
+    z-index:1000;
+    align-items:center; justify-content:center;
+    padding:2rem;
+  }
+  .modal-overlay.activo{display:flex}
+  .modal{
+    background:white;
+    border:3px solid var(--ink);
+    padding:2rem;
+    max-width:500px;
+    border-radius:6px;
+    box-shadow:var(--shadow);
+  }
+  .modal h3{
+    font-size:1.3rem;
+    color:var(--violet-deep);
+    margin-bottom:0.8rem;
+  }
+  .modal p{
+    margin-bottom:1.2rem;
+    font-size:0.95rem;
+  }
+  .modal-acciones{
+    display:flex; gap:0.8rem; justify-content:flex-end; flex-wrap:wrap;
+  }
+
+  /* AVISO LEGAL */
+  .aviso{
+    text-align:center;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    margin-top:2rem;
+    padding:1rem;
+    font-style:italic;
+  }
+
+  @media (max-width:600px){
+    .institucional{padding:0.8rem 1rem}
+    .timer-area{padding:0.4rem 0.8rem}
+    .timer-area .tiempo{font-size:1.1rem; min-width:60px}
+    main{padding:1rem}
+    .bienvenida, .pregunta, .resultados{padding:1.3rem}
+    .pregunta-numero{width:36px; height:36px; font-size:1rem}
+    .puntuacion-grande .numero{font-size:3.5rem}
+  }
+
+  /* Prevenir impresión y screen capture (no fiable pero disuasivo) */
+  @media print{body{display:none}}
+</style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false" oncopy="return false" oncut="return false" ondragstart="return false">
+
+
+<!-- ENCABEZADO INSTITUCIONAL -->
+<header class="institucional">
+  <div class="logo-area">
+    <!-- LOGO: reemplaza el div .logo-placeholder por una imagen base64 en .logo-img -->
+    <div class="logo-placeholder">U</div>
+    <img class="logo-img" src="" alt="Logo Universidad">
+    <div class="logo-text">
+      <strong>Universidad</strong>
+      <span>Licenciatura en Psicología</span>
+    </div>
+  </div>
+  <div class="timer-area oculto" id="timerArea">
+    <span class="icono">⏱</span>
+    <span class="tiempo" id="timerDisplay">30:00</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ==================== PANTALLA 1: BIENVENIDA ==================== -->
+  <div class="pantalla activa" id="pantallaBienvenida">
+
+    <div class="bienvenida">
+      <h1>Examen · Estadística para Psicología</h1>
+      <p class="subtitulo">Evaluación de las Unidades I y II · Métodos de investigación cuantitativa</p>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Duración</strong>
+          <span>30 minutos</span>
+        </div>
+        <div class="info-item">
+          <strong>Preguntas</strong>
+          <span>20 de opción múltiple</span>
+        </div>
+        <div class="info-item">
+          <strong>Puntaje máximo</strong>
+          <span>20 puntos (1 c/u)</span>
+        </div>
+        <div class="info-item">
+          <strong>Aprobación</strong>
+          <span>12 puntos (60%)</span>
+        </div>
+      </div>
+
+      <div class="instrucciones">
+        <h3>Instrucciones importantes</h3>
+        <ul>
+          <li>El examen tiene un temporizador de <strong>30 minutos</strong>. Al terminar el tiempo, se enviará automáticamente.</li>
+          <li>Cada pregunta tiene una <strong>única respuesta correcta</strong>.</li>
+          <li>Puedes <strong>cambiar tus respuestas</strong> mientras no termines el examen.</li>
+          <li>No está permitido copiar, seleccionar texto, ni usar el menú contextual.</li>
+          <li>Al finalizar, podrás <strong>descargar tu resultado en PDF</strong>.</li>
+          <li>Una vez que comiences el examen, <strong>no podrás regresar</strong> a esta pantalla.</li>
+          <li>Asegúrate de tener buena conexión y batería antes de comenzar.</li>
+        </ul>
+      </div>
+
+      <div class="form-datos">
+        <h3>Datos del estudiante</h3>
+        <form id="formDatos" autocomplete="off">
+          <div class="form-grupo">
+            <label for="nombre">Nombre completo <span class="req">*</span></label>
+            <input type="text" id="nombre" name="nombre" placeholder="Nombre(s) y apellidos" required>
+            <div class="mensaje-error" id="errorNombre">Por favor ingresa tu nombre completo (mínimo 5 caracteres)</div>
+          </div>
+          <div class="form-grupo">
+            <label for="correo">Correo institucional <span class="req">*</span></label>
+            <input type="email" id="correo" name="correo" placeholder="ejemplo@universidad.edu.mx" required>
+            <div class="mensaje-error" id="errorCorreo">Por favor ingresa un correo válido</div>
+          </div>
+          <div class="form-grupo">
+            <label for="codigo">Código de estudiante <span class="req">*</span></label>
+            <input type="text" id="codigo" name="codigo" placeholder="Número de matrícula" required>
+            <div class="mensaje-error" id="errorCodigo">Por favor ingresa tu código de estudiante</div>
+          </div>
+          <button type="submit" class="btn-principal">Comenzar examen →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ==================== PANTALLA 2: EXAMEN ==================== -->
+  <div class="pantalla" id="pantallaExamen">
+    <div class="barra-progreso-examen">
+      <span class="etiqueta">Progreso del examen</span>
+      <div class="barra-bg"><div class="barra-fill" id="barraProgreso"></div></div>
+      <span class="conteo" id="conteoRespondidas">0 / 20</span>
+    </div>
+
+    <div id="contenedorPreguntas">
+      <!-- Las preguntas se inyectan con JavaScript -->
+    </div>
+
+    <div class="controles-examen">
+      <p>Antes de finalizar, asegúrate de haber contestado todas las preguntas. Una vez enviado no podrás modificar tus respuestas.</p>
+      <button class="btn-finalizar" id="btnFinalizar">Finalizar examen ✓</button>
+    </div>
+  </div>
+
+  <!-- ==================== PANTALLA 3: RESULTADOS ==================== -->
+  <div class="pantalla" id="pantallaResultados">
+    <div class="resultados">
+      <h1>Examen completado</h1>
+      <p>Tu resultado se ha calculado. Descarga el comprobante en PDF para tus registros.</p>
+
+      <div class="alumno-info">
+        <p><strong>Nombre:</strong> <span id="resNombre"></span></p>
+        <p><strong>Correo:</strong> <span id="resCorreo"></span></p>
+        <p><strong>Código:</strong> <span id="resCodigo"></span></p>
+        <p><strong>Fecha:</strong> <span id="resFecha"></span></p>
+        <p><strong>Tiempo utilizado:</strong> <span id="resTiempo"></span></p>
+      </div>
+
+      <div class="puntuacion-grande">
+        <span class="numero" id="resPuntos">0</span>
+        <span class="denominador">/ 20</span>
+        <span class="porcentaje" id="resPorcentaje">0%</span>
+      </div>
+
+      <div class="nivel-resultado" id="resNivel">Resultado</div>
+
+      <div class="estadisticas-resultado">
+        <div class="stat-card">
+          <span class="num" id="resCorrectas">0</span>
+          <span class="lbl">Correctas</span>
+        </div>
+        <div class="stat-card">
+          <span class="num" id="resIncorrectas">0</span>
+          <span class="lbl">Incorrectas</span>
+        </div>
+        <div class="stat-card">
+          <span class="num" id="resSinResponder">0</span>
+          <span class="lbl">Sin responder</span>
+        </div>
+      </div>
+
+      <div class="acciones-resultado">
+        <button class="btn-principal" id="btnDescargarPDF">📄 Descargar PDF</button>
+      </div>
+    </div>
+
+    <p class="aviso">Examen oficial del programa de Licenciatura en Psicología · Documento generado el <span id="fechaAviso"></span></p>
+  </div>
+
+  <!-- MODAL CONFIRMACIÓN FINALIZAR -->
+  <div class="modal-overlay" id="modalFinalizar">
+    <div class="modal">
+      <h3>¿Finalizar el examen?</h3>
+      <p>Una vez que envíes tu examen no podrás modificar tus respuestas. Verifica que hayas contestado todas las preguntas.</p>
+      <p style="font-size:0.88rem; color:var(--accent-deep)"><strong id="msgPendientes"></strong></p>
+      <div class="modal-acciones">
+        <button class="btn-secundario" id="btnCancelarFinalizar">Seguir contestando</button>
+        <button class="btn-principal" id="btnConfirmarFinalizar">Sí, finalizar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL TIEMPO AGOTADO -->
+  <div class="modal-overlay" id="modalTiempoAgotado">
+    <div class="modal">
+      <h3>⏰ Tiempo agotado</h3>
+      <p>Se ha cumplido el tiempo de 30 minutos. Tu examen será enviado con las respuestas que hayas marcado hasta este momento.</p>
+      <div class="modal-acciones">
+        <button class="btn-principal" id="btnAceptarTiempo">Ver mis resultados</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+
+<script>
+// ==================== BANCO DE PREGUNTAS ====================
+// 20 preguntas nivel medio sobre Unidades I y II de Estadística para Psicología
+const PREGUNTAS = [
+  // ---------- UNIDAD I: INTRODUCCIÓN ----------
+  {
+    categoria: "Unidad I · Psicología e investigación",
+    pregunta: "¿Cuál es la característica que distingue a la investigación científica de la opinión personal?",
+    opciones: [
+      "La investigación científica utiliza palabras más complejas",
+      "La investigación científica recolecta datos de forma sistemática y verificable",
+      "La opinión personal nunca es válida en psicología",
+      "La investigación científica sólo se hace en laboratorios"
+    ],
+    correcta: 1
+  },
+  {
+    categoria: "Unidad I · Psicología y estadística",
+    pregunta: "Para la psicología científica, la estadística cumple principalmente la función de:",
+    opciones: [
+      "Hacer que los reportes parezcan más profesionales",
+      "Sustituir el juicio clínico del psicólogo",
+      "Permitir tomar decisiones basadas en evidencia y no en intuiciones",
+      "Decorar los artículos con tablas y gráficos"
+    ],
+    correcta: 2
+  },
+  {
+    categoria: "Unidad I · Aplicaciones",
+    pregunta: "¿Cuál de las siguientes situaciones NO es una aplicación típica de la estadística en psicología?",
+    opciones: [
+      "Interpretar el puntaje de un paciente en una prueba de CI",
+      "Evaluar la efectividad de un programa de prevención del bullying",
+      "Determinar si un sueño tiene significado simbólico personal",
+      "Comparar el bienestar laboral entre dos departamentos de una empresa"
+    ],
+    correcta: 2
+  },
+  {
+    categoria: "Unidad I · Estadística descriptiva",
+    pregunta: "Un psicólogo aplica una escala de ansiedad a 50 estudiantes y calcula la media, mediana y desviación estándar. ¿Qué tipo de estadística está utilizando?",
+    opciones: [
+      "Estadística inferencial",
+      "Estadística descriptiva",
+      "Estadística predictiva",
+      "Estadística experimental"
+    ],
+    correcta: 1
+  },
+  {
+    categoria: "Unidad I · Descriptiva vs inferencial",
+    pregunta: "La estadística inferencial se diferencia de la descriptiva porque:",
+    opciones: [
+      "Sólo usa promedios y medianas",
+      "Permite generalizar resultados de una muestra a una población más amplia",
+      "Únicamente se aplica a datos cualitativos",
+      "Es más sencilla de calcular en Excel"
+    ],
+    correcta: 1
+  },
+  {
+    categoria: "Unidad I · Medidas estadísticas",
+    pregunta: "Si los puntajes de ansiedad de tu muestra tienen una media de 12 y una desviación estándar muy alta, ¿qué puedes interpretar?",
+    opciones: [
+      "Todos los participantes obtuvieron un puntaje cercano a 12",
+      "Los participantes obtuvieron puntajes muy dispersos respecto a la media",
+      "La media es incorrecta",
+      "No se puede sacar ninguna conclusión"
+    ],
+    correcta: 1
+  },
+
+  // ---------- UNIDAD II: MÉTODOS DE INVESTIGACIÓN ----------
+  {
+    categoria: "Unidad II · Cuantitativo vs cualitativo",
+    pregunta: "Una investigación que busca responder \"¿cómo viven las personas en duelo su proceso?\" es típicamente:",
+    opciones: [
+      "Cuantitativa, porque mide intensidad emocional",
+      "Cualitativa, porque busca comprender la experiencia subjetiva",
+      "Experimental, porque manipula variables",
+      "Estadística, porque usa números"
+    ],
+    correcta: 1
+  },
+  {
+    categoria: "Unidad II · Métodos cuantitativos",
+    pregunta: "¿Cuál de las siguientes es una característica típica de los métodos cuantitativos?",
+    opciones: [
+      "Se utilizan muestras pequeñas para obtener mucha profundidad",
+      "Se enfocan en narrativas y significados",
+      "Permiten generalizar a poblaciones más amplias mediante muestras grandes",
+      "No utilizan análisis estadístico"
+    ],
+    correcta: 2
+  },
+  {
+    categoria: "Unidad II · Variables experimentales",
+    pregunta: "En un estudio donde se evalúa si la práctica diaria de mindfulness reduce la ansiedad, la variable independiente (VI) es:",
+    opciones: [
+      "El nivel de ansiedad reportado",
+      "La participación o no en sesiones de mindfulness",
+      "La edad de los participantes",
+      "El sexo del participante"
+    ],
+    correcta: 1
+  },
+  {
+    categoria: "Unidad II · Variables experimentales",
+    pregunta: "En el mismo estudio sobre mindfulness, la variable dependiente (VD) es:",
+    opciones: [
+      "La participación o no en mindfulness",
+      "El instructor que dirige las sesiones",
+      "El nivel de ansiedad medido al final del estudio",
+      "El tiempo del experimento"
+    ],
+    correcta: 2
+  },
+  {
+    categoria: "Unidad II · Diseños experimentales",
+    pregunta: "¿Cuál es la principal ventaja del diseño de medidas repetidas?",
+    opciones: [
+      "Requiere muchísimos participantes",
+      "Cada participante es su propio control, eliminando diferencias individuales",
+      "Es el único diseño que permite usar estadística",
+      "No tiene desventajas"
+    ],
+    correcta: 1
+  },
+  {
+    categoria: "Unidad II · Diseños experimentales",
+    pregunta: "¿Para qué sirve incluir un grupo control en un experimento psicológico?",
+    opciones: [
+      "Para tener más participantes y que se vea más serio",
+      "Para comparar y poder atribuir los cambios al tratamiento y no a otros factores",
+      "Porque la ética lo exige aunque no tenga utilidad real",
+      "Para complicar el análisis estadístico"
+    ],
+    correcta: 1
+  },
+  {
+    categoria: "Unidad II · Métodos observacionales",
+    pregunta: "Una psicóloga registra durante 30 minutos las conductas de niños en el patio de recreo, sin intervenir. Está utilizando un método:",
+    opciones: [
+      "Experimental",
+      "Cualitativo de entrevista",
+      "Observacional naturalista",
+      "Correlacional inferencial"
+    ],
+    correcta: 2
+  },
+  {
+    categoria: "Unidad II · Estudios comparativos",
+    pregunta: "Un estudio comparativo se distingue de uno experimental porque:",
+    opciones: [
+      "Usa más estadística",
+      "No manipula variables, sólo compara grupos ya existentes",
+      "Tiene mejor diseño metodológico",
+      "Sólo se aplica en clínica"
+    ],
+    correcta: 1
+  },
+  {
+    categoria: "Unidad II · Preguntas de investigación",
+    pregunta: "¿Cuál de las siguientes es una pregunta de investigación cuantitativa bien formulada?",
+    opciones: [
+      "¿Las personas son felices?",
+      "¿Por qué Juan se siente triste?",
+      "¿Existe relación entre las horas de uso de redes sociales y el nivel de ansiedad en universitarios mexicanos?",
+      "¿La música mejora todo?"
+    ],
+    correcta: 2
+  },
+  {
+    categoria: "Unidad II · Instrumentos de medición",
+    pregunta: "El GAD-7 y el PHQ-9 son ejemplos de:",
+    opciones: [
+      "Entrevistas clínicas en profundidad",
+      "Escalas psicométricas estandarizadas y validadas",
+      "Pruebas proyectivas",
+      "Métodos observacionales"
+    ],
+    correcta: 1
+  },
+  {
+    categoria: "Unidad II · Niveles de medición",
+    pregunta: "La variable \"sexo\" (categorías femenino/masculino) tiene un nivel de medición:",
+    opciones: [
+      "De razón",
+      "De intervalo",
+      "Ordinal",
+      "Nominal"
+    ],
+    correcta: 3
+  },
+  {
+    categoria: "Unidad II · Niveles de medición",
+    pregunta: "La variable \"horas de sueño por noche\" tiene un nivel de medición:",
+    opciones: [
+      "Nominal",
+      "Ordinal",
+      "De razón",
+      "Categórico dicotómico"
+    ],
+    correcta: 2
+  },
+  {
+    categoria: "Unidad II · Niveles de medición",
+    pregunta: "Si pides al participante que valore su satisfacción del 1 al 5 en una escala Likert (muy insatisfecho a muy satisfecho), la variable obtenida tiene nivel de medición:",
+    opciones: [
+      "Nominal",
+      "Ordinal",
+      "De razón",
+      "Continua absoluta"
+    ],
+    correcta: 1
+  },
+  {
+    categoria: "Unidad II · Nuevos paradigmas",
+    pregunta: "¿Cuál de los siguientes es un nuevo paradigma de investigación cuantitativa en psicología?",
+    opciones: [
+      "Volver únicamente al método introspectivo",
+      "Análisis de big data desde redes sociales y aplicaciones móviles",
+      "Eliminar el uso de la estadística",
+      "Basar toda investigación en un solo caso clínico"
+    ],
+    correcta: 1
+  }
+];
+
+
+// ==================== ESTADO DEL EXAMEN ====================
+const ESTADO = {
+  alumno: { nombre: "", correo: "", codigo: "" },
+  respuestas: new Array(PREGUNTAS.length).fill(null),
+  tiempoInicio: null,
+  tiempoFin: null,
+  tiempoRestante: 30 * 60, // 30 minutos en segundos
+  temporizadorId: null,
+  examenFinalizado: false,
+  // Mezcla aleatoria del orden de preguntas para reducir copia entre estudiantes
+  ordenPreguntas: []
+};
+
+// ==================== ELEMENTOS DEL DOM ====================
+const el = {
+  pantallaBienvenida: document.getElementById('pantallaBienvenida'),
+  pantallaExamen: document.getElementById('pantallaExamen'),
+  pantallaResultados: document.getElementById('pantallaResultados'),
+  formDatos: document.getElementById('formDatos'),
+  nombre: document.getElementById('nombre'),
+  correo: document.getElementById('correo'),
+  codigo: document.getElementById('codigo'),
+  errorNombre: document.getElementById('errorNombre'),
+  errorCorreo: document.getElementById('errorCorreo'),
+  errorCodigo: document.getElementById('errorCodigo'),
+  contenedorPreguntas: document.getElementById('contenedorPreguntas'),
+  barraProgreso: document.getElementById('barraProgreso'),
+  conteoRespondidas: document.getElementById('conteoRespondidas'),
+  btnFinalizar: document.getElementById('btnFinalizar'),
+  timerArea: document.getElementById('timerArea'),
+  timerDisplay: document.getElementById('timerDisplay'),
+  modalFinalizar: document.getElementById('modalFinalizar'),
+  modalTiempoAgotado: document.getElementById('modalTiempoAgotado'),
+  msgPendientes: document.getElementById('msgPendientes'),
+  btnCancelarFinalizar: document.getElementById('btnCancelarFinalizar'),
+  btnConfirmarFinalizar: document.getElementById('btnConfirmarFinalizar'),
+  btnAceptarTiempo: document.getElementById('btnAceptarTiempo'),
+  resNombre: document.getElementById('resNombre'),
+  resCorreo: document.getElementById('resCorreo'),
+  resCodigo: document.getElementById('resCodigo'),
+  resFecha: document.getElementById('resFecha'),
+  resTiempo: document.getElementById('resTiempo'),
+  resPuntos: document.getElementById('resPuntos'),
+  resPorcentaje: document.getElementById('resPorcentaje'),
+  resNivel: document.getElementById('resNivel'),
+  resCorrectas: document.getElementById('resCorrectas'),
+  resIncorrectas: document.getElementById('resIncorrectas'),
+  resSinResponder: document.getElementById('resSinResponder'),
+  fechaAviso: document.getElementById('fechaAviso'),
+  btnDescargarPDF: document.getElementById('btnDescargarPDF')
+};
+
+// ==================== UTILIDADES ====================
+function mezclarArray(arr){
+  const copia = [...arr];
+  for(let i = copia.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+  return copia;
+}
+
+function formatearTiempo(segundos){
+  const m = Math.floor(segundos / 60);
+  const s = segundos % 60;
+  return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+}
+
+function validarEmail(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function cambiarPantalla(pantallaActiva){
+  document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
+  pantallaActiva.classList.add('activa');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ==================== VALIDACIÓN FORMULARIO ====================
+el.formDatos.addEventListener('submit', function(e){
+  e.preventDefault();
+
+  let valido = true;
+  const nombre = el.nombre.value.trim();
+  const correo = el.correo.value.trim();
+  const codigo = el.codigo.value.trim();
+
+  // Limpiar errores previos
+  [el.nombre, el.correo, el.codigo].forEach(i => i.classList.remove('error'));
+  [el.errorNombre, el.errorCorreo, el.errorCodigo].forEach(m => m.classList.remove('visible'));
+
+  if(nombre.length < 5){
+    el.nombre.classList.add('error');
+    el.errorNombre.classList.add('visible');
+    valido = false;
+  }
+  if(!validarEmail(correo)){
+    el.correo.classList.add('error');
+    el.errorCorreo.classList.add('visible');
+    valido = false;
+  }
+  if(codigo.length < 3){
+    el.codigo.classList.add('error');
+    el.errorCodigo.classList.add('visible');
+    valido = false;
+  }
+
+  if(!valido) return;
+
+  ESTADO.alumno = { nombre, correo, codigo };
+  iniciarExamen();
+});
+
+// ==================== INICIAR EXAMEN ====================
+function iniciarExamen(){
+  // Generar orden aleatorio de preguntas (deterministicamente usando código del alumno)
+  ESTADO.ordenPreguntas = mezclarArray(PREGUNTAS.map((_, i) => i));
+
+  ESTADO.tiempoInicio = new Date();
+  renderizarPreguntas();
+  el.timerArea.classList.remove('oculto');
+  iniciarTemporizador();
+  cambiarPantalla(el.pantallaExamen);
+}
+
+// ==================== RENDERIZAR PREGUNTAS ====================
+function renderizarPreguntas(){
+  el.contenedorPreguntas.innerHTML = '';
+  ESTADO.ordenPreguntas.forEach((indiceOriginal, posicion) => {
+    const p = PREGUNTAS[indiceOriginal];
+    const div = document.createElement('div');
+    div.className = 'pregunta';
+    div.dataset.indiceOriginal = indiceOriginal;
+    div.dataset.posicion = posicion;
+
+    const letrasOpciones = ['A','B','C','D'];
+    let opcionesHTML = '';
+    p.opciones.forEach((op, i) => {
+      opcionesHTML += `
+        <label class="opcion" data-opcion="${i}">
+          <input type="radio" name="pregunta_${indiceOriginal}" value="${i}">
+          <span class="texto"><span class="letra">${letrasOpciones[i]})</span> ${op}</span>
+        </label>
+      `;
+    });
+
+    div.innerHTML = `
+      <div class="pregunta-header">
+        <div class="pregunta-numero">${posicion + 1}</div>
+        <div>
+          <div class="pregunta-categoria">${p.categoria}</div>
+        </div>
+      </div>
+      <div class="pregunta-texto">${p.pregunta}</div>
+      <div class="opciones">${opcionesHTML}</div>
+    `;
+
+    el.contenedorPreguntas.appendChild(div);
+  });
+
+  // Listeners para los radios
+  document.querySelectorAll('.opcion input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', function(){
+      const indiceOriginal = parseInt(this.name.replace('pregunta_',''));
+      ESTADO.respuestas[indiceOriginal] = parseInt(this.value);
+
+      // Actualizar visual de la opción seleccionada
+      const padre = this.closest('.pregunta');
+      padre.querySelectorAll('.opcion').forEach(op => op.classList.remove('seleccionada'));
+      this.closest('.opcion').classList.add('seleccionada');
+
+      actualizarProgreso();
+    });
+  });
+
+  actualizarProgreso();
+}
+
+function actualizarProgreso(){
+  const respondidas = ESTADO.respuestas.filter(r => r !== null).length;
+  const total = PREGUNTAS.length;
+  const pct = (respondidas / total) * 100;
+  el.barraProgreso.style.width = pct + '%';
+  el.conteoRespondidas.textContent = `${respondidas} / ${total}`;
+}
+
+// ==================== TEMPORIZADOR ====================
+function iniciarTemporizador(){
+  actualizarTimerDisplay();
+  ESTADO.temporizadorId = setInterval(() => {
+    ESTADO.tiempoRestante--;
+    actualizarTimerDisplay();
+
+    if(ESTADO.tiempoRestante <= 0){
+      clearInterval(ESTADO.temporizadorId);
+      ESTADO.modalTiempoAgotadoMostrado = true;
+      el.modalTiempoAgotado.classList.add('activo');
+    }
+  }, 1000);
+}
+
+function actualizarTimerDisplay(){
+  el.timerDisplay.textContent = formatearTiempo(ESTADO.tiempoRestante);
+  el.timerDisplay.classList.remove('alerta','critico');
+  if(ESTADO.tiempoRestante <= 60){
+    el.timerDisplay.classList.add('critico');
+  } else if(ESTADO.tiempoRestante <= 300){
+    el.timerDisplay.classList.add('alerta');
+  }
+}
+
+// ==================== FINALIZAR EXAMEN ====================
+el.btnFinalizar.addEventListener('click', function(){
+  const respondidas = ESTADO.respuestas.filter(r => r !== null).length;
+  const pendientes = PREGUNTAS.length - respondidas;
+
+  if(pendientes > 0){
+    el.msgPendientes.textContent = `⚠ Tienes ${pendientes} pregunta(s) sin responder. Si finalizas ahora, contarán como incorrectas.`;
+  } else {
+    el.msgPendientes.textContent = '✓ Has contestado todas las preguntas.';
+  }
+
+  el.modalFinalizar.classList.add('activo');
+});
+
+el.btnCancelarFinalizar.addEventListener('click', function(){
+  el.modalFinalizar.classList.remove('activo');
+});
+
+el.btnConfirmarFinalizar.addEventListener('click', function(){
+  el.modalFinalizar.classList.remove('activo');
+  procesarFinalizacion();
+});
+
+el.btnAceptarTiempo.addEventListener('click', function(){
+  el.modalTiempoAgotado.classList.remove('activo');
+  procesarFinalizacion();
+});
+
+function procesarFinalizacion(){
+  if(ESTADO.examenFinalizado) return;
+  ESTADO.examenFinalizado = true;
+  clearInterval(ESTADO.temporizadorId);
+  ESTADO.tiempoFin = new Date();
+  calcularResultados();
+  mostrarResultados();
+  cambiarPantalla(el.pantallaResultados);
+  el.timerArea.classList.add('oculto');
+}
+
+// ==================== CÁLCULO RESULTADOS ====================
+function calcularResultados(){
+  let correctas = 0;
+  let incorrectas = 0;
+  let sinResponder = 0;
+
+  ESTADO.respuestas.forEach((respuesta, i) => {
+    if(respuesta === null){
+      sinResponder++;
+    } else if(respuesta === PREGUNTAS[i].correcta){
+      correctas++;
+    } else {
+      incorrectas++;
+    }
+  });
+
+  ESTADO.correctas = correctas;
+  ESTADO.incorrectas = incorrectas;
+  ESTADO.sinResponder = sinResponder;
+  ESTADO.porcentaje = Math.round((correctas / PREGUNTAS.length) * 100);
+  ESTADO.duracionSegundos = Math.floor((ESTADO.tiempoFin - ESTADO.tiempoInicio) / 1000);
+}
+
+function mostrarResultados(){
+  el.resNombre.textContent = ESTADO.alumno.nombre;
+  el.resCorreo.textContent = ESTADO.alumno.correo;
+  el.resCodigo.textContent = ESTADO.alumno.codigo;
+  el.resFecha.textContent = ESTADO.tiempoFin.toLocaleString('es-MX', {
+    day:'2-digit', month:'long', year:'numeric',
+    hour:'2-digit', minute:'2-digit'
+  });
+  el.resTiempo.textContent = formatearTiempo(ESTADO.duracionSegundos);
+  el.resPuntos.textContent = ESTADO.correctas;
+  el.resPorcentaje.textContent = ESTADO.porcentaje + '%';
+  el.resCorrectas.textContent = ESTADO.correctas;
+  el.resIncorrectas.textContent = ESTADO.incorrectas;
+  el.resSinResponder.textContent = ESTADO.sinResponder;
+  el.fechaAviso.textContent = new Date().toLocaleDateString('es-MX',{
+    day:'2-digit', month:'long', year:'numeric'
+  });
+
+  // Determinar nivel y estilo
+  let nivel = '', clase = '';
+  if(ESTADO.porcentaje >= 90){
+    nivel = '🏆 Excelente · Dominio sobresaliente de los temas';
+    clase = 'excelente';
+  } else if(ESTADO.porcentaje >= 75){
+    nivel = '✓ Bueno · Comprensión sólida con áreas de oportunidad';
+    clase = 'bueno';
+  } else if(ESTADO.porcentaje >= 60){
+    nivel = '○ Suficiente · Aprobado, conviene reforzar contenidos';
+    clase = 'suficiente';
+  } else {
+    nivel = '✗ Insuficiente · Es necesario revisar los temas y volver a intentarlo';
+    clase = 'insuficiente';
+  }
+  el.resNivel.textContent = nivel;
+  el.resNivel.className = 'nivel-resultado ' + clase;
+}
+
+
+// ==================== GENERACIÓN DE PDF ====================
+el.btnDescargarPDF.addEventListener('click', function(){
+  generarPDF();
+});
+
+function generarPDF(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
+
+  const ancho = doc.internal.pageSize.getWidth();
+  const alto = doc.internal.pageSize.getHeight();
+  let y = 20;
+
+  // === BORDE EXTERIOR ===
+  doc.setDrawColor(74, 38, 112); // violet-deep
+  doc.setLineWidth(1);
+  doc.rect(10, 10, ancho - 20, alto - 20);
+
+  // === ENCABEZADO ===
+  // Banda superior violeta
+  doc.setFillColor(106, 61, 154);
+  doc.rect(10, 10, ancho - 20, 25, 'F');
+
+  // Logo placeholder (cuadro con "U")
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(15, 14, 17, 17, 2, 2, 'F');
+  doc.setTextColor(106, 61, 154);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.text('U', 23.5, 25.5, { align: 'center' });
+
+  // Nombre institucional
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.text('UNIVERSIDAD', 36, 21);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.text('Licenciatura en Psicología', 36, 26);
+  doc.text('Estadística para Psicología', 36, 30.5);
+
+  // Identificador "COMPROBANTE OFICIAL" derecha
+  doc.setFillColor(201, 162, 39); // gold
+  doc.rect(ancho - 70, 14, 55, 7, 'F');
+  doc.setTextColor(26, 21, 48);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'bold');
+  doc.text('COMPROBANTE OFICIAL', ancho - 42.5, 19, { align: 'center' });
+  doc.setFontSize(7);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(255, 255, 255);
+  doc.text('Fecha: ' + new Date().toLocaleDateString('es-MX'), ancho - 15, 27, { align: 'right' });
+  doc.text('Hora: ' + new Date().toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'}), ancho - 15, 32, { align: 'right' });
+
+  y = 48;
+
+  // === TÍTULO ===
+  doc.setTextColor(74, 38, 112);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.text('Comprobante de evaluación', ancho / 2, y, { align: 'center' });
+  y += 5;
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(80, 80, 80);
+  doc.text('Examen de Unidades I y II · Métodos de investigación cuantitativa', ancho / 2, y, { align: 'center' });
+  y += 10;
+
+  // Línea separadora
+  doc.setDrawColor(106, 61, 154);
+  doc.setLineWidth(0.5);
+  doc.line(20, y, ancho - 20, y);
+  y += 10;
+
+  // === DATOS DEL ALUMNO ===
+  doc.setTextColor(74, 38, 112);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('DATOS DEL ESTUDIANTE', 20, y);
+  y += 7;
+
+  doc.setFillColor(240, 232, 248); // violet-pale
+  doc.rect(20, y, ancho - 40, 28, 'F');
+  doc.setDrawColor(106, 61, 154);
+  doc.setLineWidth(0.3);
+  doc.rect(20, y, ancho - 40, 28);
+
+  doc.setTextColor(26, 21, 48);
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Nombre:', 25, y + 7);
+  doc.text('Correo:', 25, y + 14);
+  doc.text('Código:', 25, y + 21);
+
+  doc.setFont('helvetica', 'normal');
+  doc.text(ESTADO.alumno.nombre, 55, y + 7);
+  doc.text(ESTADO.alumno.correo, 55, y + 14);
+  doc.text(ESTADO.alumno.codigo, 55, y + 21);
+
+  y += 35;
+
+  // === PUNTUACIÓN GRANDE ===
+  doc.setFillColor(106, 61, 154);
+  doc.rect(20, y, ancho - 40, 40, 'F');
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('PUNTUACIÓN OBTENIDA', ancho / 2, y + 8, { align: 'center' });
+
+  doc.setFontSize(42);
+  doc.text(`${ESTADO.correctas}`, ancho / 2 - 8, y + 28, { align: 'center' });
+  doc.setFontSize(16);
+  doc.text(`/ 20`, ancho / 2 + 12, y + 28, { align: 'left' });
+
+  doc.setFontSize(14);
+  doc.text(`${ESTADO.porcentaje}%`, ancho / 2, y + 36, { align: 'center' });
+
+  y += 47;
+
+  // === NIVEL OBTENIDO ===
+  let nivelTexto = '', colorR = 0, colorG = 0, colorB = 0;
+  if(ESTADO.porcentaje >= 90){
+    nivelTexto = 'EXCELENTE · Dominio sobresaliente de los temas';
+    colorR = 27; colorG = 94; colorB = 32;
+  } else if(ESTADO.porcentaje >= 75){
+    nivelTexto = 'BUENO · Comprensión sólida con áreas de oportunidad';
+    colorR = 51; colorG = 105; colorB = 30;
+  } else if(ESTADO.porcentaje >= 60){
+    nivelTexto = 'SUFICIENTE · Aprobado, conviene reforzar contenidos';
+    colorR = 230; colorG = 81; colorB = 0;
+  } else {
+    nivelTexto = 'INSUFICIENTE · Es necesario revisar los temas';
+    colorR = 183; colorG = 28; colorB = 28;
+  }
+
+  doc.setFillColor(colorR, colorG, colorB);
+  doc.rect(20, y, ancho - 40, 10, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.text(nivelTexto, ancho / 2, y + 6.5, { align: 'center' });
+  y += 17;
+
+  // === DESGLOSE ===
+  doc.setTextColor(74, 38, 112);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('DESGLOSE DEL RESULTADO', 20, y);
+  y += 7;
+
+  const colAncho = (ancho - 40) / 3;
+  const colsData = [
+    { label: 'Correctas', valor: ESTADO.correctas, color: [200, 230, 201] },
+    { label: 'Incorrectas', valor: ESTADO.incorrectas, color: [255, 205, 210] },
+    { label: 'Sin responder', valor: ESTADO.sinResponder, color: [255, 224, 178] }
+  ];
+  colsData.forEach((c, i) => {
+    const x = 20 + (colAncho * i);
+    doc.setFillColor(c.color[0], c.color[1], c.color[2]);
+    doc.rect(x + 1, y, colAncho - 2, 22, 'F');
+    doc.setDrawColor(80, 80, 80);
+    doc.setLineWidth(0.2);
+    doc.rect(x + 1, y, colAncho - 2, 22);
+    doc.setTextColor(26, 21, 48);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.text(`${c.valor}`, x + colAncho/2, y + 12, { align: 'center' });
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.text(c.label, x + colAncho/2, y + 18, { align: 'center' });
+  });
+  y += 30;
+
+  // === INFORMACIÓN DEL EXAMEN ===
+  doc.setTextColor(74, 38, 112);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('INFORMACIÓN DE LA EVALUACIÓN', 20, y);
+  y += 7;
+
+  doc.setDrawColor(106, 61, 154);
+  doc.setLineWidth(0.3);
+  doc.rect(20, y, ancho - 40, 28);
+
+  doc.setTextColor(26, 21, 48);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Fecha de aplicación:', 25, y + 7);
+  doc.text('Hora de finalización:', 25, y + 14);
+  doc.text('Tiempo utilizado:', 25, y + 21);
+
+  doc.setFont('helvetica', 'normal');
+  doc.text(ESTADO.tiempoFin.toLocaleDateString('es-MX', { day:'2-digit', month:'long', year:'numeric' }), 75, y + 7);
+  doc.text(ESTADO.tiempoFin.toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' }), 75, y + 14);
+  doc.text(formatearTiempo(ESTADO.duracionSegundos) + ' minutos', 75, y + 21);
+
+  doc.setFont('helvetica', 'bold');
+  doc.text('Duración máxima:', 125, y + 7);
+  doc.text('Total preguntas:', 125, y + 14);
+  doc.text('Aprobación mínima:', 125, y + 21);
+
+  doc.setFont('helvetica', 'normal');
+  doc.text('30:00 minutos', 168, y + 7);
+  doc.text('20 reactivos', 168, y + 14);
+  doc.text('12 / 20 (60%)', 168, y + 21);
+
+  y += 35;
+
+  // === PIE DE PÁGINA ===
+  doc.setDrawColor(106, 61, 154);
+  doc.setLineWidth(0.5);
+  doc.line(20, alto - 25, ancho - 20, alto - 25);
+
+  doc.setTextColor(80, 80, 80);
+  doc.setFontSize(7);
+  doc.setFont('helvetica', 'italic');
+  doc.text('Este documento es un comprobante automático generado por el sistema de evaluación.', ancho / 2, alto - 20, { align: 'center' });
+  doc.text('Para validar este resultado, contacta con el docente responsable de la materia.', ancho / 2, alto - 16, { align: 'center' });
+
+  // ID único del documento
+  const idDoc = `EVA-${ESTADO.alumno.codigo}-${Date.now().toString(36).toUpperCase()}`;
+  doc.setFont('helvetica', 'bold');
+  doc.text(`ID del documento: ${idDoc}`, ancho / 2, alto - 12, { align: 'center' });
+
+  // === GUARDAR ===
+  const nombreArchivo = `Examen_Estadistica_Psi_${ESTADO.alumno.codigo}_${new Date().toISOString().slice(0,10)}.pdf`;
+  doc.save(nombreArchivo);
+}
+
+
+// ==================== PROTECCIONES ANTI-COPIA ====================
+// Bloquear menú contextual (clic derecho)
+document.addEventListener('contextmenu', e => {
+  e.preventDefault();
+  return false;
+});
+
+// Bloquear selección de texto
+document.addEventListener('selectstart', e => {
+  // Permitir selección sólo en inputs
+  if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return true;
+  e.preventDefault();
+  return false;
+});
+
+// Bloquear copiar
+document.addEventListener('copy', e => {
+  if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return true;
+  e.preventDefault();
+  return false;
+});
+
+// Bloquear cortar
+document.addEventListener('cut', e => {
+  if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return true;
+  e.preventDefault();
+  return false;
+});
+
+// Bloquear arrastrar
+document.addEventListener('dragstart', e => {
+  e.preventDefault();
+  return false;
+});
+
+// Bloquear atajos de teclado comunes
+document.addEventListener('keydown', e => {
+  // Permitir tipear en inputs
+  if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA'){
+    // Pero bloquear F12 incluso ahí
+    if(e.key === 'F12'){ e.preventDefault(); return false; }
+    return true;
+  }
+
+  // Bloquear F12 (DevTools)
+  if(e.key === 'F12'){
+    e.preventDefault();
+    return false;
+  }
+  // Bloquear Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (DevTools)
+  if(e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')){
+    e.preventDefault();
+    return false;
+  }
+  // Bloquear Ctrl+U (ver fuente)
+  if(e.ctrlKey && (e.key === 'u' || e.key === 'U')){
+    e.preventDefault();
+    return false;
+  }
+  // Bloquear Ctrl+C, Ctrl+X, Ctrl+A fuera de inputs
+  if(e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'x' || e.key === 'X' || e.key === 'a' || e.key === 'A' || e.key === 'p' || e.key === 'P' || e.key === 's' || e.key === 'S')){
+    e.preventDefault();
+    return false;
+  }
+});
+
+// Advertencia si intenta salir/recargar durante el examen
+window.addEventListener('beforeunload', function(e){
+  // Sólo si está en medio del examen
+  if(ESTADO.tiempoInicio && !ESTADO.examenFinalizado){
+    const mensaje = '¿Estás seguro de salir? Perderás tu progreso en el examen.';
+    e.preventDefault();
+    e.returnValue = mensaje;
+    return mensaje;
+  }
+});
+
+// Detectar cuando la ventana pierde el foco (cambio de pestaña) - advertencia visual
+let cambiosPestana = 0;
+document.addEventListener('visibilitychange', function(){
+  if(document.hidden && ESTADO.tiempoInicio && !ESTADO.examenFinalizado){
+    cambiosPestana++;
+    console.warn(`Cambio de pestaña detectado (${cambiosPestana})`);
+  }
+});
+
+</script>
+
+</body>
+</html>
