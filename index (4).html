@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unidad III · Manejo de Datos — Estadística Aplicada a la Psicología</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1E2A44;
+  --paper:#EDF1F0;
+  --paper-2:#E3E9E6;
+  --teal:#2C7A73;
+  --teal-dark:#205852;
+  --ochre:#C6862B;
+  --ochre-dark:#9C6A1F;
+  --slate:#55647A;
+  --clay:#A83F32;
+  --line:#C9D2CC;
+  --card:#F8F9F7;
+  --radius:2px;
+  --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Inter', -apple-system, Segoe UI, sans-serif;
+  --mono:'IBM Plex Mono', Consolas, monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.6;
+  background-image:
+    linear-gradient(var(--paper-2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper-2) 1px, transparent 1px);
+  background-size:28px 28px;
+}
+::selection{background:var(--ochre); color:#fff;}
+
+/* ---------- Layout shell ---------- */
+.shell{display:grid; grid-template-columns:64px 1fr; min-height:100vh;}
+@media (max-width:860px){ .shell{grid-template-columns:1fr;} }
+
+/* ---------- Ruler rail (signature nav) ---------- */
+.rail{
+  position:sticky; top:0; height:100vh;
+  background:var(--ink);
+  display:flex; flex-direction:column; align-items:center;
+  padding:18px 0;
+  z-index:50;
+}
+@media (max-width:860px){
+  .rail{position:sticky; top:0; height:auto; flex-direction:row; padding:0; overflow-x:auto;}
+}
+.rail-brand{width:36px;height:36px;border:1px solid #ffffff55;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:10px;margin-bottom:12px;flex:none;}
+@media (max-width:860px){ .rail-brand{display:none;} }
+.ruler{
+  flex:1; width:100%; display:flex; flex-direction:column; align-items:stretch;
+  position:relative;
+}
+@media (max-width:860px){ .ruler{flex-direction:row; height:52px; flex:none; padding:0 8px;} }
+.tick{
+  position:relative; flex:1;
+  display:flex; align-items:center; justify-content:flex-end;
+  padding-right:10px; cursor:pointer;
+  min-height:24px;
+  text-decoration:none;
+}
+@media (max-width:860px){ .tick{flex:none; width:26px; justify-content:center; align-items:flex-end; padding-right:0; padding-bottom:6px;} }
+.tick::before{
+  content:'';
+  width:14px; height:2px; background:#ffffff40;
+  transition:all .25s ease;
+}
+.tick.major::before{width:22px; height:2px;}
+@media (max-width:860px){
+  .tick::before{width:2px; height:14px;}
+  .tick.major::before{width:2px; height:22px;}
+}
+.tick.active::before{background:var(--ochre); width:26px;}
+@media (max-width:860px){ .tick.active::before{height:26px;} }
+.tick-label{
+  font-family:var(--mono); font-size:9px; letter-spacing:.04em; color:#ffffff70;
+  position:absolute; right:20px; white-space:nowrap; opacity:0; transform:translateX(4px);
+  transition:opacity .2s ease, transform .2s ease; pointer-events:none;
+  background:var(--ink); padding:2px 6px;
+}
+@media (max-width:860px){ .tick-label{display:none;} }
+.tick:hover .tick-label, .tick.active .tick-label{opacity:1; transform:translateX(0); color:#fff;}
+
+/* ---------- Main content ---------- */
+main{max-width:840px; margin:0 auto; padding:0 28px 120px;}
+@media (max-width:600px){ main{padding:0 16px 100px;} }
+
+header.top{
+  max-width:840px; margin:0 auto; padding:36px 28px 0;
+  display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+}
+@media (max-width:600px){ header.top{padding:24px 16px 0;} }
+.logo-slot{
+  width:118px; height:56px;
+  display:flex; align-items:center; justify-content:flex-start;
+  font-family:var(--mono); font-size:9px; color:var(--slate); text-align:center; line-height:1.3;
+  flex:none; padding:4px;
+}
+.logo-slot img{max-width:100%; max-height:100%; object-fit:contain;}
+.institution{font-family:var(--mono); font-size:11px; color:var(--slate); text-align:right; letter-spacing:.03em;}
+.institution strong{color:var(--ink); display:block; font-size:12px;}
+
+.eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--teal-dark); margin:0 0 10px;}
+.hero{padding:20px 0 8px;}
+h1.title{font-family:var(--serif); font-weight:700; font-size:clamp(2rem, 5vw, 3rem); line-height:1.08; margin:0 0 14px; color:var(--ink);}
+.subtitle{font-size:1.05rem; color:var(--slate); max-width:60ch; margin:0 0 26px;}
+
+.problema-box{
+  background:var(--ink); color:#F1EFEA; padding:26px 28px; border-left:4px solid var(--ochre);
+  margin:28px 0 36px;
+}
+.problema-box .eyebrow{color:#EBC98A;}
+.problema-box p{margin:0; font-size:1.02rem;}
+.problema-box p + p{margin-top:12px;}
+
+.card{background:var(--card); border:1px solid var(--line); padding:26px 28px; margin:20px 0;}
+@media (max-width:600px){ .card{padding:20px 18px;} }
+
+.tag{
+  display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11px;
+  color:#fff; background:var(--teal); padding:3px 9px; letter-spacing:.03em;
+}
+.tag.ochre{background:var(--ochre);}
+.tag.clay{background:var(--clay);}
+
+section.unit{margin-top:64px; scroll-margin-top:20px;}
+section.sub{scroll-margin-top:20px; margin-top:38px;}
+h2.unit-title{font-family:var(--serif); font-size:1.9rem; margin:0 0 6px; display:flex; align-items:baseline; gap:12px;}
+h2.unit-title .num{font-family:var(--mono); font-size:1rem; color:var(--teal-dark); font-weight:600;}
+.unit-intro{color:var(--slate); max-width:65ch; margin-bottom:8px;}
+h3.sub-title{font-family:var(--serif); font-size:1.35rem; margin:0 0 4px; display:flex; align-items:baseline; gap:10px;}
+h3.sub-title .num{font-family:var(--mono); font-size:.85rem; color:var(--slate); font-weight:500;}
+
+hr.tape{
+  border:none; height:14px; margin:44px 0;
+  background-image:repeating-linear-gradient(90deg, var(--slate) 0 1px, transparent 1px 8px);
+  background-position:bottom; background-repeat:repeat-x; background-size:auto 8px;
+  opacity:.45;
+}
+
+p{margin:0 0 14px;}
+ul, ol{margin:0 0 16px; padding-left:22px;}
+li{margin-bottom:6px;}
+strong{color:var(--ink);}
+code{font-family:var(--mono); background:var(--paper-2); padding:1px 5px; font-size:.9em;}
+
+.example{
+  border-left:3px solid var(--teal); background:#ffffff; padding:14px 18px; margin:16px 0;
+  font-size:.96rem;
+}
+.example .example-label{font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal-dark); margin-bottom:6px; display:block;}
+
+table{width:100%; border-collapse:collapse; margin:16px 0 20px; font-size:.92rem;}
+th, td{border:1px solid var(--line); padding:9px 12px; text-align:left; vertical-align:top;}
+th{background:var(--ink); color:#fff; font-family:var(--mono); font-size:11px; letter-spacing:.03em; font-weight:500;}
+tr:nth-child(even) td{background:#ffffff90;}
+
+/* ---------- Interactive: classifier ---------- */
+.classifier{display:grid; gap:16px; margin-top:16px;}
+.chip-pool{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{
+  font-family:var(--mono); font-size:12.5px; background:#fff; border:1px solid var(--slate);
+  padding:7px 12px; cursor:pointer; user-select:none; transition:all .15s ease;
+}
+.chip:hover{border-color:var(--ink);}
+.chip.placed{opacity:.35; cursor:default; pointer-events:none;}
+.bins{display:grid; grid-template-columns:repeat(2,1fr); gap:12px;}
+@media (max-width:560px){ .bins{grid-template-columns:1fr;} }
+.bin{border:1px dashed var(--slate); min-height:64px; padding:10px; background:#ffffff70;}
+.bin h4{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; margin:0 0 8px; color:var(--slate);}
+.bin .bin-items{display:flex; flex-wrap:wrap; gap:6px; min-height:20px;}
+.bin .bin-items .chip{font-size:11.5px;}
+.feedback-msg{font-family:var(--mono); font-size:12px; margin-top:10px; padding:8px 10px; display:none;}
+.feedback-msg.ok{display:block; background:#e4efe9; color:var(--teal-dark); border-left:3px solid var(--teal);}
+.feedback-msg.err{display:block; background:#f4e6e2; color:var(--clay); border-left:3px solid var(--clay);}
+
+/* ---------- Calculator ---------- */
+.calc-wrap{display:grid; gap:14px;}
+.calc-input-row{display:flex; gap:10px; flex-wrap:wrap;}
+textarea#calc-data{
+  width:100%; min-height:88px; font-family:var(--mono); font-size:13px; padding:12px;
+  border:1px solid var(--slate); background:#fff; resize:vertical;
+}
+.btn{
+  font-family:var(--mono); font-size:12px; letter-spacing:.03em; text-transform:uppercase;
+  background:var(--teal); color:#fff; border:none; padding:10px 16px; cursor:pointer;
+  transition:background .15s ease;
+}
+.btn:hover{background:var(--teal-dark);}
+.btn.secondary{background:transparent; color:var(--teal-dark); border:1px solid var(--teal);}
+.btn.secondary:hover{background:#e4efe9;}
+.btn.ochre-btn{background:var(--ochre);}
+.btn.ochre-btn:hover{background:var(--ochre-dark);}
+.stat-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(120px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:6px;}
+.stat-tag{background:#fff; padding:12px; text-align:left;}
+.stat-tag .stat-label{font-family:var(--mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--slate); display:block; margin-bottom:4px;}
+.stat-tag .stat-value{font-family:var(--mono); font-size:1.15rem; color:var(--ink); font-weight:600;}
+.stat-group-label{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--teal-dark); margin:18px 0 4px;}
+
+/* ---------- Activities ---------- */
+.activity-card{
+  background:var(--card); border:1px solid var(--line); border-top:4px solid var(--ochre); padding:28px;
+  margin:26px 0;
+}
+@media (max-width:600px){ .activity-card{padding:20px 18px;} }
+.activity-head{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:8px;}
+.activity-head h3{font-family:var(--serif); font-size:1.5rem; margin:0;}
+.steps{counter-reset:step;}
+.steps li{list-style:none; position:relative; padding-left:34px; margin-bottom:14px;}
+.steps li::before{
+  counter-increment:step; content:counter(step);
+  position:absolute; left:0; top:0; width:22px; height:22px;
+  background:var(--ink); color:#fff; font-family:var(--mono); font-size:11px; font-weight:600;
+  display:flex; align-items:center; justify-content:center;
+}
+.upload-note{
+  display:flex; gap:10px; align-items:flex-start; background:#fff; border:1px solid var(--ochre);
+  padding:12px 14px; margin-top:18px; font-size:.9rem;
+}
+.upload-note .tag{flex:none; margin-top:1px;}
+
+/* ---------- Forum ---------- */
+.forum-question{
+  font-family:var(--serif); font-size:1.2rem; font-style:italic; color:var(--ink);
+  border-left:4px solid var(--ochre); padding:6px 0 6px 18px; margin:16px 0;
+}
+.rubric-list{list-style:none; padding:0; margin:14px 0;}
+.rubric-list li{display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:.92rem;}
+.rubric-list li span:last-child{font-family:var(--mono); color:var(--slate); font-size:.85rem; flex:none;}
+
+/* ---------- Quiz ---------- */
+.quiz-box{background:var(--card); border:1px solid var(--line); padding:26px 28px;}
+@media (max-width:600px){ .quiz-box{padding:20px 18px;} }
+.quiz-progress{font-family:var(--mono); font-size:11px; color:var(--slate); margin-bottom:14px;}
+.quiz-q{font-family:var(--serif); font-size:1.2rem; margin-bottom:16px;}
+.quiz-options{display:grid; gap:8px; margin-bottom:18px;}
+.q-opt{
+  display:block; width:100%; text-align:left; background:#fff; border:1px solid var(--slate);
+  padding:12px 14px; cursor:pointer; font-family:var(--sans); font-size:.95rem; transition:all .15s ease;
+}
+.q-opt:hover{border-color:var(--ink);}
+.q-opt.selected{border-color:var(--teal); background:#e4efe9;}
+.q-opt.correct{border-color:var(--teal); background:#d5ece5;}
+.q-opt.incorrect{border-color:var(--clay); background:#f4e6e2;}
+.quiz-controls{display:flex; justify-content:flex-end; gap:10px;}
+.quiz-result{text-align:center; padding:20px 0;}
+.quiz-result .score-num{font-family:var(--serif); font-size:3.2rem; color:var(--ink); font-weight:700; margin:8px 0;}
+.quiz-result .score-msg{font-family:var(--mono); font-size:13px; color:var(--teal-dark); margin-bottom:20px;}
+.quiz-result .score-msg.low{color:var(--clay);}
+
+/* ---------- Reflection ---------- */
+textarea#reflexion-text{
+  width:100%; min-height:160px; font-family:var(--sans); font-size:.95rem; padding:14px;
+  border:1px solid var(--slate); background:#fff; resize:vertical;
+}
+.reflect-prompts{display:grid; gap:10px; margin:16px 0 20px;}
+.reflect-prompts li{background:#fff; border:1px solid var(--line); padding:12px 14px; list-style:none; font-size:.93rem;}
+
+footer{
+  border-top:1px solid var(--line); margin-top:80px; padding:28px; max-width:840px; margin-left:auto; margin-right:auto;
+  font-family:var(--mono); font-size:11px; color:var(--slate); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+}
+@media (max-width:600px){ footer{padding:20px 16px;} }
+
+.toc{display:grid; gap:6px; margin:20px 0;}
+.toc a{
+  display:flex; justify-content:space-between; gap:10px; text-decoration:none; color:var(--ink);
+  border-bottom:1px dotted var(--line); padding:6px 0; font-size:.94rem;
+}
+.toc a .num{font-family:var(--mono); color:var(--teal-dark); font-size:.85rem; flex:none;}
+.toc a:hover{color:var(--teal-dark);}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <!-- Ruler rail: signature navigation, embodies "medición" -->
+  <nav class="rail" aria-label="Progreso de la unidad">
+    <div class="rail-brand">UNE</div>
+    <div class="ruler" id="ruler">
+      <a href="#inicio" class="tick major" data-target="inicio"><span class="tick-label">Inicio</span></a>
+      <a href="#metodologia" class="tick" data-target="metodologia"><span class="tick-label">Metodología</span></a>
+      <a href="#s31" class="tick major" data-target="s31"><span class="tick-label">3.1 Medición</span></a>
+      <a href="#s311" class="tick" data-target="s311"><span class="tick-label">3.1.1 Variables</span></a>
+      <a href="#s312" class="tick" data-target="s312"><span class="tick-label">3.1.2 Muestras</span></a>
+      <a href="#s313" class="tick" data-target="s313"><span class="tick-label">3.1.3 Levantamiento</span></a>
+      <a href="#s314" class="tick" data-target="s314"><span class="tick-label">3.1.4 Bases de datos</span></a>
+      <a href="#s32" class="tick major" data-target="s32"><span class="tick-label">3.2 Descriptiva</span></a>
+      <a href="#s321" class="tick" data-target="s321"><span class="tick-label">3.2.1 Tendencia central</span></a>
+      <a href="#s322" class="tick" data-target="s322"><span class="tick-label">3.2.2 Dispersión</span></a>
+      <a href="#s323" class="tick" data-target="s323"><span class="tick-label">3.2.3 Posición</span></a>
+      <a href="#s324" class="tick" data-target="s324"><span class="tick-label">3.2.4 Forma</span></a>
+      <a href="#actividades" class="tick major" data-target="actividades"><span class="tick-label">Actividades</span></a>
+      <a href="#reflexion" class="tick major" data-target="reflexion"><span class="tick-label">Reflexión</span></a>
+    </div>
+  </nav>
+
+  <div>
+    <header class="top">
+      <div class="logo-slot" id="logo-slot">
+        <img src="assets/logo-une.png" alt="Universidad de Especialidades UNE">
+      </div>
+      <div class="institution">
+        <strong>Universidad de Especialidades (UNE)</strong>
+        Licenciatura en Psicología · Estadística Aplicada a la Psicología
+      </div>
+    </header>
+
+    <main>
+
+      <section id="inicio" class="hero">
+        <p class="eyebrow">Unidad III · Manejo de datos</p>
+        <h1 class="title">Medición y estadística descriptiva para la investigación psicológica</h1>
+        <p class="subtitle">Guía interactiva de estudio. Contiene el desarrollo teórico de la unidad, ejercicios de aplicación inmediata y tres actividades evaluables que deberán entregarse en Classroom.</p>
+
+        <div class="problema-box">
+          <p class="eyebrow">Problema detonador de la unidad</p>
+          <p>Un equipo de investigación de la carrera de Psicología desea estudiar el <strong>estrés académico</strong> en estudiantes de primer semestre. Cuenta con un cuestionario de 20 reactivos tipo Likert, una lista de 300 estudiantes matriculados y una hoja de cálculo vacía.</p>
+          <p>A lo largo de esta unidad, cada uno de ustedes construirá, paso a paso, las decisiones que ese equipo debe tomar: qué variables definir, a quién medir, cómo registrar los datos y qué medidas estadísticas permiten describir e interpretar los resultados. Las actividades prácticas de esta guía retoman este mismo problema.</p>
+        </div>
+
+        <p><strong>Índice de la unidad</strong></p>
+        <div class="toc">
+          <a href="#s31"><span>3.1 Medición</span><span class="num">3.1</span></a>
+          <a href="#s311"><span>Variables y definiciones</span><span class="num">3.1.1</span></a>
+          <a href="#s312"><span>Muestras y grupos</span><span class="num">3.1.2</span></a>
+          <a href="#s313"><span>Levantamiento de datos</span><span class="num">3.1.3</span></a>
+          <a href="#s314"><span>Diseño de bases de datos con programas informáticos</span><span class="num">3.1.4</span></a>
+          <a href="#s32"><span>Estadística descriptiva</span><span class="num">3.2</span></a>
+          <a href="#s321"><span>Medidas de tendencia central</span><span class="num">3.2.1</span></a>
+          <a href="#s322"><span>Medidas de dispersión</span><span class="num">3.2.2</span></a>
+          <a href="#s323"><span>Medidas de posición</span><span class="num">3.2.3</span></a>
+          <a href="#s324"><span>Medidas de forma</span><span class="num">3.2.4</span></a>
+          <a href="#actividades"><span>Actividades prácticas (Classroom)</span><span class="num">→</span></a>
+          <a href="#reflexion"><span>Reflexión y aplicación</span><span class="num">→</span></a>
+        </div>
+      </section>
+
+      <section id="metodologia" class="unit sub">
+        <h3 class="sub-title">Cómo está organizada esta guía</h3>
+        <p>El desarrollo de la unidad sigue una metodología constructivista y de aprendizaje basado en problemas (ABP). Esto significa que el conocimiento no se presenta como un conjunto cerrado de definiciones para memorizar, sino como herramientas para resolver el problema planteado y otros semejantes que encontrarán en su ejercicio profesional.</p>
+        <ul>
+          <li><strong>Lectura activa:</strong> cada apartado incluye un ejemplo aplicado a la psicología antes de continuar.</li>
+          <li><strong>Ejercicios de comprobación:</strong> pequeñas actividades interactivas dentro de la guía (clasificar variables, calcular estadísticos) que permiten verificar la comprensión antes de avanzar.</li>
+          <li><strong>Actividades evaluables:</strong> tres entregas que deben subirse a Classroom, descritas en la sección «Actividades prácticas».</li>
+          <li><strong>Cierre reflexivo:</strong> un espacio final para planificar la transferencia de lo aprendido a otras materias y a la práctica profesional.</li>
+        </ul>
+      </section>
+
+      <hr class="tape">
+
+      <!-- ======================= 3.1 MEDICIÓN ======================= -->
+      <section id="s31" class="unit">
+        <h2 class="unit-title"><span class="num">3.1</span> Medición</h2>
+        <p class="unit-intro">Medir consiste en asignar valores, numéricos o categoriales, a las propiedades de las personas, procesos o fenómenos que interesan a la psicología. Antes de calcular cualquier estadístico es necesario decidir qué se va a medir y con qué nivel de precisión.</p>
+
+        <section id="s311" class="sub">
+          <h3 class="sub-title"><span class="num">3.1.1</span> Variables y definiciones</h3>
+          <p>Una <strong>variable</strong> es cualquier característica que puede tomar distintos valores en las unidades de observación. En psicología rara vez se mide directamente un constructo (por ejemplo, la ansiedad); en su lugar se construye una <strong>definición operacional</strong>: la forma concreta y observable en que ese constructo será registrado.</p>
+
+          <table>
+            <thead><tr><th>Criterio</th><th>Tipo</th><th>Descripción</th><th>Ejemplo psicológico</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="2">Naturaleza</td><td>Cualitativa</td><td>Expresa cualidades o categorías, no cantidades.</td><td>Estado civil, diagnóstico clínico</td></tr>
+              <tr><td>Cuantitativa</td><td>Expresa cantidades numéricas.</td><td>Puntaje en una escala de depresión</td></tr>
+              <tr><td rowspan="2">Continuidad</td><td>Discreta</td><td>Toma valores enteros, contables.</td><td>Número de sesiones de terapia asistidas</td></tr>
+              <tr><td>Continua</td><td>Puede tomar cualquier valor dentro de un rango.</td><td>Tiempo de reacción en milisegundos</td></tr>
+              <tr><td rowspan="4">Escala de medición</td><td>Nominal</td><td>Categorías sin orden intrínseco.</td><td>Tipo de apego (seguro, evitativo, ambivalente)</td></tr>
+              <tr><td>Ordinal</td><td>Categorías con orden, sin distancia constante.</td><td>Nivel de severidad (leve, moderado, grave)</td></tr>
+              <tr><td>Intervalo</td><td>Orden y distancias iguales; el cero es arbitrario.</td><td>Puntaje de CI en algunas escalas</td></tr>
+              <tr><td>Razón</td><td>Orden, distancias iguales y cero absoluto.</td><td>Número de errores en una prueba</td></tr>
+            </tbody>
+          </table>
+
+          <div class="example">
+            <span class="example-label">Ejemplo aplicado</span>
+            Si el equipo del problema detonador decide medir el «estrés académico» mediante la suma de respuestas a 20 reactivos tipo Likert (1 a 5), la variable resultante se trata convencionalmente como de <strong>intervalo</strong>, aunque su origen sea ordinal. Esta decisión afecta directamente qué estadísticos podrán calcularse más adelante (por ejemplo, tiene sentido calcular una media, no solo una moda).
+          </div>
+
+          <p><strong>Ejercicio de comprobación.</strong> Clasifique cada variable arrastrándola mentalmente y haciendo clic sobre la categoría correspondiente. La guía indicará si la clasificación es correcta.</p>
+
+          <div class="classifier" id="classifier-1">
+            <div class="chip-pool" id="chip-pool"></div>
+            <div class="bins">
+              <div class="bin" data-bin="nominal"><h4>Nominal</h4><div class="bin-items"></div></div>
+              <div class="bin" data-bin="ordinal"><h4>Ordinal</h4><div class="bin-items"></div></div>
+              <div class="bin" data-bin="intervalo"><h4>Intervalo</h4><div class="bin-items"></div></div>
+              <div class="bin" data-bin="razon"><h4>Razón</h4><div class="bin-items"></div></div>
+            </div>
+            <div class="feedback-msg" id="classifier-feedback"></div>
+          </div>
+        </section>
+
+        <section id="s312" class="sub">
+          <h3 class="sub-title"><span class="num">3.1.2</span> Muestras y grupos</h3>
+          <p>La <strong>población</strong> es el conjunto total de casos que interesa estudiar (los 300 estudiantes matriculados); la <strong>muestra</strong> es el subconjunto del que efectivamente se obtienen datos. Elegir bien la muestra determina si los resultados podrán generalizarse.</p>
+          <ul>
+            <li><strong>Muestreo probabilístico:</strong> toda unidad de la población tiene una probabilidad conocida de ser seleccionada (aleatorio simple, estratificado, por conglomerados). Permite generalizar con mayor rigor.</li>
+            <li><strong>Muestreo no probabilístico:</strong> la selección depende de criterios del investigador o de la disponibilidad (por conveniencia, intencional, bola de nieve). Es frecuente en psicología aplicada, aunque limita la generalización.</li>
+          </ul>
+          <p>En diseños experimentales, además, se distingue entre <strong>grupo experimental</strong> (recibe la intervención o tratamiento) y <strong>grupo de control</strong> (no la recibe, o recibe una condición de comparación), lo que permite atribuir diferencias observadas a la variable manipulada y no al azar.</p>
+          <div class="example">
+            <span class="example-label">Ejemplo aplicado</span>
+            Si el equipo decide encuestar únicamente a los estudiantes que asisten a un taller de tutorías, está usando un muestreo <strong>no probabilístico por conveniencia</strong>. Esto obliga a ser cauto al afirmar que los resultados representan a «todos» los estudiantes de primer semestre.
+          </div>
+        </section>
+
+        <section id="s313" class="sub">
+          <h3 class="sub-title"><span class="num">3.1.3</span> Levantamiento de datos</h3>
+          <p>El levantamiento de datos es el proceso mediante el cual se aplican los instrumentos y se registran las respuestas. Dos propiedades del instrumento deben verificarse antes de recolectar información a gran escala:</p>
+          <ul>
+            <li><strong>Confiabilidad:</strong> consistencia de las mediciones (por ejemplo, mediante el coeficiente alfa de Cronbach o test-retest).</li>
+            <li><strong>Validez:</strong> grado en que el instrumento mide realmente el constructo que pretende medir (de contenido, de constructo, de criterio).</li>
+          </ul>
+          <p>Entre las técnicas más usadas en psicología se encuentran la encuesta autoadministrada, la entrevista estructurada o semiestructurada, la observación conductual sistemática y las pruebas psicométricas estandarizadas. La elección depende del constructo, de la población y de los recursos disponibles.</p>
+          <div class="example">
+            <span class="example-label">Ejemplo aplicado</span>
+            Antes de aplicar el cuestionario de estrés académico a los 300 estudiantes, conviene realizar un <strong>piloto</strong> con un pequeño subgrupo para detectar reactivos ambiguos y estimar el tiempo de aplicación.
+          </div>
+        </section>
+
+        <section id="s314" class="sub">
+          <h3 class="sub-title"><span class="num">3.1.4</span> Diseño de bases de datos con programas informáticos</h3>
+          <p>Una vez recolectados los datos, deben organizarse en una <strong>base de datos</strong> que facilite su análisis posterior. La convención más usada en programas estadísticos (SPSS, Jamovi, JASP) y en hojas de cálculo (Excel, Google Sheets) es la siguiente:</p>
+          <ul>
+            <li>Cada <strong>fila</strong> representa un caso o participante.</li>
+            <li>Cada <strong>columna</strong> representa una variable.</li>
+            <li>Cada <strong>celda</strong> contiene el valor observado de esa variable para ese caso.</li>
+          </ul>
+          <p>Se recomienda elaborar un <strong>libro de códigos</strong> (codebook) que documente, para cada variable: su nombre corto, su etiqueta descriptiva, su tipo y escala de medición, y la codificación de sus categorías (por ejemplo, 1 = mujer, 2 = hombre, 3 = no binario).</p>
+
+          <table>
+            <thead><tr><th>id_participante</th><th>edad</th><th>sexo</th><th>grupo</th><th>estres_total</th></tr></thead>
+            <tbody>
+              <tr><td>001</td><td>19</td><td>1</td><td>experimental</td><td>62</td></tr>
+              <tr><td>002</td><td>18</td><td>2</td><td>control</td><td>48</td></tr>
+              <tr><td>003</td><td>20</td><td>1</td><td>control</td><td>55</td></tr>
+            </tbody>
+          </table>
+          <div class="example">
+            <span class="example-label">Ejemplo aplicado</span>
+            En el codebook del estudio de estrés académico, la variable <code>sexo</code> se codifica como nominal (1 = mujer, 2 = hombre, 3 = no binario) y la variable <code>estres_total</code> se trata como de intervalo, resultado de sumar los 20 reactivos del cuestionario.
+          </div>
+        </section>
+      </section>
+
+      <hr class="tape">
+
+      <!-- ======================= 3.2 ESTADÍSTICA DESCRIPTIVA ======================= -->
+      <section id="s32" class="unit">
+        <h2 class="unit-title"><span class="num">3.2</span> Estadística descriptiva</h2>
+        <p class="unit-intro">Una vez organizada la base de datos, la estadística descriptiva permite resumir la información en unos pocos indicadores que faciliten su interpretación. Se agrupa convencionalmente en cuatro familias de medidas.</p>
+
+        <section id="s321" class="sub">
+          <h3 class="sub-title"><span class="num">3.2.1</span> Medidas de tendencia central</h3>
+          <p>Indican el valor alrededor del cual se agrupan los datos.</p>
+          <ul>
+            <li><strong>Media:</strong> promedio aritmético. Sensible a valores extremos; adecuada para variables de intervalo o razón con distribución razonablemente simétrica.</li>
+            <li><strong>Mediana:</strong> valor que divide al conjunto ordenado de datos en dos mitades. Recomendable cuando existen valores extremos o la variable es ordinal.</li>
+            <li><strong>Moda:</strong> valor o categoría más frecuente. Es la única medida de tendencia central válida para variables nominales.</li>
+          </ul>
+          <div class="example">
+            <span class="example-label">Ejemplo aplicado</span>
+            Si un grupo de estudiantes obtiene puntajes de estrés de 40, 42, 45, 48 y 95, la media (54) se ve distorsionada por el valor extremo 95; la mediana (45) describe mejor al grupo en su conjunto.
+          </div>
+        </section>
+
+        <section id="s322" class="sub">
+          <h3 class="sub-title"><span class="num">3.2.2</span> Medidas de dispersión</h3>
+          <p>Indican qué tan agrupados o dispersos están los datos respecto a la tendencia central.</p>
+          <ul>
+            <li><strong>Rango:</strong> diferencia entre el valor máximo y el mínimo.</li>
+            <li><strong>Varianza:</strong> promedio de las desviaciones al cuadrado respecto a la media.</li>
+            <li><strong>Desviación estándar:</strong> raíz cuadrada de la varianza; se expresa en las mismas unidades que la variable original.</li>
+            <li><strong>Coeficiente de variación:</strong> desviación estándar dividida entre la media, útil para comparar la dispersión de variables con escalas distintas.</li>
+          </ul>
+          <div class="example">
+            <span class="example-label">Ejemplo aplicado</span>
+            Dos grupos pueden tener la misma media de estrés académico, pero si uno presenta una desviación estándar mucho mayor, significa que sus integrantes experimentan niveles de estrés más heterogéneos entre sí.
+          </div>
+        </section>
+
+        <section id="s323" class="sub">
+          <h3 class="sub-title"><span class="num">3.2.3</span> Medidas de posición</h3>
+          <p>Ubican un valor específico dentro de la distribución ordenada de los datos.</p>
+          <ul>
+            <li><strong>Cuartiles (Q1, Q2, Q3):</strong> dividen la distribución en cuatro partes iguales.</li>
+            <li><strong>Deciles:</strong> dividen la distribución en diez partes iguales.</li>
+            <li><strong>Percentiles:</strong> dividen la distribución en cien partes iguales; indican qué porcentaje de casos queda por debajo de un valor dado.</li>
+          </ul>
+          <div class="example">
+            <span class="example-label">Ejemplo aplicado</span>
+            Si un estudiante se ubica en el percentil 90 de estrés académico dentro de su grupo, significa que el 90 % de sus compañeros presenta niveles de estrés iguales o menores a los suyos.
+          </div>
+        </section>
+
+        <section id="s324" class="sub">
+          <h3 class="sub-title"><span class="num">3.2.4</span> Medidas de forma</h3>
+          <p>Describen la forma de la distribución de los datos.</p>
+          <ul>
+            <li><strong>Asimetría (skewness):</strong> indica si la distribución se inclina hacia valores altos o bajos respecto a una distribución simétrica. Un valor cercano a 0 sugiere simetría; positivo, cola hacia la derecha; negativo, cola hacia la izquierda.</li>
+            <li><strong>Curtosis:</strong> indica qué tan concentrados o dispersos están los datos en torno a la media en comparación con una distribución normal (apuntamiento de la curva).</li>
+          </ul>
+          <div class="example">
+            <span class="example-label">Ejemplo aplicado</span>
+            Una asimetría positiva en los puntajes de estrés académico indicaría que la mayoría de los estudiantes presenta niveles bajos o moderados, mientras que un grupo reducido presenta niveles muy altos que «alargan» la distribución hacia la derecha.
+          </div>
+        </section>
+
+        <section class="sub">
+          <h3 class="sub-title">Calculadora de estadística descriptiva</h3>
+          <p>Introduzca un conjunto de datos (separados por comas, espacios o saltos de línea) para calcular de manera inmediata las cuatro familias de medidas descriptivas. Esta herramienta puede utilizarse para resolver los ejemplos anteriores o los datos que recolecte en la Actividad 2.</p>
+          <div class="card calc-wrap">
+            <textarea id="calc-data" placeholder="Ejemplo: 40, 42, 45, 48, 95, 50, 38, 44, 60, 41"></textarea>
+            <div class="calc-input-row">
+              <button class="btn" id="calc-btn">Calcular estadísticos</button>
+              <button class="btn secondary" id="calc-example-btn">Cargar ejemplo</button>
+              <button class="btn secondary" id="calc-clear-btn">Limpiar</button>
+            </div>
+            <div id="calc-output"></div>
+          </div>
+        </section>
+      </section>
+
+      <hr class="tape">
+
+      <!-- ======================= ACTIVIDADES ======================= -->
+      <section id="actividades" class="unit">
+        <h2 class="unit-title">Actividades prácticas</h2>
+        <p class="unit-intro">Las siguientes tres actividades son de entrega obligatoria en Classroom. Cada una indica el objetivo, los pasos a seguir y el criterio de entrega. Revise la fecha límite establecida por su docente en la plataforma.</p>
+
+        <!-- Actividad 1: Foro -->
+        <div class="activity-card" id="actividad-1">
+          <div class="activity-head">
+            <span class="tag">Actividad 1</span>
+            <h3>Foro de discusión</h3>
+          </div>
+          <p>Esta actividad busca la mediación entre pares: cada estudiante publica su postura y dialoga con al menos dos compañeros para construir colectivamente una respuesta más matizada que la individual.</p>
+
+          <p class="forum-question">«¿Por qué la forma en que definimos y medimos una variable psicológica —por ejemplo, la inteligencia, la ansiedad o la personalidad— puede modificar los resultados y las conclusiones de una investigación? ¿Qué responsabilidad ética asume el psicólogo al elegir un nivel de medición y un instrumento en particular?»</p>
+
+          <ol class="steps">
+            <li>Ingrese al foro habilitado en Classroom para la Unidad III.</li>
+            <li>Publique una respuesta inicial de al menos 150 palabras que retome al menos dos conceptos vistos en el apartado 3.1 (por ejemplo, definición operacional, escala de medición o validez del instrumento).</li>
+            <li>Incluya un ejemplo propio, distinto a los usados en esta guía, que ilustre su argumento.</li>
+            <li>Responda a al menos dos publicaciones de compañeros, aportando un contraargumento, una pregunta o un ejemplo complementario.</li>
+            <li>Revise su ortografía y mantenga un tono académico y respetuoso durante todo el intercambio.</li>
+          </ol>
+
+          <p><strong>Criterios de evaluación</strong></p>
+          <ul class="rubric-list">
+            <li><span>Claridad conceptual y uso del vocabulario técnico de la unidad</span><span>30 %</span></li>
+            <li><span>Calidad argumentativa de la respuesta inicial</span><span>25 %</span></li>
+            <li><span>Pertinencia y respeto en las respuestas a compañeros</span><span>25 %</span></li>
+            <li><span>Cumplimiento de la extensión y del plazo de entrega</span><span>20 %</span></li>
+          </ul>
+
+          <div class="upload-note">
+            <span class="tag ochre">Classroom</span>
+            <span>Esta actividad se desarrolla directamente en el foro de Classroom; no requiere archivo adjunto, salvo que su docente indique lo contrario.</span>
+          </div>
+        </div>
+
+        <!-- Actividad 2: aprendizaje significativo -->
+        <div class="activity-card" id="actividad-2">
+          <div class="activity-head">
+            <span class="tag">Actividad 2</span>
+            <h3>Diseño de un instrumento y su base de datos</h3>
+          </div>
+          <p>Esta actividad aplica de manera integral los apartados 3.1 y 3.2: usted diseñará la estructura de un estudio propio, simulará datos y los describirá estadísticamente, tal como lo haría en cualquier materia de su carrera que requiera trabajo de campo.</p>
+
+          <ol class="steps">
+            <li>Elija un constructo psicológico de su interés (por ejemplo, procrastinación académica, autoestima, calidad del sueño, uso de redes sociales).</li>
+            <li>Defina operacionalmente el constructo y liste al menos cinco variables asociadas, indicando para cada una su tipo (cualitativa o cuantitativa) y su escala de medición (nominal, ordinal, intervalo o razón).</li>
+            <li>Describa brevemente su población de referencia y el tipo de muestreo que utilizaría, justificando su elección en dos o tres líneas.</li>
+            <li>Construya, en Excel, Google Sheets o Jamovi, una base de datos simulada con al menos 20 casos, siguiendo la convención de filas y columnas revisada en el apartado 3.1.4, e incluya su libro de códigos.</li>
+            <li>Utilice la calculadora de esta guía (o el software elegido) para obtener, de al menos una variable cuantitativa, las cuatro familias de medidas descriptivas trabajadas en el apartado 3.2.</li>
+            <li>Redacte una interpretación breve (máximo una página) de lo que esos resultados sugieren sobre el grupo simulado.</li>
+          </ol>
+
+          <div class="upload-note">
+            <span class="tag ochre">Classroom</span>
+            <span>Suba a la tarea correspondiente el archivo de la base de datos (Excel, Sheets o Jamovi) junto con el documento de interpretación en un solo entregable.</span>
+          </div>
+        </div>
+
+        <!-- Actividad 3: Quiz -->
+        <div class="activity-card" id="actividad-3">
+          <div class="activity-head">
+            <span class="tag">Actividad 3</span>
+            <h3>Quiz de comprobación</h3>
+          </div>
+          <p>Responda las cinco preguntas siguientes para verificar su comprensión general de la unidad. Al finalizar se mostrará su puntaje.</p>
+
+          <div class="quiz-box" id="quiz-box"></div>
+
+          <div class="upload-note">
+            <span class="tag ochre">Classroom</span>
+            <span>Al finalizar el quiz, tome una captura de pantalla de su puntaje final y súbala a la tarea «Quiz Unidad III» en Classroom.</span>
+          </div>
+        </div>
+      </section>
+
+      <hr class="tape">
+
+      <!-- ======================= REFLEXIÓN ======================= -->
+      <section id="reflexion" class="unit">
+        <h2 class="unit-title">Reflexión y aplicación</h2>
+        <p class="unit-intro">Antes de cerrar la unidad, dedique unos minutos a planificar cómo incorporará estos conocimientos en su vida académica y profesional. Este ejercicio no se entrega en Classroom, salvo indicación distinta de su docente, pero se recomienda conservarlo como parte de su portafolio de aprendizaje.</p>
+
+        <ul class="reflect-prompts">
+          <li><strong>1.</strong> ¿Qué aprendizaje de esta unidad modifica la forma en que diseñaría un instrumento o interpretaría datos en un trabajo futuro?</li>
+          <li><strong>2.</strong> ¿En qué otra materia de su carrera podría aplicar las medidas de tendencia central, dispersión, posición o forma revisadas aquí?</li>
+          <li><strong>3.</strong> ¿Qué reto anticipa al recolectar y organizar datos reales en una investigación o práctica profesional, y cómo podría anticiparlo?</li>
+        </ul>
+
+        <div class="card">
+          <p><strong>Espacio de escritura</strong></p>
+          <textarea id="reflexion-text" placeholder="Escriba aquí su reflexión respondiendo a las tres preguntas anteriores..."></textarea>
+          <div class="calc-input-row" style="margin-top:12px;">
+            <button class="btn ochre-btn" id="reflexion-download">Descargar mi reflexión</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <span>Estadística Aplicada a la Psicología · Unidad III: Manejo de Datos</span>
+      <span>Universidad de Especialidades (UNE) · Licenciatura en Psicología</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* ---------------- Ruler navigation: active tick tracking ---------------- */
+(function(){
+  const ticks = Array.from(document.querySelectorAll('.tick'));
+  const sections = ticks.map(t => document.getElementById(t.dataset.target)).filter(Boolean);
+  const map = new Map();
+  ticks.forEach(t => map.set(t.dataset.target, t));
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.id;
+      const tick = map.get(id);
+      if(!tick) return;
+      if(entry.isIntersecting){
+        ticks.forEach(t => t.classList.remove('active'));
+        tick.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -65% 0px', threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+
+  ticks.forEach(t => {
+    t.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById(t.dataset.target);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+})();
+
+/* ---------------- Classifier exercise (3.1.1) ---------------- */
+(function(){
+  const items = [
+    {label:'Tipo de apego', bin:'nominal'},
+    {label:'Nivel de severidad clínica (leve/moderado/grave)', bin:'ordinal'},
+    {label:'Puntaje total en escala Likert de estrés', bin:'intervalo'},
+    {label:'Número de sesiones de terapia asistidas', bin:'razon'},
+    {label:'Estado civil', bin:'nominal'},
+    {label:'Puesto obtenido en una competencia académica', bin:'ordinal'},
+    {label:'Tiempo de reacción en milisegundos', bin:'razon'},
+    {label:'Temperatura corporal en grados Celsius', bin:'intervalo'}
+  ];
+  const pool = document.getElementById('chip-pool');
+  const feedback = document.getElementById('classifier-feedback');
+  let correctCount = 0;
+  let totalPlaced = 0;
+
+  // shuffle
+  const shuffled = items.slice().sort(() => Math.random() - 0.5);
+
+  shuffled.forEach((item, idx) => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.type = 'button';
+    chip.textContent = item.label;
+    chip.dataset.bin = item.bin;
+    chip.dataset.idx = idx;
+    chip.addEventListener('click', () => {
+      if(chip.classList.contains('placed')) return;
+      const choice = prompt('¿En qué categoría clasifica esta variable?\nEscriba: nominal, ordinal, intervalo o razon');
+      if(!choice) return;
+      const clean = choice.trim().toLowerCase().replace('ó','o');
+      totalPlaced++;
+      const targetBin = document.querySelector('.bin[data-bin="'+ (clean==='razón'?'razon':clean) +'"]');
+      if(clean === item.bin || (clean==='razon' && item.bin==='razon')){
+        correctCount++;
+        chip.classList.add('placed');
+        if(targetBin){
+          const clone = chip.cloneNode(true);
+          clone.classList.remove('chip');
+          clone.style.cssText = 'font-family:var(--mono); font-size:11px; background:#fff; border:1px solid var(--teal); padding:4px 8px;';
+          targetBin.querySelector('.bin-items').appendChild(clone);
+        }
+        feedback.textContent = 'Correcto: "' + item.label + '" corresponde a la escala ' + item.bin + '. Progreso: ' + correctCount + '/' + items.length + '.';
+        feedback.className = 'feedback-msg ok';
+      } else {
+        feedback.textContent = 'Esa no es la escala correcta para "' + item.label + '". Revise el apartado 3.1.1 y vuelva a intentarlo.';
+        feedback.className = 'feedback-msg err';
+      }
+    });
+    pool.appendChild(chip);
+  });
+})();
+
+/* ---------------- Descriptive statistics calculator (3.2) ---------------- */
+(function(){
+  const btn = document.getElementById('calc-btn');
+  const exampleBtn = document.getElementById('calc-example-btn');
+  const clearBtn = document.getElementById('calc-clear-btn');
+  const textarea = document.getElementById('calc-data');
+  const output = document.getElementById('calc-output');
+
+  exampleBtn.addEventListener('click', () => {
+    textarea.value = '52, 48, 61, 45, 58, 63, 50, 47, 55, 70, 44, 59, 53, 49, 66';
+  });
+  clearBtn.addEventListener('click', () => {
+    textarea.value = '';
+    output.innerHTML = '';
+  });
+
+  function parseData(str){
+    return str.split(/[\s,;]+/).map(s => s.trim()).filter(s => s.length > 0).map(Number).filter(n => !isNaN(n));
+  }
+
+  function mean(arr){ return arr.reduce((a,b)=>a+b,0) / arr.length; }
+
+  function median(arr){
+    const s = arr.slice().sort((a,b)=>a-b);
+    const mid = Math.floor(s.length/2);
+    return s.length % 2 !== 0 ? s[mid] : (s[mid-1] + s[mid]) / 2;
+  }
+
+  function mode(arr){
+    const freq = {};
+    arr.forEach(n => freq[n] = (freq[n]||0) + 1);
+    let max = 0;
+    Object.values(freq).forEach(f => { if(f > max) max = f; });
+    if(max <= 1) return 'No hay moda (todos los valores son únicos)';
+    return Object.keys(freq).filter(k => freq[k] === max).join(', ');
+  }
+
+  function variance(arr, m){
+    if(arr.length < 2) return 0;
+    return arr.reduce((acc,n) => acc + Math.pow(n-m,2), 0) / (arr.length - 1);
+  }
+
+  function percentile(arr, p){
+    const s = arr.slice().sort((a,b)=>a-b);
+    const idx = (p/100) * (s.length - 1);
+    const lo = Math.floor(idx), hi = Math.ceil(idx);
+    if(lo === hi) return s[lo];
+    return s[lo] + (s[hi]-s[lo]) * (idx-lo);
+  }
+
+  function skewness(arr, m, sd){
+    const n = arr.length;
+    if(n < 3 || sd === 0) return 0;
+    const sum = arr.reduce((acc,n2) => acc + Math.pow(n2-m,3), 0);
+    return (n / ((n-1)*(n-2))) * (sum / Math.pow(sd,3));
+  }
+
+  function kurtosis(arr, m, sd){
+    const n = arr.length;
+    if(n < 4 || sd === 0) return 0;
+    const sum = arr.reduce((acc,n2) => acc + Math.pow(n2-m,4), 0);
+    const term1 = (n*(n+1)) / ((n-1)*(n-2)*(n-3));
+    const term2 = sum / Math.pow(sd,4);
+    const term3 = (3 * Math.pow(n-1,2)) / ((n-2)*(n-3));
+    return term1*term2 - term3;
+  }
+
+  btn.addEventListener('click', () => {
+    const data = parseData(textarea.value);
+    if(data.length < 2){
+      output.innerHTML = '<div class="feedback-msg err">Ingrese al menos dos valores numéricos separados por comas, espacios o saltos de línea.</div>';
+      return;
+    }
+    const n = data.length;
+    const m = mean(data);
+    const med = median(data);
+    const mo = mode(data);
+    const min = Math.min(...data);
+    const max = Math.max(...data);
+    const range = max - min;
+    const varc = variance(data, m);
+    const sd = Math.sqrt(varc);
+    const cv = (sd/m*100);
+    const q1 = percentile(data, 25);
+    const q2 = percentile(data, 50);
+    const q3 = percentile(data, 75);
+    const p90 = percentile(data, 90);
+    const sk = skewness(data, m, sd);
+    const ku = kurtosis(data, m, sd);
+
+    const fmt = (v) => (typeof v === 'number' ? (Math.round(v*100)/100).toString() : v);
+
+    output.innerHTML = `
+      <div class="stat-group-label">Datos y tendencia central — 3.2.1</div>
+      <div class="stat-grid">
+        <div class="stat-tag"><span class="stat-label">n</span><span class="stat-value">${n}</span></div>
+        <div class="stat-tag"><span class="stat-label">Media</span><span class="stat-value">${fmt(m)}</span></div>
+        <div class="stat-tag"><span class="stat-label">Mediana</span><span class="stat-value">${fmt(med)}</span></div>
+        <div class="stat-tag"><span class="stat-label">Moda</span><span class="stat-value" style="font-size:.95rem;">${mo}</span></div>
+      </div>
+      <div class="stat-group-label">Dispersión — 3.2.2</div>
+      <div class="stat-grid">
+        <div class="stat-tag"><span class="stat-label">Rango</span><span class="stat-value">${fmt(range)}</span></div>
+        <div class="stat-tag"><span class="stat-label">Varianza</span><span class="stat-value">${fmt(varc)}</span></div>
+        <div class="stat-tag"><span class="stat-label">Desv. estándar</span><span class="stat-value">${fmt(sd)}</span></div>
+        <div class="stat-tag"><span class="stat-label">Coef. variación</span><span class="stat-value">${fmt(cv)}%</span></div>
+      </div>
+      <div class="stat-group-label">Posición — 3.2.3</div>
+      <div class="stat-grid">
+        <div class="stat-tag"><span class="stat-label">Q1 (P25)</span><span class="stat-value">${fmt(q1)}</span></div>
+        <div class="stat-tag"><span class="stat-label">Q2 (P50)</span><span class="stat-value">${fmt(q2)}</span></div>
+        <div class="stat-tag"><span class="stat-label">Q3 (P75)</span><span class="stat-value">${fmt(q3)}</span></div>
+        <div class="stat-tag"><span class="stat-label">P90</span><span class="stat-value">${fmt(p90)}</span></div>
+      </div>
+      <div class="stat-group-label">Forma — 3.2.4</div>
+      <div class="stat-grid">
+        <div class="stat-tag"><span class="stat-label">Asimetría</span><span class="stat-value">${fmt(sk)}</span></div>
+        <div class="stat-tag"><span class="stat-label">Curtosis</span><span class="stat-value">${fmt(ku)}</span></div>
+      </div>
+    `;
+  });
+})();
+
+/* ---------------- Quiz (Actividad 3) ---------------- */
+(function(){
+  const questions = [
+    {
+      q: '¿Cuál de las siguientes variables corresponde a una escala nominal?',
+      options: ['Nivel de severidad clínica (leve, moderado, grave)', 'Tipo de apego (seguro, evitativo, ambivalente)', 'Puntaje total en una escala de ansiedad', 'Número de sesiones de terapia'],
+      correct: 1
+    },
+    {
+      q: 'Un equipo de investigación selecciona únicamente a los estudiantes que asisten a un taller específico. ¿Qué tipo de muestreo está utilizando?',
+      options: ['Aleatorio simple', 'Estratificado', 'No probabilístico por conveniencia', 'Por conglomerados'],
+      correct: 2
+    },
+    {
+      q: 'Si un conjunto de datos presenta valores extremos, ¿qué medida de tendencia central describe mejor al grupo en su conjunto?',
+      options: ['La media', 'La mediana', 'La moda', 'El rango'],
+      correct: 1
+    },
+    {
+      q: '¿Qué medida permite comparar la dispersión de dos variables que tienen escalas de medición distintas?',
+      options: ['La varianza', 'El rango', 'El coeficiente de variación', 'La desviación estándar'],
+      correct: 2
+    },
+    {
+      q: 'Una distribución de puntajes de estrés académico muestra una asimetría positiva. ¿Qué significa esto?',
+      options: [
+        'La mayoría de los estudiantes tiene niveles bajos o moderados, con pocos casos de niveles muy altos',
+        'La distribución es perfectamente simétrica',
+        'Todos los estudiantes obtuvieron el mismo puntaje',
+        'La mayoría de los estudiantes tiene niveles altos, con pocos casos de niveles bajos'
+      ],
+      correct: 0
+    }
+  ];
+
+  let current = 0;
+  let score = 0;
+  let answered = false;
+  const box = document.getElementById('quiz-box');
+
+  function renderQuestion(){
+    answered = false;
+    const item = questions[current];
+    box.innerHTML = `
+      <div class="quiz-progress">Pregunta ${current+1} de ${questions.length}</div>
+      <div class="quiz-q">${item.q}</div>
+      <div class="quiz-options" id="quiz-options"></div>
+      <div class="quiz-controls">
+        <button class="btn secondary" id="quiz-next" disabled>Siguiente</button>
+      </div>
+    `;
+    const optsWrap = document.getElementById('quiz-options');
+    item.options.forEach((opt, idx) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'q-opt';
+      b.textContent = opt;
+      b.addEventListener('click', () => {
+        if(answered) return;
+        answered = true;
+        const buttons = optsWrap.querySelectorAll('.q-opt');
+        buttons.forEach((bb, bi) => {
+          bb.classList.remove('selected');
+          if(bi === item.correct) bb.classList.add('correct');
+          else if(bi === idx) bb.classList.add('incorrect');
+        });
+        if(idx === item.correct) score++;
+        document.getElementById('quiz-next').disabled = false;
+      });
+      optsWrap.appendChild(b);
+    });
+    document.getElementById('quiz-next').addEventListener('click', () => {
+      current++;
+      if(current < questions.length) renderQuestion();
+      else renderResult();
+    });
+  }
+
+  function renderResult(){
+    const pct = Math.round((score/questions.length)*100);
+    let msg, cls;
+    if(pct >= 80){ msg = 'Dominio sólido de los conceptos de la unidad.'; cls=''; }
+    else if(pct >= 60){ msg = 'Dominio aceptable; conviene repasar los apartados con menor puntaje.'; cls=''; }
+    else { msg = 'Se recomienda repasar la unidad antes de continuar con las siguientes actividades.'; cls='low'; }
+
+    box.innerHTML = `
+      <div class="quiz-result">
+        <div class="quiz-progress">Resultado final</div>
+        <div class="score-num">${score}/${questions.length}</div>
+        <div class="score-msg ${cls}">${pct}% de respuestas correctas — ${msg}</div>
+        <button class="btn" id="quiz-retry">Reintentar quiz</button>
+      </div>
+    `;
+    document.getElementById('quiz-retry').addEventListener('click', () => {
+      current = 0; score = 0; renderQuestion();
+    });
+  }
+
+  renderQuestion();
+})();
+
+/* ---------------- Reflection download ---------------- */
+(function(){
+  const btn = document.getElementById('reflexion-download');
+  const textarea = document.getElementById('reflexion-text');
+  btn.addEventListener('click', () => {
+    const content = textarea.value.trim();
+    if(!content){
+      alert('Escriba su reflexión antes de descargarla.');
+      return;
+    }
+    const blob = new Blob([
+      'Reflexión y aplicación — Unidad III: Manejo de Datos\n' +
+      'Estadística Aplicada a la Psicología — Universidad de Especialidades (UNE)\n' +
+      '----------------------------------------------------\n\n' + content
+    ], {type:'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'reflexion-unidad-III.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+})();
+</script>
+</body>
+</html>

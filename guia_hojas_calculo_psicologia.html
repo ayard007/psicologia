@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hojas de Cálculo Básica Aplicada a la Psicología | UNE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#152a52;
+    --navy-deep:#0c1a36;
+    --navy-soft:#2a4477;
+    --red:#c62a30;
+    --teal:#1f7a72;
+    --teal-soft:#e4f2f0;
+    --paper:#f6f7fa;
+    --card:#ffffff;
+    --ink:#1b2233;
+    --ink-soft:#4c5567;
+    --line:#dde2ea;
+    --grid:#c9d2e0;
+    --amber:#b6791e;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Sora', system-ui, sans-serif; color:var(--navy-deep); margin:0 0 .5em;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:var(--teal);}
+  img{max-width:100%;}
+  .skip-link{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:.6em 1em;z-index:999;}
+  .skip-link:focus{left:8px;top:8px;}
+
+  /* ===== Layout shell ===== */
+  .shell{display:grid; grid-template-columns:260px 1fr; min-height:100vh;}
+  @media (max-width:900px){ .shell{grid-template-columns:1fr;} }
+
+  /* ===== Left rail nav ===== */
+  .rail{
+    background:var(--navy-deep);
+    color:#dfe6f5;
+    position:sticky; top:0; height:100vh; overflow-y:auto;
+    padding:1.4rem 1.1rem 2rem;
+    border-right:4px solid var(--red);
+  }
+  @media (max-width:900px){ .rail{position:relative; height:auto;} }
+  .rail-brand{display:flex; align-items:center; gap:.7rem; margin-bottom:1.4rem; padding-bottom:1.1rem; border-bottom:1px solid rgba(255,255,255,.14);}
+  .rail-brand img{width:46px; height:46px; object-fit:contain; background:#fff; border-radius:8px; padding:4px;}
+  .rail-brand .name{font-family:'Sora'; font-weight:700; font-size:.82rem; line-height:1.2; color:#fff;}
+  .rail-brand .sub{font-size:.68rem; color:#9fb0d0; text-transform:uppercase; letter-spacing:.06em;}
+  .rail nav a{
+    display:block; color:#c3cde5; text-decoration:none; font-size:.86rem;
+    padding:.5rem .6rem; border-radius:7px; margin-bottom:.15rem;
+    border-left:3px solid transparent; transition:all .15s ease;
+  }
+  .rail nav a .num{font-family:'IBM Plex Mono'; font-size:.72rem; color:var(--red); margin-right:.4rem;}
+  .rail nav a:hover{background:rgba(255,255,255,.06); color:#fff;}
+  .rail nav a.active{background:rgba(255,255,255,.09); color:#fff; border-left-color:var(--red); font-weight:600;}
+  .rail-group-label{font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:#7f8fb2; margin:1.1rem 0 .35rem; padding-left:.6rem;}
+  .rail-progress{margin-top:1.4rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,.14);}
+  .rail-progress .bar{height:6px; background:rgba(255,255,255,.12); border-radius:4px; overflow:hidden;}
+  .rail-progress .fill{height:100%; width:0%; background:linear-gradient(90deg,var(--red),var(--teal)); transition:width .25s ease;}
+  .rail-progress .label{font-size:.68rem; color:#9fb0d0; margin-top:.4rem;}
+
+  /* ===== Main content ===== */
+  main{padding:0 0 4rem;}
+  .section{padding:3.2rem 3rem; max-width:920px; margin:0 auto; border-bottom:1px solid var(--line);}
+  @media (max-width:900px){ .section{padding:2.2rem 1.2rem;} }
+  .section:last-child{border-bottom:none;}
+  .eyebrow{
+    font-family:'IBM Plex Mono'; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--red); font-weight:600; margin-bottom:.5rem; display:block;
+  }
+  p{color:var(--ink-soft);}
+  .lead{font-size:1.08rem; color:var(--ink);}
+
+  /* ===== Hero ===== */
+  .hero{
+    background:linear-gradient(160deg, var(--navy-deep) 0%, var(--navy) 55%, var(--navy-soft) 100%);
+    color:#fff; padding:3.4rem 3rem 3rem; position:relative; overflow:hidden;
+  }
+  @media (max-width:900px){ .hero{padding:2.2rem 1.2rem 2rem;} }
+  .hero-top{display:flex; align-items:center; gap:1rem; margin-bottom:1.6rem;}
+  .hero-top img{width:56px; height:56px; background:#fff; border-radius:10px; padding:5px;}
+  .hero-top .inst{font-family:'Sora'; font-weight:700; font-size:1rem;}
+  .hero-top .prog{font-size:.78rem; color:#b9c6e6;}
+  .hero h1{color:#fff; font-size:2.1rem; max-width:640px; margin-bottom:.6rem;}
+  .hero .tagline{color:#c9d4ee; max-width:600px; font-size:1rem; margin-bottom:1.6rem;}
+  .hero-meta{display:flex; gap:1.4rem; flex-wrap:wrap; font-size:.78rem; color:#aebbdc; font-family:'IBM Plex Mono';}
+  .hero-meta span strong{color:#fff; display:block; font-family:'Sora'; font-size:.95rem;}
+
+  /* Spreadsheet signature visual in hero */
+  .sheet-mock{
+    margin-top:2rem; background:#0f1f3f; border:1px solid rgba(255,255,255,.14); border-radius:10px;
+    overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.35);
+  }
+  .sheet-bar{
+    display:flex; align-items:center; gap:.6rem; background:#0a1730; padding:.5rem .8rem;
+    border-bottom:1px solid rgba(255,255,255,.1); font-family:'IBM Plex Mono'; font-size:.74rem; color:#9fb0d0;
+  }
+  .sheet-bar .fx{color:var(--red); font-weight:700;}
+  .sheet-bar .formula{color:#e6ecfa;}
+  .sheet-grid{display:grid; grid-template-columns:34px repeat(4,1fr); font-family:'IBM Plex Mono'; font-size:.78rem;}
+  .sheet-grid .cell{padding:.5rem .55rem; border-right:1px solid rgba(255,255,255,.08); border-bottom:1px solid rgba(255,255,255,.08); color:#d6ddf0;}
+  .sheet-grid .rownum{background:#0a1730; color:#7f8fb2; text-align:center;}
+  .sheet-grid .colhead{background:#0a1730; color:#7f8fb2; text-align:center; font-weight:600;}
+  .sheet-grid .active-cell{background:rgba(198,42,48,.28); outline:1.5px solid var(--red); color:#fff; font-weight:600;}
+  .sheet-grid .formula-cell{background:rgba(31,122,114,.28); color:#fff; font-weight:600;}
+
+  /* ===== Objectives ===== */
+  .obj-grid{display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.4rem;}
+  @media (max-width:640px){ .obj-grid{grid-template-columns:1fr;} }
+  .obj-card{background:var(--card); border:1px solid var(--line); border-left:4px solid var(--teal); border-radius:8px; padding:1.1rem 1.2rem;}
+  .obj-card h4{font-size:.95rem; margin-bottom:.3rem;}
+  .obj-card p{font-size:.88rem; margin:0;}
+
+  /* ===== Step blocks ===== */
+  .step{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:1.3rem 1.4rem; margin-bottom:1rem; position:relative;
+  }
+  .step-head{display:flex; align-items:baseline; gap:.7rem; margin-bottom:.5rem;}
+  .step-num{
+    font-family:'IBM Plex Mono'; font-weight:700; font-size:.78rem; color:#fff;
+    background:var(--navy); border-radius:5px; padding:.15rem .5rem; flex-shrink:0;
+  }
+  .step h4{margin:0; font-size:1.02rem;}
+  .step p{margin:.3rem 0 0; font-size:.94rem;}
+  .example{
+    margin-top:.7rem; background:var(--teal-soft); border-left:3px solid var(--teal);
+    border-radius:6px; padding:.7rem .9rem; font-size:.88rem; color:#154944;
+  }
+  .example .label{font-family:'IBM Plex Mono'; font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:var(--teal); font-weight:700; display:block; margin-bottom:.25rem;}
+  code, .formula-chip{font-family:'IBM Plex Mono'; background:#eef1f8; border:1px solid var(--grid); padding:.1rem .4rem; border-radius:4px; font-size:.86rem; color:var(--navy-deep);}
+
+  /* Formula reference table */
+  .fn-table{width:100%; border-collapse:collapse; margin:1.2rem 0; font-size:.9rem;}
+  .fn-table th, .fn-table td{text-align:left; padding:.6rem .7rem; border-bottom:1px solid var(--line);}
+  .fn-table th{font-family:'Sora'; color:var(--navy-deep); background:#eef1f8; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em;}
+  .fn-table td.fn{font-family:'IBM Plex Mono'; color:var(--red); font-weight:600;}
+
+  /* Mini sheet illustration reused in sections */
+  .mini-sheet{border:1px solid var(--grid); border-radius:8px; overflow:hidden; margin:1rem 0; background:#fff;}
+  .mini-sheet .row{display:grid; font-family:'IBM Plex Mono'; font-size:.82rem;}
+  .mini-sheet .row > div{padding:.45rem .55rem; border-right:1px solid var(--grid); border-bottom:1px solid var(--grid);}
+  .mini-sheet .row.head > div{background:var(--navy); color:#fff; font-weight:600; text-align:center;}
+  .mini-sheet .row .rn{background:#eef1f8; text-align:center; color:var(--ink-soft);}
+  .mini-sheet .row .hl{background:#fff4e2; color:var(--amber); font-weight:700;}
+  .mini-sheet .row .formulacell{background:var(--teal-soft); color:var(--teal); font-weight:700;}
+
+  /* ===== Callouts ===== */
+  .callout{border-radius:var(--radius); padding:1.1rem 1.3rem; margin:1.2rem 0; font-size:.92rem;}
+  .callout.info{background:#eaf1fb; border-left:4px solid var(--navy-soft); color:#1c3157;}
+  .callout.warn{background:#fdecea; border-left:4px solid var(--red); color:#6b1a1d;}
+  .callout .label{font-family:'IBM Plex Mono'; font-size:.7rem; text-transform:uppercase; font-weight:700; letter-spacing:.06em; display:block; margin-bottom:.3rem;}
+
+  /* ===== Activities ===== */
+  .activity{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:1.6rem 1.7rem; margin-bottom:1.6rem; border-top:5px solid var(--red);
+  }
+  .activity.act2{border-top-color:var(--teal);}
+  .activity.act3{border-top-color:var(--navy-soft);}
+  .activity-tag{
+    font-family:'IBM Plex Mono'; font-size:.7rem; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--red); font-weight:700; display:block; margin-bottom:.4rem;
+  }
+  .act2 .activity-tag{color:var(--teal);}
+  .act3 .activity-tag{color:var(--navy-soft);}
+  .activity h3{font-size:1.15rem;}
+  .prompt-box{
+    background:var(--paper); border:1px dashed var(--grid); border-radius:8px; padding:1rem 1.1rem;
+    margin:1rem 0; font-style:italic; color:var(--navy-deep); font-size:.96rem;
+  }
+  .checklist{list-style:none; padding:0; margin:1rem 0;}
+  .checklist li{position:relative; padding-left:1.6rem; margin-bottom:.55rem; font-size:.92rem; color:var(--ink-soft);}
+  .checklist li::before{content:"✓"; position:absolute; left:0; top:0; color:var(--teal); font-weight:700; font-family:'IBM Plex Mono';}
+  .submit-note{
+    display:inline-flex; align-items:center; gap:.5rem; margin-top:.6rem; font-size:.82rem;
+    background:var(--navy); color:#fff; padding:.4rem .8rem; border-radius:20px; font-family:'IBM Plex Mono';
+  }
+
+  /* ===== Quiz ===== */
+  .quiz-shell{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1.7rem; border-top:5px solid var(--navy-soft);}
+  .quiz-item{padding:1.1rem 0; border-bottom:1px solid var(--line);}
+  .quiz-item:last-of-type{border-bottom:none;}
+  .quiz-item .qtext{font-weight:600; color:var(--ink); margin-bottom:.6rem; font-size:.97rem;}
+  .quiz-item .qnum{font-family:'IBM Plex Mono'; color:var(--red); margin-right:.4rem;}
+  .quiz-options{display:flex; flex-direction:column; gap:.5rem;}
+  .quiz-options label{
+    display:flex; gap:.6rem; align-items:flex-start; background:var(--paper); border:1px solid var(--line);
+    border-radius:8px; padding:.6rem .8rem; cursor:pointer; font-size:.9rem; transition:border-color .15s;
+  }
+  .quiz-options label:hover{border-color:var(--navy-soft);}
+  .quiz-options input{margin-top:.2rem;}
+  .quiz-item.correct .quiz-options label.was-correct{border-color:var(--teal); background:#e9f6f4;}
+  .quiz-item.incorrect .quiz-options label.was-selected{border-color:var(--red); background:#fdecea;}
+  .feedback{margin-top:.6rem; font-size:.85rem; border-radius:6px; padding:.55rem .75rem; display:none;}
+  .feedback.show{display:block;}
+  .feedback.ok{background:#e9f6f4; color:#0f5c53;}
+  .feedback.bad{background:#fdecea; color:#7a2226;}
+  .student-data{display:grid; grid-template-columns:1fr 1fr; gap:.9rem; margin-bottom:1.4rem;}
+  @media (max-width:640px){ .student-data{grid-template-columns:1fr;} }
+  .student-data label{font-size:.8rem; color:var(--ink-soft); display:block; margin-bottom:.3rem; font-family:'IBM Plex Mono';}
+  .student-data input{width:100%; padding:.55rem .7rem; border:1px solid var(--grid); border-radius:6px; font-family:'IBM Plex Sans'; font-size:.92rem;}
+  .quiz-actions{display:flex; align-items:center; gap:1rem; margin-top:1.2rem; flex-wrap:wrap;}
+  .btn{
+    font-family:'Sora'; font-weight:600; font-size:.92rem; padding:.7rem 1.4rem; border-radius:8px; border:none;
+    cursor:pointer; background:var(--navy); color:#fff; transition:background .15s;
+  }
+  .btn:hover{background:var(--navy-soft);}
+  .btn.secondary{background:transparent; color:var(--navy); border:1.5px solid var(--navy);}
+  .btn.secondary:hover{background:#eef1f8;}
+  .score-panel{display:none; margin-top:1.2rem; padding:1.2rem 1.4rem; border-radius:10px; background:var(--navy-deep); color:#fff;}
+  .score-panel.show{display:block;}
+  .score-panel .score-num{font-family:'Sora'; font-size:2.2rem; font-weight:800;}
+  .score-panel .score-msg{color:#c9d4ee; font-size:.9rem; margin-top:.3rem;}
+
+  /* ===== Reflection ===== */
+  .reflect-grid{display:grid; grid-template-columns:1fr; gap:1rem; margin-top:1.2rem;}
+  .reflect-card{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1.2rem 1.3rem;}
+  .reflect-card h4{font-size:.98rem; margin-bottom:.4rem; color:var(--navy-deep);}
+  .reflect-card textarea{
+    width:100%; min-height:90px; border:1px solid var(--grid); border-radius:8px; padding:.7rem .8rem;
+    font-family:'IBM Plex Sans'; font-size:.9rem; resize:vertical; background:var(--paper); color:var(--ink);
+  }
+  .reflect-note{font-size:.8rem; color:var(--ink-soft); margin-top:.5rem;}
+
+  footer{
+    background:var(--navy-deep); color:#aebbdc; padding:2.2rem 3rem; font-size:.82rem;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem;
+  }
+  footer strong{color:#fff;}
+
+  .toc-inline{display:none;}
+</style>
+</head>
+<body>
+<a href="#inicio" class="skip-link">Saltar al contenido principal</a>
+
+<div class="shell">
+  <!-- ===== RAIL / NAV ===== -->
+  <aside class="rail">
+    <div class="rail-brand">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAAsTAAALEwEAmpwYAAAFyWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4wLWMwMDEgNzkuYzAyMDRiMiwgMjAyMy8wMi8wOS0wNjoyNjoxNCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDI0LjMgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAyMy0wNC0wNlQwMjozMzozNC0wNjowMCIgeG1wOk1vZGlmeURhdGU9IjIwMjMtMDQtMTlUMTI6MTk6MzQtMDY6MDAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMjMtMDQtMTlUMTI6MTk6MzQtMDY6MDAiIGRjOmZvcm1hdD0iaW1hZ2UvcG5nIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjE3MTdmNDhkLTE2NDYtYWQ0ZC1hYWExLWM0YzFlMjAwZDAyYyIgeG1wTU06RG9jdW1lbnRJRD0i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" alt="Logo Universidad de Especialidades UNE">
+      <div>
+        <div class="name">Universidad de Especialidades UNE</div>
+        <div class="sub">Licenciatura en Psicología</div>
+      </div>
+    </div>
+    <nav aria-label="Navegación de la guía">
+      <a href="#inicio" data-nav><span class="num">00</span>Inicio</a>
+      <a href="#objetivos" data-nav><span class="num">01</span>Objetivos</a>
+
+      <div class="rail-group-label">Contenido</div>
+      <a href="#seccion-1" data-nav><span class="num">02</span>La hoja de cálculo</a>
+      <a href="#seccion-2" data-nav><span class="num">03</span>Fórmulas y funciones</a>
+      <a href="#seccion-3" data-nav><span class="num">04</span>Referencias de celda</a>
+      <a href="#seccion-4" data-nav><span class="num">05</span>Organización de datos</a>
+      <a href="#seccion-5" data-nav><span class="num">06</span>Gráficos básicos</a>
+      <a href="#seccion-6" data-nav><span class="num">07</span>Estadística descriptiva</a>
+
+      <div class="rail-group-label">Actividades Classroom</div>
+      <a href="#actividad-1" data-nav><span class="num">08</span>Foro de mediación</a>
+      <a href="#actividad-2" data-nav><span class="num">09</span>Aplicación significativa</a>
+      <a href="#actividad-3" data-nav><span class="num">10</span>Quiz autocalificable</a>
+
+      <div class="rail-group-label">Cierre</div>
+      <a href="#reflexion" data-nav><span class="num">11</span>Reflexión y aplicación</a>
+    </nav>
+    <div class="rail-progress">
+      <div class="bar"><div class="fill" id="progressFill"></div></div>
+      <div class="label" id="progressLabel">0% recorrido</div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main id="inicio">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-top">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAACXBIWXMAAAsTAAALEwEAmpwYAAAFyWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4wLWMwMDEgNzkuYzAyMDRiMiwgMjAyMy8wMi8wOS0wNjoyNjoxNCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDI0LjMgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAyMy0wNC0wNlQwMjozMzozNC0wNjowMCIgeG1wOk1vZGlmeURhdGU9IjIwMjMtMDQtMTlUMTI6MTk6MzQtMDY6MDAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMjMtMDQtMTlUMTI6MTk6MzQtMDY6MDAiIGRjOmZvcm1hdD0iaW1hZ2UvcG5nIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjE3MTdmNDhkLTE2NDYtYWQ0ZC1hYWExLWM0YzFlMjAwZDAyYyIgeG1wTU06RG9jdW1lbnRJRD0i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" alt="Logo UNE">
+        <div>
+          <div class="inst">Universidad de Especialidades UNE</div>
+          <div class="prog">Licenciatura en Psicología</div>
+        </div>
+      </div>
+      <span class="eyebrow" style="color:#ff9d9f;">Tecnologías de la Información Aplicadas a la Psicología</span>
+      <h1>Hojas de Cálculo Básica Aplicada a la Psicología</h1>
+      <p class="tagline">Guía interactiva para aprender a organizar, calcular y representar datos psicológicos mediante hojas de cálculo, con un enfoque constructivista y aprendizaje basado en problemas.</p>
+      <div class="hero-meta">
+        <span><strong>Metodología</strong>Constructivismo y ABP</span>
+        <span><strong>Herramienta</strong>Google Sheets / Excel</span>
+        <span><strong>Entrega</strong>Google Classroom</span>
+        <span><strong>Duración estimada</strong>3 horas de trabajo autónomo</span>
+      </div>
+
+      <div class="sheet-mock" aria-hidden="true">
+        <div class="sheet-bar"><span class="fx">fx</span><span class="formula">=PROMEDIO(B2:B6)</span></div>
+        <div class="sheet-grid">
+          <div class="cell colhead"></div>
+          <div class="cell colhead">A</div>
+          <div class="cell colhead">B</div>
+          <div class="cell colhead">C</div>
+          <div class="cell colhead">D</div>
+
+          <div class="cell rownum">1</div>
+          <div class="cell">Participante</div>
+          <div class="cell">Ansiedad</div>
+          <div class="cell">Depresión</div>
+          <div class="cell">Grupo</div>
+
+          <div class="cell rownum">2</div>
+          <div class="cell">P01</div>
+          <div class="cell">14</div>
+          <div class="cell">9</div>
+          <div class="cell">Control</div>
+
+          <div class="cell rownum">3</div>
+          <div class="cell">P02</div>
+          <div class="cell">18</div>
+          <div class="cell">12</div>
+          <div class="cell">Experimental</div>
+
+          <div class="cell rownum">4</div>
+          <div class="cell">P03</div>
+          <div class="cell">11</div>
+          <div class="cell">7</div>
+          <div class="cell">Control</div>
+
+          <div class="cell rownum">5</div>
+          <div class="cell">P04</div>
+          <div class="cell active-cell">16</div>
+          <div class="cell">10</div>
+          <div class="cell">Experimental</div>
+
+          <div class="cell rownum">6</div>
+          <div class="cell">P05</div>
+          <div class="cell">13</div>
+          <div class="cell">8</div>
+          <div class="cell">Control</div>
+
+          <div class="cell rownum">7</div>
+          <div class="cell">Promedio</div>
+          <div class="cell formula-cell">14.4</div>
+          <div class="cell">—</div>
+          <div class="cell">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="objetivos">
+  <span class="eyebrow">Punto de partida</span>
+  <h2>Objetivos de aprendizaje</h2>
+  <p class="lead">Al finalizar esta guía, el estudiante será capaz de utilizar una hoja de cálculo como herramienta de trabajo profesional para organizar, analizar e interpretar información proveniente de instrumentos y procesos psicológicos.</p>
+  <div class="obj-grid">
+    <div class="obj-card">
+      <h4>Organizar información</h4>
+      <p>Estructurar bases de datos de participantes, resultados de pruebas y registros de observación en filas y columnas de manera coherente.</p>
+    </div>
+    <div class="obj-card">
+      <h4>Aplicar fórmulas básicas</h4>
+      <p>Calcular sumas, promedios, valores máximos y mínimos, y conteos sobre puntuaciones psicológicas reales o simuladas.</p>
+    </div>
+    <div class="obj-card">
+      <h4>Construir gráficos</h4>
+      <p>Representar visualmente resultados de investigación o evaluación psicológica para facilitar su interpretación.</p>
+    </div>
+    <div class="obj-card">
+      <h4>Interpretar estadística descriptiva</h4>
+      <p>Calcular e interpretar media, mediana, moda y desviación estándar en el contexto de un estudio psicológico.</p>
+    </div>
+  </div>
+  <div class="callout info">
+    <span class="label">Enfoque pedagógico</span>
+    Esta guía sigue una metodología constructivista y de aprendizaje basado en problemas (ABP): cada concepto se presenta junto con un caso psicológico concreto, de modo que el estudiante construye el conocimiento resolviendo situaciones aplicadas a su futura práctica profesional, en lugar de memorizar procedimientos aislados.
+  </div>
+</section>
+
+<!-- ===================== SECCIÓN 1 ===================== -->
+<section class="section" id="seccion-1">
+  <span class="eyebrow">02 · Fundamentos</span>
+  <h2>La hoja de cálculo: estructura e interfaz</h2>
+  <p>Una hoja de cálculo es una herramienta digital organizada en <strong>celdas</strong>, dispuestas en <strong>filas</strong> (identificadas con números) y <strong>columnas</strong> (identificadas con letras). Cada celda se nombra mediante la combinación de su columna y su fila, por ejemplo <span class="formula-chip">B4</span>. Un conjunto de celdas relacionadas forma un <strong>rango</strong>, como <span class="formula-chip">B2:B6</span>.</p>
+  <p>En psicología, cada fila suele representar a un participante, y cada columna una variable medida: edad, grupo, puntuación en una escala, tiempo de reacción, entre otras. Esta lógica es la misma que utilizan los programas de análisis estadístico, por lo que dominarla en una hoja de cálculo facilita el tránsito posterior a herramientas como SPSS o Jamovi.</p>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 1</span><h4>Crear un nuevo archivo</h4></div>
+    <p>Ingresa a Google Sheets (sheets.google.com) o abre Microsoft Excel. Crea un archivo en blanco y nómbralo de forma descriptiva, por ejemplo <span class="formula-chip">BaseDatos_Ansiedad_Grupo3.xlsx</span>.</p>
+    <div class="example">
+      <span class="label">Ejemplo aplicado</span>
+      Un estudiante que aplicó el Inventario de Ansiedad de Beck a 20 compañeros de clase nombra su archivo <span class="formula-chip">IAB_Aplicacion_Octubre.xlsx</span> para identificarlo con claridad dentro de su carpeta de trabajo.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 2</span><h4>Definir los encabezados de columna</h4></div>
+    <p>En la primera fila, escribe el nombre de cada variable que vas a registrar. Un encabezado claro evita errores de interpretación posteriores.</p>
+  </div>
+
+  <div class="mini-sheet">
+    <div class="row head" style="grid-template-columns:60px 1fr 1fr 1fr 1fr;">
+      <div></div><div>A</div><div>B</div><div>C</div><div>D</div>
+    </div>
+    <div class="row" style="grid-template-columns:60px 1fr 1fr 1fr 1fr;">
+      <div class="rn">1</div><div>Participante</div><div>Edad</div><div>Grupo</div><div>Puntuación</div>
+    </div>
+    <div class="row" style="grid-template-columns:60px 1fr 1fr 1fr 1fr;">
+      <div class="rn">2</div><div>P01</div><div>22</div><div>Control</div><div>14</div>
+    </div>
+    <div class="row" style="grid-template-columns:60px 1fr 1fr 1fr 1fr;">
+      <div class="rn">3</div><div>P02</div><div>24</div><div>Experimental</div><div>18</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 3</span><h4>Registrar los datos por fila</h4></div>
+    <p>Cada nuevo participante se agrega en una nueva fila, manteniendo siempre el mismo orden de columnas. Esta consistencia es indispensable para que las fórmulas posteriores funcionen correctamente.</p>
+  </div>
+
+  <div class="callout warn">
+    <span class="label">Error frecuente</span>
+    Mezclar texto y números en una misma columna, o dejar filas en blanco entre registros, impide que las fórmulas de cálculo reconozcan el rango completo de datos.
+  </div>
+</section>
+
+<!-- ===================== SECCIÓN 2 ===================== -->
+<section class="section" id="seccion-2">
+  <span class="eyebrow">03 · Cálculo</span>
+  <h2>Fórmulas y funciones básicas</h2>
+  <p>Toda fórmula en una hoja de cálculo comienza con el signo <span class="formula-chip">=</span>. A partir de ahí, se pueden combinar funciones, referencias de celda y operadores para automatizar cálculos que, de forma manual, tomarían mucho más tiempo y estarían más expuestos a error humano.</p>
+
+  <table class="fn-table">
+    <thead>
+      <tr><th>Función</th><th>Uso</th><th>Aplicación psicológica</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="fn">=SUMA(rango)</td><td>Suma los valores de un rango de celdas</td><td>Sumar los reactivos de una escala para obtener la puntuación total de un participante</td></tr>
+      <tr><td class="fn">=PROMEDIO(rango)</td><td>Calcula la media aritmética</td><td>Obtener la puntuación media de ansiedad de un grupo</td></tr>
+      <tr><td class="fn">=CONTAR(rango)</td><td>Cuenta celdas con valores numéricos</td><td>Saber cuántos participantes completaron el instrumento</td></tr>
+      <tr><td class="fn">=CONTAR.SI(rango, criterio)</td><td>Cuenta celdas que cumplen una condición</td><td>Contar cuántos participantes se ubican en el grupo "Experimental"</td></tr>
+      <tr><td class="fn">=MAX(rango) / =MIN(rango)</td><td>Identifica el valor máximo o mínimo</td><td>Detectar el caso con mayor o menor puntuación de estrés</td></tr>
+      <tr><td class="fn">=MEDIANA(rango)</td><td>Calcula el valor central de un conjunto de datos</td><td>Describir la tendencia central cuando existen valores atípicos</td></tr>
+    </tbody>
+  </table>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 1</span><h4>Sumar los reactivos de una escala</h4></div>
+    <p>Si un instrumento tiene diez reactivos ubicados en las celdas B2 a K2 para un mismo participante, la puntuación total se obtiene con una sola fórmula.</p>
+    <div class="example">
+      <span class="label">Ejemplo aplicado</span>
+      En la celda L2 se escribe <span class="formula-chip">=SUMA(B2:K2)</span> para obtener automáticamente la puntuación total del participante en la fila 2. Al copiar esta fórmula hacia abajo, cada fila calculará su propio total.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 2</span><h4>Calcular el promedio grupal</h4></div>
+    <p>Para conocer el nivel promedio de una variable en todo el grupo, se aplica la función de promedio sobre la columna correspondiente.</p>
+    <div class="example">
+      <span class="label">Ejemplo aplicado</span>
+      Con las puntuaciones totales en el rango L2:L21, la fórmula <span class="formula-chip">=PROMEDIO(L2:L21)</span> entrega el nivel promedio de ansiedad del grupo evaluado.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 3</span><h4>Contar casos por categoría</h4></div>
+    <p>La función condicional permite responder preguntas como "¿cuántos participantes pertenecen a cada grupo experimental?" sin necesidad de contar manualmente.</p>
+    <div class="example">
+      <span class="label">Ejemplo aplicado</span>
+      <span class="formula-chip">=CONTAR.SI(C2:C21,"Experimental")</span> devuelve el número de participantes asignados al grupo experimental.
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECCIÓN 3 ===================== -->
+<section class="section" id="seccion-3">
+  <span class="eyebrow">04 · Precisión</span>
+  <h2>Referencias de celda: relativas y absolutas</h2>
+  <p>Cuando se copia una fórmula de una celda a otra, la hoja de cálculo ajusta automáticamente las referencias. Este comportamiento, llamado <strong>referencia relativa</strong>, es útil la mayoría de las veces, pero puede generar errores cuando se necesita que una celda permanezca fija, como ocurre al calcular porcentajes o puntuaciones normalizadas respecto a un valor constante.</p>
+
+  <table class="fn-table">
+    <thead><tr><th>Tipo</th><th>Notación</th><th>Comportamiento al copiar</th></tr></thead>
+    <tbody>
+      <tr><td>Relativa</td><td class="fn">B2</td><td>Cambia según la posición de la nueva celda</td></tr>
+      <tr><td>Absoluta</td><td class="fn">$B$2</td><td>Permanece fija sin importar hacia dónde se copie</td></tr>
+      <tr><td>Mixta</td><td class="fn">$B2 / B$2</td><td>Fija solo la columna o solo la fila</td></tr>
+    </tbody>
+  </table>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 1</span><h4>Calcular el porcentaje respecto a un total fijo</h4></div>
+    <p>Supongamos que la celda D1 contiene la puntuación máxima posible del instrumento (constante para todos los participantes) y la columna B contiene la puntuación obtenida por cada uno.</p>
+    <div class="example">
+      <span class="label">Ejemplo aplicado</span>
+      En C2 se escribe <span class="formula-chip">=B2/$D$1</span>. Al copiar esta fórmula hacia las filas siguientes, la referencia a la puntuación individual (B2, B3, B4...) cambia, pero la referencia al total máximo permanece fija en D1 gracias al signo de dólar.
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="label">Error frecuente</span>
+    Copiar una fórmula sin fijar la celda de referencia constante produce resultados incorrectos en cada fila, ya que la hoja de cálculo desplaza la referencia como si también fuera un dato variable.
+  </div>
+</section>
+
+<!-- ===================== SECCIÓN 4 ===================== -->
+<section class="section" id="seccion-4">
+  <span class="eyebrow">05 · Gestión de datos</span>
+  <h2>Organización y limpieza de datos</h2>
+  <p>Antes de analizar cualquier base de datos psicológica es necesario revisar su calidad: valores fuera de rango, duplicados o datos faltantes pueden distorsionar los resultados. Las hojas de cálculo ofrecen herramientas simples para ordenar, filtrar y validar la información.</p>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 1</span><h4>Ordenar los datos</h4></div>
+    <p>Selecciona el rango completo de la base de datos, incluyendo encabezados, y utiliza la opción "Ordenar rango" para organizar los registros de mayor a menor o de menor a mayor según una columna específica.</p>
+    <div class="example">
+      <span class="label">Ejemplo aplicado</span>
+      Ordenar la base de datos por la columna de puntuación de ansiedad permite identificar rápidamente a los participantes con niveles más altos, útil para priorizar una intervención o revisión clínica.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 2</span><h4>Filtrar por categoría</h4></div>
+    <p>La función de filtro permite visualizar únicamente los registros que cumplen una condición, sin alterar el orden original de la base de datos.</p>
+    <div class="example">
+      <span class="label">Ejemplo aplicado</span>
+      Filtrar la columna "Grupo" para mostrar únicamente a los participantes del grupo experimental facilita el cálculo de estadísticas específicas para ese subgrupo.
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 3</span><h4>Validar la entrada de datos</h4></div>
+    <p>La validación de datos restringe lo que puede escribirse en una celda, por ejemplo limitando una columna de edad a valores numéricos entre 18 y 65, o una columna de grupo a una lista predefinida de opciones. Esto reduce errores de captura durante la aplicación de instrumentos.</p>
+  </div>
+</section>
+
+<!-- ===================== SECCIÓN 5 ===================== -->
+<section class="section" id="seccion-5">
+  <span class="eyebrow">06 · Comunicación visual</span>
+  <h2>Gráficos básicos para resultados psicológicos</h2>
+  <p>Un resultado numérico correcto puede perder impacto si no se comunica con claridad. Los gráficos permiten transformar una tabla de datos en una imagen interpretable para un público académico o clínico.</p>
+
+  <table class="fn-table">
+    <thead><tr><th>Tipo de gráfico</th><th>Cuándo utilizarlo</th></tr></thead>
+    <tbody>
+      <tr><td>Gráfico de barras</td><td>Comparar puntuaciones promedio entre grupos o categorías, por ejemplo niveles de ansiedad entre grupo control y experimental</td></tr>
+      <tr><td>Gráfico circular</td><td>Mostrar la proporción de participantes en cada categoría, por ejemplo distribución por sexo o nivel de severidad</td></tr>
+      <tr><td>Gráfico de líneas</td><td>Representar la evolución de una variable a lo largo del tiempo, por ejemplo seguimiento de síntomas en varias sesiones</td></tr>
+    </tbody>
+  </table>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 1</span><h4>Seleccionar el rango de datos</h4></div>
+    <p>Marca las columnas que contienen las categorías y los valores numéricos que deseas graficar, incluyendo los encabezados.</p>
+  </div>
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 2</span><h4>Insertar el gráfico</h4></div>
+    <p>En el menú "Insertar", selecciona "Gráfico". El programa sugerirá automáticamente un tipo de gráfico, que puede modificarse según la naturaleza de los datos y el objetivo comunicativo.</p>
+  </div>
+  <div class="step">
+    <div class="step-head"><span class="step-num">Paso 3</span><h4>Editar títulos y etiquetas</h4></div>
+    <p>Todo gráfico debe incluir un título descriptivo, etiquetas en los ejes y, cuando corresponda, unidades de medida, de manera que pueda interpretarse sin necesidad de leer la tabla original.</p>
+    <div class="example">
+      <span class="label">Ejemplo aplicado</span>
+      Un gráfico de barras titulado "Puntuación promedio de ansiedad por grupo (Inventario de Beck)" comunica de forma inmediata el hallazgo principal de un estudio comparativo.
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECCIÓN 6 ===================== -->
+<section class="section" id="seccion-6">
+  <span class="eyebrow">07 · Análisis</span>
+  <h2>Estadística descriptiva aplicada a la psicología</h2>
+  <p>La estadística descriptiva resume las características principales de un conjunto de datos. En el contexto psicológico, estas medidas permiten describir el comportamiento general de un grupo antes de realizar análisis inferenciales más complejos.</p>
+
+  <table class="fn-table">
+    <thead><tr><th>Medida</th><th>Fórmula en la hoja</th><th>Qué describe</th></tr></thead>
+    <tbody>
+      <tr><td>Media</td><td class="fn">=PROMEDIO(rango)</td><td>Valor típico o central del grupo</td></tr>
+      <tr><td>Mediana</td><td class="fn">=MEDIANA(rango)</td><td>Valor central cuando existen puntuaciones extremas</td></tr>
+      <tr><td>Moda</td><td class="fn">=MODA(rango)</td><td>Valor que se repite con mayor frecuencia</td></tr>
+      <tr><td>Desviación estándar</td><td class="fn">=DESVEST(rango)</td><td>Grado de dispersión de las puntuaciones respecto a la media</td></tr>
+    </tbody>
+  </table>
+
+  <div class="step">
+    <div class="step-head"><span class="step-num">Caso aplicado</span><h4>Interpretación conjunta de las medidas</h4></div>
+    <p>Un grupo de 20 estudiantes responde una escala de estrés académico. La media obtenida es 22 puntos y la desviación estándar es 3.1. Esto indica que, en general, las puntuaciones del grupo se agrupan de forma relativamente cercana a la media, sin gran dispersión. Si la desviación estándar fuera de 9 puntos, la interpretación cambiaría de manera importante: existiría mayor heterogeneidad en los niveles de estrés dentro del grupo, lo cual podría orientar una intervención diferenciada.</p>
+  </div>
+
+  <div class="callout info">
+    <span class="label">Conexión con la práctica profesional</span>
+    Estas mismas funciones son la base de reportes de evaluación psicológica, informes de investigación y presentaciones de resultados ante comités académicos o clínicos. Dominarlas en una hoja de cálculo constituye una competencia digital directamente transferible al ejercicio profesional.
+  </div>
+</section>
+
+<!-- ===================== ACTIVIDAD 1 ===================== -->
+<section class="section" id="actividad-1">
+  <span class="eyebrow">08 · Actividad para Classroom</span>
+  <h2>Actividades prácticas de aplicación</h2>
+  <p class="lead">Las siguientes tres actividades constituyen la evidencia de aprendizaje de esta guía. Cada una debe subirse a la plataforma Google Classroom en el espacio correspondiente antes de la fecha límite establecida por el docente.</p>
+
+  <div class="activity act1">
+    <span class="activity-tag">Actividad 1 · Foro de mediación</span>
+    <h3>Foro de discusión: el dato como responsabilidad profesional</h3>
+    <p>Participa en el foro habilitado en Google Classroom respondiendo a la siguiente pregunta detonadora y comentando de manera crítica al menos una participación de un compañero o compañera.</p>
+    <div class="prompt-box">
+      "Un psicólogo organiza en una hoja de cálculo los resultados de las pruebas aplicadas a sus pacientes, incluyendo nombre completo, diagnóstico presuntivo y puntuaciones clínicas. ¿Qué implicaciones éticas y de manejo de la información conlleva esta práctica? ¿Qué medidas debería tomar al estructurar y almacenar estos datos para proteger la confidencialidad, sin renunciar a las ventajas que ofrece esta herramienta para el análisis profesional?"
+    </div>
+    <ul class="checklist">
+      <li>Publica tu respuesta inicial con una extensión mínima de ocho líneas, argumentando tu postura con base en principios éticos de la profesión.</li>
+      <li>Comenta de manera respetuosa y crítica al menos una aportación de un compañero, aportando un elemento no considerado previamente.</li>
+      <li>Evita respuestas genéricas; relaciona tu argumento con ejemplos concretos de manejo de datos psicológicos.</li>
+    </ul>
+    <span class="submit-note">Entrega: publicación en el foro de Google Classroom</span>
+  </div>
+
+  <div class="activity act2" id="actividad-2">
+    <span class="activity-tag">Actividad 2 · Aprendizaje significativo</span>
+    <h3>Construcción de una base de datos psicológica propia</h3>
+    <p>Diseña y construye, en Google Sheets o Excel, una base de datos simulada con al menos quince participantes ficticios, aplicando los conceptos revisados en esta guía. Puedes basarte en un instrumento real (por ejemplo, una escala de estrés, ansiedad o motivación académica) o en un registro de observación de conducta.</p>
+    <ul class="checklist">
+      <li>Incluye al menos cuatro variables: una identificadora, una categórica (por ejemplo grupo o sexo) y dos numéricas (por ejemplo edad y puntuación).</li>
+      <li>Calcula, mediante fórmulas, el promedio, el valor máximo, el valor mínimo y la desviación estándar de al menos una variable numérica.</li>
+      <li>Utiliza al menos una función condicional, como <span class="formula-chip">=CONTAR.SI</span>, para responder una pregunta específica sobre tus datos.</li>
+      <li>Construye un gráfico que represente visualmente uno de tus hallazgos, con título y etiquetas claras.</li>
+      <li>Redacta un párrafo breve (entre cinco y ocho líneas) interpretando los resultados obtenidos, como lo haría un profesional en un informe.</li>
+    </ul>
+    <div class="callout info">
+      <span class="label">Relación con tu formación</span>
+      Esta actividad simula una tarea real dentro del ejercicio psicológico: transformar datos crudos en información interpretable. La misma estructura puede reutilizarse en trabajos de titulación, prácticas profesionales o proyectos de investigación futuros.
+    </div>
+    <span class="submit-note">Entrega: archivo .xlsx o enlace de Google Sheets con permisos de visualización, subido a Classroom</span>
+  </div>
+</section>
+
+<!-- ===================== ACTIVIDAD 3: QUIZ ===================== -->
+<section class="section" id="actividad-3">
+  <span class="eyebrow">10 · Evaluación</span>
+  <h2>Quiz autocalificable</h2>
+  <p class="lead">Responde las siguientes cinco preguntas para verificar tu comprensión del tema. Al finalizar, el sistema mostrará tu puntaje y una retroalimentación específica para cada respuesta. Toma una captura de pantalla de tu resultado final y súbela a Classroom junto con tu base de datos.</p>
+
+  <div class="activity act3" style="border-top-color:var(--navy-soft);">
+    <div class="quiz-shell">
+      <form id="quizForm">
+        <div class="student-data">
+          <div>
+            <label for="studentName">Nombre completo</label>
+            <input type="text" id="studentName" placeholder="Nombre y apellidos">
+          </div>
+          <div>
+            <label for="studentId">Matrícula</label>
+            <input type="text" id="studentId" placeholder="Número de matrícula">
+          </div>
+        </div>
+
+        <!-- Pregunta 1 -->
+        <div class="quiz-item" data-qname="q1">
+          <div class="qtext"><span class="qnum">1.</span>En una hoja de cálculo, ¿qué combinación identifica correctamente a una celda específica?</div>
+          <div class="quiz-options">
+            <label><input type="radio" name="q1" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. La combinación fila-columna en ese orden no corresponde a la notación estándar."> 4B, refiriéndose a la fila 4 y luego la columna B</label>
+            <label><input type="radio" name="q1" data-correcta="true" data-feedback-ok="Correcto. La notación estándar combina la letra de la columna seguida del número de fila, por ejemplo B4." data-feedback-bad=""> B4, refiriéndose a la columna B y la fila 4</label>
+            <label><input type="radio" name="q1" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Los rangos se expresan con dos puntos entre celdas, no con un guion, y no identifican una sola celda."> B-4, como un rango de celdas</label>
+            <label><input type="radio" name="q1" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Esa notación no corresponde a la identificación estándar de celdas en una hoja de cálculo."> Celda4B, como nombre de variable</label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- Pregunta 2 -->
+        <div class="quiz-item" data-qname="q2">
+          <div class="qtext"><span class="qnum">2.</span>Un estudiante desea conocer la puntuación promedio de ansiedad de un grupo de 20 participantes, cuyos datos se encuentran en el rango B2:B21. ¿Qué fórmula debe utilizar?</div>
+          <div class="quiz-options">
+            <label><input type="radio" name="q2" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Esta función suma los valores, pero no calcula el promedio."> =SUMA(B2:B21)</label>
+            <label><input type="radio" name="q2" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Esta función cuenta cuántas celdas numéricas hay, no calcula un promedio."> =CONTAR(B2:B21)</label>
+            <label><input type="radio" name="q2" data-correcta="true" data-feedback-ok="Correcto. La función PROMEDIO calcula la media aritmética de un rango de valores numéricos." data-feedback-bad=""> =PROMEDIO(B2:B21)</label>
+            <label><input type="radio" name="q2" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Esta función identifica el valor máximo, no el promedio del grupo."> =MAX(B2:B21)</label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- Pregunta 3 -->
+        <div class="quiz-item" data-qname="q3">
+          <div class="qtext"><span class="qnum">3.</span>¿Qué diferencia principal existe entre una referencia relativa y una referencia absoluta al copiar una fórmula?</div>
+          <div class="quiz-options">
+            <label><input type="radio" name="q3" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Ambos tipos de referencia pueden usarse en cualquier función; la diferencia no radica en el tipo de fórmula permitido."> La referencia absoluta solo puede usarse en funciones de suma</label>
+            <label><input type="radio" name="q3" data-correcta="true" data-feedback-ok="Correcto. La referencia relativa cambia automáticamente al copiarse, mientras que la absoluta, marcada con el signo de dólar, permanece fija." data-feedback-bad=""> La referencia relativa cambia al copiarse, mientras que la absoluta permanece fija</label>
+            <label><input type="radio" name="q3" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. El color de la celda no está relacionado con el tipo de referencia utilizada en una fórmula."> La referencia absoluta cambia el color de la celda automáticamente</label>
+            <label><input type="radio" name="q3" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Ambos tipos de referencia son compatibles con rangos de celdas."> La referencia relativa no permite trabajar con rangos de celdas</label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- Pregunta 4 -->
+        <div class="quiz-item" data-qname="q4">
+          <div class="qtext"><span class="qnum">4.</span>Un grupo de participantes tiene una media de 22 puntos en una escala de estrés y una desviación estándar muy baja. ¿Qué indica esto sobre el grupo?</div>
+          <div class="quiz-options">
+            <label><input type="radio" name="q4" data-correcta="true" data-feedback-ok="Correcto. Una desviación estándar baja indica que las puntuaciones individuales se ubican cerca de la media, es decir, hay poca dispersión en el grupo." data-feedback-bad=""> Las puntuaciones individuales están, en general, cercanas a la media del grupo</label>
+            <label><input type="radio" name="q4" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. La desviación estándar describe la dispersión de los datos, no la cantidad de participantes evaluados."> El grupo tiene muy pocos participantes</label>
+            <label><input type="radio" name="q4" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Una desviación estándar baja no indica error en la aplicación del instrumento, sino homogeneidad en los resultados."> El instrumento fue aplicado de forma incorrecta</label>
+            <label><input type="radio" name="q4" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Es la desviación estándar alta, no baja, la que indicaría gran dispersión y heterogeneidad."> Existe una gran heterogeneidad de niveles de estrés en el grupo</label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+
+        <!-- Pregunta 5 -->
+        <div class="quiz-item" data-qname="q5">
+          <div class="qtext"><span class="qnum">5.</span>¿Qué función debe utilizarse para contar cuántos participantes de una base de datos pertenecen específicamente al grupo "Experimental"?</div>
+          <div class="quiz-options">
+            <label><input type="radio" name="q5" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Esta función cuenta todas las celdas con valores numéricos, sin aplicar ninguna condición."> =CONTAR(rango)</label>
+            <label><input type="radio" name="q5" data-correcta="true" data-feedback-ok="Correcto. La función CONTAR.SI permite contar únicamente las celdas que cumplen una condición específica, como pertenecer a un grupo determinado." data-feedback-bad=""> =CONTAR.SI(rango,"Experimental")</label>
+            <label><input type="radio" name="q5" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Esta función suma valores numéricos y no puede aplicarse para contar categorías de texto."> =SUMA(rango,"Experimental")</label>
+            <label><input type="radio" name="q5" data-correcta="false" data-feedback-ok="" data-feedback-bad="Incorrecto. Esta función calcula un promedio y no permite filtrar por categoría de texto."> =PROMEDIO(rango,"Experimental")</label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="quiz-actions">
+          <button type="button" class="btn" id="quizSubmit">Calificar quiz</button>
+          <button type="button" class="btn secondary" id="quizReset">Reiniciar intento</button>
+        </div>
+      </form>
+
+      <div class="score-panel" id="scorePanel">
+        <div class="score-num" id="scoreNum">0 / 5</div>
+        <div class="score-msg" id="scorePct"></div>
+        <div class="score-msg" id="scoreMsg"></div>
+        <div class="score-msg" id="scoreStudent" style="margin-top:.6rem; color:#fff; font-family:'IBM Plex Mono'; font-size:.8rem;"></div>
+      </div>
+    </div>
+    <span class="submit-note" style="margin-top:1rem;">Entrega: captura de pantalla del resultado final, subida a Classroom</span>
+  </div>
+</section>
+
+<!-- ===================== REFLEXIÓN FINAL ===================== -->
+<section class="section" id="reflexion">
+  <span class="eyebrow">11 · Cierre</span>
+  <h2>Reflexión y aplicación</h2>
+  <p class="lead">Toda herramienta técnica adquiere sentido cuando se integra a la práctica profesional. Utiliza el siguiente espacio para planificar cómo incorporarás lo aprendido en tu vida académica y, más adelante, en tu ejercicio profesional como psicólogo o psicóloga.</p>
+
+  <div class="reflect-grid">
+    <div class="reflect-card">
+      <h4>¿En qué materia o proyecto académico actual podrías aplicar una hoja de cálculo para organizar información?</h4>
+      <textarea placeholder="Escribe tu respuesta aquí..."></textarea>
+    </div>
+    <div class="reflect-card">
+      <h4>¿Qué tipo de datos psicológicos consideras que necesitarás organizar con mayor frecuencia en tu futura práctica profesional?</h4>
+      <textarea placeholder="Escribe tu respuesta aquí..."></textarea>
+    </div>
+    <div class="reflect-card">
+      <h4>¿Qué medida tomarás para proteger la confidencialidad de los datos que llegues a manejar en una hoja de cálculo?</h4>
+      <textarea placeholder="Escribe tu respuesta aquí..."></textarea>
+    </div>
+  </div>
+  <p class="reflect-note">Este espacio de reflexión es de uso personal y no requiere entrega formal, salvo que el docente lo indique expresamente. Su función es consolidar el aprendizaje mediante la conexión entre el contenido técnico y la práctica profesional futura.</p>
+</section>
+
+
+    <footer>
+      <div><strong>Universidad de Especialidades UNE</strong><br>Licenciatura en Psicología — Tecnologías de la Información Aplicadas a la Psicología</div>
+      <div>Guía interactiva de uso académico. Distribución mediante GitHub Pages y Google Classroom.</div>
+    </footer>
+  </main>
+</div>
+
+<script>
+  // Scroll-spy navigation
+  const navLinks = Array.from(document.querySelectorAll('.rail nav a[data-nav]'));
+  const targets = navLinks.map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = '#' + entry.target.id;
+      const link = navLinks.find(l => l.getAttribute('href') === id);
+      if(!link) return;
+      if(entry.isIntersecting){
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+
+  targets.forEach(t => observer.observe(t));
+
+  // Progress bar
+  function updateProgress(){
+    const scrolled = window.scrollY;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? Math.min(100, Math.round((scrolled / max) * 100)) : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = pct + '% recorrido';
+  }
+  window.addEventListener('scroll', updateProgress);
+  updateProgress();
+
+  // Quiz logic
+  function initQuiz(){
+    const form = document.getElementById('quizForm');
+    if(!form) return;
+    const submitBtn = document.getElementById('quizSubmit');
+    const resetBtn = document.getElementById('quizReset');
+    const scorePanel = document.getElementById('scorePanel');
+
+    submitBtn.addEventListener('click', () => {
+      const nombre = document.getElementById('studentName').value.trim();
+      const matricula = document.getElementById('studentId').value.trim();
+      if(!nombre || !matricula){
+        alert('Por favor completa tu nombre y matrícula antes de calificar el quiz.');
+        return;
+      }
+
+      const items = form.querySelectorAll('.quiz-item');
+      let correctCount = 0;
+
+      items.forEach(item => {
+        const qname = item.dataset.qname;
+        const selected = item.querySelector('input[name="' + qname + '"]:checked');
+        const options = item.querySelectorAll('.quiz-options label');
+        const feedback = item.querySelector('.feedback');
+
+        options.forEach(opt => {
+          opt.classList.remove('was-correct','was-selected');
+          const input = opt.querySelector('input');
+          if(input.dataset.correcta === 'true'){
+            opt.classList.add('was-correct');
+          }
+        });
+
+        item.classList.remove('correct','incorrect');
+
+        if(selected){
+          const isCorrect = selected.dataset.correcta === 'true';
+          const label = selected.closest('label');
+          if(isCorrect){
+            correctCount++;
+            item.classList.add('correct');
+            feedback.textContent = selected.dataset.feedbackOk;
+            feedback.className = 'feedback show ok';
+          } else {
+            label.classList.add('was-selected');
+            item.classList.add('incorrect');
+            feedback.textContent = selected.dataset.feedbackBad;
+            feedback.className = 'feedback show bad';
+          }
+        } else {
+          feedback.textContent = 'No se seleccionó respuesta para esta pregunta.';
+          feedback.className = 'feedback show bad';
+          item.classList.add('incorrect');
+        }
+      });
+
+      const total = items.length;
+      const pct = Math.round((correctCount / total) * 100);
+      document.getElementById('scoreNum').textContent = correctCount + ' / ' + total;
+      document.getElementById('scorePct').textContent = pct + '%';
+
+      let msg = '';
+      if(pct === 100){ msg = 'Dominio total del tema. Excelente aplicación de los conceptos de hojas de cálculo en psicología.'; }
+      else if(pct >= 80){ msg = 'Buen dominio del tema. Revisa la retroalimentación de la pregunta pendiente para reforzar el concepto.'; }
+      else if(pct >= 60){ msg = 'Dominio aceptable. Se recomienda repasar las secciones de fórmulas y referencias de celda antes de continuar.'; }
+      else { msg = 'Es necesario repasar la guía con mayor detenimiento, particularmente las secciones de fórmulas y estadística descriptiva.'; }
+      document.getElementById('scoreMsg').textContent = msg;
+      document.getElementById('scoreStudent').textContent = nombre + ' — Matrícula ' + matricula;
+
+      scorePanel.classList.add('show');
+      scorePanel.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+
+    resetBtn.addEventListener('click', () => {
+      form.reset();
+      document.querySelectorAll('.feedback').forEach(f => { f.classList.remove('show'); f.textContent=''; });
+      document.querySelectorAll('.quiz-item').forEach(i => i.classList.remove('correct','incorrect'));
+      document.querySelectorAll('.quiz-options label').forEach(l => l.classList.remove('was-correct','was-selected'));
+      scorePanel.classList.remove('show');
+    });
+  }
+  initQuiz();
+</script>
+</body>
+</html>
