@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Interactiva - Unidad IV: Empleo de Datos para Probar Predicciones</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        uneNavy: '#11224d',
+                        uneBlue: '#193a6f',
+                        uneRed: '#c8102e',
+                        uneLightBg: '#f8fafc',
+                        uneDarkText: '#0f172a'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        .tab-active { border-bottom: 3px solid #c8102e; color: #11224d; font-weight: 600; }
+        .content-card { transition: all 0.2s ease-in-out; }
+        .content-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        code { background-color: #f1f5f9; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.9em; color: #11224d; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <img src="logoune.png" alt="Logo Universidad de la Ciénega Plantel Centro" class="h-14 w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/200x80/11224d/ffffff?text=UNE+Centro';">
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">Licenciatura en Psicología</span>
+                        <h1 class="text-lg md:text-xl font-bold text-uneNavy">Estadística Inferencial en Psicología</h1>
+                    </div>
+                </div>
+                <div class="hidden md:block text-right">
+                    <span class="text-xs font-medium text-slate-500 block">Unidad IV: Empleo de Datos para Probar Predicciones</span>
+                    <span class="text-xs text-uneRed font-semibold">Guía Interactiva de Aprendizaje Constructivista</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Navigation Tabs -->
+        <nav class="flex flex-wrap border-b border-slate-200 mb-8 bg-white rounded-t-lg shadow-sm px-4 pt-2">
+            <button onclick="switchTab('intro')" id="tab-intro" class="tab-button px-4 py-3 text-sm font-medium text-slate-600 hover:text-uneNavy transition-colors tab-active">
+                1. Introducción y Conocimientos Previos
+            </button>
+            <button onclick="switchTab('temas')" id="tab-temas" class="tab-button px-4 py-3 text-sm font-medium text-slate-600 hover:text-uneNavy transition-colors">
+                2. Temario Completo (4.1 - 4.14)
+            </button>
+            <button onclick="switchTab('asistente')" id="tab-asistente" class="tab-button px-4 py-3 text-sm font-medium text-slate-600 hover:text-uneNavy transition-colors">
+                3. Selector de Pruebas Estadísticas
+            </button>
+            <button onclick="switchTab('actividades')" id="tab-actividades" class="tab-button px-4 py-3 text-sm font-medium text-slate-600 hover:text-uneNavy transition-colors">
+                4. Actividades de Aprendizaje
+            </button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-button px-4 py-3 text-sm font-medium text-slate-600 hover:text-uneNavy transition-colors">
+                5. Cuestionario de Autoevaluación
+            </button>
+            <button onclick="switchTab('recursos')" id="tab-recursos" class="tab-button px-4 py-3 text-sm font-medium text-slate-600 hover:text-uneNavy transition-colors">
+                6. Materiales y Plan de Aplicación
+            </button>
+        </nav>
+
+        <section id="sec-intro" class="tab-content block space-y-6">
+            <div class="bg-white p-6 md:p-8 rounded-lg border border-slate-200 shadow-sm">
+                <div class="border-l-4 border-uneNavy pl-4 mb-6">
+                    <h2 class="text-2xl font-bold text-uneNavy">Presentación de la Unidad IV</h2>
+                    <p class="text-sm text-slate-500">Metodología de Aprendizaje Basado en Problemas (ABP) y Enfoque Constructivista</p>
+                </div>
+                <p class="text-slate-700 leading-relaxed mb-4">
+                    Bienvenido a la guía interactiva de la <strong>Unidad IV: Empleo de Datos para Probar Predicciones</strong>. En la práctica profesional de la psicología, las hipótesis clínicas, educativas y sociales no pueden sustentarse en meras intuiciones. El análisis estadístico inferencial proporciona el rigor cuantitativo necesario para evaluar la validez de nuestras intervenciones, validar instrumentos de medición psicométrica y contrastar explicaciones teóricas con la evidencia empírica.
+                </p>
+                <p class="text-slate-700 leading-relaxed mb-6">
+                    A lo largo de esta unidad, no solo aprenderás las fórmulas matemáticamente subyacentes, sino que desarrollarás el criterio metodológico para responder la pregunta fundamental: <em>¿Cómo seleccionar, ejecutar e interpretar la prueba estadística precisa para la pregunta de investigación planteada?</em>
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                        <h3 class="font-bold text-uneNavy text-sm uppercase mb-1">Fundamentos Inferencia</h3>
+                        <p class="text-xs text-slate-600">Comprenderás el vínculo entre probabilidad, nivel de significación ($\alpha$) y toma de decisiones científicas.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                        <h3 class="font-bold text-uneNavy text-sm uppercase mb-1">Criterio de Selección</h3>
+                        <p class="text-xs text-slate-600">Diferenciarás entre modelos paramétricos y no paramétricos según el nivel de medición de tus variables.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                        <h3 class="font-bold text-uneNavy text-sm uppercase mb-1">Transferencia Práctica</h3>
+                        <p class="text-xs text-slate-600">Aplicarás técnicas simples y multivariadas a situaciones reales del ejercicio profesional del psicólogo.</p>
+                    </div>
+                </div>
+
+                <!-- Diagnóstico de Conocimientos Previos -->
+                <div class="mt-8 bg-blue-950 text-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-bold mb-2 flex items-center">
+                        <span class="bg-uneRed text-white text-xs px-2.5 py-1 rounded mr-2 uppercase tracking-wide">Evaluación Diagnóstica</span>
+                        Pregunta de Conocimiento Previo
+                    </h3>
+                    <p class="text-slate-200 text-sm mb-4">
+                        Un equipo de investigación en psicología clínica desea comparar la eficacia de tres tratamientos para el trastorno de ansiedad generalizada (Terapia Cognitivo-Conductual, Farmacoterapia y Grupo de Apoyo). Se mide el nivel de ansiedad de los participantes mediante la escala HAM-A (variable continua con distribución normal) al finalizar el tratamiento. ¿Es correcto realizar múltiples pruebas <em>t</em> de Student comparando los grupos de dos en dos? Explica tu razonamiento considerando el impacto en la probabilidad de cometer un Error Tipo I.
+                    </p>
+                    <div class="bg-blue-900 p-4 rounded text-sm space-y-2 border border-blue-800">
+                        <p class="font-semibold text-slate-100">Guía para tu reflexión inicial:</p>
+                        <ul class="list-disc pl-5 text-slate-300 space-y-1">
+                            <li>¿Qué sucede con el alpha ($\alpha = 0.05$) acumulado al ejecutar comparaciones parejas repetidas?</li>
+                            <li>¿Qué alternativa estadística aborda este problema específico cuando hay más de dos grupos?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-temas" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 md:p-8 rounded-lg border border-slate-200 shadow-sm">
+                <div class="border-l-4 border-uneRed pl-4 mb-6">
+                    <h2 class="text-2xl font-bold text-uneNavy">Contenido Temático Detallado</h2>
+                    <p class="text-sm text-slate-500">Unidad IV: Empleo de Datos para Probar Predicciones (Subtemas 4.1 a 4.14)</p>
+                </div>
+
+                <!-- Subtopics Accordion / Grid -->
+                <div class="space-y-4">
+
+                    <!-- 4.1 & 4.2 -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
+                        <h3 class="text-lg font-bold text-uneNavy mb-2">4.1 Introducción a las Pruebas de Significación & 4.2 Probabilidad y Significación</h3>
+                        <p class="text-slate-700 text-sm leading-relaxed mb-3">
+                            Las pruebas de significación estadística son procedimientos formalizados para determinar si los patrones observados en una muestra representan efectos reales en la población o son atribuibles al azar muestral.
+                        </p>
+                        <div class="bg-slate-50 p-4 rounded border border-slate-200 text-sm space-y-2">
+                            <p><strong>Hipótesis Nula ($H_0$):</strong> Sostiene la ausencia de efecto, diferencia o relación en la población.</p>
+                            <p><strong>Hipótesis Alternativa ($H_1$):</strong> Postula la presencia del efecto o diferencia predicha por la investigación.</p>
+                            <p><strong>Nivel de Significación ($\alpha$):</strong> Probabilidad máxima aceptada de rechazar la $H_0$ siendo esta verdadera (habitualmente fija en 0.05 o 0.01 en psicología).</p>
+                            <p><strong>P-valor:</strong> Probabilidad obtenida de observar los datos actuales (o más extremos) si la $H_0$ fuese cierta. Si $p \le \alpha$, se rechaza $H_0$.</p>
+                            <p><strong>Error Tipo I ($\alpha$):</strong> Rechazar $H_0$ cuando es verdadera (falso positivo). <strong>Error Tipo II ($\beta$):</strong> No rechazar $H_0$ cuando es falsa (falso negativo).</p>
+                        </div>
+                    </div>
+
+                    <!-- 4.3 & 4.4 -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
+                        <h3 class="text-lg font-bold text-uneNavy mb-2">4.3 Pruebas de Diferencia No Paramétrica & 4.4 Pruebas de Nivel Nominal y Ordinal</h3>
+                        <p class="text-slate-700 text-sm leading-relaxed mb-3">
+                            Las pruebas no paramétricas no asumen una distribución poblacional específica (libres de distribución) y son ideales para muestras pequeñas o variables medidas en escala nominal u ordinal.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <h4 class="font-bold text-uneNavy mb-1">Nivel Nominal</h4>
+                                <p class="text-xs text-slate-600 mb-2">Variables categóricas no ordenadas (ej. Estado civil, presencia/ausencia de sintomatología).</p>
+                                <ul class="list-disc pl-4 text-xs text-slate-700 space-y-1">
+                                    <li><strong>Chi-cuadrada ($\chi^2$) de Bondad de Ajuste:</strong> Evalúa si una muestra se ajusta a una distribución esperada.</li>
+                                    <li><strong>Chi-cuadrada ($\chi^2$) de Independencia:</strong> Analiza la asociación entre dos variables cualitativas.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <h4 class="font-bold text-uneNavy mb-1">Nivel Ordinal</h4>
+                                <p class="text-xs text-slate-600 mb-2">Variables con orden o jerarquía pero intervalos no iguales (ej. Rangos Likert, severidad sintomática).</p>
+                                <ul class="list-disc pl-4 text-xs text-slate-700 space-y-1">
+                                    <li><strong>U de Mann-Whitney:</strong> Comparación de 2 grupos independientes.</li>
+                                    <li><strong>Prueba de Wilcoxon:</strong> Comparación de 2 muestras relacionadas (medidas repetidas).</li>
+                                    <li><strong>Kruskal-Wallis:</strong> Comparación de >2 grupos independientes.</li>
+                                    <li><strong>Prueba de Friedman:</strong> Comparación de >2 condiciones relacionadas.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4.5 & 4.6 -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
+                        <h3 class="text-lg font-bold text-uneNavy mb-2">4.5 Pruebas Simples de Diferencia Paramétrica & 4.6 Pruebas a Nivel de Intervalo-Razón</h3>
+                        <p class="text-slate-700 text-sm leading-relaxed mb-3">
+                            Las pruebas paramétricas exigen tres supuestos clave: 1) Escala cuantitativa de intervalo o razón, 2) Distribución normal de las puntuaciones en la población, y 3) Homocedasticidad (homogeneidad de varianzas).
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <h4 class="font-bold text-uneNavy mb-1">Prueba t de Student para Muestras Independientes</h4>
+                                <p class="text-xs text-slate-600">Compara las medias de dos grupos completamente distintos (ej. Grupo Control vs. Grupo Experimental de Terapia).</p>
+                                <p class="text-xs font-mono text-uneNavy mt-2">t = (M1 - M2) / S_error</p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <h4 class="font-bold text-uneNavy mb-1">Prueba t de Student para Muestras Relacionadas</h4>
+                                <p class="text-xs text-slate-600">Compara las medias de un mismo grupo en dos momentos temporales o condiciones emparejadas (Pre-test vs. Pos-test).</p>
+                                <p class="text-xs font-mono text-uneNavy mt-2">t = M_d / (S_d / sqrt(N))</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4.7 -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
+                        <h3 class="text-lg font-bold text-uneNavy mb-2">4.7 La Correlación y su Significación</h3>
+                        <p class="text-slate-700 text-sm leading-relaxed mb-3">
+                            Mide la fuerza y dirección de la relación lineal entre dos variables. El coeficiente oscila entre -1.00 (relación inversa perfecta) y +1.00 (relación directa perfecta). Un valor de 0 indica ausencia de relación lineal.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-slate-50 p-4 rounded border border-slate-200">
+                            <div>
+                                <h4 class="font-bold text-uneNavy mb-1">Coeficiente r de Pearson (Paramétrico)</h4>
+                                <p class="text-xs text-slate-600">Requiere dos variables cuantitativas continuas con distribución normal bivariada.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-uneNavy mb-1">Coeficiente Rho de Spearman (No Paramétrico)</h4>
+                                <p class="text-xs text-slate-600">Utilizado cuando al menos una variable es ordinal o cuando no se cumple el supuesto de normalidad.</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-xs text-slate-600 bg-amber-50 border-l-2 border-amber-500 p-2 rounded">
+                            <strong>Nota Metodológica Crucial:</strong> La correlación no implica causalidad. Que la autoeficacia correlacione con el rendimiento académico no demuestra que la primera sea la causa directa de la segunda.
+                        </div>
+                    </div>
+
+                    <!-- 4.8 & 4.9 -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
+                        <h3 class="text-lg font-bold text-uneNavy mb-2">4.8 Pruebas para Más de Dos Condiciones & 4.9 ANOVA Unidireccional, Multifactorial y de Medidas Repetidas</h3>
+                        <p class="text-slate-700 text-sm leading-relaxed mb-3">
+                            Cuando se comparan tres o más medias, usar múltiples pruebas <i>t</i> eleva la tasa de error Tipo I inflada acumulada ($\alpha_{acumulado} = 1 - (1-\alpha)^k$). El Análisis de Varianza (ANOVA) soluciona este inconveniente comparando la varianza entre grupos con la varianza dentro de los grupos mediante la prueba $F$.
+                        </p>
+                        <div class="space-y-3 text-sm">
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                                <h4 class="font-bold text-uneNavy text-xs">ANOVA Unidireccional (One-Way ANOVA)</h4>
+                                <p class="text-xs text-slate-600">Una Variable Independiente categórica con 3 o más niveles (ej. 3 enfoques psicoterapéuticos) y una Variable Dependiente cuantitativa.</p>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                                <h4 class="font-bold text-uneNavy text-xs">ANOVA Factorial / Multifactorial</h4>
+                                <p class="text-xs text-slate-600">Dos o más Variables Independientes (ej. Tipo de Terapia x Dosis de Fármaco). Permite analizar efectos principales y el <em>efecto de interacción</em> entre factores.</p>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                                <h4 class="font-bold text-uneNavy text-xs">ANOVA de Medidas Repetidas</h4>
+                                <p class="text-xs text-slate-600">Mismos sujetos evaluados en 3 o más momentos de tiempo o condiciones experimentales (ej. Línea base, Mes 1, Mes 3, Mes 6).</p>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                                <h4 class="font-bold text-uneNavy text-xs">Pruebas Post-Hoc (Tukey, Bonferroni, Scheffé)</h4>
+                                <p class="text-xs text-slate-600">Si el valor $F$ del ANOVA es significativo, las pruebas Post-Hoc identifican exactamente qué parejas de grupos presentan diferencias estadísticamente significativas controlando el error Tipo I.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4.10 -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
+                        <h3 class="text-lg font-bold text-uneNavy mb-2">4.10 Otras Pruebas Multivariadas Complejas Útiles</h3>
+                        <p class="text-slate-700 text-sm leading-relaxed mb-3">
+                            En investigación psicológica compleja, rara vez una conducta se explica por una sola variable aislada. Se recurre a técnicas multivariadas:
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                                <span class="font-bold text-uneNavy block">ANCOVA (Análisis de Covarianza)</span>
+                                Combina ANOVA y regresión para controlar estadísticamente el efecto de variables extrañas continuas (covariables, ej. edad o nivel socioeconómico previo).
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                                <span class="font-bold text-uneNavy block">MANOVA (ANOVA Multivariado)</span>
+                                Evalúa diferencias entre grupos sobre múltiples Variables Dependientes cuantitativas de forma simultánea.
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                                <span class="font-bold text-uneNavy block">Regresión Múltiple</span>
+                                Predice una Variable Dependiente continua a partir de dos o más Variables Independientes predictorias.
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                                <span class="font-bold text-uneNavy block">Análisis Factorial (Exploratorio/Confirmatorio)</span>
+                                Reduce múltiples reactivos o ítems a dimensiones teóricas subyacentes (factores latentes), esencial para la validación psicométrica.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4.11 & 4.12 -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
+                        <h3 class="text-lg font-bold text-uneNavy mb-2">4.11 ¿Qué Análisis Utilizar? & 4.12 Elección de una Prueba Apropiada</h3>
+                        <p class="text-slate-700 text-sm leading-relaxed mb-3">
+                            La selección correcta depende de una matriz rigurosa de criterios metodológicos:
+                        </p>
+                        <ol class="list-decimal pl-5 text-sm text-slate-700 space-y-1">
+                            <li><strong>Objetivo de investigación:</strong> ¿Buscar diferencias entre grupos o analizar relaciones/asociaciones?</li>
+                            <li><strong>Nivel de medición de las variables:</strong> Nominal, Ordinal, Intervalo o Razón.</li>
+                            <li><strong>Número de grupos o condiciones:</strong> 1 grupo, 2 grupos, o más de 2 grupos.</li>
+                            <li><strong>Diseño de muestras:</strong> Muestras independientes vs. Muestras relacionadas/pareadas.</li>
+                            <li><strong>Cumplimiento de supuestos paramétricos:</strong> Normalidad (Pruebas Shapiro-Wilk o Kolmogorov-Smirnov) y Homogeneidad de varianza (Prueba de Levene).</li>
+                        </ol>
+                    </div>
+
+                    <!-- 4.13 & 4.14 -->
+                    <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
+                        <h3 class="text-lg font-bold text-uneNavy mb-2">4.13 Análisis Cualitativos vs. Cuantitativos & 4.14 Tablas Estadísticas</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <h4 class="font-bold text-uneNavy mb-1">Integración Mixta de Datos</h4>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Los datos cuantitativos brindan precisión numérica, representatividad y significación estadística, mientras que el análisis cualitativo (Análisis Temático, Teoría Fundamentada) aporta significado, contexto y profundización fenomenológica sobre vivencias subjetivas.
+                                </p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <h4 class="font-bold text-uneNavy mb-1">Lectura de Tablas Estadísticas</h4>
+                                <p class="text-xs text-slate-600 leading-relaxed">
+                                    Las tablas de distribución ($t$, $F$, $\chi^2$, $Z$) relacionan los grados de libertad ($gl$) y el nivel de alpha elegida ($\alpha = 0.05$) con un <strong>valor crítico</strong>. Si el valor calculado del estadístico en la muestra supera el valor crítico de la tabla, se rechaza la $H_0$. (Actualmente automatizado por software como SPSS, JASP o R mediante el $p$-valor exacto).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-asistente" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 md:p-8 rounded-lg border border-slate-200 shadow-sm">
+                <div class="border-l-4 border-uneNavy pl-4 mb-6">
+                    <h2 class="text-2xl font-bold text-uneNavy">Asistente Interactivo para la Elección de Pruebas Estadísticas</h2>
+                    <p class="text-sm text-slate-500">Aplica los criterios de los temas 4.11 y 4.12 seleccionando las características de tu estudio.</p>
+                </div>
+
+                <!-- Decision Form -->
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 space-y-6">
+                    <div>
+                        <label class="block font-semibold text-uneNavy text-sm mb-2">1. ¿Cuál es el objetivo principal de tu estudio?</label>
+                        <select id="sel-objetivo" onchange="actualizarSeleccion()" class="w-full p-2.5 bg-white border border-slate-300 rounded text-sm focus:ring-2 focus:ring-uneNavy outline-none">
+                            <option value="">-- Selecciona el objetivo --</option>
+                            <option value="diferencia">Comparar diferencias entre grupos o condiciones</option>
+                            <option value="relacion">Analizar la relación/correlación entre variables</option>
+                            <option value="prediccion">Predice una variable cuantitativa a partir de varias independientes</option>
+                        </select>
+                    </div>
+
+                    <div id="div-nivel" class="hidden">
+                        <label class="block font-semibold text-uneNavy text-sm mb-2">2. ¿Cuál es el nivel de medición de tu Variable Dependiente / Analizada?</label>
+                        <select id="sel-nivel" onchange="actualizarSeleccion()" class="w-full p-2.5 bg-white border border-slate-300 rounded text-sm focus:ring-2 focus:ring-uneNavy outline-none">
+                            <option value="">-- Selecciona el nivel de medición --</option>
+                            <option value="nominal">Nominal (Categorías no ordenadas / Frecuencias)</option>
+                            <option value="ordinal">Ordinal (Escala con orden / Rangos / Likert sin normalidad)</option>
+                            <option value="intervalo">Intervalo / Razón (Cuantitativa continua con Normalidad)</option>
+                        </select>
+                    </div>
+
+                    <div id="div-diseno" class="hidden">
+                        <label class="block font-semibold text-uneNavy text-sm mb-2">3. ¿Cuál es la estructura de los grupos / condiciones?</label>
+                        <select id="sel-diseno" onchange="actualizarSeleccion()" class="w-full p-2.5 bg-white border border-slate-300 rounded text-sm focus:ring-2 focus:ring-uneNavy outline-none">
+                            <option value="">-- Selecciona el diseño --</option>
+                            <option value="2ind">2 Grupos Independientes</option>
+                            <option value="2rel">2 Muestras Relacionadas / Pareadas (Pre-Pos)</option>
+                            <option value="3ind">3 o más Grupos Independientes</option>
+                            <option value="3rel">3 o más Mediciones Repetidas / Relacionadas</option>
+                        </select>
+                    </div>
+
+                    <!-- Result Box -->
+                    <div id="res-box" class="hidden p-5 bg-blue-900 text-white rounded-lg shadow-inner">
+                        <h4 class="text-xs uppercase tracking-wider font-semibold text-amber-400 mb-1">Prueba Estadística Recomendada:</h4>
+                        <div id="res-nombre" class="text-xl font-bold text-white mb-2"></div>
+                        <p id="res-desc" class="text-sm text-slate-200 leading-relaxed"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-actividades" class="tab-content hidden space-y-8">
+            
+            <!-- Intro Actividades -->
+            <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
+                <h2 class="text-2xl font-bold text-uneNavy mb-2">Actividades Prácticas para Entregar en Google Classroom</h2>
+                <p class="text-sm text-slate-600">
+                    Las siguientes tareas están estructuradas mediante la pedagogía activa y el aprendizaje basado en problemas. Sigue meticulosamente las instrucciones de cada apartado para subir tus archivos.
+                </p>
+            </div>
+
+            <!-- ACTIVIDAD 1: FORO DE MEDIACIÓN -->
+            <div class="bg-white p-6 md:p-8 rounded-lg border border-slate-200 shadow-sm">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="bg-uneNavy text-white font-bold text-xs px-3 py-1 rounded-full uppercase">Actividad 1</span>
+                    <h3 class="text-xl font-bold text-uneNavy">Foro de Mediación Crítica: La Inserción Ética del P-Valor</h3>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded border-l-4 border-uneNavy mb-6 text-sm text-slate-700 space-y-2">
+                    <p><strong>Pregunta Detonadora del Foro:</strong></p>
+                    <blockquote class="italic text-slate-800 bg-white p-3 rounded border border-slate-200">
+                        "En la literatura contemporánea en psicología, diversos científicos argumentan que la dependencia ciega del valor p < 0.05 ha propiciado la crisis de replicabilidad y malas prácticas como el p-hacking. Desde tu postura como futuro psicólogo, ¿por qué la significación estadística no equivale a la significación clínica o práctica, y qué papel debe jugar la estimación del Tamaño del Efecto (d de Cohen, Eta cuadrado) en la toma de decisiones profesionales?"
+                    </blockquote>
+                </div>
+
+                <div class="space-y-4 text-sm text-slate-700">
+                    <h4 class="font-bold text-uneNavy uppercase text-xs">Instrucciones Paso a Paso para la Participación:</h4>
+                    <ol class="list-decimal pl-5 space-y-2">
+                        <li><strong>Aportación Principal (Mínimo 300 palabras):</strong> Responde directamente a la pregunta detonadora argumentando con al menos una fuente académica formal (libro de texto o artículo de revista científica). Define la diferencia conceptual entre significación estadística y relevancia clínica.</li>
+                        <li><strong>Retroalimentación a Compañeros:</strong> Lee las publicaciones de tus compañeros y realiza comentarios analíticos a por lo menos <strong>dos compañeros</strong>. Tu réplica no debe ser un mero "estoy de acuerdo", sino que debe aportar matices, plantear contraejemplos o extender la discusión con fundamento metodológico.</li>
+                        <li><strong>Evidencia en Classroom:</strong> Captura de pantalla o documento PDF con la transcripción de tus participaciones en el foro institucional para su acreditación.</li>
+                    </ol>
+
+                    <div class="mt-4 p-4 bg-amber-50 rounded border border-amber-200">
+                        <h5 class="font-bold text-amber-900 text-xs uppercase mb-1">Ejemplo de Respuesta de Alto Nivel Reflexivo:</h5>
+                        <p class="text-xs text-amber-800 italic">
+                            "Un estudio sobre un nuevo tratamiento cognitivo para la depresión puede obtener un p-valor de 0.01 debido a un tamaño de muestra masivo ($N = 5000$), rechazando la hipótesis nula. Sin embargo, si la reducción en la escala de BDI fue de apenas 0.5 puntos, la significación estadística existe, pero la significación clínica es prácticamente nula. El tamaño del efecto ($d$ de Cohen) nos permite medir la magnitud real del cambio..."
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVIDAD 2: APRENDIZAJE SIGNIFICATIVO APLICADO -->
+            <div class="bg-white p-6 md:p-8 rounded-lg border border-slate-200 shadow-sm">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="bg-uneRed text-white font-bold text-xs px-3 py-1 rounded-full uppercase">Actividad 2</span>
+                    <h3 class="text-xl font-bold text-uneNavy">Diseño de Matriz Metodológica-Estadística para Proyecto Académico</h3>
+                </div>
+
+                <p class="text-sm text-slate-700 mb-4">
+                    El objetivo de esta actividad es que traslades los conocimientos abstractos a tus materias de proyectos de investigación o prácticas de laboratorio escolar.
+                </p>
+
+                <div class="space-y-4 text-sm text-slate-700">
+                    <h4 class="font-bold text-uneNavy uppercase text-xs">Instrucciones Paso a Paso:</h4>
+                    <ol class="list-decimal pl-5 space-y-2">
+                        <li>Plantea un problema de investigación hipotético o real vinculado a una de las áreas de la psicología (Clínica, Educativa, Organizacional o Social).</li>
+                        <li>Completa la siguiente matriz de alineación metodológica en Word o PDF para subir a Classroom.</li>
+                    </ol>
+
+                    <!-- Table Template -->
+                    <div class="overflow-x-auto my-4">
+                        <table class="w-full text-left text-xs border-collapse border border-slate-300">
+                            <thead>
+                                <tr class="bg-uneNavy text-white">
+                                    <th class="p-2 border border-slate-300">Pregunta de Investigación</th>
+                                    <th class="p-2 border border-slate-300">Hipótesis ($H_0$ y $H_1$)</th>
+                                    <th class="p-2 border border-slate-300">Variables (Escala de Medición)</th>
+                                    <th class="p-2 border border-slate-300">Prueba Estadística Seleccionada</th>
+                                    <th class="p-2 border border-slate-300">Justificación Técnica</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-slate-50">
+                                <tr>
+                                    <td class="p-2 border border-slate-300">¿Existen diferencias en los niveles de burnout docente según el tipo de contratación (Plaza vs. Eventual)?</td>
+                                    <td class="p-2 border border-slate-300">$H_0$: No hay diferencias de burnout.<br>$H_1$: Los docentes eventuales presentan mayor burnout.</td>
+                                    <td class="p-2 border border-slate-300">VI: Tipo Contrato (Nominal 2 niveles)<br>VD: Burnout (Intervalo, Puntuación MBI)</td>
+                                    <td class="p-2 border border-slate-300">Prueba t de Student para muestras independientes</td>
+                                    <td class="p-2 border border-slate-300">Variable continua con distribución normal, 2 grupos independientes no relacionados.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVIDAD 3: CASO PRÁCTICO -->
+            <div class="bg-white p-6 md:p-8 rounded-lg border border-slate-200 shadow-sm">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="bg-uneNavy text-white font-bold text-xs px-3 py-1 rounded-full uppercase">Actividad 3</span>
+                    <h3 class="text-xl font-bold text-uneNavy">Análisis de Caso Práctico: Evaluación Psicoeducativa de Programa de Memoria</h3>
+                </div>
+
+                <div class="bg-slate-50 p-5 rounded-lg border border-slate-200 mb-6">
+                    <h4 class="font-bold text-uneNavy text-sm mb-2">Planteamiento del Caso:</h4>
+                    <p class="text-xs text-slate-700 leading-relaxed">
+                        Un equipo de neuropsicología de la salud evaluó la efectividad de una plataforma de entrenamiento cognitivo en adultos mayores con Deterioro Cognitivo Leve (DCL). Se reclutó a 30 participantes y se midió la puntuación del test de retención verbal antes ($M_{pre} = 12.4, SD = 2.1$) y después de 8 semanas de entrenamiento ($M_{pos} = 16.8, SD = 1.9$). Tras aplicar el análisis estadístico en SPSS, se obtuvo el siguiente reporte de salida:
+                    </p>
+                    <div class="bg-white p-3 my-3 rounded border border-slate-300 font-mono text-xs text-slate-800">
+                        Prueba t para muestras emparejadas:<br>
+                        Diferencia de Medias = -4.400<br>
+                        t = -8.521, Grados de libertad (gl) = 29, p-valor (bilateral) = .0001
+                    </div>
+                </div>
+
+                <div class="space-y-3 text-sm text-slate-700">
+                    <h4 class="font-bold text-uneNavy uppercase text-xs">Preguntas de Análisis a Resolver e Entregar en Classroom:</h4>
+                    <ol class="list-decimal pl-5 space-y-2 text-xs">
+                        <li>Redacta la $H_0$ y la $H_1$ del estudio neuropsicológico.</li>
+                        <li>A partir del p-valor reportado ($p = .0001$), ¿cuál es la decisión estadística formal con un $\alpha = 0.05$?</li>
+                        <li>Redacta la conclusión del estudio en formato científico APA (incluyendo $t$, $gl$, $p$).</li>
+                        <li>¿Por qué fue correcto aplicar una prueba para muestras pareadas/relacionadas en lugar de una prueba para muestras independientes?</li>
+                    </ol>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="sec-quiz" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 md:p-8 rounded-lg border border-slate-200 shadow-sm">
+                <div class="border-l-4 border-uneRed pl-4 mb-6">
+                    <h2 class="text-2xl font-bold text-uneNavy">Cuestionario de Autoevaluación</h2>
+                    <p class="text-sm text-slate-500">Comprueba tus conocimientos sobre la Unidad IV. Obtendrás tu puntuación inmediata al finalizar.</p>
+                </div>
+
+                <form id="quiz-form" class="space-y-6">
+                    
+                    <!-- Q1 -->
+                    <div class="p-4 bg-slate-50 rounded border border-slate-200">
+                        <p class="font-semibold text-sm text-uneNavy mb-3">1. ¿Qué tipo de error comete un investigador si concluye que una técnica psicoterapéutica es eficaz cuando en realidad sus efectos no difieren del azar?</p>
+                        <div class="space-y-2 text-xs text-slate-700">
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q1" value="A"> <span>Error Tipo II ($\beta$)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q1" value="B"> <span>Error Tipo I ($\alpha$)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q1" value="C"> <span>Error de Muestreo Estándar</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="p-4 bg-slate-50 rounded border border-slate-200">
+                        <p class="font-semibold text-sm text-uneNavy mb-3">2. Si deseas comparar las puntuaciones de satisfacción laboral (variable cuantitativa continua con distribución normal) entre 4 departamentos de una empresa, ¿qué prueba debes emplear?</p>
+                        <div class="space-y-2 text-xs text-slate-700">
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q2" value="A"> <span>Prueba U de Mann-Whitney</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q2" value="B"> <span>ANOVA Unidireccional (One-Way ANOVA)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q2" value="C"> <span>Múltiples pruebas t de Student independientes</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="p-4 bg-slate-50 rounded border border-slate-200">
+                        <p class="font-semibold text-sm text-uneNavy mb-3">3. ¿Cuál es el equivalente no paramétrico de la prueba t para muestras independientes cuando los datos no cumplen el supuesto de normalidad?</p>
+                        <div class="space-y-2 text-xs text-slate-700">
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q3" value="A"> <span>Prueba de Rangos con Signo de Wilcoxon</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q3" value="B"> <span>Prueba U de Mann-Whitney</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q3" value="C"> <span>Prueba de Kruskal-Wallis</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="p-4 bg-slate-50 rounded border border-slate-200">
+                        <p class="font-semibold text-sm text-uneNavy mb-3">4. ¿Qué información adicional proporciona el Análisis factorial frente a un análisis de correlación simple?</p>
+                        <div class="space-y-2 text-xs text-slate-700">
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q4" value="A"> <span>Demuestra la causalidad directa entre dos variables ordinales.</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q4" value="B"> <span>Agrupa múltiples variables observadas en factores latentes o dimensiones subyacentes.</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q4" value="C"> <span>Calcula únicamente las frecuencias esperadas en tablas de contingencia.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="p-4 bg-slate-50 rounded border border-slate-200">
+                        <p class="font-semibold text-sm text-uneNavy mb-3">5. Un coeficiente de correlación de Pearson $r = -0.85$ ($p < 0.01$) entre las horas de uso irrestricto de redes sociales y el rendimiento académico indica:</p>
+                        <div class="space-y-2 text-xs text-slate-700">
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q5" value="A"> <span>Una relación inversa fuerte y estadísticamente significativa.</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q5" value="B"> <span>Una relación débil e irrelevante estadísticamente.</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-2 bg-white rounded border hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q5" value="C"> <span>Que las redes sociales causan directamente la reprobación del alumno.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="evaluarQuiz()" class="bg-uneNavy hover:bg-uneBlue text-white font-semibold text-sm px-6 py-3 rounded-lg shadow transition-colors">
+                        Calificar Cuestionario
+                    </button>
+                </form>
+
+                <!-- Quiz Results Container -->
+                <div id="quiz-resultado" class="hidden mt-6 p-6 rounded-lg bg-slate-100 border border-slate-300">
+                    <h3 id="quiz-score-title" class="text-xl font-bold text-uneNavy mb-2"></h3>
+                    <p id="quiz-score-details" class="text-sm text-slate-700"></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-recursos" class="tab-content hidden space-y-8">
+            
+            <!-- Bibliografia -->
+            <div class="bg-white p-6 md:p-8 rounded-lg border border-slate-200 shadow-sm">
+                <div class="border-l-4 border-uneNavy pl-4 mb-6">
+                    <h2 class="text-2xl font-bold text-uneNavy">Materiales Externos de Consulta Formal</h2>
+                    <p class="text-sm text-slate-500">Fuentes académicas y literatura de referencia en estadística aplicada a la psicología.</p>
+                </div>
+
+                <ul class="space-y-3 text-sm text-slate-700">
+                    <li class="p-3 bg-slate-50 rounded border border-slate-200">
+                        <strong>Coolican, H. (2018).</strong> <i>Métodos de investigación y estadística en psicología</i> (6.ª ed.). Manual Moderno.
+                    </li>
+                    <li class="p-3 bg-slate-50 rounded border border-slate-200">
+                        <strong>Field, A. (2018).</strong> <i>Discovering Statistics Using IBM SPSS Statistics</i> (5th ed.). SAGE Publications.
+                    </li>
+                    <li class="p-3 bg-slate-50 rounded border border-slate-200">
+                        <strong>Dancey, C. P., & Reidy, J. (2017).</strong> <i>Estadística sin matemáticas para psicología</i> (7.ª ed.). Pearson Educación.
+                    </li>
+                    <li class="p-3 bg-slate-50 rounded border border-slate-200">
+                        <strong>American Psychological Association. (2020).</strong> <i>Publication Manual of the American Psychological Association</i> (7th ed.). APA.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- REFLEXIÓN Y PLAN DE APLICACIÓN -->
+            <div class="bg-white p-6 md:p-8 rounded-lg border border-slate-200 shadow-sm">
+                <div class="border-l-4 border-uneRed pl-4 mb-6">
+                    <h2 class="text-2xl font-bold text-uneNavy">Reflexión Final y Plan de Aplicación Profesional</h2>
+                    <p class="text-sm text-slate-500">Planificación de transferencia del aprendizaje a la praxis científica y profesional.</p>
+                </div>
+
+                <div class="space-y-4 text-sm text-slate-700 leading-relaxed">
+                    <p>
+                        El dominio del análisis estadístico inferencial constituye la brecha entre el ejercicio intuitivo y la práctica reflexiva basada en la evidencia en psicología. Al finalizar esta Unidad IV, todo profesional en formación debe ser capaz de articular la toma de decisiones metodológicas con responsabilidad ética y rigor científico.
+                    </p>
+
+                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 space-y-4 mt-4">
+                        <h3 class="font-bold text-uneNavy text-base">Plan Personal de Transferencia Académica y Profesional</h3>
+                        
+                        <div>
+                            <label class="block font-semibold text-xs uppercase text-slate-600 mb-1">1. Compromiso de aplicación en tesis o seminario de titulación:</label>
+                            <textarea placeholder="Escribe aquí cómo aplicarás las pruebas de esta unidad en tu proyecto de titulación o investigación futura..." class="w-full p-2.5 bg-white border border-slate-300 rounded text-xs focus:ring-2 focus:ring-uneNavy outline-none h-20"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-xs uppercase text-slate-600 mb-1">2. Áreas de fortalecimiento técnico identificado:</label>
+                            <textarea placeholder="Indica qué pruebas o software (SPSS, JASP, R) requieren práctica adicional por tu parte..." class="w-full p-2.5 bg-white border border-slate-300 rounded text-xs focus:ring-2 focus:ring-uneNavy outline-none h-20"></textarea>
+                        </div>
+
+                        <div class="text-right">
+                            <button onclick="salvarPlan()" class="bg-uneRed hover:bg-red-700 text-white font-semibold text-xs px-4 py-2 rounded transition-colors">
+                                Guardar Plan de Reflexión Localmente
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="bg-uneNavy text-white border-t border-slate-800 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 space-y-2">
+            <p>Universidad de la Ciénega Plantel Centro - Licenciatura en Psicología</p>
+            <p>Guía Didáctica Autocontenida de Aprendizaje Constructivista - Unidad IV: Empleo de Datos para Probar Predicciones</p>
+            <p class="text-slate-500">Diseñado para integración con GitHub Pages y Google Classroom.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Switcher
+        function switchTab(tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('tab-active'));
+
+            document.getElementById('sec-' + tabId).classList.remove('hidden');
+            document.getElementById('tab-' + tabId).classList.add('tab-active');
+        }
+
+        // Decision Tree Logic (4.11 & 4.12)
+        function actualizarSeleccion() {
+            const obj = document.getElementById('sel-objetivo').value;
+            const divNivel = document.getElementById('div-nivel');
+            const divDiseno = document.getElementById('div-diseno');
+            const resBox = document.getElementById('res-box');
+            const resNombre = document.getElementById('res-nombre');
+            const resDesc = document.getElementById('res-desc');
+
+            divNivel.classList.add('hidden');
+            divDiseno.classList.add('hidden');
+            resBox.classList.add('hidden');
+
+            if (obj === 'relacion') {
+                divNivel.classList.remove('hidden');
+                const nivel = document.getElementById('sel-nivel').value;
+                if (nivel === 'intervalo') {
+                    resBox.classList.remove('hidden');
+                    resNombre.innerText = "Coeficiente de Correlación r de Pearson";
+                    resDesc.innerText = "Utilizado para medir la fuerza y dirección de la relación lineal entre dos variables cuantitativas continuas con distribución normal.";
+                } else if (nivel === 'ordinal' || nivel === 'nominal') {
+                    resBox.classList.remove('hidden');
+                    resNombre.innerText = "Coeficiente Rho de Spearman / Chi-cuadrada de Independencia";
+                    resDesc.innerText = "Para variables ordinales se recomienda Rho de Spearman. Para variables totalmente nominales/categóricas, utiliza Chi-cuadrada de independencia.";
+                }
+            } else if (obj === 'prediccion') {
+                resBox.classList.remove('hidden');
+                resNombre.innerText = "Regresión Lineal Múltiple";
+                resDesc.innerText = "Permite evaluar la capacidad explicativa y predictiva de un conjunto de variables independientes sobre una variable dependiente continua.";
+            } else if (obj === 'diferencia') {
+                divNivel.classList.remove('hidden');
+                const nivel = document.getElementById('sel-nivel').value;
+                if (nivel) {
+                    divDiseno.classList.remove('hidden');
+                    const diseno = document.getElementById('sel-diseno').value;
+
+                    if (nivel === 'intervalo') {
+                        if (diseno === '2ind') {
+                            resBox.classList.remove('hidden');
+                            resNombre.innerText = "Prueba t de Student para Muestras Independientes";
+                            resDesc.innerText = "Compara las medias de dos grupos no relacionados sobre una variable continua normal.";
+                        } else if (diseno === '2rel') {
+                            resBox.classList.remove('hidden');
+                            resNombre.innerText = "Prueba t de Student para Muestras Pareadas / Relacionadas";
+                            resDesc.innerText = "Compara el rendimiento de un mismo grupo antes y después de una intervención (Pre-Post).";
+                        } else if (diseno === '3ind') {
+                            resBox.classList.remove('hidden');
+                            resNombre.innerText = "ANOVA Unidireccional (One-Way ANOVA)";
+                            resDesc.innerText = "Compara las medias de 3 o más grupos independientes controlando la tasa de error Tipo I.";
+                        } else if (diseno === '3rel') {
+                            resBox.classList.remove('hidden');
+                            resNombre.innerText = "ANOVA de Medidas Repetidas";
+                            resDesc.innerText = "Evalúa cambios a lo largo del tiempo (3 o más momentos) sobre los mismos participantes.";
+                        }
+                    } else if (nivel === 'ordinal') {
+                        if (diseno === '2ind') {
+                            resBox.classList.remove('hidden');
+                            resNombre.innerText = "Prueba U de Mann-Whitney";
+                            resDesc.innerText = "Alternativa no paramétrica para comparar 2 grupos independientes con datos ordinales o sin normalidad.";
+                        } else if (diseno === '2rel') {
+                            resBox.classList.remove('hidden');
+                            resNombre.innerText = "Prueba de Rangos de Wilcoxon";
+                            resDesc.innerText = "Alternativa no paramétrica para evaluar mediciones pre-post sobre el mismo grupo.";
+                        } else if (diseno === '3ind') {
+                            resBox.classList.remove('hidden');
+                            resNombre.innerText = "Prueba de Kruskal-Wallis";
+                            resDesc.innerText = "Alternativa no paramétrica al ANOVA de un factor para 3 o más grupos independientes.";
+                        } else if (diseno === '3rel') {
+                            resBox.classList.remove('hidden');
+                            resNombre.innerText = "Prueba de Friedman";
+                            resDesc.innerText = "Alternativa no paramétrica al ANOVA de medidas repetidas.";
+                        }
+                    } else if (nivel === 'nominal') {
+                        resBox.classList.remove('hidden');
+                        resNombre.innerText = "Prueba Chi-Cuadrada de Independencia (χ²)";
+                        resDesc.innerText = "Analiza si existe relación o diferencia estadística entre frecuencias de categorías nominales.";
+                    }
+                }
+            }
+        }
+
+        // Quiz Evaluation Engine
+        function evaluarQuiz() {
+            const respuestas = {
+                q1: 'B',
+                q2: 'B',
+                q3: 'B',
+                q4: 'B',
+                q5: 'A'
+            };
+
+            let aciertos = 0;
+            const form = document.getElementById('quiz-form');
+
+            for (let i = 1; i <= 5; i++) {
+                const selected = form.querySelector(`input[name="q${i}"]:checked`);
+                if (selected && selected.value === respuestas[`q${i}`]) {
+                    aciertos++;
+                }
+            }
+
+            const porcentaje = (aciertos / 5) * 100;
+            const resDiv = document.getElementById('quiz-resultado');
+            const scoreTitle = document.getElementById('quiz-score-title');
+            const scoreDetails = document.getElementById('quiz-score-details');
+
+            resDiv.classList.remove('hidden');
+            scoreTitle.innerText = `Puntuación Obtenida: ${aciertos} / 5 (${porcentaje}%)`;
+
+            if (aciertos >= 4) {
+                resDiv.className = "mt-6 p-6 rounded-lg bg-emerald-50 border border-emerald-300";
+                scoreDetails.innerText = "¡Excelente desempeño! Demuestras una comprensión sólida de la selección e interpretación de las pruebas inferenciales de la Unidad IV.";
+            } else if (aciertos >= 3) {
+                resDiv.className = "mt-6 p-6 rounded-lg bg-amber-50 border border-amber-300";
+                scoreDetails.innerText = "Desempeño satisfactorio. Te recomendamos repasar los temas de supuestos paramétricos y pruebas no paramétricas para afianzar tus conocimientos.";
+            } else {
+                resDiv.className = "mt-6 p-6 rounded-lg bg-rose-50 border border-rose-300";
+                scoreDetails.innerText = "Requiere revisión. Te sugerimos consultar detenidamente la sección del temario y volver a intentar el cuestionario.";
+            }
+        }
+
+        // Save plan placeholder
+        function salvarPlan() {
+            alert("Su plan de reflexión ha sido guardado correctamente en la sesión local.");
+        }
+    </script>
+</body>
+</html>
