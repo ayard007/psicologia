@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Didáctica Interactiva: Diseño de Presentaciones en Psicología | UNE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        uneNavy: '#0F2552',
+                        uneBlue: '#1D4ED8',
+                        uneRed: '#DC2626',
+                        uneLightBg: '#F8FAFC',
+                        uneDarkText: '#0F172A'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }
+        .print-only {
+            display: none;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background-color: white;
+                color: black;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-blue-200 selection:text-uneNavy">
+
+    <!-- Header Principal e Institucional -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logotipo e Identidad Institucional UNE -->
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <svg class="h-12 w-auto" viewBox="0 0 500 350" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Logo UNE Universidad Plantel Centro">
+                            <path d="M 140,80 L 410,165 C 380,180 320,185 260,165 L 175,135 C 220,145 280,140 330,120 L 140,80 Z" fill="#DC2626"/>
+                            <path d="M 200,125 L 360,175 C 320,188 260,188 200,170 L 250,150 Z" fill="#0F2552"/>
+                            <path d="M 255,142 L 420,165 L 290,205 Z" fill="#DC2626"/>
+                            <g fill="#0F2552">
+                                <path d="M 60,175 H 125 V 225 C 125,248 108,265 85,265 C 62,265 60,248 60,225 V 175 Z M 80,193 V 224 C 80,238 83,248 92,248 C 101,248 105,238 105,224 V 193 H 80 Z"/>
+                                <path d="M 195,175 H 222 L 270,230 V 175 H 295 V 262 H 268 L 220,207 V 262 H 195 V 175 Z"/>
+                                <path d="M 330,175 H 430 V 198 H 358 V 207 H 420 V 230 H 358 V 239 H 430 V 262 H 330 V 175 Z"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="border-l border-slate-300 pl-4">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Universidad UNE</span>
+                        <span class="block text-sm font-bold text-uneNavy">Plantel Centro | Licenciatura en Psicología</span>
+                    </div>
+                </div>
+
+                <!-- Navegación de la Guía -->
+                <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-700">
+                    <a href="#introduccion" class="hover:text-uneBlue transition-colors">Introducción</a>
+                    <a href="#diagnostico" class="hover:text-uneBlue transition-colors">Diagnóstico</a>
+                    <a href="#contenidos" class="hover:text-uneBlue transition-colors">Contenidos</a>
+                    <a href="#caso-practico" class="hover:text-uneBlue transition-colors">Caso Práctico</a>
+                    <a href="#actividades" class="hover:text-uneBlue transition-colors">Classroom</a>
+                    <a href="#evaluacion" class="hover:text-uneBlue transition-colors">Evaluación</a>
+                    <a href="#reflexion" class="hover:text-uneBlue transition-colors">Plan Aplicado</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner Hero de la Asignatura -->
+    <section class="bg-uneNavy text-white py-12 px-4 sm:px-6 lg:px-8 border-b-4 border-uneRed">
+        <div class="max-w-7xl mx-auto text-center md:text-left md:flex md:items-center md:justify-between">
+            <div class="max-w-3xl">
+                <p class="text-xs font-semibold uppercase tracking-widest text-blue-200 mb-2">Asignatura: Tecnologías en Psicología</p>
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Unidad IV: Diseño de Presentaciones con Diapositivas (Google Slides / Chrome)</h1>
+                <p class="mt-4 text-base text-slate-300 leading-relaxed">
+                    Guía Didáctica Interactiva: Comunicación científica, diseño psicoeducativo, integración de objetos multimediales e interactividad avanzada mediante herramientas web colaborativas.
+                </p>
+            </div>
+            <div class="mt-6 md:mt-0 flex flex-col sm:flex-row gap-3">
+                <a href="#contenidos" class="inline-flex justify-center items-center px-5 py-3 border border-transparent text-sm font-medium rounded-md text-uneNavy bg-white hover:bg-slate-100 transition shadow">
+                    Explorar Contenidos
+                </a>
+                <a href="#actividades" class="inline-flex justify-center items-center px-5 py-3 border border-white text-sm font-medium rounded-md text-white hover:bg-white/10 transition">
+                    Actividades Classroom
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenedor Principal de Contenido -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <!-- SECCIÓN 1: INTRODUCCIÓN Y FUNDAMENTACIÓN PEDAGÓGICA -->
+        <section id="introduccion" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-uneNavy">1. Introducción al Diseño de Presentaciones Digitales en Psicología</h2>
+                <p class="text-sm text-slate-500 mt-1">Marco didáctico constructivista y Aprendizaje Basado en Problemas (ABP)</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 leading-relaxed text-slate-700">
+                <div class="lg:col-span-2 space-y-4 text-justify">
+                    <p>
+                        En la práctica profesional de la Psicología —ya sea en la divulgación psicoeducativa, la exposición de casos clínicos, la docencia universitaria o la sustentación de investigaciones científicas—, la transmisión clara, rigurosa y éticamente fundamentada de la información es una competencia indispensable. Las herramientas digitales para la creación de diapositivas en el navegador Google Chrome no deben considerarse meros soportes visuales estáticos, sino instrumentos dinámicos de mediación pedagógica y cognición distribuida.
+                    </p>
+                    <p>
+                        Bajo una <strong>metodología constructivista y de pedagogía activa</strong>, el diseño de una presentación requiere que el estudiante procese críticamente la información psicológica, jerarquice ideas complejas y elija los recursos multimedia más pertinentes (organigramas de procesos cognitivos, tablas de resultados psicométricos, gráficos estadísticos y botones de navegación interactiva) para facilitar el aprendizaje significativo de la audiencia.
+                    </p>
+                    <p>
+                        Dominar la Unidad IV permitirá a los futuros profesionales estructurar ponencias profesionales, diseñar talleres psicoeducativos interactivos y presentar diagnósticos clínicos con altos estándares de calidad académica y visual.
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-uneNavy mb-3">Ficha de Competencias de la Unidad</h3>
+                        <ul class="text-xs space-y-2 text-slate-600">
+                            <li class="flex items-start">
+                                <span class="text-uneRed font-bold mr-2">•</span>
+                                <span><strong>Competencia Técnica:</strong> Dominio de la interfaz de Google Slides/Chrome, asistentes de plantillas, formatos, inserción de objetos complejos y botones de acción.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-uneRed font-bold mr-2">•</span>
+                                <span><strong>Competencia Didáctico-Psicológica:</strong> Síntesis visual de modelos teóricos, organigramas clínicos y datos cuantitativos mediante gráficos y tablas.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-uneRed font-bold mr-2">•</span>
+                                <span><strong>Competencia Comunicativa:</strong> Adaptación del lenguaje y del soporte visual al perfil de la audiencia (pacientes, comunidad académica o equipos multidisciplinarios).</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-200 text-xs text-slate-500">
+                        <strong>Metodología:</strong> Constructivismo Social y Aprendizaje Basado en Problemas.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: ACTIVIDAD DE CONOCIMIENTO PREVIO -->
+        <section id="diagnostico" class="bg-blue-50/60 rounded-xl border border-blue-200 p-6 md:p-8">
+            <div class="max-w-3xl">
+                <span class="text-xs font-bold uppercase tracking-wider text-uneBlue">Diagnóstico Inicial</span>
+                <h2 class="text-xl font-bold text-uneNavy mt-1 mb-4">Pregunta de Reactivación de Conocimientos Previos</h2>
+                <p class="text-sm text-slate-700 leading-relaxed mb-6">
+                    Antes de abordar el contenido técnico, analice la siguiente situación profesional y seleccione la postura que demuestre una mejor comprensión de la comunicación visual en psicología:
+                </p>
+
+                <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm space-y-4">
+                    <p class="text-sm font-semibold text-slate-800">
+                        Escenario: Un equipo de psicólogos se dispone a exponer un taller de intervención sobre Manejo del Estrés Académico ante 150 estudiantes universitarios. Para la presentación de diapositivas, se plantean tres estrategias. ¿Cuál es el enfoque didácticamente óptimo?
+                    </p>
+
+                    <form id="prev-knowledge-form" class="space-y-3">
+                        <label class="flex items-start p-3 rounded border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs sm:text-sm text-slate-700">
+                            <input type="radio" name="prior" value="A" class="mt-1 text-uneBlue focus:ring-uneBlue">
+                            <span class="ml-3">Opción A: Transcribir párrafos extensos del manual teórico en cada diapositiva y leer cada línea de texto durante la sesión para asegurar que no se omita ningún detalle técnico.</span>
+                        </label>
+                        <label class="flex items-start p-3 rounded border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs sm:text-sm text-slate-700">
+                            <input type="radio" name="prior" value="B" class="mt-1 text-uneBlue focus:ring-uneBlue">
+                            <span class="ml-3">Opción B: Estructurar la presentación utilizando plantillas claras, organigramas sintéticos para explicar el ciclo fisiológico del estrés, gráficos informativos y botones de acción para navegar interactivamente según las dudas del público.</span>
+                        </label>
+                        <label class="flex items-start p-3 rounded border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs sm:text-sm text-slate-700">
+                            <input type="radio" name="prior" value="C" class="mt-1 text-uneBlue focus:ring-uneBlue">
+                            <span class="ml-3">Opción C: Insertar la mayor cantidad de animaciones con sonido, imágenes decorativas sin relación directa y fuentes con WordArt recargado para mantener la atención del público mediante estímulos constantes.</span>
+                        </label>
+                    </form>
+
+                    <button type="button" onclick="checkPriorKnowledge()" class="mt-2 px-4 py-2 bg-uneNavy text-white text-xs sm:text-sm font-semibold rounded hover:bg-blue-900 transition">
+                        Validar Respuesta
+                    </button>
+
+                    <div id="prior-feedback" class="hidden mt-4 p-4 rounded text-xs sm:text-sm"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: CONTENIDO TEMÁTICO INTEGRAL -->
+        <section id="contenidos" class="space-y-8">
+            <div class="border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-bold text-uneNavy">3. Contenido Temático y Fundamentación Técnica</h2>
+                <p class="text-sm text-slate-500 mt-1">Desglose temático de la Unidad IV: Diseño de Presentaciones con Diapositivas.</p>
+            </div>
+
+            <!-- Módulos de Contenido en Tarjetas -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Modulo 1 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-lg bg-blue-100 text-uneBlue flex items-center justify-center font-bold text-lg mb-4">4.1 - 4.3</div>
+                    <h3 class="text-lg font-bold text-uneNavy mb-2">Creación, Vistas y Formato de Diapositivas</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                        Uso de plantillas institucionales y asistentes de maquetación en Google Slides. Análisis comparativo de vistas (edición, clasificador de diapositivas, vista de lectura y vista de presentador con notas). Aplicación de formatos, paletas de colores legibles y temas acordes al contexto psicológico.
+                    </p>
+                    <ul class="text-xs text-slate-500 space-y-1 bg-slate-50 p-3 rounded">
+                        <li>• 4.1 Asistente de autocontenido y plantillas.</li>
+                        <li>• 4.2 Diferencias entre vistas de trabajo.</li>
+                        <li>• 4.3 Formato, fondos, temas y transiciones.</li>
+                    </ul>
+                </div>
+
+                <!-- Modulo 2 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-lg bg-red-100 text-uneRed flex items-center justify-center font-bold text-lg mb-4">4.4</div>
+                    <h3 class="text-lg font-bold text-uneNavy mb-2">Inserción y Edición de Objetos Multimediales</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                        Integración de componentes visuales e interactivos: imágenes vectoriales, recursos audiovisuales (películas y audios descriptivos), organigramas de procesos clínicos o estructuras organizacionales, tablas comparativas y gráficos de evaluación psicométrica.
+                    </p>
+                    <ul class="text-xs text-slate-500 space-y-1 bg-slate-50 p-3 rounded">
+                        <li>• 4.4.1 Imágenes e ilustraciones.</li>
+                        <li>• 4.4.2 Películas y archivos de sonido.</li>
+                        <li>• 4.4.3 Organigramas y diagramas teóricos.</li>
+                        <li>• 4.4.4 Tablas de sintomatología o variables.</li>
+                        <li>• 4.4.5 Gráficos estadísticos e indicadores.</li>
+                        <li>• 4.4.6 Botones de acción e hipervínculos.</li>
+                    </ul>
+                </div>
+
+                <!-- Modulo 3 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center font-bold text-lg mb-4">4.5</div>
+                    <h3 class="text-lg font-bold text-uneNavy mb-2">Diseño Tipográfico Jerárquico y WordArt</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                        Aplicación técnica de elementos tipográficos de alto impacto (WordArt) para titulares, lemas psicoeducativos e ideas clave. Normas de legibilidad visual, contraste cromático y prevención del sesgo de sobrecarga cognitiva.
+                    </p>
+                    <ul class="text-xs text-slate-500 space-y-1 bg-slate-50 p-3 rounded">
+                        <li>• Jerarquía visual e impacto tipográfico.</li>
+                        <li>• Configuración estético-académica de WordArt.</li>
+                        <li>• Estándares APA para soportes visuales.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Desglose Técnico Paso a Paso (Acordeón Interactivo) -->
+            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                <div class="p-6 bg-slate-100 border-b border-slate-200">
+                    <h3 class="text-base font-bold text-uneNavy">Guía Procedimental Detallada de la Unidad IV</h3>
+                    <p class="text-xs text-slate-500">Haga clic sobre cada tema para desplegar el procedimiento paso a paso en Google Slides / Chrome.</p>
+                </div>
+
+                <div class="divide-y divide-slate-200">
+
+                    <!-- Acordeón 1 -->
+                    <div class="p-4 hover:bg-slate-50">
+                        <button onclick="toggleAccordion('acc-1')" class="w-full text-left font-semibold text-slate-800 flex justify-between items-center text-sm sm:text-base">
+                            <span>4.1 y 4.2 Crear Presentación, Plantillas y Manejo de Vistas</span>
+                            <span id="icon-acc-1" class="text-slate-400">+</span>
+                        </button>
+                        <div id="acc-1" class="hidden mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 pl-2 border-l-2 border-uneBlue">
+                            <p><strong>Procedimiento en Google Chrome / Slides:</strong></p>
+                            <ol class="list-decimal pl-4 space-y-1">
+                                <li>Ingrese a Google Drive o directamente a <code class="bg-slate-100 px-1 py-0.5 rounded">slides.google.com</code> desde su navegador Chrome con su cuenta institucional.</li>
+                                <li><strong>Asistente de Plantillas:</strong> Seleccione "Galería de plantillas" para iniciar con una estructura prediseñada (ej. "Presentación de la clase", "Propuesta de proyecto" o "Informe de investigación").</li>
+                                <li><strong>Uso de Vistas:</strong>
+                                    <ul class="list-disc pl-4 mt-1">
+                                        <li><em>Vista de edición (Normal):</em> Permite el diseño individual de diapositivas y redacción de "Notas del orador" en la parte inferior.</li>
+                                        <li><em>Vista de Clasificador (Malla):</em> Acceda mediante el ícono de cuadrícula en la esquina inferior izquierda. Útil para reorganizar, duplicar o eliminar secciones completas del taller.</li>
+                                        <li><em>Vista de Presentador:</em> Haga clic en la flecha junto a "Iniciar presentación" &gt; "Vista de presentador". Despliega un panel cronometrado con sus notas personales no visibles para la audiencia.</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Acordeón 2 -->
+                    <div class="p-4 hover:bg-slate-50">
+                        <button onclick="toggleAccordion('acc-2')" class="w-full text-left font-semibold text-slate-800 flex justify-between items-center text-sm sm:text-base">
+                            <span>4.3 Formato a Diapositivas, Temas y Transiciones</span>
+                            <span id="icon-acc-2" class="text-slate-400">+</span>
+                        </button>
+                        <div id="acc-2" class="hidden mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 pl-2 border-l-2 border-uneBlue">
+                            <p><strong>Estandarización de formato visual:</strong></p>
+                            <ol class="list-decimal pl-4 space-y-1">
+                                <li><strong>Aplicar Tema:</strong> Menú <em>Diapositiva</em> &gt; <em>Cambiar tema</em>. Seleccione una paleta con fondo claro y tipografía oscura para máxima legibilidad en recintos iluminados.</li>
+                                <li><strong>Fondo Personalizado:</strong> Haga clic secundario en la diapositiva &gt; <em>Cambiar fondo</em>. Puede elegir un color sólido sobrio o un degradado profesional.</li>
+                                <li><strong>Diseño de Diapositiva:</strong> Use <em>Diapositiva</em> &gt; <em>Aplicar diseño</em> (Encabezado de sección, Título y dos columnas, etc.) para mantener coherencia geométrica.</li>
+                                <li><strong>Transiciones Sobrias:</strong> Menú <em>Transición</em>. Seleccione efectividades atenúadas ("Disolver" o "Fundido a negro" con duración de 0.5s) para evitar distracciones en presentaciones académicas.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Acordeón 3 -->
+                    <div class="p-4 hover:bg-slate-50">
+                        <button onclick="toggleAccordion('acc-3')" class="w-full text-left font-semibold text-slate-800 flex justify-between items-center text-sm sm:text-base">
+                            <span>4.4.1 a 4.4.3 Insertar Imágenes, Películas, Sonidos y Organigramas</span>
+                            <span id="icon-acc-3" class="text-slate-400">+</span>
+                        </button>
+                        <div id="acc-3" class="hidden mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 pl-2 border-l-2 border-uneBlue">
+                            <p><strong>Integración de Objetos Básicos y Multimediales:</strong></p>
+                            <ul class="list-disc pl-4 space-y-1">
+                                <li><strong>Imágenes:</strong> Menú <em>Insertar</em> &gt; <em>Imagen</em> &gt; <em>Buscar en la web</em> o suba archivos en formatos libres de derechos. Asegure incluir atribución de fuente según norma APA.</li>
+                                <li><strong>Video y Sonido:</strong> Menú <em>Insertar</em> &gt; <em>Video</em> (pegue la URL de un video de YouTube o Google Drive con un caso clínico o entrevista psicoeducativa). Para audio: <em>Insertar</em> &gt; <em>Audio</em> para incluir testimonios o narraciones de apoyo. En las opciones de formato, configure la reproducción automática o al hacer clic.</li>
+                                <li><strong>Organigramas y Diagramas:</strong> Menú <em>Insertar</em> &gt; <em>Diagrama</em>. Elija la categoría deseada (Jerarquía, Proceso, Ciclo o Relación). Utilice la categoría Jerarquía para representar organigramas institucionales o diagramas de flujo para protocolos de intervención psicológica.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Acordeón 4 -->
+                    <div class="p-4 hover:bg-slate-50">
+                        <button onclick="toggleAccordion('acc-4')" class="w-full text-left font-semibold text-slate-800 flex justify-between items-center text-sm sm:text-base">
+                            <span>4.4.4 a 4.4.6 Tablas, Gráficos y Botones de Acción Interacivos</span>
+                            <span id="icon-acc-4" class="text-slate-400">+</span>
+                        </button>
+                        <div id="acc-4" class="hidden mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 pl-2 border-l-2 border-uneBlue">
+                            <p><strong>Integración de Datos y Botones de Navegación:</strong></p>
+                            <ol class="list-decimal pl-4 space-y-1">
+                                <li><strong>Tablas:</strong> Menú <em>Insertar</em> &gt; <em>Tabla</em>. Defina las filas y columnas necesarias para sintetizar criterios diagnósticos (ej. DSM-5 / CIE-11) o matrices de evaluación observacional.</li>
+                                <li><strong>Gráficos:</strong> Menú <em>Insertar</em> &gt; <em>Gráfico</em> &gt; <em>Barra, Columna, Línea o Pie</em>. Seleccione "De Hojas de cálculo" para vincular en tiempo real gráficos estadísticos procesados previamente.</li>
+                                <li><strong>Botones de Acción y Vínculos:</strong>
+                                    <ul class="list-disc pl-4 mt-1">
+                                        <li>Inserte una forma geométrica (ej. rectángulo con bordes redondeados) o ícono.</li>
+                                        <li>Escriba el texto identificador (ej. "Volver al Índice", "Ver Caso Clinico", "Siguiente Modulo").</li>
+                                        <li>Seleccione el objeto, presione <kbd class="bg-slate-100 border px-1">Ctrl + K</kbd> y elija "Diapositivas en esta presentación" para dirigir la navegación al número de diapositiva correspondiente.</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Acordeón 5 -->
+                    <div class="p-4 hover:bg-slate-50">
+                        <button onclick="toggleAccordion('acc-5')" class="w-full text-left font-semibold text-slate-800 flex justify-between items-center text-sm sm:text-base">
+                            <span>4.5 Uso de WordArt y Principios de Diseño Tipográfico Psicoeducativo</span>
+                            <span id="icon-acc-5" class="text-slate-400">+</span>
+                        </button>
+                        <div id="acc-5" class="hidden mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 pl-2 border-l-2 border-uneBlue">
+                            <p><strong>Creación e impacto visual:</strong></p>
+                            <ol class="list-decimal pl-4 space-y-1">
+                                <li>Acceda a <em>Insertar</em> &gt; <em>WordArt</em>. Digite el título principal del tema o lema psicoeducativo.</li>
+                                <li>Ajuste el color de relleno (se sugieren tonos sólidos oscuros de la paleta institucional), el color de borde y el grosor de línea para lograr contraste óptimo.</li>
+                                <li><strong>Criterio Profesional:</strong> Reserve el uso de WordArt exclusivamente para títulos de portada, frases emblemáticas o preguntas detonadoras. Evite aplicar WordArt al cuerpo de texto o descripciones teóricas para mantener la legibilidad científica.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: MATERIALES EXTERNOS DE CONSULTA FORMAL -->
+        <section class="bg-white rounded-xl border border-slate-200 p-6 md:p-8 shadow-sm">
+            <h2 class="text-lg font-bold text-uneNavy mb-4 border-b border-slate-200 pb-2">Materiales Externos de Consulta Académica y Documentación Oficial</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                <div class="p-4 rounded border border-slate-200 bg-slate-50 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-uneBlue">Documentación Oficial</span>
+                        <h3 class="font-bold text-slate-800 mt-1">Centro de Ayuda de Google Workspace: Presentaciones (Google Slides)</h3>
+                        <p class="text-slate-600 mt-2 text-xs">Manuales oficiales sobre maquetación, colaboración en tiempo real, inserción multimedia y configuración de animaciones.</p>
+                    </div>
+                    <a href="https://support.google.com/docs/topic/9054603" target="_blank" class="mt-4 inline-block font-semibold text-uneBlue hover:underline text-xs">
+                        Consultar Centro de Ayuda &rarr;
+                    </a>
+                </div>
+
+                <div class="p-4 rounded border border-slate-200 bg-slate-50 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-uneRed">Normativa Profesional APA</span>
+                        <h3 class="font-bold text-slate-800 mt-1">Manual APA Style (7ma Edición) - Presentaciones y Material de Soporte</h3>
+                        <p class="text-slate-600 mt-2 text-xs">Lineamientos estandarizados para la citación de fuentes visuales, diseño de tablas y figuras en soporte digital.</p>
+                    </div>
+                    <a href="https://apastyle.apa.org/style-grammar-guidelines/tables-figures" target="_blank" class="mt-4 inline-block font-semibold text-uneRed hover:underline text-xs">
+                        Guía de Formato APA &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: CASO PRÁCTICO INTERACTIVO PARA ANÁLISIS (ABP) -->
+        <section id="caso-practico" class="bg-slate-900 text-white rounded-xl p-6 md:p-8 shadow-md">
+            <div class="border-b border-slate-700 pb-4 mb-6">
+                <span class="text-xs font-bold uppercase tracking-wider text-red-400">Aprendizaje Basado en Problemas (ABP)</span>
+                <h2 class="text-2xl font-bold text-white mt-1">Caso Práctico: Diseño de una Campaña Psicoeducativa sobre Prevención del Acoso Escolar (Bullying)</h2>
+            </div>
+
+            <div class="space-y-6 text-sm text-slate-300 leading-relaxed">
+                <div class="bg-slate-800/80 p-5 rounded-lg border border-slate-700">
+                    <h3 class="text-base font-bold text-white mb-2">Contexto Clínico-Educativo:</h3>
+                    <p>
+                        Usted integra el equipo de Psicología Educativa del Departamento de Orientación de la Universidad UNE. Se ha detectado la necesidad de dictar un taller interactivo dirigido a docentes de educación media superior para capacitarles en la detección temprana del acoso escolar y la ruta de protocolo de intervención. 
+                    </p>
+                    <p class="mt-2">
+                        El taller se impartirá en modalidad híbrida (presencial y remota en simultáneo). Por ende, el material de soporte debe ser una **presentación interactiva en Google Slides** que combine claridad conceptual, sensibilidad ética, organigramas claros de la ruta de atención, videos de casos simulados y botones de navegación que permitan al docente explorar las secciones según las necesidades del grupo.
+                    </p>
+                </div>
+
+                <!-- Estructura del Material de Diapositivas a Desarrollar -->
+                <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 font-mono text-xs overflow-x-auto">
+                    <div class="text-slate-400 mb-2">// Requerimientos de Estructura Visual del Taller ("Taller_AcosoEscolar_UNE.gslides")</div>
+                    <table class="w-full text-left text-slate-300">
+                        <thead class="bg-slate-900 text-slate-400 border-b border-slate-800">
+                            <tr>
+                                <th class="p-2">Diapositiva</th>
+                                <th class="p-2">Componente Técnico</th>
+                                <th class="p-2">Recurso a Insertar</th>
+                                <th class="p-2">Función Psicoeducativa</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            <tr>
+                                <td class="p-2 text-blue-400">Diapositiva 1</td>
+                                <td class="p-2">WordArt y Plantilla Sobria</td>
+                                <td class="p-2">Título de Impacto + Logo UNE</td>
+                                <td class="p-2">Encuadre institucional e impacto inicial.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 text-blue-400">Diapositiva 2</td>
+                                <td class="p-2">Botones de Acción (Vínculos)</td>
+                                <td class="p-2">Menú Interactivo de 4 Módulos</td>
+                                <td class="p-2">Navegación flexible sin orden lineal obligatorio.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 text-blue-400">Diapositiva 3</td>
+                                <td class="p-2">Organigrama Jerárquico</td>
+                                <td class="p-2">Diagrama de Ruta de Atención</td>
+                                <td class="p-2">Pasos inmediatos ante un caso detectado.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 text-blue-400">Diapositiva 4</td>
+                                <td class="p-2">Video de Drive / YouTube</td>
+                                <td class="p-2">Simulación de entrevista a víctima</td>
+                                <td class="p-2">Sensibilización empática y análisis conductual.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 text-blue-400">Diapositiva 5</td>
+                                <td class="p-2">Tabla Comparativa y Gráfico</td>
+                                <td class="p-2">Indicadores de Prevalencia</td>
+                                <td class="p-2">Sustentación epidemiológica basada en datos.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Preguntas de Análisis del Caso -->
+                <div class="space-y-4">
+                    <h3 class="text-base font-bold text-white">Guía de Resolución del Caso (Pasos Técnicos Requeridos):</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                            <h4 class="font-bold text-blue-300 text-xs uppercase mb-1">Paso 1: Selección de Plantilla y Estilo</h4>
+                            <p class="text-xs">Escoja un tema con tonos azul marino e institucional, asegurando un contraste del 100% entre fondo y texto. Genere la portada con WordArt técnico.</p>
+                        </div>
+                        <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                            <h4 class="font-bold text-blue-300 text-xs uppercase mb-1">Paso 2: Diagramación del Protocolo</h4>
+                            <p class="text-xs">Diseñe un <strong>Organigrama de Proceso</strong> mediante la herramienta de Diagramas para sintetizar la secuencia: Detección &rarr; Notificación &rarr; Intervención &rarr; Seguimiento.</p>
+                        </div>
+                        <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                            <h4 class="font-bold text-blue-300 text-xs uppercase mb-1">Paso 3: Integración Multimedial</h4>
+                            <p class="text-xs">Inserte un recurso audiovisual explicativo sobre el perfil psicodinámico del agresor y de la víctima, configurando marcadores de tiempo explícitos.</p>
+                        </div>
+                        <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                            <h4 class="font-bold text-blue-300 text-xs uppercase mb-1">Paso 4: Arquitectura de Navegación Interactivas</h4>
+                            <p class="text-xs">Añada <strong>Botones de Acción</strong> con hipervínculos internos en la esquina inferior de cada diapositiva para retornar inmediatamente al Menú Principal.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: ACTIVIDADES PRÁCTICAS PARA SUBIR A CLASSROOM -->
+        <section id="actividades" class="space-y-8">
+            <div class="border-b border-slate-200 pb-4">
+                <span class="text-xs font-bold uppercase tracking-wider text-uneBlue">Evaluación Formativa y Colaborativa</span>
+                <h2 class="text-2xl font-bold text-uneNavy mt-1">Actividades de Aprendizaje para Entrega en Google Classroom</h2>
+                <p class="text-sm text-slate-500">Instrucciones detalladas y estructuradas paso a paso para la entrega de evidencias académicas.</p>
+            </div>
+
+            <!-- ACTIVIDAD 1: FORO DE MEDIACIÓN -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <div>
+                        <span class="bg-blue-100 text-uneBlue text-xs font-bold px-2.5 py-1 rounded">Actividad 1: Mediación en Foro</span>
+                        <h3 class="text-lg font-bold text-uneNavy mt-2">Reflexión Crítica: La Sobrecarga Cognitiva y el Uso Ético de Recursos Multimediales en Soportes Visuales Psicológicos</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-medium">Modalidad: Asíncrona en Foro</span>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                        <strong class="text-uneNavy block mb-1">Pregunta Detonadora para el Foro:</strong>
+                        <p class="italic">
+                            "Desde la perspectiva de la Psicología Cognitiva y la Teoría de la Carga Cognitiva (Sweller), ¿de qué manera el exceso de elementos decorativos, animaciones ruidosas y abuso de texto en diapositivas dificulta la compresión de temas psicológicos complejos por parte de los estudiantes o pacientes? ¿Cómo debe el psicólogo equilibrar el atractivo estético con la sobriedad científica al integrar organigramas, videos y WordArt?"
+                        </p>
+                    </div>
+
+                    <h4 class="font-bold text-uneNavy">Instrucciones Paso a Paso para la Participación:</h4>
+                    <ol class="list-decimal pl-5 space-y-2">
+                        <li><strong>Aportación Principal:</strong> Redacte una respuesta analítica a la pregunta detonadora con una extensión de 200 a 300 palabras. Debe argumentar identificando los principios de diseño instruccional y comunicación científica.</li>
+                        <li><strong>Interacción Colaborativa:</strong> Lea atentamente las intervenciones de sus compañeros y replique de forma fundamentada a un mínimo de dos participantes. Su réplica debe profundizar, matizar o plantear un contraejemplo práctico de la práctica psicológica.</li>
+                        <li><strong>Evidencia en Classroom:</strong> Realice una captura de pantalla clara de sus intervenciones en el foro institucional o pegue el enlace de sus publicaciones en la tarea correspondiente de Google Classroom.</li>
+                    </ol>
+
+                    <div class="border-t border-slate-200 pt-3 text-xs text-slate-500">
+                        <strong>Criterios de Evaluación:</strong> Argumentación teórica (40%), uso de vocabulario técnico (30%), debate respetuoso y enriquecedor con pares (30%).
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVIDAD 2: PROYECTO PRÁCTICO APLICADO -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <div>
+                        <span class="bg-red-100 text-uneRed text-xs font-bold px-2.5 py-1 rounded">Actividad 2: Aplicación Práctica</span>
+                        <h3 class="text-lg font-bold text-uneNavy mt-2">Diseño de una Presentación Interactiva Psicoeducativa en Google Slides</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-medium">Modalidad: Trabajo Individual / Parejas</span>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <p>
+                        Los estudiantes deberán diseñar un archivo completo en Google Slides sobre un tema psicoeducativo de libre elección (ej. Orientación Vocacional, Prevención de las Adicciones, Higiene del Sueño o Inteligencia Emocional).
+                    </p>
+
+                    <h4 class="font-bold text-uneNavy">Pasos para la Ejecución del Proyecto:</h4>
+                    <ol class="list-decimal pl-5 space-y-2">
+                        <li><strong>Creación de la Presentación:</strong> Acceda a Google Chrome, abra Google Slides y seleccione una plantilla sobria. Modifique la paleta de colores para adaptarla al tema psicológico.</li>
+                        <li><strong>Portada e Impacto Visual:</strong> Elabore una diapositiva de portada incorporando el título con <strong>WordArt</strong>, el logo de la Universidad UNE e información del autor.</li>
+                        <li><strong>Menú Interactivo con Botones de Acción:</strong> Diseñe una diapositiva de índice con botones de acción vinculados mediante hipervínculos internos a las diferentes secciones.</li>
+                        <li><strong>Inclusión de Organigrama y Tabla:</strong> Inserte un organigrama de proceso que desglose las fases del tema y una tabla comparativa con datos cuantitativos o cualitativos relevantes.</li>
+                        <li><strong>Inserción Multimedial y Gráfico:</strong> Inserte un video educativo previamente seleccionado de YouTube o Drive con controles de reproducción configurados, e integre un gráfico cuantitativo.</li>
+                        <li><strong>Botones de Retorno:</strong> Coloque un botón de acción en cada diapositiva secundaria que permita volver al Menú Principal con un solo clic.</li>
+                        <li><strong>Entrega en Classroom:</strong> Configure los permisos del archivo como "Lector" para el docente y entregue el enlace URL directamente en la asignación de Google Classroom.</li>
+                    </ol>
+
+                    <div class="bg-slate-50 p-4 rounded border border-slate-200 text-xs">
+                        <strong class="text-slate-800 block mb-1">Estructura Mínima Requerida de la Presentación:</strong>
+                        <p class="font-mono text-slate-600">[Diapositiva 1: Portada WordArt + Logo] &rarr; [Diapositiva 2: Menú Interactivo de Botones] &rarr; [Diapositiva 3: Organigrama de Proceso] &rarr; [Diapositiva 4: Tabla y Gráfico] &rarr; [Diapositiva 5: Recurso de Video / Audio] &rarr; [Diapositiva 6: Cierre y Referencias APA]</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVIDAD 3: RESOLUCIÓN DEL CASO PRÁCTICO -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <div>
+                        <span class="bg-slate-100 text-slate-800 text-xs font-bold px-2.5 py-1 rounded">Actividad 3: Análisis de Caso</span>
+                        <h3 class="text-lg font-bold text-uneNavy mt-2">Informe Técnico del Caso "Campaña Psicoeducativa de Prevención del Acoso Escolar"</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-medium">Modalidad: Reporte Individual</span>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <p>
+                        Con base en la situación problemática expuesta en la Sección 5 de esta guía, el estudiante redactará un informe psicoeducativo dirigido a las autoridades educativas de la UNE.
+                    </p>
+
+                    <h4 class="font-bold text-uneNavy">Instrucciones de Redacción y Formato:</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>El informe debe tener una extensión de 2 páginas en formato PDF.</li>
+                        <li>Debe incluir la justificación técnica de la plantilla elegida, la explicación de la arquitectura de botones de navegación utilizada y capturas de pantalla de la presentación interactiva elaborada.</li>
+                        <li>Debe incorporar una sección de <em>Recomendaciones para el Ponente</em> sobre cómo utilizar la vista de presentador durante el taller.</li>
+                        <li><strong>Entrega:</strong> Adjuntar el archivo PDF en Google Classroom con la nomenclatura: <code class="bg-slate-100 px-1 py-0.5 rounded">Apellido_Nombre_CasoPresentaciones.pdf</code>.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- SECCIÓN 7: QUIZ INTERACTIVO DE EVALUACIÓN DE CONOCIMIENTOS -->
+        <section id="evaluacion" class="bg-white rounded-xl border border-slate-200 p-6 md:p-8 shadow-sm">
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <span class="text-xs font-bold uppercase tracking-wider text-uneRed">Evaluación Automatizada</span>
+                <h2 class="text-2xl font-bold text-uneNavy mt-1">Quiz de Autoevaluación de Dominio Técnico - Unidad IV</h2>
+                <p class="text-sm text-slate-500">Responda las siguientes 5 preguntas para evaluar su grado de comprensión de las herramientas de presentación.</p>
+            </div>
+
+            <form id="quiz-form" class="space-y-8">
+
+                <!-- Pregunta 1 -->
+                <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <p class="font-semibold text-slate-800 text-sm mb-3">1. ¿Cuál es la principal ventaja práctica de utilizar la "Vista de Presentador" en Google Slides durante una ponencia o taller psicoeducativo?</p>
+                    <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q1" value="incorrect" class="text-uneBlue">
+                            <span>Permite modificar el color del fondo de todas las diapositivas de forma automática durante la proyección.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q1" value="correct" class="text-uneBlue">
+                            <span>Despliega un panel secundario con un cronómetro, vista previa de la siguiente diapositiva y las notas de apoyo privadas para el ponente.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q1" value="incorrect" class="text-uneBlue">
+                            <span>Traduce de forma instantánea el texto de las diapositivas a múltiples idiomas para la audiencia.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 2 -->
+                <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <p class="font-semibold text-slate-800 text-sm mb-3">2. Al diseñar una diapositiva para explicar las etapas de intervención de una crisis psicológica, ¿qué objeto técnico resulta más adecuado para jerarquizar visualmente los pasos secuenciales?</p>
+                    <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q2" value="correct" class="text-uneBlue">
+                            <span>Un organigrama o diagrama de proceso jerárquico insertado desde la sección de diagramas.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q2" value="incorrect" class="text-uneBlue">
+                            <span>Un bloque de texto en WordArt con fuentes de colores llamativos y sombras recargadas.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q2" value="incorrect" class="text-uneBlue">
+                            <span>Una tabla sin bordes con texto corrido de margen a margen.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 3 -->
+                <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <p class="font-semibold text-slate-800 text-sm mb-3">3. ¿Cuál es la función técnica y pedagógica de configurar "Botones de Acción" vinculados con hipervínculos internos en una presentación?</p>
+                    <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q3" value="incorrect" class="text-uneBlue">
+                            <span>Aumentar la velocidad de descarga del archivo en formato PDF.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q3" value="correct" class="text-uneBlue">
+                            <span>Facilitar una navegación interactiva no lineal, permitiendo retornar al menú principal o saltar entre secciones según el interés de la audiencia.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q3" value="incorrect" class="text-uneBlue">
+                            <span>Impedir que los usuarios copien las imágenes contenidas en la presentación.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 4 -->
+                <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <p class="font-semibold text-slate-800 text-sm mb-3">4. Desde un criterio ético y profesional de la comunicación visual en Psicología, ¿cuál es la recomendación correcta respecto al uso de WordArt?</p>
+                    <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q4" value="correct" class="text-uneBlue">
+                            <span>Utilizarlo con sobriedad únicamente para títulos de portada, lemas o frases clave, evitando saturar párrafos explicativos para garantizar la legibilidad.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q4" value="incorrect" class="text-uneBlue">
+                            <span>Aplicarlo a todo el texto de la presentación para lograr que el material sea más entretenido.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q4" value="incorrect" class="text-uneBlue">
+                            <span>Sustituir las tablas de datos cuantitativos por composiciones tipográficas de WordArt.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 5 -->
+                <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <p class="font-semibold text-slate-800 text-sm mb-3">5. ¿Qué beneficio aporta vincular directamente un gráfico desde Google Sheets hacia una diapositiva en lugar de insertar una imagen estática?</p>
+                    <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q5" value="incorrect" class="text-uneBlue">
+                            <span>Oculta los datos originales para que no puedan ser verificados por la audiencia.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q5" value="correct" class="text-uneBlue">
+                            <span>Permite actualizar el gráfico en la diapositiva con un solo clic cuando se modifiquen los datos cuantitativos en la hoja de cálculo de origen.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q5" value="incorrect" class="text-uneBlue">
+                            <span>Convierte automáticamente los valores numéricos en archivos de audio.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button type="button" onclick="evaluateQuiz()" class="px-6 py-3 bg-uneRed text-white text-sm font-bold rounded shadow hover:bg-red-700 transition">
+                        Calcular Puntuación y Ver Retroalimentación
+                    </button>
+                    <button type="button" onclick="resetQuiz()" class="px-4 py-3 bg-slate-200 text-slate-700 text-sm font-semibold rounded hover:bg-slate-300 transition">
+                        Reiniciar Quiz
+                    </button>
+                </div>
+
+            </form>
+
+            <!-- Resultado del Quiz -->
+            <div id="quiz-result" class="hidden mt-6 p-6 rounded-lg border"></div>
+        </section>
+
+        <!-- SECCIÓN 8: REFLEXIÓN, TRANSFERENCIA Y APLICACIÓN PROFESIONAL -->
+        <section id="reflexion" class="bg-white rounded-xl border border-slate-200 p-6 md:p-8 shadow-sm">
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <span class="text-xs font-bold uppercase tracking-wider text-uneNavy">Plan Metodológico Personal</span>
+                <h2 class="text-2xl font-bold text-uneNavy mt-1">Reflexión y Transferencia a la Práctica Académica y Profesional</h2>
+                <p class="text-sm text-slate-500">Planifique de manera explícita la integración de estas herramientas digitales en sus exposiciones universitarias y futuro ejercicio profesional.</p>
+            </div>
+
+            <div class="space-y-6">
+                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    A continuación, complete los campos para generar su borrador del <strong>Plan de Transferencia de Soportes Visuales en Psicología</strong>. Al finalizar, podrá visualizar su plan estructurado listo para guardar o imprimir.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Nombre Completo del Estudiante:</label>
+                        <input type="text" id="plan-student-name" placeholder="Ej. Carlos Eduardo Ramírez Silva" class="w-full text-xs sm:text-sm p-2.5 rounded border border-slate-300 focus:ring-1 focus:ring-uneNavy">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Semestre / Grupo:</label>
+                        <input type="text" id="plan-student-group" placeholder="Ej. 3er Semestre - Grupo B" class="w-full text-xs sm:text-sm p-2.5 rounded border border-slate-300 focus:ring-1 focus:ring-uneNavy">
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">1. Aplicación en Exposiciones y Proyectos Universitarios Actuales:</label>
+                        <textarea id="plan-academic" rows="3" placeholder="Describa en qué asignaturas específicas (Ej. Psicología del Desarrollo, Neuropsicología, Teorías de la Personalidad) incorporará organigramas, botones de acción y videos explicativos..." class="w-full text-xs sm:text-sm p-2.5 rounded border border-slate-300 focus:ring-1 focus:ring-uneNavy"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">2. Criterios Éticos y Profesionalismo Visual en la Práctica Futura:</label>
+                        <textarea id="plan-ethics" rows="3" placeholder="Explique qué medidas adoptará para garantizar el contraste visual, evitar la sobrecarga cognitiva, resguardar la confidencialidad de casos y citar fuentes según norma APA..." class="w-full text-xs sm:text-sm p-2.5 rounded border border-slate-300 focus:ring-1 focus:ring-uneNavy"></textarea>
+                    </div>
+                </div>
+
+                <button type="button" onclick="generatePlan()" class="px-5 py-2.5 bg-uneNavy text-white text-xs sm:text-sm font-semibold rounded hover:bg-blue-900 transition">
+                    Generar Documento de Plan de Transferencia
+                </button>
+
+                <!-- Plan Generado -->
+                <div id="plan-output" class="hidden p-6 bg-slate-50 rounded-lg border border-slate-300 space-y-4 text-xs sm:text-sm">
+                    <div class="border-b border-slate-300 pb-3 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-bold text-uneNavy text-base">Plan Personal de Transferencia de Soportes Visuales en Psicología</h3>
+                            <p class="text-xs text-slate-500">Universidad UNE | Plantel Centro</p>
+                        </div>
+                        <button onclick="window.print()" class="px-3 py-1.5 bg-slate-200 text-slate-700 rounded text-xs font-medium hover:bg-slate-300 no-print">
+                            Imprimir Plan
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div><strong>Estudiante:</strong> <span id="out-name" class="text-slate-800"></span></div>
+                        <div><strong>Semestre:</strong> <span id="out-group" class="text-slate-800"></span></div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div>
+                            <strong class="text-slate-800 block mb-1">Transferencia a la Vida Académica:</strong>
+                            <p id="out-academic" class="bg-white p-3 rounded border border-slate-200 text-slate-700 leading-relaxed"></p>
+                        </div>
+                        <div>
+                            <strong class="text-slate-800 block mb-1">Criterios Éticos y Comunicación Científica:</strong>
+                            <p id="out-ethics" class="bg-white p-3 rounded border border-slate-200 text-slate-700 leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de Página Institucional -->
+    <footer class="bg-uneNavy text-white py-8 border-t-4 border-uneRed no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-300 gap-4">
+            <div>
+                <p class="font-bold text-white text-sm">Universidad UNE - Plantel Centro</p>
+                <p class="mt-0.5">Licenciatura en Psicología | Materia: Tecnologías en Psicología</p>
+            </div>
+            <div class="text-center md:text-right">
+                <p>Guía Didáctica Interactiva diseñada bajo Modelo Constructivista y ABP.</p>
+                <p class="text-slate-400 mt-0.5">Optimizada para publicación e integración en repositorios académicos GitHub.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lógica de Interacción JavaScript Integrada -->
+    <script>
+        function checkPriorKnowledge() {
+            const selected = document.querySelector('input[name="prior"]:checked');
+            const feedbackEl = document.getElementById('prior-feedback');
+            
+            if (!selected) {
+                feedbackEl.className = 'mt-4 p-4 rounded text-xs sm:text-sm bg-amber-100 text-amber-800 border border-amber-300';
+                feedbackEl.textContent = 'Por favor, seleccione una opción antes de validar su respuesta.';
+                feedbackEl.classList.remove('hidden');
+                return;
+            }
+
+            if (selected.value === 'B') {
+                feedbackEl.className = 'mt-4 p-4 rounded text-xs sm:text-sm bg-green-100 text-green-900 border border-green-300 leading-relaxed';
+                feedbackEl.innerHTML = '<strong>¡Respuesta Correcta!</strong> Excelente postura técnico-pedagógica. La Opción B refleja una práctica profesional sobria y efectiva. Organizar la información mediante diagramas de proceso, gráficos informativos y botones de acción evita la sobrecarga cognitiva de la audiencia y favorece la retención y la interactividad.';
+            } else {
+                feedbackEl.className = 'mt-4 p-4 rounded text-xs sm:text-sm bg-red-100 text-red-900 border border-red-300 leading-relaxed';
+                feedbackEl.innerHTML = '<strong>Respuesta Incumplida o Ineficiente.</strong> La opción seleccionada favorece la sobrecarga cognitiva o la saturación de estímulos sin valor didáctico. La alternativa B demuestra el uso profesional de Google Slides al jerarquizar los contenidos y facilitar la navegación flexible.';
+            }
+            feedbackEl.classList.remove('hidden');
+        }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.textContent = '−';
+            } else {
+                content.classList.add('hidden');
+                icon.textContent = '+';
+            }
+        }
+
+        function evaluateQuiz() {
+            const answers = {
+                q1: 'correct',
+                q2: 'correct',
+                q3: 'correct',
+                q4: 'correct',
+                q5: 'correct'
+            };
+
+            let score = 0;
+            let total = 5;
+            let answered = 0;
+
+            for (let i = 1; i <= total; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) {
+                    answered++;
+                    if (selected.value === 'correct') {
+                        score++;
+                    }
+                }
+            }
+
+            const resultEl = document.getElementById('quiz-result');
+
+            if (answered < total) {
+                resultEl.className = 'mt-6 p-4 rounded-lg bg-amber-100 text-amber-800 border border-amber-300 text-xs sm:text-sm';
+                resultEl.innerHTML = `<strong>Atención:</strong> Ha respondido ${answered} de ${total} preguntas. Por favor responda la totalidad del quiz antes de continuar.`;
+                resultEl.classList.remove('hidden');
+                return;
+            }
+
+            const percentage = (score / total) * 100;
+            let bgClass = 'bg-red-50 border-red-300 text-red-900';
+            let message = 'Se sugiere revisar nuevamente los contenidos temáticos e intentar el quiz para consolidar el aprendizaje.';
+
+            if (percentage >= 80) {
+                bgClass = 'bg-green-50 border-green-300 text-green-900';
+                message = '¡Excelente desempeño! Demuestra un dominio sólido de las herramientas de diseño de presentaciones e inserción de objetos en Psicología.';
+            } else if (percentage >= 60) {
+                bgClass = 'bg-amber-50 border-amber-300 text-amber-900';
+                message = 'Buen avance. Se recomienda repasar los módulos de Inserción de Objetos Multimediales y Botones de Acción.';
+            }
+
+            resultEl.className = `mt-6 p-6 rounded-lg border ${bgClass} leading-relaxed space-y-3`;
+            resultEl.innerHTML = `
+                <div class="flex items-center justify-between border-b pb-2 border-slate-300">
+                    <h3 class="font-bold text-base">Resultado de Autoevaluación - Unidad IV</h3>
+                    <span class="text-sm font-extrabold px-3 py-1 bg-white rounded border border-slate-200">Puntaje: ${score} / ${total} (${percentage}%)</span>
+                </div>
+                <p class="text-xs sm:text-sm">${message}</p>
+                <div class="text-xs space-y-1">
+                    <p><strong>Desglose de Retroalimentación Técnica:</strong></p>
+                    <ul class="list-disc pl-4 space-y-1">
+                        <li>Vista del Presentador: Apoyo cronometrado y notas privadas.</li>
+                        <li>Organigramas y Diagramas: Jerarquización visual de procesos clínicos.</li>
+                        <li>Botones de Acción: Navegación no lineal mediante vínculos.</li>
+                        <li>Uso de WordArt: Criterio sobrio reservado a titulares principales.</li>
+                        <li>Gráficos Vinculados: Sincronización en tiempo real desde Google Sheets.</li>
+                    </ul>
+                </div>
+            `;
+            resultEl.classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-form').reset();
+            const resultEl = document.getElementById('quiz-result');
+            resultEl.classList.add('hidden');
+        }
+
+        function generatePlan() {
+            const name = document.getElementById('plan-student-name').value.trim();
+            const group = document.getElementById('plan-student-group').value.trim();
+            const academic = document.getElementById('plan-academic').value.trim();
+            const ethics = document.getElementById('plan-ethics').value.trim();
+
+            if (!name || !group || !academic || !ethics) {
+                alert('Por favor complete todos los campos del plan de reflexión antes de generar el documento.');
+                return;
+            }
+
+            document.getElementById('out-name').textContent = name;
+            document.getElementById('out-group').textContent = group;
+            document.getElementById('out-academic').textContent = academic;
+            document.getElementById('out-ethics').textContent = ethics;
+
+            document.getElementById('plan-output').classList.remove('hidden');
+            document.getElementById('plan-output').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
