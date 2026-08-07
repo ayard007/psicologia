@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Didáctica Interactiva: Animación e Integración de Aplicaciones | UNE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        uneNavy: '#001B54',
+                        uneBlue: '#1D4ED8',
+                        uneRed: '#E31B23',
+                        uneLightBg: '#F8FAFC',
+                        uneDarkText: '#0F172A'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }
+        .print-only {
+            display: none;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background-color: white;
+                color: black;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-blue-200 selection:text-uneNavy">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logotipo e Identidad Institucional UNE -->
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <svg class="h-12 w-auto" viewBox="0 0 500 350" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Logo UNE Universidad Plantel Centro">
+                            <path d="M 140,80 L 410,165 C 380,180 320,185 260,165 L 175,135 C 220,145 280,140 330,120 L 140,80 Z" fill="#E31B23"/>
+                            <path d="M 200,125 L 360,175 C 320,188 260,188 200,170 L 250,150 Z" fill="#001B54"/>
+                            <path d="M 255,142 L 420,165 L 290,205 Z" fill="#E31B23"/>
+                            <g fill="#001B54">
+                                <path d="M 60,175 H 125 V 225 C 125,248 108,265 85,265 C 62,265 60,248 60,225 V 175 Z M 80,193 V 224 C 80,238 83,248 92,248 C 101,248 105,238 105,224 V 193 H 80 Z"/>
+                                <path d="M 195,175 H 222 L 270,230 V 175 H 295 V 262 H 268 L 220,207 V 262 H 195 V 175 Z"/>
+                                <path d="M 330,175 H 430 V 198 H 358 V 207 H 420 V 230 H 358 V 239 H 430 V 262 H 330 V 175 Z"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="border-l border-slate-300 pl-4">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Universidad UNE</span>
+                        <span class="block text-sm font-bold text-uneNavy">Plantel Centro | Licenciatura en Psicología</span>
+                    </div>
+                </div>
+
+                <!-- Navegación de la Guía -->
+                <nav class="hidden md:flex space-x-5 text-sm font-medium text-slate-700">
+                    <a href="#introduccion" class="hover:text-uneBlue transition-colors">Introducción</a>
+                    <a href="#diagnostico" class="hover:text-uneBlue transition-colors">Diagnóstico</a>
+                    <a href="#contenidos" class="hover:text-uneBlue transition-colors">Contenidos</a>
+                    <a href="#caso-practico" class="hover:text-uneBlue transition-colors">Caso Práctico</a>
+                    <a href="#actividades" class="hover:text-uneBlue transition-colors">Classroom</a>
+                    <a href="#evaluacion" class="hover:text-uneBlue transition-colors">Evaluación</a>
+                    <a href="#reflexion" class="hover:text-uneBlue transition-colors">Plan Aplicado</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-uneNavy text-white py-12 px-4 sm:px-6 lg:px-8 border-b-4 border-uneRed">
+        <div class="max-w-7xl mx-auto text-center md:text-left md:flex md:items-center md:justify-between">
+            <div class="max-w-3xl">
+                <p class="text-xs font-semibold uppercase tracking-widest text-blue-200 mb-2">Asignatura: Tecnologías en Psicología</p>
+                <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Unidad V: Animación de Objetos e Interoperabilidad Ecosistémica en Google Workspace</h1>
+                <p class="mt-4 text-base text-slate-300 leading-relaxed">
+                    Guía Didáctica Interactiva: Dinamización visual de contenidos psicológicos e integración técnica bidireccional entre Documentos, Hojas de Cálculo y Presentaciones para el trabajo colaborativo en red.
+                </p>
+            </div>
+            <div class="mt-6 md:mt-0 flex flex-col sm:flex-row gap-3">
+                <a href="#contenidos" class="inline-flex justify-center items-center px-5 py-3 border border-transparent text-sm font-medium rounded-md text-uneNavy bg-white hover:bg-slate-100 transition shadow">
+                    Explorar Contenidos
+                </a>
+                <a href="#actividades" class="inline-flex justify-center items-center px-5 py-3 border border-white text-sm font-medium rounded-md text-white hover:bg-white/10 transition">
+                    Actividades Classroom
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contenedor Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <section id="introduccion" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-uneNavy">1. Introducción al Trabajo Interconectado en la Práctica Psicológica</h2>
+                <p class="text-sm text-slate-500 mt-1">Marco didáctico constructivista y Aprendizaje Basado en Problemas (ABP)</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 leading-relaxed text-slate-700">
+                <div class="lg:col-span-2 space-y-4 text-justify">
+                    <p>
+                        En la práctica académica y profesional de la Psicología contemporánea, la gestión de la información no ocurre de manera aislada. Un diagnóstico clínico, una investigación psicométrica o una campaña de intervención comunitaria requieren articular diversos soportes de procesamiento de datos: bases cuantitativas en hojas de cálculo, dictámenes teóricos e informes narrativos en procesadores de texto, y defensas de hallazgos o talleres psicoeducativos mediante presentaciones multimedia.
+                    </p>
+                    <p>
+                        Bajo una <strong>pedagogía activa y constructivista</strong>, el dominio del ecosistema en la nube de Google Chrome va más allá del uso individual de herramientas. Consiste en construir un flujo interconectado en tiempo real donde los datos procesados en <em>Google Sheets</em> (ej. estadísticos de reactivos psicométricos o escalas clínicas) alimenten directamente los reportes narrativos en <em>Google Docs</em> y las láminas interactivas en <em>Google Slides</em> sin duplicar esfuerzos ni correr riesgos de desincronización de información.
+                    </p>
+                    <p>
+                        Asimismo, la animación técnica de objetos e ideas dentro de las diapositivas debe servir como un recurso pedagógico intencional para dirigir la atención selectiva de la audiencia hacia procesos cognitivos paso a paso, previniendo la fatiga o sobrecarga cognitiva del espectador.
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-uneNavy mb-3">Competencias de la Unidad</h3>
+                        <ul class="text-xs space-y-2 text-slate-600">
+                            <li class="flex items-start">
+                                <span class="text-uneRed font-bold mr-2">•</span>
+                                <span><strong>Animación Intencional:</strong> Aplicar transiciones y animaciones de objetos de forma jerárquica para guiar la atención clínica y pedagógica.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-uneRed font-bold mr-2">•</span>
+                                <span><strong>Interoperabilidad Ecosistémica:</strong> Vincular tablas y gráficos de Google Sheets hacia Google Docs y Google Slides con actualización sincronizada en vivo.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-uneRed font-bold mr-2">•</span>
+                                <span><strong>Trabajo Colaborativo en Red:</strong> Configurar entornos seguros de edición sincrónica y asincrónica para equipos multidisciplinarios.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-200 text-xs text-slate-500">
+                        <strong>Metodología:</strong> Constructivismo Social y Aprendizaje Basado en Problemas.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="diagnostico" class="bg-blue-50/60 rounded-xl border border-blue-200 p-6 md:p-8">
+            <div class="max-w-3xl">
+                <span class="text-xs font-bold uppercase tracking-wider text-uneBlue">Diagnóstico Inicial</span>
+                <h2 class="text-xl font-bold text-uneNavy mt-1 mb-4">Pregunta de Reactivación de Conocimientos Previos</h2>
+                <p class="text-sm text-slate-700 leading-relaxed mb-6">
+                    Analice el siguiente escenario de flujo de trabajo profesional y seleccione la opción que represente el principio más eficiente de interoperabilidad tecnológica:
+                </p>
+
+                <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm space-y-4">
+                    <p class="text-sm font-semibold text-slate-800">
+                        Escenario: Un grupo de investigación en Psicología Organizacional procesa los resultados de clima laboral de 500 empleados en Google Sheets. Paralelamente, redactan el informe técnico final en Google Docs y preparan la exposición ejecutiva en Google Slides. Durante la revisión final, el estadístico detecta un error en la muestra y actualiza los puntajes en la hoja de cálculo. ¿Cuál es el procedimiento tecnológicamente óptimo?
+                    </p>
+
+                    <form id="prev-knowledge-form" class="space-y-3">
+                        <label class="flex items-start p-3 rounded border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs sm:text-sm text-slate-700">
+                            <input type="radio" name="prior" value="A" class="mt-1 text-uneBlue focus:ring-uneBlue">
+                            <span class="ml-3">Opción A: Exportar nuevamente las imágenes de los gráficos desde Sheets, borrarlas manualmente en el Documento y en la Presentación, y volver a insertarlas una por una ajustando sus tamaños.</span>
+                        </label>
+                        <label class="flex items-start p-3 rounded border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs sm:text-sm text-slate-700">
+                            <input type="radio" name="prior" value="B" class="mt-1 text-uneBlue focus:ring-uneBlue">
+                            <span class="ml-3">Opción B: Utilizar la vinculación interactiva de datos entre aplicaciones desde el origen, de modo que al corregir los datos en Google Sheets, bastará con presionar el botón "Actualizar" en Google Docs y Google Slides para sincronizar automáticamente tablas y gráficos.</span>
+                        </label>
+                        <label class="flex items-start p-3 rounded border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs sm:text-sm text-slate-700">
+                            <input type="radio" name="prior" value="C" class="mt-1 text-uneBlue focus:ring-uneBlue">
+                            <span class="ml-3">Opción C: Copiar los valores numéricos corregidos de memoria y reescribir manualmente cada celda o tabla en la presentación y en el informe de texto.</span>
+                        </label>
+                    </form>
+
+                    <button type="button" onclick="checkPriorKnowledge()" class="mt-2 px-4 py-2 bg-uneNavy text-white text-xs sm:text-sm font-semibold rounded hover:bg-blue-900 transition">
+                        Validar Respuesta
+                    </button>
+
+                    <div id="prior-feedback" class="hidden mt-4 p-4 rounded text-xs sm:text-sm"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contenidos" class="space-y-8">
+            <div class="border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-bold text-uneNavy">3. Contenido Temático y Fundamentación Técnica</h2>
+                <p class="text-sm text-slate-500 mt-1">Desglose temático de la Unidad: Animación de Objetos e Integración Ecosistémica.</p>
+            </div>
+
+            <!-- Módulos de Contenido -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Módulo 1 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-lg bg-blue-100 text-uneBlue flex items-center justify-center font-bold text-lg mb-4">5.1</div>
+                    <h3 class="text-lg font-bold text-uneNavy mb-2">Animación de Objetos y Transiciones</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                        Configuración de secuencias de animación para elementos individuales (textos, figuras, imágenes y diagramas). Tipos de activadores (Al hacer clic, Con la anterior, Después de la anterior), orden de ejecución y ajuste de velocidades para la exposición graduada de conceptos teóricos.
+                    </p>
+                    <ul class="text-xs text-slate-500 space-y-1 bg-slate-50 p-3 rounded">
+                        <li>• Efectos de entrada, salida y énfasis.</li>
+                        <li>• Animación por párrafos o viñetas individuales.</li>
+                        <li>• Transiciones de diapositivas y ritmo de la sesión.</li>
+                    </ul>
+                </div>
+
+                <!-- Módulo 2 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-lg bg-red-100 text-uneRed flex items-center justify-center font-bold text-lg mb-4">5.2</div>
+                    <h3 class="text-lg font-bold text-uneNavy mb-2">Integración Sheets &rarr; Slides / Docs</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                        Técnicas de copia y vinculación directa de datos. Transferencia dinámica de gráficos cuantitativos y rangos de tablas desde Google Sheets hacia Google Slides y Google Docs mediante el portapapeles con enlace activo para la actualización centralizada de información.
+                    </p>
+                    <ul class="text-xs text-slate-500 space-y-1 bg-slate-50 p-3 rounded">
+                        <li>• Copiado con vinculación de origen.</li>
+                        <li>• Gestión de vínculos activos y desvinculación.</li>
+                        <li>• Actualización individual y masiva de datos.</li>
+                    </ul>
+                </div>
+
+                <!-- Módulo 3 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition">
+                    <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center font-bold text-lg mb-4">5.3</div>
+                    <h3 class="text-lg font-bold text-uneNavy mb-2">Interoperabilidad Ecosistémica y Red</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                        Flujo de trabajo colaborativo online dentro de Google Drive. Integración de notas de investigación en Google Docs con material gráfico en Slides y tabulaciones en Sheets. Control de versiones, comentarios contextuales, asignación de tareas e historial de cambios.
+                    </p>
+                    <ul class="text-xs text-slate-500 space-y-1 bg-slate-50 p-3 rounded">
+                        <li>• Entornos de coautoría sincrónica.</li>
+                        <li>• Historial de versiones y auditoría de cambios.</li>
+                        <li>• Permisos de acceso y seguridad institucional.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                <div class="p-6 bg-slate-100 border-b border-slate-200">
+                    <h3 class="text-base font-bold text-uneNavy">Guía Procedimental Detallada</h3>
+                    <p class="text-xs text-slate-500">Haga clic sobre cada apartado para desplegar el procedimiento paso a paso en el ecosistema de Google Workspace.</p>
+                </div>
+
+                <div class="divide-y divide-slate-200">
+
+                    <!-- Acordeón 1 -->
+                    <div class="p-4 hover:bg-slate-50">
+                        <button onclick="toggleAccordion('acc-1')" class="w-full text-left font-semibold text-slate-800 flex justify-between items-center text-sm sm:text-base">
+                            <span>5.1 Configuración de Animaciones de Objetos y Transiciones en Google Slides</span>
+                            <span id="icon-acc-1" class="text-slate-400">+</span>
+                        </button>
+                        <div id="acc-1" class="hidden mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 pl-2 border-l-2 border-uneBlue">
+                            <p><strong>Procedimiento en Google Slides:</strong></p>
+                            <ol class="list-decimal pl-4 space-y-1">
+                                <li>Abra su presentación en Google Chrome y seleccione el objeto que desea animar (cuadro de texto, diagrama, imagen o figura).</li>
+                                <li>Acceda al menú <em>Insertar</em> &gt; <em>Animación</em> o haga clic secundario sobre el objeto y seleccione <em>Animar</em>. Se desplegará el panel lateral "Movimiento".</li>
+                                <li>En el apartado "Animaciones de objetos", seleccione el tipo de efecto deseado (ej. "Aparecer", "Fundido de entrada", "Entrada por la izquierda").</li>
+                                <li>Configure la condición de inicio del evento:
+                                    <ul class="list-disc pl-4 mt-1">
+                                        <li><em>Al hacer clic:</em> La animación se ejecuta al presionar el ratón o barra espaciadora. Ideal para revelar respuestas o etapas diagnósticas a voluntad del ponente.</li>
+                                        <li><em>Con la anterior:</em> Se ejecuta de forma simultánea con el efecto previo.</li>
+                                        <li><em>Después de la anterior:</em> Se ejecuta automáticamente en secuencia tras concluir la animación anterior.</li>
+                                    </ul>
+                                </li>
+                                <li>Si animará una lista numerada o con viñetas, marque la casilla <strong>"Por párrafo"</strong> para revelar las ideas teóricas de forma gradual.</li>
+                                <li>Ajuste el deslizador de velocidad (Lento, Medio, Rápido) asegurando una transición fluida que no distraiga a la audiencia.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Acordeón 2 -->
+                    <div class="p-4 hover:bg-slate-50">
+                        <button onclick="toggleAccordion('acc-2')" class="w-full text-left font-semibold text-slate-800 flex justify-between items-center text-sm sm:text-base">
+                            <span>5.2 Vinculación Dinámica de Gráficos y Tablas desde Google Sheets hacia Docs y Slides</span>
+                            <span id="icon-acc-2" class="text-slate-400">+</span>
+                        </button>
+                        <div id="acc-2" class="hidden mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 pl-2 border-l-2 border-uneBlue">
+                            <p><strong>Procedimiento para vinculación sincrónica de datos:</strong></p>
+                            <ol class="list-decimal pl-4 space-y-1">
+                                <li>Abra la Hoja de Cálculo en Google Sheets donde radican los datos psicométricos procesados.</li>
+                                <li>Seleccione el gráfico o el rango de celdas de la tabla y copie el elemento con <kbd class="bg-slate-100 border px-1">Ctrl + C</kbd>.</li>
+                                <li>Diríjase al Documento (Google Docs) o a la Presentación (Google Slides) de destino.</li>
+                                <li>Pegue el elemento mediante <kbd class="bg-slate-100 border px-1">Ctrl + V</kbd>. Aparecerá una ventana emergente de opciones de pegado.</li>
+                                <li>Seleccione expresamente la opción <strong>"Vincular a la hoja de cálculo"</strong> y haga clic en <em>Pegar</em>.</li>
+                                <li><strong>Actualización en tiempo real:</strong> Cuando se modifiquen los datos o el diseño en la Hoja de Cálculo de origen, aparecerá automáticamente un botón con la leyenda <strong>"Actualizar"</strong> en la esquina superior del gráfico o tabla en Docs y Slides. Al hacer clic, los datos se sincronizarán instantáneamente.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Acordeón 3 -->
+                    <div class="p-4 hover:bg-slate-50">
+                        <button onclick="toggleAccordion('acc-3')" class="w-full text-left font-semibold text-slate-800 flex justify-between items-center text-sm sm:text-base">
+                            <span>5.3 Flujo de Coautoría Colaborativa, Comentarios y Historial de Versiones</span>
+                            <span id="icon-acc-3" class="text-slate-400">+</span>
+                        </button>
+                        <div id="acc-3" class="hidden mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 pl-2 border-l-2 border-uneBlue">
+                            <p><strong>Procedimiento para trabajo simultáneo en equipo:</strong></p>
+                            <ol class="list-decimal pl-4 space-y-1">
+                                <li>En cualquiera de las aplicaciones (Docs, Sheets, Slides), haga clic en el botón superior <strong>Compartir</strong> y agregue las direcciones de correo electrónico de los integrantes del equipo con permiso de "Editor".</li>
+                                <li><strong>Comentarios y Asignaciones:</strong> Seleccione un texto o gráfico específico, haga clic en el ícono de agregar comentario y utilice la sintaxis <code class="bg-slate-100 px-1 py-0.5 rounded">@correo_compañero</code> marcando la casilla "Asignar a..." para delegar la revisión o corrección de esa sección.</li>
+                                <li><strong>Auditoría e Historial:</strong> Ingrese al menú <em>Archivo</em> &gt; <em>Historial de versiones</em> &gt; <em>Ver historial de versiones</em>. Esta función permite identificar qué integrante realizó cada modificación, restaurar un estado previo de la investigación y garantizar la trazabilidad del trabajo académico.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl border border-slate-200 p-6 md:p-8 shadow-sm">
+            <h2 class="text-lg font-bold text-uneNavy mb-4 border-b border-slate-200 pb-2">Materiales Externos de Consulta Académica y Documentación Oficial</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                <div class="p-4 rounded border border-slate-200 bg-slate-50 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-uneBlue">Documentación Oficial de Google</span>
+                        <h3 class="font-bold text-slate-800 mt-1">Centro de Ayuda de Google Workspace: Vincular Gráficos y Tablas</h3>
+                        <p class="text-slate-600 mt-2 text-xs">Guía técnica sobre la integración entre Google Docs, Sheets y Slides, actualización de datos vinculados y resolución de permisos.</p>
+                    </div>
+                    <a href="https://support.google.com/docs/answer/190842" target="_blank" class="mt-4 inline-block font-semibold text-uneBlue hover:underline text-xs">
+                        Consultar Guía de Vinculación &rarr;
+                    </a>
+                </div>
+
+                <div class="p-4 rounded border border-slate-200 bg-slate-50 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-uneRed">Diseño Instruccional y Tecnología</span>
+                        <h3 class="font-bold text-slate-800 mt-1">Teoría de la Carga Cognitiva y Medios Multimediales (Sweller & Mayer)</h3>
+                        <p class="text-slate-600 mt-2 text-xs">Principios científicos para la utilización intencional de animaciones y la prevención del efecto de atención dividida en la enseñanza visual.</p>
+                    </div>
+                    <a href="https://www.apa.org/education-career/k12/mayer-interactive" target="_blank" class="mt-4 inline-block font-semibold text-uneRed hover:underline text-xs">
+                        Leer Fundamentos APA &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="caso-practico" class="bg-slate-900 text-white rounded-xl p-6 md:p-8 shadow-md">
+            <div class="border-b border-slate-700 pb-4 mb-6">
+                <span class="text-xs font-bold uppercase tracking-wider text-red-400">Aprendizaje Basado en Problemas (ABP)</span>
+                <h2 class="text-2xl font-bold text-white mt-1">Caso Práctico: Sistema Integrado de Evaluación Neuropsicológica Infantil y Transferencia Institucional de Resultados</h2>
+            </div>
+
+            <div class="space-y-6 text-sm text-slate-300 leading-relaxed">
+                <div class="bg-slate-800/80 p-5 rounded-lg border border-slate-700">
+                    <h3 class="text-base font-bold text-white mb-2">Contexto de Aplicación Profesional:</h3>
+                    <p>
+                        El Centro de Atención Neuropsicológica Infantil de la Universidad UNE ha recibido el encargo de evaluar las funciones ejecutivas (atención sostenida, memoria de trabajo e inhibición de respuesta) de una muestra de 80 estudiantes de educación primaria con sospecha de TDAH.
+                    </p>
+                    <p class="mt-2">
+                        El equipo evaluador debe estructurar una solución tecnológica interconectada en Google Workspace que permita:
+                    </p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1 text-slate-300">
+                        <li>Tabular los datos cuantitativos de las pruebas aplicadas en <strong>Google Sheets</strong>, calculando promedios, desviaciones estándar y gráficos de puntuaciones Z.</li>
+                        <li>Generar un <strong>Informe Clínico Diagnóstico en Google Docs</strong> que integre dinámicamente las tablas de resultados y gráficos desde Sheets, permitiendo actualización inmediata si se agregan casos extemporáneos.</li>
+                        <li>Construir una <strong>Presentación Psicoeducativa en Google Slides</strong> con animaciones secuenciales por viñetas y diagramas animados que expliquen el perfil cognitivo a los padres de familia y docentes sin saturarlos de información visual.</li>
+                    </ul>
+                </div>
+
+                <!-- Matriz de Arquitectura del Ecosistema Vinculado -->
+                <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 font-mono text-xs overflow-x-auto">
+                    <div class="text-slate-400 mb-2">// Matriz de Interoperabilidad Ecosistémica ("Proyecto_Neuropsicologia_UNE")</div>
+                    <table class="w-full text-left text-slate-300">
+                        <thead class="bg-slate-900 text-slate-400 border-b border-slate-800">
+                            <tr>
+                                <th class="p-2">Aplicación Origen</th>
+                                <th class="p-2">Componente Generado</th>
+                                <th class="p-2">Aplicación Destino</th>
+                                <th class="p-2">Mecanismo de Integración</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            <tr>
+                                <td class="p-2 text-green-400">Google Sheets</td>
+                                <td class="p-2">Tabla de Desempeño por Edad</td>
+                                <td class="p-2 text-blue-400">Google Docs (Informe)</td>
+                                <td class="p-2">Vínculo de tabla sincrónico en vivo</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 text-green-400">Google Sheets</td>
+                                <td class="p-2">Gráfico de Puntuaciones T</td>
+                                <td class="p-2 text-yellow-400">Google Slides (Exposición)</td>
+                                <td class="p-2">Vínculo de gráfico dinámico</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 text-yellow-400">Google Slides</td>
+                                <td class="p-2">Diagrama de Ruta de Apoyo</td>
+                                <td class="p-2 text-yellow-400">Google Slides (Misma app)</td>
+                                <td class="p-2">Animaciones "Aparecer por párrafo"</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 text-blue-400">Google Docs</td>
+                                <td class="p-2">Conclusiones Teóricas APA</td>
+                                <td class="p-2 text-yellow-400">Google Slides (Notas orador)</td>
+                                <td class="p-2">Coautoría mediante panel de notas y enlaces</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                        <h4 class="font-bold text-blue-300 uppercase mb-1">Requerimiento 1: Consistencia de Datos</h4>
+                        <p>Garantizar que cualquier ajuste estadístico en la hoja de cálculo se refleje automáticamente en el documento de texto y en la presentación en menos de tres clics.</p>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded border border-slate-700">
+                        <h4 class="font-bold text-blue-300 uppercase mb-1">Requerimiento 2: Dosificación de la Información</h4>
+                        <p>Programar los efectos de entrada y animación en Google Slides para que la explicación del perfil neuropsicológico se exponga elemento por elemento durante la junta con padres.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="actividades" class="space-y-8">
+            <div class="border-b border-slate-200 pb-4">
+                <span class="text-xs font-bold uppercase tracking-wider text-uneBlue">Evaluación Formativa y Colaborativa</span>
+                <h2 class="text-2xl font-bold text-uneNavy mt-1">Actividades de Aprendizaje para Entrega en Google Classroom</h2>
+                <p class="text-sm text-slate-500">Instrucciones detalladas y estructuradas paso a paso para la entrega de evidencias académicas.</p>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <div>
+                        <span class="bg-blue-100 text-uneBlue text-xs font-bold px-2.5 py-1 rounded">Actividad 1: Mediación en Foro</span>
+                        <h3 class="text-lg font-bold text-uneNavy mt-2">Reflexión Crítica: La Frontera entre la Dinamización Visual y el Distractor Cognitivo en Entornos Clínicos y Educativos</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-medium">Modalidad: Asíncrona en Foro</span>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                        <strong class="text-uneNavy block mb-1">Pregunta Detonadora para el Foro:</strong>
+                        <p class="italic">
+                            "En la práctica docente y clínica del psicólogo, las animaciones de objetos en diapositivas pueden ser potentes aliadas para estructurar el pensamiento o convertirse en serios distractores que entorpecen la comprensión. Asimismo, la falta de sincronización entre datos cuantitativos (Sheets) e informes narrativos (Docs) puede llevar a cometer errores éticos al presentar resultados erróneos a pacientes o directivos. ¿Cómo influye el dominio técnico del ecosistema interconectado en la responsabilidad ética y profesional del psicólogo? Fundamente su postura analizando la relación entre el control de animaciones, la carga cognitiva de la audiencia y la fidelidad de los datos vinculados."
+                        </p>
+                    </div>
+
+                    <h4 class="font-bold text-uneNavy">Instrucciones Paso a Paso:</h4>
+                    <ol class="list-decimal pl-5 space-y-2">
+                        <li><strong>Aportación Individual:</strong> Redacte una publicación de 200 a 300 palabras respondiendo analíticamente a la pregunta detonadora. Incorpore al menos dos conceptos técnicos de la unidad (ej. animación gradual, vincular celdas, carga cognitiva, consistencia de datos).</li>
+                        <li><strong>Intercambio Colaborativo:</strong> Analice las intervenciones de sus compañeros y realice réplicas fundamentadas a un mínimo de dos integrantes del grupo, aportando un argumento complementario o cuestionando constructivamente sus planteamientos.</li>
+                        <li><strong>Evidencia en Classroom:</strong> Adjunte en la tarea de Google Classroom una captura de pantalla clara de sus participaciones o pegue el enlace directo a sus comentarios en el foro institucional.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <div>
+                        <span class="bg-red-100 text-uneRed text-xs font-bold px-2.5 py-1 rounded">Actividad 2: Aplicación Práctica del Tema</span>
+                        <h3 class="text-lg font-bold text-uneNavy mt-2">Construcción de un Ecosistema Interconectado: Base de Datos, Reporte e Informe Animado</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-medium">Modalidad: Parejas / Equipos</span>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <p>
+                        Los estudiantes desarrollarán un proyecto integrado en Google Drive utilizando simultáneamente Google Sheets, Google Docs y Google Slides sobre un tema psicoeducativo asignado (ej. Evaluación del Desgaste Emocional Burnout en Docentes).
+                    </p>
+
+                    <h4 class="font-bold text-uneNavy">Pasos para la Ejecución del Proyecto:</h4>
+                    <ol class="list-decimal pl-5 space-y-2">
+                        <li><strong>Paso 1 (Google Sheets):</strong> Capture una matriz de datos con 20 registros ficticios de evaluación psicométrica. Genere un gráfico de barras comparativo y una tabla resumen con promedios.</li>
+                        <li><strong>Paso 2 (Google Docs):</strong> Redacte un informe técnico de 2 páginas. Copie la tabla y el gráfico de Sheets y péguelos con la opción <strong>"Vincular a la hoja de cálculo"</strong>. Escriba un párrafo interpretativo de los datos.</li>
+                        <li><strong>Paso 3 (Google Slides):</strong> Elabore una presentación de 4 diapositivas. En la diapositiva 3, péguese el gráfico de Sheets con enlace activo. En la diapositiva 2, construya un diagrama de flujo de intervención e implemente animaciones de objetos tipo <strong>"Aparecer"</strong> activadas <strong>"Por párrafo"</strong> o <strong>"Al hacer clic"</strong>.</li>
+                        <li><strong>Paso 4 (Prueba de Sincronización):</strong> Modifique 3 valores numéricos en Google Sheets. Ingrese a Google Docs y Google Slides, haga clic en el botón <strong>"Actualizar"</strong> de los elementos vinculados y compruebe la sincronización automática.</li>
+                        <li><strong>Paso 5 (Entrega en Classroom):</strong> Suba a Google Classroom una carpeta en Google Drive que contenga los tres archivos con permisos de lectura para el docente.</li>
+                    </ol>
+
+                    <div class="bg-slate-50 p-4 rounded border border-slate-200 text-xs">
+                        <strong class="text-slate-800 block mb-1">Ejemplo de Estructura de Entregables:</strong>
+                        <p class="font-mono text-slate-600">[Carpeta Drive: "Proyecto_Burnout_GrupoA"] &rarr; 1. BaseDatos_Burnout.gsheet | 2. Informe_Burnout.gdoc (Vinculado) | 3. Exposicion_Burnout.gslides (Vinculado + Animado)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <div>
+                        <span class="bg-slate-100 text-slate-800 text-xs font-bold px-2.5 py-1 rounded">Actividad 3: Análisis de Caso Práctico</span>
+                        <h3 class="text-lg font-bold text-uneNavy mt-2">Informe Técnico del Caso "Sistema Integrado de Evaluación Neuropsicológica Infantil"</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-medium">Modalidad: Individual</span>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <p>
+                        Con base en el escenario del Caso Práctico expuesto en la Sección 5, redacte un dictamen de solución técnica para la dirección del Centro de Atención Neuropsicológica.
+                    </p>
+
+                    <h4 class="font-bold text-uneNavy">Instrucciones de Estructuración:</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Extensión máxima de 2 cuartillas en formato PDF.</li>
+                        <li>Desglose el procedimiento recomendado para la vinculación sin errores entre Sheets, Docs y Slides.</li>
+                        <li>Justifique el uso de animaciones específicas en la presentación dirigida a los padres de familia para reducir la ansiedad y mejorar la compresión diagnóstica.</li>
+                        <li>Entregue el archivo en Google Classroom con el nombre: <code class="bg-slate-100 px-1 py-0.5 rounded">Apellido_Nombre_CasoNeuropsicologia.pdf</code>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                    <div>
+                        <span class="bg-green-100 text-green-800 text-xs font-bold px-2.5 py-1 rounded">Actividad 5: Integración Multiaplicaciones de Trabajo Colaborativo Online</span>
+                        <h3 class="text-lg font-bold text-uneNavy mt-2">Laboratorio de Coautoría en Red y Vinculación Ecosistémica en Tiempo Real</h3>
+                    </div>
+                    <span class="text-xs text-slate-500 font-medium">Modalidad: Trabajo Colaborativo Online en Grupo (3 a 4 integrantes)</span>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <p>
+                        Esta actividad integradora requiere que el equipo simule un departamento de consultoría psicológica trabajando de forma remota y sincrónica para estructurar un estudio de salud mental comunitaria.
+                    </p>
+
+                    <h4 class="font-bold text-uneNavy">Guía de Ejecución Sincrónica Paso a Paso:</h4>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                            <strong class="text-uneNavy block mb-1">Fase 1: Configuración del Entorno de Red y Roles</strong>
+                            <p class="text-xs">Un integrante creará la estructura en Google Drive y compartirá los accesos con permisos de coautoría a sus compañeros. Se asignarán roles explícitos: <em>Líder de Análisis Estadístico (Sheets)</em>, <em>Redactor del Informe Diagnóstico (Docs)</em> y <em>Diseñador de la Exposición Dinámica (Slides)</em>.</p>
+                        </div>
+
+                        <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                            <strong class="text-uneNavy block mb-1">Fase 2: Procesamiento y Tabulación Automatizada en Sheets</strong>
+                            <p class="text-xs">El equipo capturará los datos de 30 cuestionarios aplicados sobre sintomatología de estrés postraumático. Se diseñará un gráfico de pastel de severidad clínica y una tabla de resumen de contingencia.</p>
+                        </div>
+
+                        <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                            <strong class="text-uneNavy block mb-1">Fase 3: Redacción del Informe y Vinculación Activa en Docs</strong>
+                            <p class="text-xs">El redactor integrará la tabla y el gráfico de Sheets en el documento de Google Docs mediante la opción de pegado vinculado. Los demás integrantes utilizarán la función de comentarios con menciones (<code class="bg-slate-100 px-1 py-0.5 rounded">@compañero</code>) para realizar observaciones teóricas bajo norma APA.</p>
+                        </div>
+
+                        <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                            <strong class="text-uneNavy block mb-1">Fase 4: Diseño de la Presentación Animada e Interactiva en Slides</strong>
+                            <p class="text-xs">Se construirá la presentación ejecutiva. Se insertará el gráfico de Sheets vinculado. Se aplicarán transiciones de diapositivas y animaciones de entrada en los textos de conclusión, programando la secuencia para que los factores de riesgo aparezcan uno a uno tras cada clic.</p>
+                        </div>
+
+                        <div class="p-3 bg-slate-50 rounded border border-slate-200">
+                            <strong class="text-uneNavy block mb-1">Fase 5: Sincronización y Validación del Historial de Versiones</strong>
+                            <p class="text-xs">El equipo simulará una corrección de datos de último momento en Sheets. Verificarán la actualización en Docs y Slides mediante el panel de vínculos. Finalmente, exportarán el informe en PDF y la presentación para su entrega.</p>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-200 pt-3 text-xs text-slate-500">
+                        <strong>Producto de Entrega en Classroom:</strong> Enlace a la carpeta compartida de Google Drive con el historial de versiones activo y constancia de interacciones en comentarios.
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="evaluacion" class="bg-white rounded-xl border border-slate-200 p-6 md:p-8 shadow-sm">
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <span class="text-xs font-bold uppercase tracking-wider text-uneRed">Evaluación Automatizada</span>
+                <h2 class="text-2xl font-bold text-uneNavy mt-1">Quiz de Autoevaluación de Dominio Técnico - Unidad V</h2>
+                <p class="text-sm text-slate-500">Responda las 5 preguntas sobre animación de objetos e integración multiaplicación para comprobar su aprendizaje.</p>
+            </div>
+
+            <form id="quiz-form" class="space-y-8">
+
+                <!-- Pregunta 1 -->
+                <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <p class="font-semibold text-slate-800 text-sm mb-3">1. Al copiar un gráfico desde Google Sheets y pegarlo en Google Docs o Google Slides, ¿qué opción de pegado garantiza que las modificaciones numéricas futuras se reflejen de forma automática en el destino?</p>
+                    <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q1" value="incorrect" class="text-uneBlue">
+                            <span>Pegar no vinculado (Imagen estática no editable).</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q1" value="correct" class="text-uneBlue">
+                            <span>Vincular a la hoja de cálculo (Pegado dinámico con botón de actualización).</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q1" value="incorrect" class="text-uneBlue">
+                            <span>Pegar como dibujo sin formato ni origen registrado.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 2 -->
+                <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <p class="font-semibold text-slate-800 text-sm mb-3">2. Si desea revelar de forma progresiva una lista de síntomas psicológicos durante una ponencia para evitar saturar visualmente al público, ¿qué configuración de animación es la adecuada en Google Slides?</p>
+                    <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q2" value="correct" class="text-uneBlue">
+                            <span>Aplicar la animación de objeto seleccionando el efecto "Aparecer" y marcar la casilla "Por párrafo".</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q2" value="incorrect" class="text-uneBlue">
+                            <span>Aplicar una transición de diapositiva en bucle continuo y rápido.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q2" value="incorrect" class="text-uneBlue">
+                            <span>Duplicar la diapositiva tantas veces como líneas de texto existan y cambiar las fuentes a WordArt.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 3 -->
+                <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <p class="font-semibold text-slate-800 text-sm mb-3">3. ¿Qué sucede cuando se modifica el diseño o los valores numéricos en una Hoja de Cálculo que contiene gráficos vinculados a un informe en Google Docs?</p>
+                    <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q3" value="incorrect" class="text-uneBlue">
+                            <span>El documento de Google Docs se elimina por inconsistencia de datos.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q3" value="correct" class="text-uneBlue">
+                            <span>Aparece una opción de "Actualizar" en el gráfico insertado en Google Docs que sincroniza los cambios al hacer clic.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q3" value="incorrect" class="text-uneBlue">
+                            <span>Es necesario volver a redactar todo el texto del documento para que acepte la actualización.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 4 -->
+                <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <p class="font-semibold text-slate-800 text-sm mb-3">4. ¿Qué utilidad principal tiene la herramienta "Historial de versiones" al trabajar en un equipo multidisciplinario dentro de Google Drive?</p>
+                    <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q4" value="correct" class="text-uneBlue">
+                            <span>Permite identificar qué coautor realizó cambios específicos, revisar la fecha de cada edición y restaurar versiones anteriores si fuera necesario.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q4" value="incorrect" class="text-uneBlue">
+                            <span>Convierte las animaciones en archivos de audio descargables.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q4" value="incorrect" class="text-uneBlue">
+                            <span>Bloquea automáticamente el acceso de los demás integrantes del equipo sin previo aviso.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pregunta 5 -->
+                <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <p class="font-semibold text-slate-800 text-sm mb-3">5. Desde la teoría del aprendizaje multimedial, ¿cuál es el propósito de utilizar animaciones con activadores del tipo "Al hacer clic"?</p>
+                    <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q5" value="incorrect" class="text-uneBlue">
+                            <span>Demostrar la destreza del ponente en el uso de efectos tridimensionales.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q5" value="correct" class="text-uneBlue">
+                            <span>Otorgar el control del ritmo discursivo al ponente para sincronizar la explicación oral con la aparición del estímulo visual.</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="q5" value="incorrect" class="text-uneBlue">
+                            <span>Aumentar la velocidad de proyección de las láminas sin intervención humana.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button type="button" onclick="evaluateQuiz()" class="px-6 py-3 bg-uneRed text-white text-sm font-bold rounded shadow hover:bg-red-700 transition">
+                        Calcular Puntuación y Ver Retroalimentación
+                    </button>
+                    <button type="button" onclick="resetQuiz()" class="px-4 py-3 bg-slate-200 text-slate-700 text-sm font-semibold rounded hover:bg-slate-300 transition">
+                        Reiniciar Quiz
+                    </button>
+                </div>
+
+            </form>
+
+            <div id="quiz-result" class="hidden mt-6 p-6 rounded-lg border"></div>
+        </section>
+
+        <section id="reflexion" class="bg-white rounded-xl border border-slate-200 p-6 md:p-8 shadow-sm">
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <span class="text-xs font-bold uppercase tracking-wider text-uneNavy">Plan Metodológico Personal</span>
+                <h2 class="text-2xl font-bold text-uneNavy mt-1">Reflexión y Plan de Transferencia a la Vida Académica y Profesional</h2>
+                <p class="text-sm text-slate-500">Estructure la forma en que incorporará la animación intencional y la interoperabilidad en sus proyectos universitarios y futuro ejercicio profesional.</p>
+            </div>
+
+            <div class="space-y-6">
+                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    Complete los campos para generar su borrador de <strong>Plan Personal de Interoperabilidad Ecosistémica en Psicología</strong>. Una vez generado, podrá imprimirlo o exportarlo.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Nombre Completo del Estudiante:</label>
+                        <input type="text" id="plan-student-name" placeholder="Ej. Ana María Gómez Hernández" class="w-full text-xs sm:text-sm p-2.5 rounded border border-slate-300 focus:ring-1 focus:ring-uneNavy">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Semestre / Grupo:</label>
+                        <input type="text" id="plan-student-group" placeholder="Ej. 3er Semestre - Grupo A" class="w-full text-xs sm:text-sm p-2.5 rounded border border-slate-300 focus:ring-1 focus:ring-uneNavy">
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">1. Transferencia a la Vida Académica Universitaria:</label>
+                        <textarea id="plan-academic" rows="3" placeholder="Detalle en qué asignaturas (ej. Psicometría, Metodología de la Investigación, Evaluación Clínica) aplicará la vinculación directa de datos entre Sheets, Docs y Slides..." class="w-full text-xs sm:text-sm p-2.5 rounded border border-slate-300 focus:ring-1 focus:ring-uneNavy"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">2. Criterios Profesionales y Uso Intencional de Animaciones:</label>
+                        <textarea id="plan-ethics" rows="3" placeholder="Explique qué criterios aplicará para evitar la sobrecarga cognitiva en sus presentaciones y garantizar la consistencia ética de los datos cuantitativos expuestos a pacientes o instituciones..." class="w-full text-xs sm:text-sm p-2.5 rounded border border-slate-300 focus:ring-1 focus:ring-uneNavy"></textarea>
+                    </div>
+                </div>
+
+                <button type="button" onclick="generatePlan()" class="px-5 py-2.5 bg-uneNavy text-white text-xs sm:text-sm font-semibold rounded hover:bg-blue-900 transition">
+                    Generar Documento de Plan de Transferencia
+                </button>
+
+                <!-- Documento Generado -->
+                <div id="plan-output" class="hidden p-6 bg-slate-50 rounded-lg border border-slate-300 space-y-4 text-xs sm:text-sm">
+                    <div class="border-b border-slate-300 pb-3 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-bold text-uneNavy text-base">Plan Personal de Transferencia de Tecnologías en Psicología</h3>
+                            <p class="text-xs text-slate-500">Universidad UNE | Plantel Centro</p>
+                        </div>
+                        <button onclick="window.print()" class="px-3 py-1.5 bg-slate-200 text-slate-700 rounded text-xs font-medium hover:bg-slate-300 no-print">
+                            Imprimir Plan
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div><strong>Estudiante:</strong> <span id="out-name" class="text-slate-800"></span></div>
+                        <div><strong>Semestre:</strong> <span id="out-group" class="text-slate-800"></span></div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div>
+                            <strong class="text-slate-800 block mb-1">Aplicación en Proyectos Universitarios:</strong>
+                            <p id="out-academic" class="bg-white p-3 rounded border border-slate-200 text-slate-700 leading-relaxed"></p>
+                        </div>
+                        <div>
+                            <strong class="text-slate-800 block mb-1">Compromiso de Trabajo Ético e Interoperable:</strong>
+                            <p id="out-ethics" class="bg-white p-3 rounded border border-slate-200 text-slate-700 leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-uneNavy text-white py-8 border-t-4 border-uneRed no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-300 gap-4">
+            <div>
+                <p class="font-bold text-white text-sm">Universidad UNE - Plantel Centro</p>
+                <p class="mt-0.5">Licenciatura en Psicología | Materia: Tecnologías en Psicología</p>
+            </div>
+            <div class="text-center md:text-right">
+                <p>Guía Didáctica Interactiva - Unidad V: Animación e Interoperabilidad Ecosistémica.</p>
+                <p class="text-slate-400 mt-0.5">Diseñada para publicación e integración en repositorios de GitHub Pages.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function checkPriorKnowledge() {
+            const selected = document.querySelector('input[name="prior"]:checked');
+            const feedbackEl = document.getElementById('prior-feedback');
+            
+            if (!selected) {
+                feedbackEl.className = 'mt-4 p-4 rounded text-xs sm:text-sm bg-amber-100 text-amber-800 border border-amber-300';
+                feedbackEl.textContent = 'Por favor, seleccione una opción antes de validar su respuesta.';
+                feedbackEl.classList.remove('hidden');
+                return;
+            }
+
+            if (selected.value === 'B') {
+                feedbackEl.className = 'mt-4 p-4 rounded text-xs sm:text-sm bg-green-100 text-green-900 border border-green-300 leading-relaxed';
+                feedbackEl.innerHTML = '<strong>¡Respuesta Correcta!</strong> Ha seleccionado la estrategia de interoperabilidad óptima. La vinculación nativa entre Google Sheets, Google Docs y Google Slides elimina la duplicación manual de tareas, previene errores humanos en la actualización de datos y garantiza la consistencia del trabajo técnico y científico.';
+            } else {
+                feedbackEl.className = 'mt-4 p-4 rounded text-xs sm:text-sm bg-red-100 text-red-900 border border-red-300 leading-relaxed';
+                feedbackEl.innerHTML = '<strong>Respuesta Ineficiente.</strong> La opción elegida incrementa el margen de error y requiere procesos manuales repetitivos. La alternativa B demuestra el verdadero valor de la interoperabilidad en la nube al sincronizar los cambios de origen con un solo clic.';
+            }
+            feedbackEl.classList.remove('hidden');
+        }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.textContent = '−';
+            } else {
+                content.classList.add('hidden');
+                icon.textContent = '+';
+            }
+        }
+
+        function evaluateQuiz() {
+            let score = 0;
+            let total = 5;
+            let answered = 0;
+
+            for (let i = 1; i <= total; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) {
+                    answered++;
+                    if (selected.value === 'correct') {
+                        score++;
+                    }
+                }
+            }
+
+            const resultEl = document.getElementById('quiz-result');
+
+            if (answered < total) {
+                resultEl.className = 'mt-6 p-4 rounded-lg bg-amber-100 text-amber-800 border border-amber-300 text-xs sm:text-sm';
+                resultEl.innerHTML = `<strong>Atención:</strong> Ha respondido ${answered} de ${total} preguntas. Por favor complete la totalidad del quiz.`;
+                resultEl.classList.remove('hidden');
+                return;
+            }
+
+            const percentage = (score / total) * 100;
+            let bgClass = 'bg-red-50 border-red-300 text-red-900';
+            let message = 'Se recomienda repasar los módulos de Vinculación de Sheets y Animaciones de Objetos en Slides e intentar nuevamente.';
+
+            if (percentage >= 80) {
+                bgClass = 'bg-green-50 border-green-300 text-green-900';
+                message = '¡Excelente trabajo! Demuestra un dominio sólido en animación intencional e integración multiaplicación en Google Workspace.';
+            } else if (percentage >= 60) {
+                bgClass = 'bg-amber-50 border-amber-300 text-amber-900';
+                message = 'Buen desempeño. Repase las técnicas de actualización sincrónica entre Sheets y Docs.';
+            }
+
+            resultEl.className = `mt-6 p-6 rounded-lg border ${bgClass} leading-relaxed space-y-3`;
+            resultEl.innerHTML = `
+                <div class="flex items-center justify-between border-b pb-2 border-slate-300">
+                    <h3 class="font-bold text-base">Resultado de Autoevaluación - Unidad V</h3>
+                    <span class="text-sm font-extrabold px-3 py-1 bg-white rounded border border-slate-200">Puntaje: ${score} / ${total} (${percentage}%)</span>
+                </div>
+                <p class="text-xs sm:text-sm">${message}</p>
+                <div class="text-xs space-y-1">
+                    <p><strong>Desglose de Retroalimentación Técnica:</strong></p>
+                    <ul class="list-disc pl-4 space-y-1">
+                        <li>Pegado Vinculado: Mantiene la actualización en vivo entre origen y destino.</li>
+                        <li>Animación por Párrafo: Revelación secuencial para prevenir la carga cognitiva.</li>
+                        <li>Sincronización de Datos: Actualización de gráficos con un solo clic.</li>
+                        <li>Historial de Versiones: Trazabilidad y auditoría de coautoría en equipo.</li>
+                        <li>Ritmo Discursivo: Control intencional con activadores "Al hacer clic".</li>
+                    </ul>
+                </div>
+            `;
+            resultEl.classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-form').reset();
+            const resultEl = document.getElementById('quiz-result');
+            resultEl.classList.add('hidden');
+        }
+
+        function generatePlan() {
+            const name = document.getElementById('plan-student-name').value.trim();
+            const group = document.getElementById('plan-student-group').value.trim();
+            const academic = document.getElementById('plan-academic').value.trim();
+            const ethics = document.getElementById('plan-ethics').value.trim();
+
+            if (!name || !group || !academic || !ethics) {
+                alert('Por favor complete todos los campos antes de generar el documento.');
+                return;
+            }
+
+            document.getElementById('out-name').textContent = name;
+            document.getElementById('out-group').textContent = group;
+            document.getElementById('out-academic').textContent = academic;
+            document.getElementById('out-ethics').textContent = ethics;
+
+            document.getElementById('plan-output').classList.remove('hidden');
+            document.getElementById('plan-output').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
